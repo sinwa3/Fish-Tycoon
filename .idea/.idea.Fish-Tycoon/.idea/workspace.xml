@@ -11,20 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/ColorKey.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/ColorKey.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Misc/Misc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Misc/Misc.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/OverlayUI/OverlayUI" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/OverlayUI/OverlayUI.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/Table" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/Table.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/SampleScene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/SampleScene.unity.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Prefab/Prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Prefab/Prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/LoadingScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/LoadingScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TitleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TitleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF Material_PinkOutline.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF Material_PinkOutline.mat.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/UI/PixelModernUI_Bundle/01_PixelPocketPhoneUI/Prefabs/Settings.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/UI/PixelModernUI_Bundle/01_PixelPocketPhoneUI/Prefabs/Settings.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/UI/PixelModernUI_Bundle/03_PixelHudDialogueUI/Demo/Demo.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/UI/PixelModernUI_Bundle/03_PixelHudDialogueUI/Demo/Demo.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +40,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Editor/DeleteSaveFile.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Item/Enum/BuffType.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Item/Item.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Key/ColorKey.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Key/SoundKey.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" root0="FORCE_HIGHLIGHTING" />
