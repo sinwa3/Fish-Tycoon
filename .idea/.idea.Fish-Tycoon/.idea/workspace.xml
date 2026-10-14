@@ -11,106 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/InventoryItemData.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/BuffType.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/ItemType.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/ItemType.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Item.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/SoundKey.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/EventManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/InputManagers.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/PoolManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/ResourceManagers.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/UIManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/ScenesManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SoundManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SoundManager.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Pool/Pool.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Pool/Pool.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Pool/PoolObj.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Pool/PoolObj.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/ItemTable.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/ItemTable.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/ShopTable.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/ShopTable.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableParser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableParser.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/BaseUI.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/BaseUI.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/BaseHUD.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/BaseHUD.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/BaseOverlay.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/BaseOverlay.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/LoadingUI.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/LoadingUI.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/ToastMessage.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/ToastMessage.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/BasePopup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/BasePopup.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Slot/SlotUI.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Slot/SlotUI.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/UIEventType.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/UIEventType.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/CPrint.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/EventHandler.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/EventHandler.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/Extension.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/Extension.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Sound/Mixer/Mixer" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Sound/Mixer/Mixer.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Sound/Sfx/Sfx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Sound/Sfx/Sfx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/Data" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/InventoryItemData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/Data.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Editor/Editor" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Editor/Editor.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Enum.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Enum/Enum" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Enum/Enum.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Item/Item" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/BuffType.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Item/Item.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Key/Key" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Item.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Key/Key.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/Core" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/Core.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/Mono" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/SoundKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/Mono.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Pool/Pool" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Pool/Pool.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/Scene" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/EventManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/Scene.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/Table" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/InputManagers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/Table.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/HUD" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/PoolManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/HUD.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/Misc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/Misc.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/Overlay" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/ResourceManagers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/Overlay.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/Popup" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/Popup.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/Screen" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/UIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/Screen.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Slot/Slot" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/ScenesManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Slot/Slot.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Util/Util" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Pool/LifetimePoolObj.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Util/Util.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Misc/Misc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Misc/Misc.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/OverlayUI/OverlayUI" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/OverlayUI/OverlayUI.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/Table" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/Table.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/SampleScene.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/SampleScene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/UI/PixelModernUI_Bundle/01_PixelPocketPhoneUI/Prefabs/Settings.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/UI/PixelModernUI_Bundle/01_PixelPocketPhoneUI/Prefabs/Settings.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,6 +56,8 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/TableParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/BaseHUD.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/LoadingHUD.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TitleHUD.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Misc/QuickBar.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/LoadingUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Popup/BasePopup.cs" root0="FORCE_HIGHLIGHTING" />
