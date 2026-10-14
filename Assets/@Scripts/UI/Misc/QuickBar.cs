@@ -1,0 +1,243 @@
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary> KDH : QuickBar의 개별 슬롯에 표시되는 아이템 UI를 관리한다. </summary>
+public class QuickSlot
+{
+    private readonly Image _clickImage;
+    private readonly Image _itemImage;
+    public Image ItemImage => _itemImage;
+    private readonly Image _badgeImage;
+    private readonly TMP_Text _itemCountText;
+
+    public GameObject ClickObject => _clickImage.gameObject;
+
+    private InventoryItemData _itemData;
+    
+    public QuickSlot(Image clickImage, Image itemImage, Image badgeImage, TMP_Text itemCountText)
+    {
+        _clickImage = clickImage;
+        _itemImage = itemImage;
+        _badgeImage = badgeImage;
+        _itemCountText = itemCountText;
+    }
+
+    /// <summary> KDH : QuickSlot에 아이템 정보를 표시한다. </summary>
+    public void SetItem(InventoryItemData itemData)
+    {
+        if (itemData == null)
+        {
+            Clear();
+            return;
+        }
+        
+        _itemData = itemData;
+
+        // 아이템 이미지
+        Item item = Managers.Table.Item.GetItem(_itemData.ItemID);
+
+        if (item == null)
+        {
+            Clear();
+            return;
+        }
+
+        Sprite sprite = Managers.Resource.Load<Sprite>(ResourceKey.Path.ItemSprite + item.ResourceName);
+        _itemImage.sprite = sprite;
+        _itemImage.gameObject.SetActive(true);
+
+        // 아이템 개수
+        bool hasCount = _itemData.Count > 0;
+        _badgeImage.gameObject.SetActive(hasCount);
+        _itemCountText.gameObject.SetActive(hasCount);
+        
+        if (hasCount)
+        {
+            _itemCountText.text = _itemData.Count.ToString("N0");
+        }
+    }
+
+    /// <summary> KDH : QuickSlot의 아이템 정보를 초기화한다. </summary>
+    public void Clear()
+    {
+        _itemImage.sprite = null;
+        _itemImage.gameObject.SetActive(false);
+
+        _badgeImage.gameObject.SetActive(false);
+
+        _itemCountText.text = string.Empty;
+        _itemCountText.gameObject.SetActive(false);
+    }
+}
+
+/// <summary> KDH : QuickSlot 아이템을 표시하고 슬롯 클릭을 처리하는 QuickBar UI다. </summary>
+public class QuickBar : BaseUI
+{
+    public enum Images
+    {
+        ClickImage,
+        ClickImage1,
+        ItemImage,
+        ItemImage1,
+        BadgeImage,
+        BadgeImage1
+    }
+
+    public enum Texts
+    {
+        ItemCountText,
+        ItemCountText1
+    }
+
+    private const int QuickSlotCount = 2;
+
+    #region ===== 상태 =====
+
+    private QuickSlot[] _quickSlots;
+
+    #endregion ===== 상태 =====
+
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    #region ===== 초기화 =====
+
+    /// <summary> KDH : QuickBar을 초기화한다. </summary>
+    private void Initialize()
+    {
+        if (_quickSlots != null)
+        {
+            return;
+        }
+        
+        Bind<Image>(typeof(Images));
+        Bind<TMP_Text>(typeof(Texts));
+
+        InitializeQuickSlots();
+    }
+    
+    /// <summary> KDH : QuickSlot을 초기화한다. </summary>
+    private void InitializeQuickSlots()
+    {
+        _quickSlots = new QuickSlot[QuickSlotCount];
+
+        _quickSlots[0] = new QuickSlot(Get<Image>(Images.ClickImage),
+            Get<Image>(Images.ItemImage), Get<Image>(Images.BadgeImage),
+            Get<TMP_Text>(Texts.ItemCountText));
+
+        _quickSlots[1] = new QuickSlot(Get<Image>(Images.ClickImage1),
+            Get<Image>(Images.ItemImage1), Get<Image>(Images.BadgeImage1),
+            Get<TMP_Text>(Texts.ItemCountText1));
+    }
+
+    /// <summary> KDH : 모든 QuickSlot을 비운다. </summary>
+    private void ClearAllSlots()
+    {
+        if (_quickSlots == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _quickSlots.Length; i++)
+        {
+            if (_quickSlots[i] == null)
+            {
+                continue;
+            }
+
+            _quickSlots[i].Clear();
+        }
+    }
+    
+    #endregion ===== 초기화 =====
+
+    /// <summary> KDH : 저장된 QuickSlot 데이터를 UI에 반영한다. </summary>
+    public void UpdateUI()
+    {
+        if (_quickSlots == null)
+        {
+            Initialize();
+        }
+
+        ClearAllSlots();
+
+        IReadOnlyList<InventoryItemData> inventoryItems = Managers.Data.GetInvenItemDataList();
+
+        foreach (InventoryItemData itemData in inventoryItems)
+        {
+            if (!IsValidSlotIndex(itemData.QuickSlotIndex))
+            {
+                continue;
+            }
+
+            _quickSlots[itemData.QuickSlotIndex].SetItem(itemData);
+        }
+    }
+    
+    /// <summary> KDH : 지정된 QuickSlot에 설정된 아이템 ID를 반환한다. </summary>
+    public int GetItemID(int slotIndex)
+    {
+        if (!IsValidSlotIndex(slotIndex))
+        {
+            return 0;
+        }
+
+        IReadOnlyList<InventoryItemData> inventoryItems = Managers.Data.GetInvenItemDataList();
+
+        foreach (InventoryItemData itemData in inventoryItems)
+        {
+            if (itemData.QuickSlotIndex != slotIndex)
+            {
+                continue;
+            }
+
+            return itemData.ItemID;
+        }
+
+        return 0;
+    }
+
+    /// <summary> KDH : 인덱스에 해당하는 퀵슬롯을 반환한다. </summary>
+    public QuickSlot GetQuickSlot(int slotIndex)
+    {
+        if (!IsValidSlotIndex(slotIndex))
+        {
+            return null;
+        }
+        
+        return _quickSlots[slotIndex];
+    }
+    
+    /// <summary> KDH : QuickSlot 클릭 이벤트를 등록한다. </summary>
+    public void SetSlotClickHandler(Action<int> handler)
+    {
+        if (handler == null)
+        {
+            return;
+        }
+
+        if (_quickSlots == null)
+        {
+            Initialize();
+        }
+        
+        for (int i = 0; i < _quickSlots?.Length; i++)
+        {
+            int slotIndex = i;
+            
+            _quickSlots[i].ClickObject.ClearEvent();
+            _quickSlots[i].ClickObject.BindEvent(UIEventType.Click, () => handler.Invoke(slotIndex));
+        }
+    }
+
+    /// <summary> KDH : QuickSlot 인덱스가 유효한지 확인한다. </summary>
+    private bool IsValidSlotIndex(int slotIndex)
+    {
+        return _quickSlots != null && slotIndex >= 0 && slotIndex < _quickSlots.Length && _quickSlots[slotIndex] != null;
+    }
+}

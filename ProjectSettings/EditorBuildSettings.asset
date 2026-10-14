@@ -6,6 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/@Scenes/TitleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/@Scenes/LoadingScene.unity
+    guid: 0db915b01c124ab40a84aa0cf7d45172
+  - enabled: 1
+    path: Assets/@Scenes/TycoonScene.unity
+    guid: 0974ad003f66b4d01b329287f65ed9be
+  - enabled: 1
+    path: Assets/@Scenes/StealthSceen.unity
+    guid: 1a7903c1f628843a1ab9b0e892c306f5
   m_configObjects: {}
