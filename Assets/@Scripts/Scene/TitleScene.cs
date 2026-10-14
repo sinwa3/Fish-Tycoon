@@ -2,7 +2,6 @@ public class TitleScene : BaseScene
 {
     protected override void OnAwake()
     {
-        Managers.Table.Load();
         Managers.Data.Load();
     }
 
