@@ -6,5 +6,7 @@ using System.Collections.Generic;
 public class SaveData
 {
     public int Gold;
+    public int Satisfication;
     public List<InventoryItemData> Inventory = new();
+    public GameMode CurrentGameMode;
 }
