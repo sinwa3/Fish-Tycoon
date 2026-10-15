@@ -12,7 +12,10 @@ public class CustomerPayState : BaseCustomerState
 
     public override void Update(float deltaTime)
     {
-        // TODO: 결제가 끝나면 퇴장 상태로 전환
+        if (StateMachine.StateElapsedTime >= CustomerTempValue.PayDuration)
+        {
+            StateMachine.ChangeState<CustomerExitState>();
+        }
     }
 
     public override void Exit()

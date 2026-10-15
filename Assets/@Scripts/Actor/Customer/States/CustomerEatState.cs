@@ -12,7 +12,10 @@ public class CustomerEatState : BaseCustomerState
 
     public override void Update(float deltaTime)
     {
-        // TODO: 식사 시간이 지나면 결제 상태로 전환
+        if (StateMachine.StateElapsedTime >= CustomerTempValue.EatDuration)
+        {
+            StateMachine.ChangeState<CustomerPayState>();
+        }
     }
 
     public override void Exit()

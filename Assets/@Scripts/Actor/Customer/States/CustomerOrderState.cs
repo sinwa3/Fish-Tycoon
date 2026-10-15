@@ -12,7 +12,10 @@ public class CustomerOrderState : BaseCustomerState
 
     public override void Update(float deltaTime)
     {
-        // TODO: 주문 시간이 지나면 대기 상태로 전환
+        if (StateMachine.StateElapsedTime >= CustomerTempValue.OrderDuration)
+        {
+            StateMachine.ChangeState<CustomerWaitState>();
+        }
     }
 
     public override void Exit()

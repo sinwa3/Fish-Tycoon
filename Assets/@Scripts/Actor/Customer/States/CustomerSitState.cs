@@ -12,7 +12,7 @@ public class CustomerSitState : BaseCustomerState
 
     public override void Update(float deltaTime)
     {
-        // TODO: 주문 상태로 전환
+        StateMachine.ChangeState<CustomerOrderState>();
     }
 
     public override void Exit()
