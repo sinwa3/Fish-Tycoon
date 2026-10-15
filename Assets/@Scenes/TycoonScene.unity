@@ -500,7 +500,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11.85
+  m_fontSize: 18.05
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1238,7 +1238,7 @@ GameObject:
   - component: {fileID: 692237856}
   - component: {fileID: 692237855}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SatisfactionValueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1633,14 +1633,14 @@ MonoBehaviour:
   m_text: "\uB9CC\uC871\uB3C4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33127c072fb294aabb1377fdc2e30f2c, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 4098c5a495cf74c0da5279afb15f05c7, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 5ef7a766715c24784ac83c2df1429e94, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278983723
-  m_fontColor: {r: 0.16862746, g: 0.10980392, b: 0.047058824, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3166,18 +3166,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5399931281696151860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7143535462685857490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1c2f2061de2a4ed28eed4c6c831fe22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5843157462186261236
 GameObject:
   m_ObjectHideFlags: 0
@@ -3212,7 +3200,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 342.52, y: 37.27}
+  m_SizeDelta: {x: 264.07, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &6141457938904655753
 MonoBehaviour:
@@ -3291,8 +3279,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 36.6273, y: 40.035}
+  m_AnchoredPosition: {x: -2.300003, y: 0}
+  m_SizeDelta: {x: 42.8416, y: 46.8274}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!1 &7143535462685857490
 GameObject:
@@ -3307,7 +3295,6 @@ GameObject:
   - component: {fileID: 511377719224816274}
   - component: {fileID: 3420914314726570678}
   - component: {fileID: 2430446120038289399}
-  - component: {fileID: 5399931281696151860}
   m_Layer: 0
   m_Name: TycoonHUD
   m_TagString: Untagged
@@ -3331,7 +3318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 4.8, y: 0}
+  m_AnchoredPosition: {x: 1, y: 0}
   m_SizeDelta: {x: 46.4021, y: 50.7192}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &8159310990971955370
