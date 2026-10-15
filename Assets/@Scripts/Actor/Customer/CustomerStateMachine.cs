@@ -32,7 +32,7 @@ public class CustomerStateMachine
     {
         if (state == null)
         {
-            CPrint.Warning("상태 없음 (CustomerStateMachine)");
+            CPrint.Warning("[CustomerStateMachine] 상태 없음");
 
             return;
         }
@@ -41,7 +41,7 @@ public class CustomerStateMachine
 
         if (_stateMap.ContainsKey(stateType))
         {
-            CPrint.Warning($"이미 등록됨 [{stateType.Name}] (CustomerStateMachine)");
+            CPrint.Warning($"[CustomerStateMachine] 이미 등록됨 [{stateType.Name}]");
 
             return;
         }
@@ -76,7 +76,7 @@ public class CustomerStateMachine
 
         if (!_stateMap.TryGetValue(type, out BaseCustomerState nextState))
         {
-            CPrint.Error($"{type.Name} 상태 등록 안됨 (CustomerStateMachine)");
+            CPrint.Error($"[CustomerStateMachine] {type.Name} 상태 등록 안됨");
 
             return;
         }

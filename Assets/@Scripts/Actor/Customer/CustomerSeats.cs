@@ -88,7 +88,7 @@ public class CustomerSeats : MonoBehaviour
     {
         if (seatIndex < 0 || seatIndex >= _seats.Count)
         {
-            CPrint.Warning($"[{seatIndex}] 인덱스 범위 벗어남 (CustomerSeats)");
+            CPrint.Warning($"[CustomerSeats] [{seatIndex}] 인덱스 범위 벗어남");
 
             return;
         }
@@ -102,7 +102,7 @@ public class CustomerSeats : MonoBehaviour
     {
         if (seatIndex < 0 || seatIndex >= _seats.Count)
         {
-            CPrint.Warning($"[{seatIndex}] 인덱스 범위 벗어남 (CustomerSeats)");
+            CPrint.Warning($"[CustomerSeats] [{seatIndex}] 인덱스 범위 벗어남");
 
             return null;
         }

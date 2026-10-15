@@ -63,7 +63,7 @@ public class CustomerController : MonoBehaviour
     {
         if (customerSeats == null)
         {
-            CPrint.Error("CustomerSeats 없음 (CustomerController)");
+            CPrint.Error("[CustomerController] CustomerSeats 없음");
 
             return;
         }
@@ -77,7 +77,7 @@ public class CustomerController : MonoBehaviour
 
         if (seatTransform == null)
         {
-            CPrint.Warning($"{_seatIndex} 자리 없음 (CustomerController)");
+            CPrint.Warning($"[CustomerController] {_seatIndex} 자리 없음");
 
             return;
         }
