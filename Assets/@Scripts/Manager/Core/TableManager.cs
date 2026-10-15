@@ -9,6 +9,7 @@ public class TableManager
 
     public ItemTable Item { get; private set; }
     public ShopTable Shop { get; private set; }
+    public ReputationTable Reputation { get; private set; }
 
     #endregion ===== 테이블 =====
 
@@ -35,6 +36,11 @@ public class TableManager
             {
                 Shop = new ShopTable();
                 Shop.Load();
+            }),
+            ("평판테이블", () =>
+            {
+                Reputation = new ReputationTable();
+                Reputation.Load();
             })
         };
     }
