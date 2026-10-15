@@ -16,7 +16,6 @@ public enum PurchaseResult
 public class DataManager
 {
     private const string SaveFileName = "SaveData.json";
-    public string SFileName => SaveFileName;
     
     private string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
@@ -159,7 +158,7 @@ public class DataManager
     }
 
     /// <summary> KDH : 골드를 차감할 수 있는지 확인하고 차감한다. </summary>
-    private bool TrySpendGold(int amount)
+    public bool TrySpendGold(int amount)
     {
         if (_saveData == null)
         {
@@ -266,6 +265,32 @@ public class DataManager
     }
     
     #endregion ===== 만족도 =====
+    
+    #region ===== 게임 상태 =====
+
+    /// <summary> KDH : 현재 몇일 차 인지 반환 </summary>
+    public int GetCurrentDay()
+    {
+        if (_saveData == null)
+        {
+            return 0;
+        }
+
+        return _saveData.CurrentDay;
+    }
+
+    /// <summary> KDH : 저장했을 당시의 게임모드를 반환한다. </summary>
+    public GameMode GetSavedGameMode()
+    {
+        if (_saveData == null)
+        {
+            return 0;
+        }
+
+        return _saveData.SavedGameMode;
+    }
+    
+    #endregion ===== 게임 상태 =====
     
     #region ===== 인벤토리 =====
 
