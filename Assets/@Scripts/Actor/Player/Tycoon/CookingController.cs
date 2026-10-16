@@ -102,7 +102,7 @@ public class CookingController : MonoBehaviour
             return;
         }
 
-        if (command != _commands[_currentCommandIndex =])
+        if (command != _commands[_currentCommandIndex])
         {
             _state = CookingState.Failed;
 
