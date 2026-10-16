@@ -21,14 +21,14 @@ public class TitleScene : BaseScene
             Managers.UI.OpenPopup<AlertPopup>().Set("저장", "이미 저장된 데이터가 존재합니다.\n새로 시작하시겠습니까?",
                 true, () =>
                 {
-                    Managers.Data.Delete();
-                    Managers.Data.Load();
+                    Managers.Data.DeleteSaveData();
+                    Managers.Data.LoadData();
                     Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
                 });
         }
         else
         {
-            Managers.Data.Load();
+            Managers.Data.LoadData();
             Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
         }
     }
@@ -38,7 +38,7 @@ public class TitleScene : BaseScene
     {
         if (Managers.Data.IsSaved)
         {
-            Managers.Data.Load();
+            Managers.Data.LoadData();
             Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
         }
     }
