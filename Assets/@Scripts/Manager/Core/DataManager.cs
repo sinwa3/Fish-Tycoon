@@ -16,14 +16,21 @@ public enum PurchaseResult
 public class DataManager
 {
     private const string SaveFileName = "SaveData.json";
-    public string SFileName => SaveFileName;
     
     private string SaveFilePath => Path.Combine(Application.persistentDataPath, SaveFileName);
 
     private SaveData _saveData;
 
+    public bool IsSaved => File.Exists(SaveFilePath);
+    
+    #region ===== 이벤트 =====
+    
+    public event Action OnGoldChanged;
+    public event Action OnSatisfactionChanged;
     public event Action OnQuickSlotChanged;
 
+    #endregion ===== 이벤트 =====
+    
     /// <summary> KDH : 현재 게임 데이터를 로컬 파일에 저장한다. </summary>
     public void Save()
     {
@@ -34,10 +41,10 @@ public class DataManager
         File.WriteAllText(SaveFilePath, json);
     }
 
-    /// <summary> KDH : 로컬 파일에서 게임 데이터를 불러온다. </summary>
+    /// <summary> KDH : 로컬 파일에서 게임 데이터를 불러오거나 새로 만든다. </summary>
     public void Load()
     {
-        if (!File.Exists(SaveFilePath))
+        if (!IsSaved)
         {
             _saveData = new SaveData();
             return;
@@ -64,6 +71,17 @@ public class DataManager
         InitializeInvenSlotIndex(ItemType.Consumable);
     }
 
+    public void Delete()
+    {
+        if (!IsSaved)
+        {
+            CPrint.Warning("[DataManager] 삭제할 데이터가 존재하지 않습니다.");
+            return;
+        }
+        
+        File.Delete(SaveFilePath);
+    }
+    
     #region ===== 초기화 =====
 
     /// <summary> KDH : SaveData에 저장된 InvenSlotIndex가 믿을 만한 상태인지 검사하고 잘못된 슬롯 번호나 중복 슬롯이 있으면 빈 슬롯에 다시 배치한다. </summary>
@@ -125,19 +143,28 @@ public class DataManager
     /// <summary> KDH : 골드를 추가한다. </summary>
     public void AddGold(int amount)
     {
+        if (_saveData == null)
+        {
+            return;
+        }
+        
         if (amount <= 0)
         {
             return;
         }
 
         _saveData.Gold += amount;
-
-        Save();
+        OnGoldChanged?.Invoke();
     }
 
     /// <summary> KDH : 골드를 차감할 수 있는지 확인하고 차감한다. </summary>
-    private bool TrySpendGold(int amount)
+    public bool TrySpendGold(int amount)
     {
+        if (_saveData == null)
+        {
+            return false;
+        }
+        
         if (amount < 0)
         {
             return false;
@@ -149,6 +176,7 @@ public class DataManager
         }
 
         _saveData.Gold -= amount;
+        OnGoldChanged?.Invoke();
 
         return true;
     }
@@ -161,6 +189,109 @@ public class DataManager
 
     #endregion ===== 골드 =====
 
+    #region ===== 만족도 =====
+    
+    /// <summary> KDH : 만족도를 추가한다. </summary>
+    public void AddSatisfaction(int amount)
+    {
+        if (_saveData == null)
+        {
+            return;
+        }
+        
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        int currentGrade = Managers.Table.Reputation.GetReputationGrade(_saveData.Satisfaction);
+        if (Managers.Table.Reputation.IsMaxReputationGrade(currentGrade))
+        {
+            return;
+        }
+        
+        _saveData.Satisfaction += amount;
+        OnSatisfactionChanged?.Invoke();
+    }
+
+    /// <summary> KDH : 만족도를 차감한다. </summary>
+    public void SubtractSatisfaction(int amount)
+    {
+        if (_saveData == null)
+        {
+            return;
+        }
+        
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        _saveData.Satisfaction -= amount;
+        if (_saveData.Satisfaction < 0)
+        {
+            _saveData.Satisfaction = 0;
+        }
+        
+        OnSatisfactionChanged?.Invoke();
+    }
+    
+    /// <summary> KDH : 현재 평판 등급과 만족도 진행 정보를 반환한다. </summary>
+    /// <returns>(평판 등급, 현재 구간 만족도, 다음 등급까지 필요한 만족도)</returns>
+    public (int reputationGrade, int currentSatisfaction, int requiredSatisfaction) GetReputationInfo()
+    {
+        if (_saveData == null)
+        {
+            CPrint.Error("[DataManager] SaveData is null.");
+            return (0, 0, 0);
+        }
+        
+        int totalSatisfaction = _saveData.Satisfaction;
+
+        int reputationGrade = Managers.Table.Reputation.GetReputationGrade(totalSatisfaction);
+
+        ReputationData currentReputation = Managers.Table.Reputation.GetReputationByGrade(reputationGrade);
+        ReputationData nextReputation = Managers.Table.Reputation.GetNextReputation(reputationGrade);
+
+        if (currentReputation == null || nextReputation == null)
+        {
+            return (reputationGrade, -1, -1);
+        }
+
+        int currentSatisfaction = totalSatisfaction - currentReputation.RequiredSatisfaction;
+        int requiredSatisfaction = nextReputation.RequiredSatisfaction - currentReputation.RequiredSatisfaction;
+
+        return (reputationGrade, currentSatisfaction, requiredSatisfaction);
+    }
+    
+    #endregion ===== 만족도 =====
+    
+    #region ===== 게임 상태 =====
+
+    /// <summary> KDH : 현재 몇일 차 인지 반환 </summary>
+    public int GetCurrentDay()
+    {
+        if (_saveData == null)
+        {
+            return 0;
+        }
+
+        return _saveData.CurrentDay;
+    }
+
+    /// <summary> KDH : 저장했을 당시의 게임모드를 반환한다. </summary>
+    public GameMode GetSavedGameMode()
+    {
+        if (_saveData == null)
+        {
+            return 0;
+        }
+
+        return _saveData.SavedGameMode;
+    }
+    
+    #endregion ===== 게임 상태 =====
+    
     #region ===== 인벤토리 =====
 
     /// <summary> KDH : 아이템을 인벤토리에 추가한다. </summary>

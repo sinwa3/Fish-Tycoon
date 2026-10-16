@@ -5,10 +5,13 @@ using UnityEngine;
 /// <summary> KDH : persistentDataPath에 저장된 세이브 파일을 삭제한다. </summary>
 public static class DeleteSaveFile
 {
+    private const string SaveFileName = "SaveData.json";
+    
     [MenuItem("Tools/Misc/Delete Save File", priority = 1)]
     private static void Delete()
     {
-        string filePath = Path.Combine(Application.persistentDataPath, Managers.Data.SFileName);
+        
+        string filePath = Path.Combine(Application.persistentDataPath, SaveFileName);
 
         if (!File.Exists(filePath))
         {
