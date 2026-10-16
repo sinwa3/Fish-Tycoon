@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>SJY : 조리 미니게임의 상태 및 커맨드 진행 컨트롤</summary>
 public class CookingController : MonoBehaviour
@@ -123,20 +124,42 @@ public class CookingController : MonoBehaviour
 
     }
 
-
+    /// <summary>SJY : 커맨드 입력 실패 시 일정 시간 입력 제한 후 초기화용 코루틴</summary>
     private IEnumerator HandleFail()
     {
+        yield return new WaitForSeconds(_failDelay);
 
+        _currentCommandIndex = 0;
+
+        OnCommandReset?.Invoke();
+
+        _state = CookingState.Playing;
     }
 
+    /// <summary>SJY : 모든 커맨드 입력에 성공했을 때 조리 완료 처리</summary>
     private void CompleteCooking()
     {
+        _state = CookingState.Serving;
 
+        int foodId = _cookingOrder.CurrentFoodID.Value;
+
+        CPrint.Log($"[CookingController] 조리 성공 음식 ID : {foodId}");
+
+        OnCookingCompleted?.Invoke(foodId);
+
+        _cookingOrder.MoveNext();
     }
 
+    /// <summary>SJY : 영업 종료 시 조리 데이터 초기화</summary>
     public void Clear()
     {
+        StopAllCoroutines();
 
+        _cookingOrder?.Clear();
+
+        _commands = null;
+        _currentCommandIndex = 0;
+        _state = CookingState.Idle;
     }
 
 
