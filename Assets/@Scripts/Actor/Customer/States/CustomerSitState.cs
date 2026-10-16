@@ -7,7 +7,7 @@ public class CustomerSitState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO: 앉는 모습 (스프라이트 교체 등)
+        // TODO : 앉는 모습 (스프라이트 교체 등)
     }
 
     public override void Update(float deltaTime)
