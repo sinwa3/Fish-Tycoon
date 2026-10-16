@@ -93,10 +93,36 @@ public class CookingController : MonoBehaviour
         CPrint.Log($"[CookingController] 현재 음식 커맨드 : {command}");
     }
 
+    /// <summary>SJY : 플레이어가 입력한 커맨드의 정답 여부 판단</summary>
     public void ProcessCommand(char command)
     {
+        if (_state != CookingState.Playing || _commands == null)
+        {
+            return;
+        }
+
+        if (command != _commands[_currentCommandIndex =])
+        {
+            _state = CookingState.Failed;
+
+            OnCommandFailed?.Invoke(CurrentCommandIndex);
+
+            StartCoroutine(HandleFail());
+
+            return;
+        }
+
+        OnCommandPressed?.Invoke(_currentCommandIndex);
+
+        _currentCommandIndex++;
+
+        if (_currentCommandIndex >= _commands.Length)
+        {
+            CompleteCooking();
+        }
 
     }
+
 
     private IEnumerator HandleFail()
     {
