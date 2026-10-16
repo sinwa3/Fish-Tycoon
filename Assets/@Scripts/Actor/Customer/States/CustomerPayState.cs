@@ -7,7 +7,7 @@ public class CustomerPayState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO: 결제 처리 (골드, 만족도 연결은 다음 작업)
+        // TODO : 결제 처리 (골드, 만족도 연결은 다음 작업)
     }
 
     public override void Update(float deltaTime)
