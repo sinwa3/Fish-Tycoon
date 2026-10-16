@@ -289,6 +289,30 @@ public class DataManager
 
         return _saveData.SavedGameMode;
     }
+
+    /// <summary> KDH : 저장된 게임모드를 변경한다. </summary>
+    public void ChangeSavedGameMode(GameMode mode)
+    {
+        if (_saveData == null)
+        {
+            CPrint.Warning("[DataManager] SaveData is null.");
+            return; 
+        }
+        
+        _saveData.SavedGameMode = mode;
+    }
+
+    /// <summary> KDH : 저장된 현재 날짜를 다음 날짜로 변경한다. </summary>
+    public void SetNextDay()
+    {
+        if (_saveData == null)
+        {
+            CPrint.Warning("[DataManager] SaveData is null.");
+            return; 
+        }
+        
+        _saveData.CurrentDay++;
+    }
     
     #endregion ===== 게임 상태 =====
     

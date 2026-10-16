@@ -12,15 +12,14 @@
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthSceen.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthSceen.unity.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/StatusData.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/StatusData.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Editor/DeleteSaveFile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Editor/DeleteSaveFile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,10 +50,12 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Pool/Pool.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Pool/PoolObj.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/TableParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/BaseHUD.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/LoadingHUD.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TitleHUD.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Misc/QuickBar.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Overlay/LoadingUI.cs" root0="FORCE_HIGHLIGHTING" />

@@ -17,6 +17,11 @@ public class TycoonHUD : BaseHUD
         SatisfactionSlider
     }
 
+    public enum Buttons
+    {
+        NextBtn,
+    }
+
     #region ===== 참조 =====
 
     private TycoonScene _tycoonScene;
@@ -27,6 +32,7 @@ public class TycoonHUD : BaseHUD
     {
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
+        Bind<Button>(typeof(Buttons));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
         if (_tycoonScene == null)
@@ -37,6 +43,8 @@ public class TycoonHUD : BaseHUD
 
     protected override void OnStart()
     {
+        InitializeBtnEvent();
+        
         SetCurrentDayText();
 
         UpdateGoldText();
@@ -85,7 +93,13 @@ public class TycoonHUD : BaseHUD
 
     #region ===== 초기화 =====
 
-    /// <summary> 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
+    /// <summary> KDH : 버튼 이벤트를 초기화한다. </summary>
+    private void InitializeBtnEvent()
+    {
+        Get<Button>(Buttons.NextBtn).onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
+    }
+    
+    /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
         Get<TMP_Text>(Texts.CurrentDayText).SetText($"{Managers.Data.GetCurrentDay()}일 차");
@@ -102,7 +116,7 @@ public class TycoonHUD : BaseHUD
     }
 
     /// <summary> KDH : 현재 영업 상태를 UI에 업데이트 한다. </summary>
-    private void UpdatePhaseText(TycoonScene.Phase phase)
+    public void UpdatePhaseText(TycoonScene.Phase phase)
     {
         string message = phase switch
         {
@@ -186,7 +200,7 @@ public class TycoonHUD : BaseHUD
         }
     }
 
-    /// <summary> 페이즈 변경되었을 때 영업 상태 텍스트를 변경을 구독 </summary>
+    /// <summary> KDH : 페이즈 변경되었을 때 영업 상태 텍스트 변경을 구독 </summary>
     private void SubscribePhaseChanged()
     {
         if (_tycoonScene != null)
@@ -195,7 +209,7 @@ public class TycoonHUD : BaseHUD
         }
     }
 
-    /// <summary> 페이즈 변경되었을 때 영업 상태 텍스트를 변경을 구독해제 </summary>
+    /// <summary> KDH : 페이즈 변경되었을 때 영업 상태 텍스트 변경을 구독해제 </summary>
     private void UnsubscribePhaseChanged()
     {
         if (_tycoonScene != null)
