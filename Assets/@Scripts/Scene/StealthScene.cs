@@ -43,7 +43,7 @@ public class StealthScene : BaseScene
             case Phase.Playing: // 잠입 => 정산
                 Managers.Data.SetNextDay();
                 Managers.Data.ChangeSavedGameMode(GameMode.Stealth);
-                Managers.Data.Save();
+                Managers.Data.SaveData();
                 Managers.UI.OpenToastMessage("저장되었습니다.");
                 break;
             case Phase.Settlement: // 정산 => 타이쿤 씬

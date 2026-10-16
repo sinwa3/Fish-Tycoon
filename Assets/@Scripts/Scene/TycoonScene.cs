@@ -9,10 +9,21 @@ public class TycoonScene : BaseScene
         DuringBusiness, // 영업 중
         AfterBusiness, // 영업 후
     }
-
+    
+    #region ===== 상태 =====
+    
     private Phase _currentPhase;
-
+    
+    public readonly int TargetGold = 100000;
+    public readonly int FinalDay = 7;
+    
+    #endregion ===== 상태 =====
+    
+    #region ===== 참조 =====
+    
     private TycoonHUD _tycoonHUD;
+    
+    #endregion ===== 참조 =====
     
     /// <summary> KDH : 페이즈 변경 이벤트 </summary>
     public event Action<Phase> OnPhaseChanged;
@@ -42,8 +53,14 @@ public class TycoonScene : BaseScene
         switch (_currentPhase)
         {
             case Phase.DuringBusiness: // 영업 중 => 영업 후
+                if (CheckFinalDay())
+                {
+                    Managers.UI.OpenScreen<EndScreen>().ShowResult(CheckGameClear());
+                    return;
+                }
+                
                 Managers.Data.ChangeSavedGameMode(GameMode.Tycoon);
-                Managers.Data.Save();
+                Managers.Data.SaveData();
                 Managers.UI.OpenToastMessage("저장되었습니다.");
                 break;
             case Phase.AfterBusiness: // 잠입 씬 전환
@@ -72,5 +89,27 @@ public class TycoonScene : BaseScene
         };
 
         _tycoonHUD.UpdatePhaseText(_currentPhase);
+    }
+
+    /// <summary> KDH : 마지막 날인지 체크한다.  </summary>
+    private bool CheckFinalDay()
+    {
+        if (Managers.Data.GetCurrentDay() >= FinalDay)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /// <summary> KDH : 게임 클리어 조건에 달성했는지에 따라 종료 스크린을 달리하여 오픈한다. </summary>
+    private bool CheckGameClear()
+    {
+        if (Managers.Data.GetCurrentGold() >= TargetGold)
+        {
+            return true;
+        }
+        
+        return false;
     }
 }

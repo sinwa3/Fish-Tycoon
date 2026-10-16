@@ -1283,8 +1283,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1\uBC88(\uB9CC\uC871\uB3C410+), 2\uBC88(\uB9CC\uC871\uB3C410-), 3\uBC88(\uACE8\uB4DC10+),
-    4\uBC88(\uACE8\uB4DC10-)"
+  m_text: "1\uBC88(\uB9CC\uC871\uB3C4+), 2\uBC88(\uB9CC\uC871\uB3C4-), 3\uBC88(\uACE8\uB4DC+),
+    4\uBC88(\uACE8\uB4DC-)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33127c072fb294aabb1377fdc2e30f2c, type: 2}
   m_sharedMaterial: {fileID: 2466781090815511830, guid: 33127c072fb294aabb1377fdc2e30f2c,
@@ -2587,7 +2587,7 @@ GameObject:
   - component: {fileID: 1656288855}
   - component: {fileID: 1656288854}
   m_Layer: 5
-  m_Name: MainQuestText
+  m_Name: MainQuestValueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

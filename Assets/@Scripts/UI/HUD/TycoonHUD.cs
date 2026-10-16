@@ -9,7 +9,9 @@ public class TycoonHUD : BaseHUD
         ReputationValueText,
         SatisfactionValueText,
         CurrentDayText,
-        PhaseText
+        PhaseText,
+        
+        MainQuestValueText,
     }
 
     public enum Sliders
@@ -46,6 +48,7 @@ public class TycoonHUD : BaseHUD
         InitializeBtnEvent();
         
         SetCurrentDayText();
+        SetMainQuestValueText();
 
         UpdateGoldText();
         UpdateSatisfactionInfo();
@@ -65,22 +68,22 @@ public class TycoonHUD : BaseHUD
 
         if (Managers.Input.KeyDown_1)
         {
-            Managers.Data.AddSatisfaction(10);
+            Managers.Data.AddSatisfaction(100);
         }
 
         if (Managers.Input.KeyDown_2)
         {
-            Managers.Data.SubtractSatisfaction(10);
+            Managers.Data.SubtractSatisfaction(100);
         }
 
         if (Managers.Input.KeyDown_3)
         {
-            Managers.Data.AddGold(10);
+            Managers.Data.AddGold(1000);
         }
 
         if (Managers.Input.KeyDown_4)
         {
-            Managers.Data.TrySpendGold(10);
+            Managers.Data.TrySpendGold(1000);
         }
     }
 
@@ -105,6 +108,12 @@ public class TycoonHUD : BaseHUD
         Get<TMP_Text>(Texts.CurrentDayText).SetText($"{Managers.Data.GetCurrentDay()}일 차");
     }
 
+    /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
+    private void SetMainQuestValueText()
+    {
+        Get<TMP_Text>(Texts.MainQuestValueText).SetText($"{_tycoonScene.TargetGold:N0}");
+    }
+    
     #endregion ===== 초기화 =====
 
     #region ===== 업데이트 =====

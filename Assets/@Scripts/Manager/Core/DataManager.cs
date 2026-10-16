@@ -32,7 +32,7 @@ public class DataManager
     #endregion ===== 이벤트 =====
     
     /// <summary> KDH : 현재 게임 데이터를 로컬 파일에 저장한다. </summary>
-    public void Save()
+    public void SaveData()
     {
         string json = JsonUtility.ToJson(_saveData, true);
 
@@ -42,7 +42,7 @@ public class DataManager
     }
 
     /// <summary> KDH : 로컬 파일에서 게임 데이터를 불러오거나 새로 만든다. </summary>
-    public void Load()
+    public void LoadData()
     {
         if (!IsSaved)
         {
@@ -71,7 +71,8 @@ public class DataManager
         InitializeInvenSlotIndex(ItemType.Consumable);
     }
 
-    public void Delete()
+    /// <summary> KDH : 세이버 데이터를 삭제한다. </summary>
+    public void DeleteSaveData()
     {
         if (!IsSaved)
         {
@@ -354,7 +355,7 @@ public class DataManager
         }
 
         OnQuickSlotChanged?.Invoke();
-        Save();
+        SaveData();
 
         return true;
     }
@@ -390,7 +391,7 @@ public class DataManager
         }
 
         OnQuickSlotChanged?.Invoke();
-        Save();
+        SaveData();
 
         return true;
     }
@@ -473,7 +474,7 @@ public class DataManager
             sourceItemData.InvenSlotIndex = targetSlotIndex;
         }
 
-        Save();
+        SaveData();
 
         return true;
     }
@@ -522,7 +523,7 @@ public class DataManager
             itemData.QuickSlotIndex = targetQuickSlotIndex;
         }
 
-        Save();
+        SaveData();
         OnQuickSlotChanged?.Invoke();
 
         return true;
@@ -541,7 +542,7 @@ public class DataManager
         {
             itemData.QuickSlotIndex = -1;
 
-            Save();
+            SaveData();
             OnQuickSlotChanged?.Invoke();
         }
     }
