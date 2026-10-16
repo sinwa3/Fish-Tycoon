@@ -7,7 +7,7 @@ public class CustomerOrderState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO: 주문 메뉴 정하기, 말풍선 표시
+        // TODO : 주문 메뉴 정하기, 말풍선 표시
     }
 
     public override void Update(float deltaTime)

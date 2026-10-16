@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 /// <summary> KYH : 손님 본체. 상태 머신을 돌리고 상태들이 쓰는 기능과 정보를 제공한다 </summary>
 public class CustomerController : MonoBehaviour
@@ -58,6 +59,9 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 등장과 퇴장 =====
 
+    /// <summary> KYH : 손님이 사라지기 직전에 발행. 스포너가 남은 손님 목록에서 빼는 용도 </summary>
+    public event Action<CustomerController> OnDespawned;
+
     /// <summary> KYH : 배정받은 좌석에 손님을 세우고 입장 상태부터 시작한다 </summary>
     public void Spawn(CustomerSeats customerSeats, int seatIndex)
     {
@@ -102,6 +106,7 @@ public class CustomerController : MonoBehaviour
     public void Despawn()
     {
         _stateMachine.Clear();
+        OnDespawned?.Invoke(this);
         Destroy(gameObject);
     }
 
