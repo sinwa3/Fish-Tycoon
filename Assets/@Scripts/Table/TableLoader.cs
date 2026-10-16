@@ -15,6 +15,7 @@ public abstract class TableLoader<TData> where TData : TableData, new()
     private readonly TableParser<TData> _tableParser = new();
 
     protected readonly Dictionary<int, TData> TableMap = new();
+    public IReadOnlyDictionary<int, TData> Map => TableMap;
 
     protected abstract string TableName { get; }
 
