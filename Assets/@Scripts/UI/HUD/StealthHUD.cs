@@ -26,10 +26,6 @@ public class StealthHUD : BaseHUD
         Bind<Button>(typeof(Buttons));
         
         _stealthScene = gameObject.FindParent<StealthScene>();
-        if (_stealthScene == null)
-        {
-            CPrint.Error("[StealthHUD] : no _stealthScene found.");
-        }
     }
 
     protected override void OnStart()

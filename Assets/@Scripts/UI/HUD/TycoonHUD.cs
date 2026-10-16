@@ -1,4 +1,6 @@
+using DG.Tweening;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class TycoonHUD : BaseHUD
@@ -10,7 +12,7 @@ public class TycoonHUD : BaseHUD
         SatisfactionValueText,
         CurrentDayText,
         PhaseText,
-        
+
         MainQuestValueText,
     }
 
@@ -22,13 +24,24 @@ public class TycoonHUD : BaseHUD
     public enum Buttons
     {
         NextBtn,
+        StartBusinessBtn,
     }
 
     #region ===== 참조 =====
 
     private TycoonScene _tycoonScene;
 
+    private CanvasGroup _foodDiaryCG;
+
     #endregion ===== 참조 =====
+
+    #region ===== 애니메이션 =====
+
+    private RectTransform _diaryRectTransform;
+    private Vector2 _diaryOriginPos;
+    private Tween _diaryTween;
+
+    #endregion ===== 애니메이션 =====
 
     protected override void OnAwake()
     {
@@ -37,16 +50,14 @@ public class TycoonHUD : BaseHUD
         Bind<Button>(typeof(Buttons));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
-        if (_tycoonScene == null)
-        {
-            CPrint.Error("[TycoonHUD] : no _tycoonScene found.");
-        }
+
+        ResolveFoodDiary();
     }
 
     protected override void OnStart()
     {
         InitializeBtnEvent();
-        
+
         SetCurrentDayText();
         SetMainQuestValueText();
 
@@ -89,6 +100,8 @@ public class TycoonHUD : BaseHUD
 
     private void OnDestroy()
     {
+        _diaryTween?.Kill();
+
         UnsubscribeGoldChanged();
         UnsubscribeSatisfactionChanged();
         UnsubscribePhaseChanged();
@@ -100,8 +113,9 @@ public class TycoonHUD : BaseHUD
     private void InitializeBtnEvent()
     {
         Get<Button>(Buttons.NextBtn).onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
+        Get<Button>(Buttons.StartBusinessBtn).onClick.AddListener(CloseFoodDiary);
     }
-    
+
     /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
@@ -112,6 +126,17 @@ public class TycoonHUD : BaseHUD
     private void SetMainQuestValueText()
     {
         Get<TMP_Text>(Texts.MainQuestValueText).SetText($"{_tycoonScene.TargetGold:N0}");
+    }
+
+    /// <summary> KDH : 음식 메뉴 리스트를 참조한다. </summary>
+    private void ResolveFoodDiary()
+    {
+        _foodDiaryCG = gameObject.FindChild<CanvasGroup>("FoodDiaryCG", true);
+        if (_foodDiaryCG != null)
+        {
+            _diaryRectTransform = _foodDiaryCG.GetComponent<RectTransform>();
+            _diaryOriginPos = _diaryRectTransform.anchoredPosition;
+        }
     }
     
     #endregion ===== 초기화 =====
@@ -170,6 +195,78 @@ public class TycoonHUD : BaseHUD
     }
 
     #endregion ===== 업데이트 =====
+
+    #region ===== 활성화 =====
+
+    /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
+    public void OpenFoodDiary()
+    {
+        if (_foodDiaryCG == null || _diaryRectTransform == null)
+        {
+            return;
+        }
+
+        _diaryTween?.Kill();
+
+        _diaryRectTransform.anchoredPosition = _diaryOriginPos + Vector2.down * 100f;
+
+        _foodDiaryCG.alpha = 0f;
+        _foodDiaryCG.interactable = false;
+        _foodDiaryCG.blocksRaycasts = true;
+
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(_diaryRectTransform.DOAnchorPos(_diaryOriginPos, 0.45f).SetEase(Ease.OutCubic));
+        sequence.Join(_foodDiaryCG.DOFade(1f, 0.45f));
+        sequence.OnComplete(() =>
+        {
+            _foodDiaryCG.interactable = true;
+        });
+
+        _diaryTween = sequence;
+    }
+
+    /// <summary> KDH : 음식 다이어리를 닫고 영업 중으로 전환한다. </summary>
+    private void CloseFoodDiary()
+    {
+        if (_foodDiaryCG == null || _diaryRectTransform == null)
+        {
+            return;
+        }
+
+        _diaryTween?.Kill();
+
+        _foodDiaryCG.interactable = false;
+        _foodDiaryCG.blocksRaycasts = true;
+
+        Sequence sequence = DOTween.Sequence();
+
+        sequence.Append(_diaryRectTransform.DOAnchorPos(_diaryOriginPos + Vector2.down * 100f, 0.45f)
+                .SetEase(Ease.InCubic));
+        sequence.Join(_foodDiaryCG.DOFade(0f, 0.45f));
+        sequence.OnComplete(() =>
+        {
+            _foodDiaryCG.blocksRaycasts = false;
+            _tycoonScene.ChangeCurrentPhase();
+            DeactivateFoodDiary();
+        });
+
+        _diaryTween = sequence;
+    }
+    
+    /// <summary> KDH : 다이어리를 비활성화한다. </summary>
+    public void DeactivateFoodDiary()
+    {
+        if (_foodDiaryCG == null)
+        {
+            return;
+        }
+
+        _diaryTween?.Kill();
+        _foodDiaryCG.transform.parent.gameObject.SetActive(false);
+    }
+
+    #endregion ===== 활성화 =====
 
     #region ===== 이벤트 =====
 
