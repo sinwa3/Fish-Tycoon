@@ -66,15 +66,20 @@ public class TableParser<TData> where TData : class, new()
         for (int i = 0; i < headers.Length; i++)
         {
             string header = NormalizeValue(headers[i]);
-            string value = NormalizeValue(values[i]);
+            
+            if (string.IsNullOrEmpty(header))
+            {
+                continue;
+            }
 
             if (!_fieldMap.TryGetValue(header, out FieldInfo field))
             {
                 CPrint.Error($"[TableParser] : CSV 헤더 <{header}>에 대응하는 <{typeof(TData).Name}>의 필드를 찾을 수 없다.");
-
                 continue;
             }
 
+            string value = i < values.Length ? NormalizeValue(values[i]) : string.Empty;
+            
             try
             {
                 object convertedValue = ConvertValue(field.FieldType, value);
@@ -108,6 +113,12 @@ public class TableParser<TData> where TData : class, new()
     /// <summary> KDH : 문자열 값을 해당하는 타입으로 반환한다. </summary>
     private object ConvertValue(Type fieldType, string value)
     {
+        if (string.IsNullOrEmpty(value))
+        {
+            CPrint.Error($"[TableParse] 테이블에 비어있는 값이 존재합니다.");
+            return null;
+        }
+        
         if (fieldType == typeof(string))
         {
             return value;
