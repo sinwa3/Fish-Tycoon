@@ -16,19 +16,12 @@ public abstract class ResourceKey
         public const string SlotUI = UI + "SlotUI/";
         
         public const string ItemSprite = Sprite + "Item/";
-        public const string FishSprite = Sprite + "Fish/";
-        public const string FoodSprite = Sprite + "Food/";
+        public const string FishC1Sprite = Sprite + "Fish/Fish_C1_64";
+        public const string FoodSprite = Sprite + "Food/Pixel_Sushi_64";
     }
 
     public static class Name
     {
         public const string Event = "EventSystem";
-        
-        // 이미지
-        public const string FishC1 = "Fish_C1_64";
-        public const string FishC2 = "Fish_C2_64";
-        public const string FishC3 = "Fish_C3_64";
-        public const string FishC4 = "Fish_C4_64";
-        public const string Food = "Pixel_Sushi_64";
     }
 }
