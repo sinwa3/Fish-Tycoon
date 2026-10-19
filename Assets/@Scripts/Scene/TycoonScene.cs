@@ -101,13 +101,6 @@ public class TycoonScene : BaseScene
         
         // 손님 입장 인터버 세팅
         _customerSpawnInterval = Managers.Table.Reputation.GetCustomerSpawnInterval(Managers.Data.GetSatisfaction());
-        
-        // 데일리 메뉴 세팅
-        _dailyMenu = new DailyMenu();
-        foreach (var variables in _foodListScroll.SelectedFoodCounts)
-        {
-            _dailyMenu.AddMenu(variables.Key, variables.Value);
-        }
     }
 
     #endregion ===== 초기화 =====
@@ -121,6 +114,13 @@ public class TycoonScene : BaseScene
         {
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
                 _tycoonHUD.SetStoreInfoVisible(false);
+                
+                // 음식 리스트에서 세팅한 리스트를 전달한다.
+                _dailyMenu = new DailyMenu();
+                foreach (var variables in _foodListScroll.SelectedFoodCounts)
+                {
+                    _dailyMenu.AddMenu(variables.Key, variables.Value);
+                }
                 _customerSpawner?.StartBusiness(_maxCustomerCount, _customerSpawnInterval, _dailyMenu);
                 break;
             
