@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public class TycoonHUD : BaseHUD
@@ -40,7 +41,8 @@ public class TycoonHUD : BaseHUD
         Command09,
         Command10,
         Command11,
-        Command12
+        Command12,
+        ServingImage
     }
 
     #region ===== 참조 =====
@@ -64,16 +66,15 @@ public class TycoonHUD : BaseHUD
     #endregion ===== 애니메이션 =====
 
     #region ==== 조리 커맨드 ====
-    [Header("커맨드 기본 스프라이트 WASD")]
-    [SerializeField] private Sprite[] _normalSprites = new Sprite[4];
 
-    [Header("커맨드 성공 스프라이트 WASD")]
-    [SerializeField] private Sprite[] _pressedSprites = new Sprite[4];
-
-    [Header("커맨드 실패 스프라이트 WASD")]
-    [SerializeField] private Sprite[] _failedSprites = new Sprite[4];
+    private Sprite[] _normalSprites = new Sprite[4];
+    private Sprite[] _pressedSprites = new Sprite[4];
+    private Sprite[] _failedSprites = new Sprite[4];
 
     private Image[] _commandImages;
+
+    private const string TycoonSpritePath = "Sprite/Tycoon/";
+
     #endregion ==== 조리 커맨드 ====
 
     protected override void OnAwake()
@@ -93,7 +94,10 @@ public class TycoonHUD : BaseHUD
 
         ResolveFoodDiary();
 
+        InitializeCookingSprites();
         InitializeCommandImages();
+
+        Get<Image>(Images.ServingImage)?.gameObject.SetActive(false);
     }
 
     protected override void OnStart()
@@ -224,6 +228,28 @@ public class TycoonHUD : BaseHUD
             {
                 _commandImages[i].gameObject.SetActive(false);
             }
+        }
+    }
+
+    private void InitializeCookingSprites()
+    {
+        string[] commands = { "W", "A", "S", "D" };
+
+        for (int i = 0; i < commands.Length; i++)
+        {
+            string sheetName = $"Command_{commands[i]}-Sheet";
+            string path = TycoonSpritePath + sheetName;
+
+            _normalSprites[i] = Managers.Resource.LoadSprite(path, commands[i] + "_0");
+            _pressedSprites[i] = Managers.Resource.LoadSprite(path, commands[i] + "_1");
+            _failedSprites[i] = Managers.Resource.LoadSprite(path, commands[i] + "_2");
+        }
+
+        Image servingImage = Get<Image>(Images.ServingImage);
+
+        if (servingImage != null)
+        {
+            servingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "serving_0");
         }
     }
 
@@ -437,7 +463,7 @@ public class TycoonHUD : BaseHUD
         image.sprite = sprites[spriteIndex];
     }
 
-    /// <summary>SJY : 조리 완료 시 커맨드 UI 비활성화</summary>
+    /// <summary>SJY : 조리 완료 시 커맨드 UI 비활성화 및 서빙 이미지 출력</summary>
     private void HandleCookingCompleted(int foodId)
     {
         for (int i = 0; i < _commandImages.Length; i++)
@@ -447,7 +473,21 @@ public class TycoonHUD : BaseHUD
                 _commandImages[i].gameObject.SetActive(false);
             }
         }
+
+        Image servingImage = Get<Image>(Images.ServingImage); 
+
+        if (servingImage != null && servingImage.sprite != null)
+        {
+            servingImage.gameObject.SetActive(true);
+        }
     }
+
+    /// <summary>SJY : 서빙 연출 종료 시 이미지 비활성화</summary>
+    private void HandleServingFinished()
+    {
+        Get<Image>(Images.ServingImage)?.gameObject.SetActive(false);
+    }
+
     #endregion ==== 조리 커맨드 UI ====
 
     #region ===== 이벤트 =====
@@ -502,6 +542,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandFailed += UpdateCommandFailed;
         _cookingController.OnCommandReset += ResetCommandImages;
         _cookingController.OnCookingCompleted += HandleCookingCompleted;
+        _cookingController.OnServingFinished += HandleServingFinished;
     }
 
     /// <summary>SJY : 조리 커맨드 이벤트 구독 해제</summary>
@@ -516,6 +557,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandFailed -= UpdateCommandFailed;
         _cookingController.OnCommandReset -= ResetCommandImages;
         _cookingController.OnCookingCompleted -= HandleCookingCompleted;
+        _cookingController.OnServingFinished -= HandleServingFinished;
     }
 
     #endregion ===== 이벤트 =====
