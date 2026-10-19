@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,12 +23,21 @@ public class CustomerSpawner : MonoBehaviour
     private float _spawnInterval;
     private float _spawnTimer;
 
+    // 그날 메뉴. 손님마다 Spawn 때 넘긴다
+    private DailyMenu _dailyMenu;
+
     // 만석이면 true CustomerSeats.OnFullChanged로 바뀐다
     private bool _isTimerPaused;
 
     public bool IsOpen => _isOpen;
     public int SpawnedCount => _spawnedCount;
     public int DailyCustomerCount => _dailyCustomerCount;
+
+    // 요리 쪽이 읽는 섞은 그날 메뉴 [번호]가 현재, [번호 + 1]이 다음 음식
+    public IReadOnlyList<int> ShuffledCandidates => _dailyMenu?.ShuffledCandidates ?? Array.Empty<int>();
+
+    // 지금까지 주문한 손님 수. 요리는 주문한 만큼만 시작한다
+    public int OrderedCount => _dailyMenu == null ? 0 : _dailyMenu.OrderedCount;
 
     /// <summary> KYH : 하루 손님을 다 받고 마지막 손님이 나가면 발행 </summary>
     public event Action OnBusinessClosed;
@@ -104,9 +113,23 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 영업 시작 =====
 
-    /// <summary> KYH : 영업을 시작한다. 하루 손님 수와 입장 간격을 받는다 </summary>
-    public void StartBusiness(int dailyCustomerCount, float spawnInterval)
+    /// <summary> KYH : 영업을 시작한다. 하루 손님 수와 입장 간격, 그날 메뉴를 받는다 </summary>
+    public void StartBusiness(int dailyCustomerCount, float spawnInterval, DailyMenu dailyMenu)
     {
+        if (_isOpen)
+        {
+            CPrint.Warning("[CustomerSpawner] 이미 영업 중");
+
+            return;
+        }
+
+        if (dailyMenu == null)
+        {
+            CPrint.Warning("[CustomerSpawner] 그날 메뉴 없음");
+
+            return;
+        }
+
         if (dailyCustomerCount <= 0)
         {
             CPrint.Warning("[CustomerSpawner] 손님 수가 0 이하");
@@ -121,11 +144,14 @@ public class CustomerSpawner : MonoBehaviour
             return;
         }
 
+        _dailyMenu = dailyMenu;
         _dailyCustomerCount = dailyCustomerCount;
         _spawnInterval = spawnInterval;
 
         _spawnTimer = 0.0f;
         _spawnedCount = 0;
+
+        _dailyMenu.ShuffleCandidates(_dailyCustomerCount);
 
         _isTimerPaused = _customerSeats != null ? _customerSeats.IsFull : false;
         _isOpen = true;
@@ -182,7 +208,7 @@ public class CustomerSpawner : MonoBehaviour
         customer.OnDespawned += HandleCustomerDespawned;
         _activeCustomers.Add(customer);
 
-        customer.Spawn(_customerSeats, seatIndex);
+        customer.Spawn(_customerSeats, seatIndex, _dailyMenu);
         _spawnedCount++;
     }
 
@@ -211,6 +237,11 @@ public class CustomerSpawner : MonoBehaviour
     /// <summary> KYH : 하루 손님을 다 받았고 가게에 아무도 없으면 영업 종료를 알린다 </summary>
     private void CheckBusinessClosed()
     {
+        if (!_isOpen)
+        {
+            return;
+        }
+
         if (_activeCustomers.Count > 0)
         {
             return;
@@ -223,6 +254,24 @@ public class CustomerSpawner : MonoBehaviour
 
         _isOpen = false;
         OnBusinessClosed?.Invoke();
+    }
+
+    /// <summary> KYH : 영업을 중간에 끝낸다. 입장을 멈추고 손님을 모두 내보낸다</summary>
+    public void StopBusiness()
+    {
+        if (!_isOpen)
+        {
+            return;
+        }
+
+        _isOpen = false;
+        List<CustomerController> customers = new List<CustomerController>(_activeCustomers);
+
+        foreach (CustomerController customer in customers)
+        {
+            customer.LeaveSeat();
+            customer.Despawn();
+        }
     }
 
     #endregion ===== 영업 종료 =====

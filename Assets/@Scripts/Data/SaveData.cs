@@ -16,8 +16,8 @@ public class SaveData
     public int Satisfaction;
     public int CurrentDay = 1;
     
-    public List<InventoryItemData> Inventory = new();
-    
+    public List<InventoryFishData> InvenFish = new();
+
     /// <summary> KDH : 저장했을 당시의 게임모드 (Tycoon - 영업 후 시작, Stealth - 영업 전 시작) </summary>
     public GameMode SavedGameMode =  GameMode.Stealth;
 }

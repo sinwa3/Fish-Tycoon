@@ -68,19 +68,6 @@ public class ScenesManager : MonoBehaviour
         SceneManager.LoadScene(scene.ToString());
     }
 
-    /// <summary> KDH : 현재 씬이 지정한 BaseScene 타입인지 확인한다. </summary>
-    public bool IsCurrentScene<T>() where T : BaseScene
-    {
-        return _currentScene is T;
-    }
-
-    /// <summary> KDH : 현재 씬을 지정한 타입으로 반환한다. </summary>
-    public bool TryGetCurrentScene<T>(out T scene) where T : BaseScene
-    {
-        scene = _currentScene as T;
-        return scene != null;
-    }
-
     /// <summary> KDH : 현재 등록된 씬을 정리한다. </summary>
     public void ClearCurrentScene()
     {

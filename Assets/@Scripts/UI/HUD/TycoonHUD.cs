@@ -27,6 +27,11 @@ public class TycoonHUD : BaseHUD
         StartBusinessBtn,
     }
 
+    public enum Images
+    {
+        GoldFrameImage,
+    }
+    
     #region ===== 참조 =====
 
     private TycoonScene _tycoonScene;
@@ -48,6 +53,7 @@ public class TycoonHUD : BaseHUD
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
         Bind<Button>(typeof(Buttons));
+        Bind<Image>(typeof(Images));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
 
@@ -66,7 +72,6 @@ public class TycoonHUD : BaseHUD
 
         SubscribeGoldChanged();
         SubscribeSatisfactionChanged();
-        SubscribePhaseChanged();
     }
 
     protected override void OnUpdate()
@@ -104,7 +109,6 @@ public class TycoonHUD : BaseHUD
 
         UnsubscribeGoldChanged();
         UnsubscribeSatisfactionChanged();
-        UnsubscribePhaseChanged();
     }
 
     #region ===== 초기화 =====
@@ -138,7 +142,7 @@ public class TycoonHUD : BaseHUD
             _diaryOriginPos = _diaryRectTransform.anchoredPosition;
         }
     }
-    
+
     #endregion ===== 초기화 =====
 
     #region ===== 업데이트 =====
@@ -198,6 +202,19 @@ public class TycoonHUD : BaseHUD
 
     #region ===== 활성화 =====
 
+    /// <summary> KDH : 임시버튼 표시/비표시한다. </summary>
+    public void SetNextBtnVisible(bool visible)
+    {
+        Get<Button>(Buttons.NextBtn)?.gameObject.SetActive(visible);
+    }
+    
+    /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
+    public void SetStoreInfoVisible(bool isVisible)
+    {
+        Get<Slider>(Sliders.SatisfactionSlider)?.gameObject.SetActive(isVisible);
+        Get<Image>(Images.GoldFrameImage)?.gameObject.SetActive(isVisible);
+    }
+    
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
     public void OpenFoodDiary()
     {
@@ -218,10 +235,7 @@ public class TycoonHUD : BaseHUD
 
         sequence.Append(_diaryRectTransform.DOAnchorPos(_diaryOriginPos, 0.45f).SetEase(Ease.OutCubic));
         sequence.Join(_foodDiaryCG.DOFade(1f, 0.45f));
-        sequence.OnComplete(() =>
-        {
-            _foodDiaryCG.interactable = true;
-        });
+        sequence.OnComplete(() => { _foodDiaryCG.interactable = true; });
 
         _diaryTween = sequence;
     }
@@ -242,7 +256,7 @@ public class TycoonHUD : BaseHUD
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(_diaryRectTransform.DOAnchorPos(_diaryOriginPos + Vector2.down * 100f, 0.45f)
-                .SetEase(Ease.InCubic));
+            .SetEase(Ease.InCubic));
         sequence.Join(_foodDiaryCG.DOFade(0f, 0.45f));
         sequence.OnComplete(() =>
         {
@@ -253,7 +267,7 @@ public class TycoonHUD : BaseHUD
 
         _diaryTween = sequence;
     }
-    
+
     /// <summary> KDH : 다이어리를 비활성화한다. </summary>
     public void DeactivateFoodDiary()
     {
@@ -303,24 +317,6 @@ public class TycoonHUD : BaseHUD
         if (Managers.Data != null)
         {
             Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
-        }
-    }
-
-    /// <summary> KDH : 페이즈 변경되었을 때 영업 상태 텍스트 변경을 구독 </summary>
-    private void SubscribePhaseChanged()
-    {
-        if (_tycoonScene != null)
-        {
-            _tycoonScene.OnPhaseChanged += UpdatePhaseText;
-        }
-    }
-
-    /// <summary> KDH : 페이즈 변경되었을 때 영업 상태 텍스트 변경을 구독해제 </summary>
-    private void UnsubscribePhaseChanged()
-    {
-        if (_tycoonScene != null)
-        {
-            _tycoonScene.OnPhaseChanged -= UpdatePhaseText;
         }
     }
 

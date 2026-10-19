@@ -1,4 +1,4 @@
-﻿/// <summary> KYH : 주문한 요리를 기다리는 상태. 기다린 시간을 잰다 </summary>
+/// <summary> KYH : 주문한 요리를 기다리는 상태. 기다린 시간을 잰다 </summary>
 public class CustomerWaitState : BaseCustomerState
 {
     public CustomerWaitState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
@@ -20,5 +20,6 @@ public class CustomerWaitState : BaseCustomerState
     public override void Exit()
     {
         Customer.RecordWaitTime(StateMachine.StateElapsedTime);
+        Customer.HideOrderBubble();
     }
 }

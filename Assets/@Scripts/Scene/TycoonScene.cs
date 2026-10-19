@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class TycoonScene : BaseScene
 {
@@ -17,21 +18,30 @@ public class TycoonScene : BaseScene
     public readonly int TargetGold = 100000;
     public readonly int FinalDay = 7;
 
+    private int _maxCustomerCount;
+    private float _customerSpawnInterval;
+    
     #endregion ===== 상태 =====
 
     #region ===== 참조 =====
 
     private TycoonHUD _tycoonHUD;
 
-    #endregion ===== 참조 =====
+    [SerializeField]
+    private TycoonBgCtrl _tycoonBgCtrl;
+    
+    [Header("영업 전")]
+    [SerializeField] private FoodListScroll _foodListScroll;
 
-    /// <summary> KDH : 페이즈 변경 이벤트 </summary>
-    public event Action<Phase> OnPhaseChanged;
+    [Header("영업 중")]
+    [SerializeField] private CustomerSpawner _customerSpawner;
+    private DailyMenu _dailyMenu;
+    
+    #endregion ===== 참조 =====
 
     protected override void OnAwake()
     {
         _tycoonHUD = gameObject.GetComponentInChildren<TycoonHUD>(true);
-
         if (_tycoonHUD == null)
         {
             CPrint.Error("[TycoonScene] _tycoonHUD not found.");
@@ -41,18 +51,84 @@ public class TycoonScene : BaseScene
     protected override void OnStart()
     {
         InitializePhase();
+
+        if (_currentPhase == Phase.BeforeBusiness) // 영업 전이면
+        {
+            // 영업을 준비한다.
+            ReadyBusiness();
+        }
+
+        SubscribeBusinessClosed();
     }
 
     protected override void OnUpdate()
     {
     }
 
+    #region ===== 초기화 =====
+    
+    /// <summary> KDH : 저장되어 있는 게임모드를 기준으로 현재 페이즈를 초기화하고 해당 정보를 HUD에 업데이트한다. </summary>
+    private void InitializePhase()
+    {
+        GameMode gameMode = Managers.Data.GetSavedGameMode();
+
+        _currentPhase = gameMode switch
+        {
+            GameMode.Tycoon => Phase.AfterBusiness,
+            GameMode.Stealth => Phase.BeforeBusiness,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        UpdatePhaseUI();
+    }
+
+    /// <summary> KDH : 영업을 위한 데이터를 설정한다. </summary>
+    private void ReadyBusiness()
+    {
+        if (_foodListScroll == null)
+        {
+            CPrint.Error("[TycoonScene] _foodListScroll is null.");
+            return;
+        }
+
+        if (_customerSpawner == null)
+        {
+            CPrint.Error("[TycoonScene] _customerSpawner is null.");
+            return;
+        }
+        
+        // 손님 수 세팅        
+        _maxCustomerCount = Managers.Table.Reputation.GetCustomerCount(Managers.Data.GetSatisfaction());
+        _foodListScroll.SetMaxSelectableFoodCount(_maxCustomerCount);
+        
+        // 손님 입장 인터버 세팅
+        _customerSpawnInterval = Managers.Table.Reputation.GetCustomerSpawnInterval(Managers.Data.GetSatisfaction());
+    }
+
+    #endregion ===== 초기화 =====
+    
+    #region ===== 업데이트 =====
+    
     /// <summary> KDH : 페이즈를 다음 단계로 진행시킨다. </summary>
     public void ChangeCurrentPhase()
     {
         switch (_currentPhase)
         {
+            case Phase.BeforeBusiness: // 영업 전 => 영업 중
+                _tycoonHUD.SetStoreInfoVisible(false);
+                
+                // 음식 리스트에서 세팅한 리스트를 전달한다.
+                _dailyMenu = new DailyMenu();
+                foreach (var variables in _foodListScroll.SelectedFoodCounts)
+                {
+                    _dailyMenu.AddMenu(variables.Key, variables.Value);
+                }
+                _customerSpawner?.StartBusiness(_maxCustomerCount, _customerSpawnInterval, _dailyMenu);
+                break;
+            
             case Phase.DuringBusiness: // 영업 중 => 영업 후
+                _tycoonHUD.SetStoreInfoVisible(true);
+                _customerSpawner?.StopBusiness();
                 if (CheckFinalDay())
                 {
                     Managers.UI.OpenScreen<EndScreen>().ShowResult(CheckGameClear());
@@ -63,7 +139,7 @@ public class TycoonScene : BaseScene
                 Managers.Data.SaveData();
                 Managers.UI.OpenToastMessage("저장되었습니다.");
                 break;
-            case Phase.AfterBusiness: // 잠입 씬 전환
+            case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
                 Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene);
                 break;
         }
@@ -73,39 +149,40 @@ public class TycoonScene : BaseScene
             _currentPhase++;
         }
 
-        OnPhaseChanged?.Invoke(_currentPhase);
-    }
-
-    /// <summary> KDH : 저장되어 있는 게임모드를 기준으로 현재 페이즈를 초기화하고 해당 정보를 HUD에 업데이트한다. </summary>
-    private void InitializePhase()
-    {
-        GameMode gamemode = Managers.Data.GetSavedGameMode();
-
-        _currentPhase = gamemode switch
-        {
-            GameMode.Tycoon => Phase.AfterBusiness,
-            GameMode.Stealth => Phase.BeforeBusiness,
-            _ => throw new ArgumentOutOfRangeException()
-        };
-
         UpdatePhaseUI();
     }
-
+    
     /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>
     private void UpdatePhaseUI()
     {
         _tycoonHUD.UpdatePhaseText(_currentPhase);
 
-        if (_currentPhase == Phase.BeforeBusiness)
+        switch (_currentPhase)
         {
-            _tycoonHUD.OpenFoodDiary();
-        }
-        else
-        {
-            _tycoonHUD.DeactivateFoodDiary();
+            case Phase.BeforeBusiness:
+                _tycoonHUD.OpenFoodDiary();
+                _tycoonHUD.SetNextBtnVisible(false);
+                
+                _tycoonBgCtrl.ShowBeforeOpening();
+                break;
+            case Phase.DuringBusiness:
+                _tycoonBgCtrl.ShowOpened();
+                _tycoonHUD.SetNextBtnVisible(false);
+                
+                break;
+            case Phase.AfterBusiness:
+                _tycoonHUD.DeactivateFoodDiary();
+                _tycoonHUD.SetNextBtnVisible(true);
+                
+                _tycoonBgCtrl.ShowAfter();
+                break;
         }
     }
 
+    #endregion ===== 업데이트 =====
+    
+    #region ===== 체크 =====
+    
     /// <summary> KDH : 마지막 날인지 체크한다.  </summary>
     private bool CheckFinalDay()
     {
@@ -127,4 +204,22 @@ public class TycoonScene : BaseScene
 
         return false;
     }
+    
+    #endregion ===== 체크 =====
+
+    #region ===== 이벤트 =====
+
+    /// <summary> KDH : 영업이 종료됐을시 이벤트를 구독한다. </summary>
+    private void SubscribeBusinessClosed()
+    {
+        _customerSpawner.OnBusinessClosed += ChangeCurrentPhase;
+    }
+
+    /// <summary> KDH : 영업이 종료됐을시 이벤트를 구독해제한다. </summary>
+    private void UnsubscribeBusinessClosed()
+    {
+        _customerSpawner.OnBusinessClosed -= ChangeCurrentPhase;
+    }
+    
+    #endregion ===== 이벤트 =====
 }

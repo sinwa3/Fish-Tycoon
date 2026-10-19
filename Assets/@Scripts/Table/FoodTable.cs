@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary> KDH : 음식 데이터를 정의한다. </summary>
 public class FoodData : TableData
 {
@@ -24,4 +26,34 @@ public class FoodData : TableData
 public class FoodTable : TableLoader<FoodData>
 {
     protected override string TableName => "FoodTable";
+    
+    /// <summary> KDH : 생선ID에 해당하는 음식 스프라이트를 가져온다. </summary>
+    public Sprite GetSpriteByFishID(int fishID)
+    {
+        foreach (var variable in Map)
+        {
+            if (variable.Value.FishID == fishID)
+            {
+                return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite, variable.Value.ResourceName);
+            }
+        }
+
+        CPrint.Warning($"[FoodTable] {fishID}에 해당하는 Sprite가 존재하지 않는다.");
+        return null;
+    }
+    
+    /// <summary> KDH : 음식ID에 해당하는 음식 스프라이트를 가져온다. </summary>
+    public Sprite GetSpriteByFoodID(int foodID)
+    {
+        foreach (var variable in Map)
+        {
+            if (variable.Value.ID == foodID)
+            {
+                return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite, variable.Value.ResourceName);
+            }
+        }
+
+        CPrint.Warning($"[FoodTable] {foodID}에 해당하는 Sprite가 존재하지 않는다.");
+        return null;
+    }
 }
