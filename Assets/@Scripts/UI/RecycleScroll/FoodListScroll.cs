@@ -19,6 +19,7 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
 
     /// <summary> KDH : 요리별 선택 수량을 임시 저장한다. </summary>
     private readonly Dictionary<int, int> _selectedFoodCounts = new();
+    public IReadOnlyDictionary<int, int> SelectedFoodCounts => _selectedFoodCounts;
 
     /// <summary> KDH : 영업 시 선택할 수 있는 최대 요리 수량 </summary>
     private int _maxSelectableFoodCount;

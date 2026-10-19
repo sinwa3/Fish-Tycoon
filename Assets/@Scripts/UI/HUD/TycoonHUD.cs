@@ -27,6 +27,11 @@ public class TycoonHUD : BaseHUD
         StartBusinessBtn,
     }
 
+    public enum Images
+    {
+        GoldFrameImage,
+    }
+    
     #region ===== 참조 =====
 
     private TycoonScene _tycoonScene;
@@ -50,6 +55,7 @@ public class TycoonHUD : BaseHUD
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
         Bind<Button>(typeof(Buttons));
+        Bind<Image>(typeof(Images));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
 
@@ -253,6 +259,13 @@ public class TycoonHUD : BaseHUD
         _diaryTween = sequence;
     }
 
+    /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
+    public void SetStoreInfoVisible(bool isVisible)
+    {
+        Get<Slider>(Sliders.SatisfactionSlider)?.gameObject.SetActive(isVisible);
+        Get<Image>(Images.GoldFrameImage)?.gameObject.SetActive(isVisible);
+    }
+    
     /// <summary> KDH : 다이어리를 비활성화한다. </summary>
     public void DeactivateFoodDiary()
     {

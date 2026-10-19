@@ -16,7 +16,7 @@ public class ReputationData : TableData
     public int RequiredSatisfaction;
 
     [CsvField("손님 입장 간격")]
-    public int CustomerSpawnInterval;
+    public float CustomerSpawnInterval;
 
     [CsvField("방문 손님 수")]
     public int CustomerCount;
@@ -82,6 +82,14 @@ public class ReputationTable : TableLoader<ReputationData>
         ReputationData data = GetReputationBySatisfaction(satisfaction);
         
         return data?.CustomerCount ?? 0;
+    }
+    
+    /// <summary> KDH : 현재 누적 만족도에 해당하는 손님 입장 인터버를 반환한다. </summary>
+    public float GetCustomerSpawnInterval(int satisfaction)
+    {
+        ReputationData data = GetReputationBySatisfaction(satisfaction);
+        
+        return data?.CustomerSpawnInterval ?? 0;
     }
     
     /// <summary> KDH : 현재 평판이 최대 등급인지 반환한다. </summary>
