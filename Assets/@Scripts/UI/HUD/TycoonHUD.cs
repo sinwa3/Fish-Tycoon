@@ -42,7 +42,10 @@ public class TycoonHUD : BaseHUD
         Command10,
         Command11,
         Command12,
-        ServingImage
+        ServingImage,
+        CookingImage,
+        CurrentFoodImage,
+        NextFoodImage
     }
 
     #region ===== 참조 =====
@@ -98,6 +101,7 @@ public class TycoonHUD : BaseHUD
         InitializeCommandImages();
 
         Get<Image>(Images.ServingImage)?.gameObject.SetActive(false);
+        Get<Image>(Images.CookingImage)?.gameObject.SetActive(false);
     }
 
     protected override void OnStart()
@@ -429,12 +433,16 @@ public class TycoonHUD : BaseHUD
     private void UpdateCommandPressed(int commandIndex)
     {
         UpdateCommandSprite(commandIndex, _pressedSprites);
+
+        UpdateCookingImage(commandIndex);
     }
 
     /// <summary>SJY : 오답 커맨드 이미지 변경</summary>
     private void UpdateCommandFailed(int commandIndex)
     {
         UpdateCommandSprite(commandIndex, _failedSprites);
+
+        ShowCookingFailed();
     }
 
     /// <summary>SJY : 지정된 커맨드의 스프라이트 변경</summary>
@@ -474,6 +482,8 @@ public class TycoonHUD : BaseHUD
             }
         }
 
+        Get<Image>(Images.CookingImage)?.gameObject.SetActive(false);
+
         Image servingImage = Get<Image>(Images.ServingImage); 
 
         if (servingImage != null && servingImage.sprite != null)
@@ -486,6 +496,92 @@ public class TycoonHUD : BaseHUD
     private void HandleServingFinished()
     {
         Get<Image>(Images.ServingImage)?.gameObject.SetActive(false);
+    }
+
+    /// <summary>SJY : 커맨드 개수와 진행도에 따라 조리 이미지 변경</summary>
+    private void UpdateCookingImage(int commandIndex)
+    {
+        if (_cookingController == null)
+        {
+            return;
+        }
+
+        int commandCount = _cookingController.TotalCommandCount;
+
+        if (commandCount < 4 || commandIndex < 0 || commandIndex >= commandCount)
+        {
+            return;
+        }
+
+        string[] stageNames = { "cutting", "rice", "wasabi", "finish" };
+
+        int baseCount = commandCount / stageNames.Length;
+        int remainder = commandCount % stageNames.Length;
+
+        int startIndex = 0;
+
+        for (int i = 0; i <stageNames.Length; i++)
+        {
+            int stageCount = baseCount + (i < remainder ? 1 : 0);
+
+            if (commandIndex < startIndex + stageCount)
+            {
+                int stageIndex = commandIndex - startIndex;
+
+                // SJY : 커맨드 수가 6일때 wasabi, finish에서 1번만 사용
+                int spriteIndex = commandCount == 6 && i >= 2 ? 1 : stageIndex % 2;
+
+                string spriteName = $"{stageNames[i]}_{spriteIndex}";
+
+                Image cookingImage = Get<Image>(Images.CookingImage);
+
+                if (cookingImage == null)
+                {
+                    return;
+                }
+
+                cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", spriteName);
+                cookingImage.gameObject.SetActive(cookingImage.sprite != null);
+
+                return;
+            }
+
+            startIndex += stageCount;
+        }
+    }
+
+    /// <summary>SJY : 커맨드 입력 실패 시 조리 실패 이미지 표시</summary>
+    private void ShowCookingFailed()
+    {
+        Image cookingImage = Get<Image>(Images.CookingImage);
+
+        if (cookingImage == null)
+        {
+            return;
+        }
+
+        cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "wrongaction");
+        cookingImage.gameObject.SetActive(cookingImage.sprite != null);
+    }
+
+    private void ResetCookingImage()
+    {
+        Image cookingImage = Get<Image>(Images.CookingImage);
+
+        if (cookingImage == null)
+        {
+            return;
+        }
+
+        if (_cookingController == null || _cookingController.TotalCommandCount == 0)
+        {
+            cookingImage.gameObject.SetActive(false);
+
+            return;
+        }
+
+        cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "cutting_0");
+        cookingImage.gameObject.SetActive(cookingImage.sprite != null);
     }
 
     #endregion ==== 조리 커맨드 UI ====
@@ -541,6 +637,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandPressed += UpdateCommandPressed;
         _cookingController.OnCommandFailed += UpdateCommandFailed;
         _cookingController.OnCommandReset += ResetCommandImages;
+        _cookingController.OnCommandReset += ResetCookingImage;
         _cookingController.OnCookingCompleted += HandleCookingCompleted;
         _cookingController.OnServingFinished += HandleServingFinished;
     }
@@ -556,6 +653,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandPressed -= UpdateCommandPressed;
         _cookingController.OnCommandFailed -= UpdateCommandFailed;
         _cookingController.OnCommandReset -= ResetCommandImages;
+        _cookingController.OnCommandReset -= ResetCookingImage;
         _cookingController.OnCookingCompleted -= HandleCookingCompleted;
         _cookingController.OnServingFinished -= HandleServingFinished;
     }

@@ -20,6 +20,9 @@ public class CookingController : MonoBehaviour
     public int CurrentCommandIndex => _currentCommandIndex;
     public int TotalCommandCount => _commands?.Length ?? 0;
 
+    public int? CurrentFoodID => _cookingOrder?.CurrentFoodID;
+    public int? NextFoodID => _cookingOrder.NextFoodID;
+
     #region ==== 이벤트 ====
 
     public event Action<int> OnCommandPressed;
@@ -27,6 +30,8 @@ public class CookingController : MonoBehaviour
     public event Action OnCommandReset;
     public event Action<int> OnCookingCompleted;
     public event Action OnServingFinished;
+
+    public event Action OnFoodChanged;
 
     #endregion ==== 이벤트 ====
 

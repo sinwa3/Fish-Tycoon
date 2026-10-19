@@ -28,6 +28,9 @@ public class CookingOrder
 
             return;
         }
+
+        _foodIds = foodIds;
+        _currentIndex = 0;
     }
 
     ///<summary>SJY : 현재 음식의 서빙이 완료되면 다음 음식으로 이동</summary>
