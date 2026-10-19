@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     #region ===== 상태 =====
 
     private CharacterController _characterController;
+    private PlayerStamina _playerStamina;
 
     private float _standHeight;
     private Vector3 _standCenter;
@@ -48,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary> YSW : 웅크리기 상태 여부 </summary>
     public bool IsCrouching { get; private set; }
 
-    /// <summary> YSW : 달리기 상태 여부 </summary>
+    /// <summary> YSW : 실제로 달리고 있는 상태 여부 (이동 중 + Shift + 달리기 가능) </summary>
     public bool IsRunning { get; private set; }
 
     /// <summary> YSW : 서 있을 때 대비 현재 높이 비율 (서기 1, 웅크리기 _crouchHeightRatio) </summary>
@@ -77,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
     private void InitializeComponents()
     {
         _characterController = GetComponent<CharacterController>();
+        _playerStamina = GetComponent<PlayerStamina>();
     }
 
     /// <summary> YSW : 서 있을 때의 충돌 높이와 중심을 저장한다. </summary>
@@ -106,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
 
         _moveDirection = GetMoveDirection(input.KeyAxisX, input.KeyAxisY);
 
-        IsRunning = !IsCrouching && input.Key_LeftShift;
+        IsRunning = !IsCrouching && input.Key_LeftShift && _moveDirection.sqrMagnitude > 0f && CanRun();
         _moveSpeed = GetMoveSpeed();
     }
 
@@ -116,6 +118,12 @@ public class PlayerMovement : MonoBehaviour
         Vector3 direction = transform.forward * axisY + transform.right * axisX;
 
         return Vector3.ClampMagnitude(direction, 1f);
+    }
+
+    /// <summary> YSW : 스테미너가 있으면 스테미너 상태로, 없으면 항상 달리기 가능으로 판단한다. </summary>
+    private bool CanRun()
+    {
+        return _playerStamina == null || _playerStamina.CanRun;
     }
 
     /// <summary> YSW : 현재 이동 상태에 맞는 속도를 반환한다. </summary>
