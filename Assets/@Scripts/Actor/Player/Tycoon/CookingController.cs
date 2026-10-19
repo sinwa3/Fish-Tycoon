@@ -146,8 +146,21 @@ public class CookingController : MonoBehaviour
         CPrint.Log($"[CookingController] 조리 성공 음식 ID : {foodId}");
 
         OnCookingCompleted?.Invoke(foodId);
+    }
+
+    /// <summary>SJY : 서빙 후 다음 요리를 위한 초기화 메서드</summary>
+    public void FinishServing()
+    {
+        if (_state != CookingState.Serving)
+        {
+            return;
+        }
 
         _cookingOrder.MoveNext();
+
+        _commands = null;
+        _currentCommandIndex = 0;
+        _state = CookingState.Idle;
     }
 
     /// <summary>SJY : 영업 종료 시 조리 데이터 초기화</summary>
@@ -161,6 +174,5 @@ public class CookingController : MonoBehaviour
         _currentCommandIndex = 0;
         _state = CookingState.Idle;
     }
-
 
 }
