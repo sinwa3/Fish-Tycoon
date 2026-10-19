@@ -1,4 +1,4 @@
-﻿/// <summary> KYH : 손님이 메뉴를 주문하는 상태 </summary>
+/// <summary> KYH : 손님이 메뉴를 주문하는 상태 </summary>
 public class CustomerOrderState : BaseCustomerState
 {
     public CustomerOrderState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
@@ -7,7 +7,7 @@ public class CustomerOrderState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO : 주문 메뉴 정하기, 말풍선 표시
+        Customer.Order();
     }
 
     public override void Update(float deltaTime)
