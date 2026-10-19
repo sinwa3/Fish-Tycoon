@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> KYH : 주문한 메뉴를 보여주는 손님 머리 위 말풍선 </summary>
@@ -31,7 +30,14 @@ public class CustomerOrderBubble : MonoBehaviour
             return;
         }
 
-        Sprite icon = GetMenuIcon(menuId);
+        if (!Managers.Table.IsLoaded)
+        {
+            CPrint.Warning("[CustomerOrderBubble] 테이블이 아직 로드되지 않음");
+
+            return;
+        }
+
+        Sprite icon = Managers.Table.Food.GetSpriteByFoodID(menuId);
 
         if (icon == null)
         {
@@ -53,23 +59,5 @@ public class CustomerOrderBubble : MonoBehaviour
         }
 
         _iconRenderer.enabled = false;
-    }
-
-    /// <summary> KYH : 음식 테이블의 리소스명으로 초밥 시트에서 메뉴 아이콘을 찾는다. 없으면 null </summary>
-    private Sprite GetMenuIcon(int menuId)
-    {
-        if (!Managers.Table.IsLoaded)
-        {
-            return null;
-        }
-
-        IReadOnlyDictionary<int, FoodData> foodMap = Managers.Table.Food.Map;
-
-        if (!foodMap.TryGetValue(menuId, out FoodData foodData))
-        {
-            return null;
-        }
-
-        return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite, foodData.ResourceName);
     }
 }
