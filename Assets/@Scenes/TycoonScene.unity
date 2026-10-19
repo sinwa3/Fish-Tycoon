@@ -2322,7 +2322,7 @@ PrefabInstance:
     - target: {fileID: 869056473633708893, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.6
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 869056473633708893, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
@@ -2382,7 +2382,7 @@ PrefabInstance:
     - target: {fileID: 1318777041499746949, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.2
+      value: -0.18
       objectReference: {fileID: 0}
     - target: {fileID: 1318777041499746949, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
@@ -2392,7 +2392,7 @@ PrefabInstance:
     - target: {fileID: 4407293657598569961, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.2
+      value: 0.18
       objectReference: {fileID: 0}
     - target: {fileID: 4407293657598569961, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
@@ -2407,7 +2407,7 @@ PrefabInstance:
     - target: {fileID: 9082574836893008441, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.6
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9082574836893008441, guid: d9ab71581beb12f46bbcf98ac2e7ad1f,
         type: 3}
@@ -2618,10 +2618,10 @@ RectTransform:
   - {fileID: 1502420063}
   m_Father: {fileID: 2588983892222143817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: -98}
-  m_SizeDelta: {x: 335.5913, y: 137.6763}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -461.00003}
+  m_SizeDelta: {x: 335.5913, y: 137.67627}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1399222157
 MonoBehaviour:
@@ -3559,10 +3559,10 @@ RectTransform:
   - {fileID: 67124044}
   m_Father: {fileID: 2588983892222143817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 25, y: 56}
-  m_SizeDelta: {x: 335.5913, y: 137.6763}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 25, y: -307}
+  m_SizeDelta: {x: 335.5913, y: 137.67627}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1997521744
 MonoBehaviour:
