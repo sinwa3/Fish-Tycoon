@@ -237,6 +237,11 @@ public class CustomerSpawner : MonoBehaviour
     /// <summary> KYH : 하루 손님을 다 받았고 가게에 아무도 없으면 영업 종료를 알린다 </summary>
     private void CheckBusinessClosed()
     {
+        if (!_isOpen)
+        {
+            return;
+        }
+
         if (_activeCustomers.Count > 0)
         {
             return;
@@ -249,6 +254,24 @@ public class CustomerSpawner : MonoBehaviour
 
         _isOpen = false;
         OnBusinessClosed?.Invoke();
+    }
+
+    /// <summary> KYH : 영업을 중간에 끝낸다. 입장을 멈추고 손님을 모두 내보낸다</summary>
+    public void StopBusiness()
+    {
+        if (!_isOpen)
+        {
+            return;
+        }
+
+        _isOpen = false;
+        List<CustomerController> customers = new List<CustomerController>(_activeCustomers);
+
+        foreach (CustomerController customer in customers)
+        {
+            customer.LeaveSeat();
+            customer.Despawn();
+        }
     }
 
     #endregion ===== 영업 종료 =====
