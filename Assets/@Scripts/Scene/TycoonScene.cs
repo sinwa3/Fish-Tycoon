@@ -57,6 +57,8 @@ public class TycoonScene : BaseScene
             // 영업을 준비한다.
             ReadyBusiness();
         }
+
+        SubscribeBusinessClosed();
     }
 
     protected override void OnUpdate()
@@ -126,6 +128,7 @@ public class TycoonScene : BaseScene
             
             case Phase.DuringBusiness: // 영업 중 => 영업 후
                 _tycoonHUD.SetStoreInfoVisible(true);
+                _customerSpawner?.StopBusiness();
                 if (CheckFinalDay())
                 {
                     Managers.UI.OpenScreen<EndScreen>().ShowResult(CheckGameClear());
@@ -158,13 +161,19 @@ public class TycoonScene : BaseScene
         {
             case Phase.BeforeBusiness:
                 _tycoonHUD.OpenFoodDiary();
+                _tycoonHUD.SetNextBtnVisible(false);
+                
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
+                _tycoonHUD.SetNextBtnVisible(false);
+                
                 break;
             case Phase.AfterBusiness:
                 _tycoonHUD.DeactivateFoodDiary();
+                _tycoonHUD.SetNextBtnVisible(true);
+                
                 _tycoonBgCtrl.ShowAfter();
                 break;
         }
@@ -197,4 +206,20 @@ public class TycoonScene : BaseScene
     }
     
     #endregion ===== 체크 =====
+
+    #region ===== 이벤트 =====
+
+    /// <summary> KDH : 영업이 종료됐을시 이벤트를 구독한다. </summary>
+    private void SubscribeBusinessClosed()
+    {
+        _customerSpawner.OnBusinessClosed += ChangeCurrentPhase;
+    }
+
+    /// <summary> KDH : 영업이 종료됐을시 이벤트를 구독해제한다. </summary>
+    private void UnsubscribeBusinessClosed()
+    {
+        _customerSpawner.OnBusinessClosed -= ChangeCurrentPhase;
+    }
+    
+    #endregion ===== 이벤트 =====
 }

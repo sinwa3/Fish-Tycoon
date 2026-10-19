@@ -38,8 +38,6 @@ public class TycoonHUD : BaseHUD
 
     private CanvasGroup _foodDiaryCG;
 
-    private FoodListScroll _foodListScroll;
-
     #endregion ===== 참조 =====
 
     #region ===== 애니메이션 =====
@@ -143,8 +141,6 @@ public class TycoonHUD : BaseHUD
             _diaryRectTransform = _foodDiaryCG.GetComponent<RectTransform>();
             _diaryOriginPos = _diaryRectTransform.anchoredPosition;
         }
-
-        _foodListScroll = gameObject.FindChild<FoodListScroll>();
     }
 
     #endregion ===== 초기화 =====
@@ -206,6 +202,19 @@ public class TycoonHUD : BaseHUD
 
     #region ===== 활성화 =====
 
+    /// <summary> KDH : 임시버튼 표시/비표시한다. </summary>
+    public void SetNextBtnVisible(bool visible)
+    {
+        Get<Button>(Buttons.NextBtn)?.gameObject.SetActive(visible);
+    }
+    
+    /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
+    public void SetStoreInfoVisible(bool isVisible)
+    {
+        Get<Slider>(Sliders.SatisfactionSlider)?.gameObject.SetActive(isVisible);
+        Get<Image>(Images.GoldFrameImage)?.gameObject.SetActive(isVisible);
+    }
+    
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
     public void OpenFoodDiary()
     {
@@ -259,13 +268,6 @@ public class TycoonHUD : BaseHUD
         _diaryTween = sequence;
     }
 
-    /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
-    public void SetStoreInfoVisible(bool isVisible)
-    {
-        Get<Slider>(Sliders.SatisfactionSlider)?.gameObject.SetActive(isVisible);
-        Get<Image>(Images.GoldFrameImage)?.gameObject.SetActive(isVisible);
-    }
-    
     /// <summary> KDH : 다이어리를 비활성화한다. </summary>
     public void DeactivateFoodDiary()
     {

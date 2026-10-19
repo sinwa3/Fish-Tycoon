@@ -1362,7 +1362,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "1\uBC88(\uB9CC\uC871\uB3C4+), 2\uBC88(\uB9CC\uC871\uB3C4-), 3\uBC88(\uACE8\uB4DC+),
-    4\uBC88(\uACE8\uB4DC-)"
+    4\uBC88(\uACE8\uB4DC-)\\n \uC2A4\uD398\uC774\uC2A4(\uC190\uB2D8Exit\uC804\uD658)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33127c072fb294aabb1377fdc2e30f2c, type: 2}
   m_sharedMaterial: {fileID: 2466781090815511830, guid: 33127c072fb294aabb1377fdc2e30f2c,
@@ -1402,7 +1402,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 60
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
