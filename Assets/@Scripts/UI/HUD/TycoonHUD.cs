@@ -27,6 +27,22 @@ public class TycoonHUD : BaseHUD
         StartBusinessBtn,
     }
 
+    public enum Images
+    {
+        Command01,
+        Command02,
+        Command03,
+        Command04,
+        Command05,
+        Command06,
+        Command07,
+        Command08,
+        Command09,
+        Command10,
+        Command11,
+        Command12
+    }
+
     #region ===== 참조 =====
 
     private TycoonScene _tycoonScene;
@@ -47,17 +63,37 @@ public class TycoonHUD : BaseHUD
 
     #endregion ===== 애니메이션 =====
 
+    #region ==== 조리 커맨드 ====
+    [Header("커맨드 기본 스프라이트 WASD")]
+    [SerializeField] private Sprite[] _normalSprites = new Sprite[4];
+
+    [Header("커맨드 성공 스프라이트 WASD")]
+    [SerializeField] private Sprite[] _pressedSprites = new Sprite[4];
+
+    [Header("커맨드 실패 스프라이트 WASD")]
+    [SerializeField] private Sprite[] _failedSprites = new Sprite[4];
+
+    private Image[] _commandImages;
+    #endregion ==== 조리 커맨드 ====
+
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
         Bind<Button>(typeof(Buttons));
+        Bind<Image>(typeof(Images));    
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
 
-        _cookingController = gameObject.FindChild<CookingController>();
+        // SJY : TycoonScene의 자식에서 CookingController 검색
+        if (_tycoonScene != null)
+        {
+            _cookingController = _tycoonScene.GetComponentInChildren<CookingController>(true);
+        }
 
         ResolveFoodDiary();
+
+        InitializeCommandImages();
     }
 
     protected override void OnStart()
@@ -72,6 +108,8 @@ public class TycoonHUD : BaseHUD
 
         SubscribeGoldChanged();
         SubscribeSatisfactionChanged();
+
+        SubscribeCookingEvents();
     }
 
     protected override void OnUpdate()
@@ -102,27 +140,30 @@ public class TycoonHUD : BaseHUD
             Managers.Data.TrySpendGold(1000);
         }
 
-        if (_cookingController != null && _cookingController.State == CookingState.Playing && Managers.Input.CanReceivePlayer)
+        // SJY : 조리 중 WASD 커맨드 입력
+        if (_cookingController == null || _cookingController.State != CookingState.Playing || !Managers.Input.CanReceivePlayer)
         {
-            if (Managers.Input.KeyDown_W)
-            {
-                _cookingController.ProcessCommand('W');
-            }
+            return;
+        }
 
-            else if (Managers.Input.KeyDown_A)
-            {
-                _cookingController.ProcessCommand('A');
-            }
+        if (Managers.Input.KeyDown_W)
+        {
+            _cookingController.ProcessCommand('W');
+        }
 
-            else if (Managers.Input.KeyDown_S)
-            {
-                _cookingController.ProcessCommand('S');
-            }
+        else if (Managers.Input.KeyDown_A)
+        {
+            _cookingController.ProcessCommand('A');
+        }
 
-            else if (Managers.Input.KeyDown_D)
-            {
-                _cookingController.ProcessCommand('D');
-            }
+        else if (Managers.Input.KeyDown_S)
+        {
+            _cookingController.ProcessCommand('S');
+        }
+
+        else if (Managers.Input.KeyDown_D)
+        {
+            _cookingController.ProcessCommand('D');
         }
     }
 
@@ -132,6 +173,8 @@ public class TycoonHUD : BaseHUD
 
         UnsubscribeGoldChanged();
         UnsubscribeSatisfactionChanged();
+
+        UnsubscribeCookingEvents();
     }
 
     #region ===== 초기화 =====
@@ -166,6 +209,22 @@ public class TycoonHUD : BaseHUD
         }
 
         _foodListScroll = gameObject.FindChild<FoodListScroll>();
+    }
+
+    /// <summary>SJY : 커맨드 UI 이미지 배열 초기화</summary>
+    private void InitializeCommandImages()
+    {
+        _commandImages = new Image[12];
+
+        for (int i = 0; i < _commandImages.Length; i++)
+        {
+            _commandImages[i] = Get<Image>((Images)i);
+
+            if (_commandImages[i] != null)
+            {
+                _commandImages[i].gameObject.SetActive(false);
+            }
+        }
     }
 
     #endregion ===== 초기화 =====
@@ -294,6 +353,103 @@ public class TycoonHUD : BaseHUD
 
     #endregion ===== 활성화 =====
 
+    #region ==== 조리 커맨드 UI ====
+    /// <summary>SJY : 커맨드 문자에 해당하는 스프라이트 인덱스 반환</summary>
+    private int GetCommandSpriteIndex(char command)
+    {
+        return "WASD".IndexOf(command);
+    }
+
+    /// <summary>SJY : 현재 음식의 커맨드 이미지 표시 및 초기화</summary>
+    private void ResetCommandImages()
+    {
+        if (_cookingController == null || _commandImages == null)
+        {
+            return;
+        }
+
+        int commandCount = _cookingController.TotalCommandCount;
+
+        for (int i = 0; i < _commandImages.Length; i++)
+        {
+            Image image = _commandImages[i];
+
+            if (image == null)
+            {
+                continue;
+            }
+
+            bool isActive = i < commandCount;
+            image.gameObject.SetActive(isActive);
+
+            if (!isActive)
+            {
+                continue;
+            }
+
+            char command = _cookingController.GetCommand(i);
+            int spriteIndex = GetCommandSpriteIndex(command);
+
+            if (spriteIndex < 0 || spriteIndex >= _normalSprites.Length)
+            {
+                continue;
+            }
+
+            image.sprite = _normalSprites[spriteIndex];
+        }
+    }
+
+    /// <summary>SJY : 정답 커맨드 이미지 변경</summary>
+    private void UpdateCommandPressed(int commandIndex)
+    {
+        UpdateCommandSprite(commandIndex, _pressedSprites);
+    }
+
+    /// <summary>SJY : 오답 커맨드 이미지 변경</summary>
+    private void UpdateCommandFailed(int commandIndex)
+    {
+        UpdateCommandSprite(commandIndex, _failedSprites);
+    }
+
+    /// <summary>SJY : 지정된 커맨드의 스프라이트 변경</summary>
+    private void UpdateCommandSprite(int commandIndex, Sprite[] sprites)
+    {
+        if (_cookingController == null || _commandImages == null || commandIndex < 0 || commandIndex >= _commandImages.Length)
+        {
+            return;
+        }
+
+        Image image = _commandImages[commandIndex];
+
+        if (image == null)
+        {
+            return;
+        }
+
+        char command = _cookingController.GetCommand(commandIndex);
+        int spriteIndex = GetCommandSpriteIndex(command);
+
+        if (spriteIndex < 0 || spriteIndex >= sprites.Length)
+        {
+            return;
+        }
+
+        image.sprite = sprites[spriteIndex];
+    }
+
+    /// <summary>SJY : 조리 완료 시 커맨드 UI 비활성화</summary>
+    private void HandleCookingCompleted(int foodId)
+    {
+        for (int i = 0; i < _commandImages.Length; i++)
+        {
+            if (_commandImages[i] != null)
+            {
+                _commandImages[i].gameObject.SetActive(false);
+            }
+        }
+    }
+    #endregion ==== 조리 커맨드 UI ====
+
     #region ===== 이벤트 =====
 
     /// <summary> KDH : 골드 변화시 UI 업데이트를 구독 </summary>
@@ -330,6 +486,36 @@ public class TycoonHUD : BaseHUD
         {
             Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
         }
+    }
+
+    /// <summary>SJY : 조리 커맨드 이벤트 구독</summary>
+    private void SubscribeCookingEvents()
+    {
+        if (_cookingController == null)
+        {
+            CPrint.Error("[TycoonHUD] CookingController 참조가 없습니다.");
+
+            return;
+        }
+
+        _cookingController.OnCommandPressed += UpdateCommandPressed;
+        _cookingController.OnCommandFailed += UpdateCommandFailed;
+        _cookingController.OnCommandReset += ResetCommandImages;
+        _cookingController.OnCookingCompleted += HandleCookingCompleted;
+    }
+
+    /// <summary>SJY : 조리 커맨드 이벤트 구독 해제</summary>
+    private void UnsubscribeCookingEvents()
+    {
+        if (_cookingController == null)
+        {
+            return;
+        }
+
+        _cookingController.OnCommandPressed -= UpdateCommandPressed;
+        _cookingController.OnCommandFailed -= UpdateCommandFailed;
+        _cookingController.OnCommandReset -= ResetCommandImages;
+        _cookingController.OnCookingCompleted -= HandleCookingCompleted;
     }
 
     #endregion ===== 이벤트 =====

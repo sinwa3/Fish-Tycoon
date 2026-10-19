@@ -78,6 +78,8 @@ public class CookingController : MonoBehaviour
         {
             if (commandStrings[i].Length != 1 || "WASD".IndexOf(commandStrings[i][0]) < 0)
             {
+                CPrint.Error($"[CookingController] 음식 ID {foodId}의 {i}번 커맨드가 잘못되었습니다.");
+
                 return;
             }
 
@@ -92,6 +94,17 @@ public class CookingController : MonoBehaviour
 
         CPrint.Log($"[CookingController] 현재 음식 ID : {foodId}");
         CPrint.Log($"[CookingController] 현재 음식 커맨드 : {command}");
+    }
+
+    /// <summary>SJY : 커맨드 이미지 표시용 정답 데이터를 읽어오는 메서드</summary>
+    public char GetCommand(int index)
+    {
+        if (_commands == null || index < 0 || index >= _commands.Length)
+        {
+            return '\0';
+        }
+
+        return _commands[index];
     }
 
     /// <summary>SJY : 플레이어가 입력한 커맨드의 정답 여부 판단</summary>
@@ -130,10 +143,10 @@ public class CookingController : MonoBehaviour
         yield return new WaitForSeconds(_failDelay);
 
         _currentCommandIndex = 0;
+        _state = CookingState.Playing;
 
         OnCommandReset?.Invoke();
 
-        _state = CookingState.Playing;
     }
 
     /// <summary>SJY : 모든 커맨드 입력에 성공했을 때 조리 완료 처리</summary>
