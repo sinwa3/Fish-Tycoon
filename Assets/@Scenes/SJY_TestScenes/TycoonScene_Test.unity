@@ -2436,6 +2436,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb05e54bd2adc4299a456d4f8951e5bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tycoonBgCtrl: {fileID: 0}
+  _foodListScroll: {fileID: 0}
 --- !u!1 &660609361
 GameObject:
   m_ObjectHideFlags: 0

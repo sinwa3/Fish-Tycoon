@@ -46,7 +46,7 @@ public class StealthScene : BaseScene
                 
                 // (임시)
                 int randID = UnityEngine.Random.Range(0, Managers.Table.Fish.Map.Count);
-                int randCnt = UnityEngine.Random.Range(0, 10);
+                int randCnt = UnityEngine.Random.Range(1, 10);
                 Managers.Data.TryAddFish(randID, randCnt);
                 Managers.UI.OpenToastMessage($"(임시) 생선({randID})가 {randCnt}개 지급되었습니다.");
                 

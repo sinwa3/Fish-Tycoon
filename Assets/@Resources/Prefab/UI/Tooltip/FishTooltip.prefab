@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _direction: 0
-  _offset: {x: 20, y: 0}
+  _offset: {x: -20, y: 0}
   _duration: 0.2
   _startScaleX: 0.85
   _showEase: 27
