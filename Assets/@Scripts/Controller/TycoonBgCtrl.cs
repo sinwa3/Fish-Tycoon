@@ -45,15 +45,15 @@ public class TycoonBgCtrl : MonoBehaviour
     {
         _fadeTween?.Kill();
     }
-    
-    /// <summary> KDH : 배경 오브젝트를 생성하고 초기 배경을 설정한다. </summary>
+
+    /// <summary> KDH : 배경 오브젝트를 생성한다. (A [상시] B[페이드용]) </summary>
     private void InitializeBackgrounds()
     {
         _backgroundA = CreateBackground("BackgroundA", 0);
         _backgroundB = CreateBackground("BackgroundB", 1);
     }
 
-    /// <summary> KDH : 배경 오브젝트와 SpriteRenderer를 생성한다. </summary>
+    /// <summary> KDH : 해당 이름의 배경 오브젝트를 생성하고 SpriteRenderer의 sortingOrder를 설정한다. </summary>
     private SpriteRenderer CreateBackground(string objectName, int sortingOrder)
     {
         GameObject background = new GameObject(objectName);
@@ -130,13 +130,13 @@ public class TycoonBgCtrl : MonoBehaviour
 
         // B를 서서히 투명하게 만든다.
         _fadeTween = _backgroundB.DOFade(0f, _fadeDuration).SetEase(Ease.InOutSine).OnComplete(() =>
-            {
-                _backgroundB.sprite = null;
-                _backgroundB.color = Color.white;
-                _backgroundB.gameObject.SetActive(false);
+        {
+            _backgroundB.sprite = null;
+            _backgroundB.color = Color.white;
+            _backgroundB.gameObject.SetActive(false);
 
-                _fadeTween = null;
-            });
+            _fadeTween = null;
+        });
     }
 
     #endregion ===== 배경 전환 =====
