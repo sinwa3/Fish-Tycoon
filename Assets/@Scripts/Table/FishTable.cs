@@ -1,3 +1,5 @@
+using UnityEngine;
+
 /// <summary> KDH : 생선 데이터를 정의한다. </summary>
 public class FishData : TableData
 {
@@ -28,4 +30,15 @@ public class FishData : TableData
 public class FishTable : TableLoader<FishData>
 {
     protected override string TableName => "FishTable";
+
+    /// <summary> KDH : 해당 생선의 스프라이트를 가져온다. </summary>
+    public Sprite GetSprite(int fishID)
+    {
+        if (Map.ContainsKey(fishID))
+        {
+            return Managers.Resource.LoadSprite(ResourceKey.Path.FishC1Sprite, Map[fishID].ResourceName);
+        }
+        
+        return null;
+    }
 }

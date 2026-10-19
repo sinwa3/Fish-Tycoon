@@ -75,6 +75,25 @@ public class ReputationTable : TableLoader<ReputationData>
 
         return data?.ReputationGrade ?? -1;
     }
+
+    /// <summary> KDH : 현재 누적 만족도에 해당하는 손님 수를 반환한다. </summary>
+    public int GetCustomerCount(int satisfaction)
+    {
+        ReputationData data = GetReputationBySatisfaction(satisfaction);
+        
+        return data?.CustomerCount ?? 0;
+    }
+    
+    /// <summary> KDH : 현재 평판이 최대 등급인지 반환한다. </summary>
+    public bool IsMaxReputationGrade(int currentGrade)
+    {
+        if (_reputationCache == null || _reputationCache.Length == 0)
+        {
+            return false;
+        }
+
+        return currentGrade >= _reputationCache[^1].ReputationGrade;
+    }
     
     /// <summary> KDH : 누적 만족도에 해당하는 현재 평판 데이터를 반환한다. </summary>
     private ReputationData GetReputationBySatisfaction(int satisfaction)
@@ -93,16 +112,5 @@ public class ReputationTable : TableLoader<ReputationData>
         }
 
         return currentReputation;
-    }
-    
-    /// <summary> KDH : 현재 평판이 최대 등급인지 반환한다. </summary>
-    public bool IsMaxReputationGrade(int currentGrade)
-    {
-        if (_reputationCache == null || _reputationCache.Length == 0)
-        {
-            return false;
-        }
-
-        return currentGrade >= _reputationCache[^1].ReputationGrade;
     }
 }

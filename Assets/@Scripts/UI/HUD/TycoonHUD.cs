@@ -33,6 +33,8 @@ public class TycoonHUD : BaseHUD
 
     private CanvasGroup _foodDiaryCG;
 
+    private FoodListScroll _foodListScroll;
+
     #endregion ===== 참조 =====
 
     #region ===== 애니메이션 =====
@@ -137,8 +139,10 @@ public class TycoonHUD : BaseHUD
             _diaryRectTransform = _foodDiaryCG.GetComponent<RectTransform>();
             _diaryOriginPos = _diaryRectTransform.anchoredPosition;
         }
+
+        _foodListScroll = gameObject.FindChild<FoodListScroll>();
     }
-    
+
     #endregion ===== 초기화 =====
 
     #region ===== 업데이트 =====
@@ -218,10 +222,7 @@ public class TycoonHUD : BaseHUD
 
         sequence.Append(_diaryRectTransform.DOAnchorPos(_diaryOriginPos, 0.45f).SetEase(Ease.OutCubic));
         sequence.Join(_foodDiaryCG.DOFade(1f, 0.45f));
-        sequence.OnComplete(() =>
-        {
-            _foodDiaryCG.interactable = true;
-        });
+        sequence.OnComplete(() => { _foodDiaryCG.interactable = true; });
 
         _diaryTween = sequence;
     }
@@ -242,7 +243,7 @@ public class TycoonHUD : BaseHUD
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(_diaryRectTransform.DOAnchorPos(_diaryOriginPos + Vector2.down * 100f, 0.45f)
-                .SetEase(Ease.InCubic));
+            .SetEase(Ease.InCubic));
         sequence.Join(_foodDiaryCG.DOFade(0f, 0.45f));
         sequence.OnComplete(() =>
         {
@@ -253,7 +254,7 @@ public class TycoonHUD : BaseHUD
 
         _diaryTween = sequence;
     }
-    
+
     /// <summary> KDH : 다이어리를 비활성화한다. </summary>
     public void DeactivateFoodDiary()
     {

@@ -1,16 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-
-/// <summary> KDH : 아이템 구매 결과를 정의한다. </summary>
-public enum PurchaseResult
-{
-    Success,
-    InvalidItem,
-    InventoryFull,
-    NotEnoughGold
-}
 
 /// <summary> KDH : 게임의 로컬 세이브 데이터를 저장하고 관리한다. </summary>
 public class DataManager
@@ -27,7 +17,6 @@ public class DataManager
     
     public event Action OnGoldChanged;
     public event Action OnSatisfactionChanged;
-    public event Action OnQuickSlotChanged;
 
     #endregion ===== 이벤트 =====
     
@@ -44,9 +33,11 @@ public class DataManager
     /// <summary> KDH : 로컬 파일에서 게임 데이터를 불러오거나 새로 만든다. </summary>
     public void LoadData()
     {
+        // 새로하기
         if (!IsSaved)
         {
             _saveData = new SaveData();
+            GrantInitialFish();
             return;
         }
 
@@ -66,9 +57,6 @@ public class DataManager
         {
             _saveData = new SaveData();
         }
-
-        InitializeInvenSlotIndex(ItemType.Equipment);
-        InitializeInvenSlotIndex(ItemType.Consumable);
     }
 
     /// <summary> KDH : 세이버 데이터를 삭제한다. </summary>
@@ -83,62 +71,6 @@ public class DataManager
         File.Delete(SaveFilePath);
     }
     
-    #region ===== 초기화 =====
-
-    /// <summary> KDH : SaveData에 저장된 InvenSlotIndex가 믿을 만한 상태인지 검사하고 잘못된 슬롯 번호나 중복 슬롯이 있으면 빈 슬롯에 다시 배치한다. </summary>
-    private void InitializeInvenSlotIndex(ItemType itemType)
-    {
-        List<InventoryItemData> itemList = GetInvenItemDataList(itemType);
-
-        int slotCount = GetInvenSlotCount(itemType);
-
-        bool[] occupiedSlots = new bool[slotCount];
-
-        foreach (InventoryItemData itemData in itemList)
-        {
-            int slotIndex = itemData.InvenSlotIndex;
-
-            // 잘못된 슬롯 인덱스 또는 슬롯 인덱스가 슬롯의 개수를 넘는 경우
-            if (slotIndex < 0 || slotIndex >= slotCount)
-            {
-                itemData.InvenSlotIndex = -1;
-                continue;
-            }
-
-            // 슬롯 인덱스가 중복된 경우
-            if (occupiedSlots[slotIndex])
-            {
-                itemData.InvenSlotIndex = -1;
-                continue;
-            }
-
-            occupiedSlots[slotIndex] = true;
-        }
-
-        foreach (InventoryItemData itemData in itemList)
-        {
-            if (itemData.InvenSlotIndex >= 0)
-            {
-                continue;
-            }
-
-            // 잘못된 슬롯 인덱스들은 빈공간에 새로 배치한다.
-            for (int i = 0; i < slotCount; i++)
-            {
-                if (occupiedSlots[i])
-                {
-                    continue;
-                }
-
-                itemData.InvenSlotIndex = i;
-                occupiedSlots[i] = true;
-                break;
-            }
-        }
-    }
-
-    #endregion ===== 초기화 =====
-
     #region ===== 골드 =====
 
     /// <summary> KDH : 골드를 추가한다. </summary>
@@ -205,7 +137,7 @@ public class DataManager
             return;
         }
 
-        int currentGrade = Managers.Table.Reputation.GetReputationGrade(_saveData.Satisfaction);
+        int currentGrade = Managers.Table.Reputation.GetReputationGrade(GetSatisfaction());
         if (Managers.Table.Reputation.IsMaxReputationGrade(currentGrade))
         {
             return;
@@ -229,12 +161,18 @@ public class DataManager
         }
 
         _saveData.Satisfaction -= amount;
-        if (_saveData.Satisfaction < 0)
+        if (GetSatisfaction() < 0)
         {
             _saveData.Satisfaction = 0;
         }
         
         OnSatisfactionChanged?.Invoke();
+    }
+
+    /// <summary> KDH : 현재 만족도를 가져온다. </summary>
+    public int GetSatisfaction()
+    {
+        return _saveData?.Satisfaction ?? 0;
     }
     
     /// <summary> KDH : 현재 평판 등급과 만족도 진행 정보를 반환한다. </summary>
@@ -247,7 +185,7 @@ public class DataManager
             return (0, 0, 0);
         }
         
-        int totalSatisfaction = _saveData.Satisfaction;
+        int totalSatisfaction = GetSatisfaction();
 
         int reputationGrade = Managers.Table.Reputation.GetReputationGrade(totalSatisfaction);
 
@@ -317,396 +255,85 @@ public class DataManager
     
     #endregion ===== 게임 상태 =====
     
-    #region ===== 인벤토리 =====
+    #region ===== 인벤토리(생선) =====
 
-    /// <summary> KDH : 아이템을 인벤토리에 추가한다. </summary>
-    private bool TryAddItem(Item item, int count)
+    /// <summary> KDH : 최초 게임 시작 시 기본 생선을 지급한다. </summary>
+    private void GrantInitialFish()
     {
-        if (item == null)
+        for (int fishID = 0; fishID < 4; fishID++)
         {
-            return false;
-        }
-
-        if (!CanAddItem(item, count))
-        {
-            return false;
-        }
-
-        InventoryItemData itemData = GetInvenItemData(item.ID);
-
-        // 이미 소지 중인 경우 수량을 추가한다.
-        if (itemData != null)
-        {
-            itemData.Count += count;
-        }
-        else // 새로운 아이템인 경우 빈 슬롯에 추가한다.
-        {
-            int emptySlotIndex = GetEmptyInvenSlotIndex(item.Type);
-
-            itemData = new InventoryItemData
+            if (!TryAddFish(fishID, 3))
             {
-                ItemID = item.ID,
-                Count = count,
-                InvenSlotIndex = emptySlotIndex,
-                QuickSlotIndex = -1
-            };
-
-            _saveData.Inventory.Add(itemData);
+                CPrint.Warning($"[DataManager] 튜토리얼 생선 지급 실패. FishID: {fishID}");
+                return;
+            }
         }
-
-        OnQuickSlotChanged?.Invoke();
-        SaveData();
-
-        return true;
     }
-
-    /// <summary> KDH : 지정된 아이템을 사용할 수 있는지 확인하고 수량을 차감한다. </summary>
-    public bool TryUseItem(int itemID)
+    
+    /// <summary> KDH : ID에 해당하는 생선을 개수만큼 추가한다. </summary>
+    public bool TryAddFish(int fishID, int count)
     {
-        Item item = Managers.Table.Item.GetItem(itemID);
-
-        if (item == null)
+        if (fishID < 0 || count <= 0)
         {
             return false;
         }
 
-        InventoryItemData itemData = GetInvenItemData(itemID);
+        InventoryFishData fishData = _saveData.InvenFish.Find(fish => fish.FishID == fishID);
 
-        if (itemData == null || itemData.Count <= 0)
+        if (fishData != null)
         {
-            return false;
-        }
-
-        if (item.Type != ItemType.Consumable)
-        {
-            return false;
-        }
-
-        itemData.Count--;
-
-        // 모두 사용한 경우 인벤토리에서 제거한다.
-        if (itemData.Count <= 0)
-        {
-            _saveData.Inventory.Remove(itemData);
-        }
-
-        OnQuickSlotChanged?.Invoke();
-        SaveData();
-
-        return true;
-    }
-
-    /// <summary> KDH : 아이템을 인벤토리에 추가할 수 있는지 확인한다. </summary>
-    private bool CanAddItem(Item item, int count)
-    {
-        if (item == null)
-        {
-            return false;
-        }
-
-        if (count <= 0)
-        {
-            return false;
-        }
-
-        if (item.LimitCount <= 0)
-        {
-            return false;
-        }
-
-        InventoryItemData itemData = GetInvenItemData(item.ID);
-
-        if (itemData != null)
-        {
-            // 제한 개수를 넘었는지
-            return itemData.Count + count <= item.LimitCount;
-        }
-
-        // 인벤에 아이템을 추가시킬 빈 슬롯이 있는지 
-        ItemType itemType = item.Type;
-        return GetEmptyInvenSlotIndex(itemType) >= 0;
-    }
-
-    /// <summary> KDH : 지정된 아이템을 인벤토리의 다른 슬롯으로 이동한다. </summary>
-    public bool TryMoveInvenIndex(int itemID, ItemType targetItemType, int targetSlotIndex)
-    {
-        Item item = Managers.Table.Item.GetItem(itemID);
-
-        if (item == null)
-        {
-            return false;
-        }
-
-        if (targetSlotIndex < 0)
-        {
-            return false;
-        }
-
-        InventoryItemData sourceItemData = GetInvenItemData(itemID);
-
-        if (sourceItemData == null)
-        {
-            return false;
-        }
-
-        if (item.Type != targetItemType)
-        {
-            return false;
-        }
-
-        InventoryItemData targetItemData = GetInvenItemData(targetItemType, targetSlotIndex);
-
-        // 같은 슬롯을 다시 클릭한 경우
-        if (sourceItemData == targetItemData)
-        {
-            return false;
-        }
-
-        // 대상 슬롯에 아이템이 있으면 두 아이템의 위치를 교환한다.
-        if (targetItemData != null)
-        {
-            (sourceItemData.InvenSlotIndex, targetItemData.InvenSlotIndex) =
-                (targetItemData.InvenSlotIndex, sourceItemData.InvenSlotIndex);
-        }
-        // 대상 슬롯이 비어 있으면 선택한 아이템만 이동한다.
-        else
-        {
-            sourceItemData.InvenSlotIndex = targetSlotIndex;
-        }
-
-        SaveData();
-
-        return true;
-    }
-
-    /// <summary> KDH : 지정된 아이템을 QuickSlot에 등록한다. </summary>
-    public bool TrySetQuickSlot(int itemID, int targetQuickSlotIndex)
-    {
-        Item item = Managers.Table.Item.GetItem(itemID);
-
-        if (item == null)
-        {
-            return false;
-        }
-
-        if (targetQuickSlotIndex < 0)
-        {
-            return false;
-        }
-
-        InventoryItemData itemData = GetInvenItemData(itemID);
-        if (itemData == null)
-        {
-            return false;
-        }
-
-        if (item.Type != ItemType.Consumable)
-        {
-            return false;
-        }
-
-        InventoryItemData targetItemData = GetQuickSlotItem(targetQuickSlotIndex);
-        // 같은 QuickSlot을 다시 클릭한 경우
-        if (itemData == targetItemData)
-        {
+            fishData.Count += count;
             return true;
         }
 
-        // 이미 아이템이 있으면 두 QuickSlot 위치를 교환한다.
-        if (targetItemData != null)
+        _saveData.InvenFish.Add(new InventoryFishData
         {
-            (itemData.QuickSlotIndex, targetItemData.QuickSlotIndex) =
-                (targetItemData.QuickSlotIndex, itemData.QuickSlotIndex);
-        }
-        else // 빈 QuickSlot이면 해당 위치에 등록한다.
-        {
-            itemData.QuickSlotIndex = targetQuickSlotIndex;
-        }
-
-        SaveData();
-        OnQuickSlotChanged?.Invoke();
+            FishID = fishID,
+            Count = count
+        });
 
         return true;
     }
-
-    /// <summary> KDH : 해당 퀵 슬롯의 아이템의 퀵 등록을 해제한다. </summary>
-    public void UnassignQuickSlot(int quickSlotIndex)
+    
+    /// <summary> KDH : 보유한 생선을 지정한 수량만큼 차감한다. </summary>
+    public bool TrySpendFish(int fishID, int count = 1)
     {
-        if (quickSlotIndex < 0)
+        if (fishID < 0 || count <= 0)
         {
-            return;
+            return false;
         }
 
-        InventoryItemData itemData = GetQuickSlotItem(quickSlotIndex);
-        if (itemData != null)
-        {
-            itemData.QuickSlotIndex = -1;
+        InventoryFishData fishData = _saveData.InvenFish.Find(fish => fish.FishID == fishID);
 
-            SaveData();
-            OnQuickSlotChanged?.Invoke();
+        // 인벤토리에 생선이 없거나 수량이 부족한 경우
+        if (fishData == null || fishData.Count < count)
+        {
+            return false;
         }
+
+        fishData.Count -= count;
+
+        // 보유 수량이 0이면 인벤토리에서 제거
+        if (fishData.Count == 0)
+        {
+            _saveData.InvenFish.Remove(fishData);
+        }
+
+        return true;
     }
-
-    /// <summary> KDH : 지정된 타입의 인벤토리의 아이템데이터 목록을 반환한다. </summary>
-    public List<InventoryItemData> GetInvenItemDataList(ItemType itemType)
+    
+    /// <summary> KDH : ID에 해당하는 생선의 보유 개수를 반환한다. </summary>
+    public int GetFishCount(int fishID)
     {
-        List<InventoryItemData> itemDataList = new();
-
-        foreach (InventoryItemData itemData in GetInvenItemDataList())
+        if (_saveData?.InvenFish == null)
         {
-            Item item = Managers.Table.Item.GetItem(itemData.ItemID);
-
-            if (item == null || item.Type != itemType)
-            {
-                continue;
-            }
-
-            itemDataList.Add(itemData);
+            return 0;
         }
 
-        return itemDataList;
+        InventoryFishData fishData = _saveData.InvenFish.Find(fish => fish.FishID == fishID);
+        
+        return fishData?.Count ?? 0;
     }
-
-    /// <summary> KDH : 인벤토리의 전체 아이템데이터 목록을 반환한다. </summary>
-    public IReadOnlyList<InventoryItemData> GetInvenItemDataList()
-    {
-        return _saveData.Inventory;
-    }
-
-    /// <summary> KDH : 아이템 타입에 따른 인벤토리 슬롯 개수를 반환한다. </summary>
-    public int GetInvenSlotCount(ItemType itemType)
-    {
-        return itemType switch
-        {
-            ItemType.Equipment => 20,
-            ItemType.Consumable => 32,
-            _ => 0
-        };
-    }
-
-    /// <summary> KDH : 지정된 타입의 비어있는 인벤토리 슬롯을 반환한다. </summary>
-    private int GetEmptyInvenSlotIndex(ItemType itemType)
-    {
-        int slotCount = GetInvenSlotCount(itemType);
-
-        if (slotCount <= 0)
-        {
-            return -1;
-        }
-
-        List<InventoryItemData> itemDataList = GetInvenItemDataList(itemType);
-
-        for (int i = 0; i < slotCount; i++)
-        {
-            bool isOccupied = false;
-
-            foreach (InventoryItemData itemData in itemDataList)
-            {
-                if (itemData.InvenSlotIndex != i)
-                {
-                    continue;
-                }
-
-                isOccupied = true;
-                break;
-            }
-
-            if (!isOccupied)
-            {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    /// <summary> KDH : 아이템 ID에 해당하는 인벤토리 데이터를 반환한다. </summary>
-    private InventoryItemData GetInvenItemData(int itemID)
-    {
-        foreach (InventoryItemData itemData in _saveData.Inventory)
-        {
-            if (itemData.ItemID == itemID)
-            {
-                return itemData;
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary> KDH : 타입과 슬롯 인덱스가 일치하는 인벤토리 데이터를 반환한다. </summary>
-    private InventoryItemData GetInvenItemData(ItemType itemType, int slotIndex)
-    {
-        foreach (InventoryItemData itemData in _saveData.Inventory)
-        {
-            Item item = Managers.Table.Item.GetItem(itemData.ItemID);
-
-            if (item == null || item.Type != itemType)
-            {
-                continue;
-            }
-
-            if (itemData.InvenSlotIndex == slotIndex)
-            {
-                return itemData;
-            }
-        }
-
-        return null;
-    }
-
-    /// <summary> KDH : 지정된 QuickSlot에 등록된 아이템을 반환한다. </summary>
-    private InventoryItemData GetQuickSlotItem(int quickSlotIndex)
-    {
-        foreach (InventoryItemData itemData in _saveData.Inventory)
-        {
-            if (itemData.QuickSlotIndex == quickSlotIndex)
-            {
-                return itemData;
-            }
-        }
-
-        return null;
-    }
-
-    #endregion ===== 인벤토리 =====
-
-    #region ===== 상점 =====
-
-    /// <summary> KDH : 아이템 구매를 시도하고 결과를 반환한다. </summary>
-    public PurchaseResult TryPurchaseItem(int itemID)
-    {
-        Item item = Managers.Table.Item.GetItem(itemID);
-
-        if (item == null)
-        {
-            return PurchaseResult.InvalidItem;
-        }
-
-        int price = Managers.Table.Shop.GetItemSellPrice(itemID);
-
-        if (price < 0)
-        {
-            return PurchaseResult.InvalidItem;
-        }
-
-        if (!CanAddItem(item, 1))
-        {
-            return PurchaseResult.InventoryFull;
-        }
-
-        if (!TrySpendGold(price))
-        {
-            return PurchaseResult.NotEnoughGold;
-        }
-
-        if (!TryAddItem(item, 1))
-        {
-            return PurchaseResult.InventoryFull;
-        }
-
-        return PurchaseResult.Success;
-    }
-
-    #endregion ===== 상점 =====
+    
+    #endregion ===== 인벤토리(생선) =====
 }
