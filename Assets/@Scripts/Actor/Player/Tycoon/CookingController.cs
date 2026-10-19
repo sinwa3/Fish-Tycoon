@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /// <summary>SJY : 조리 미니게임의 상태 및 커맨드 진행 컨트롤</summary>
 public class CookingController : MonoBehaviour
 {
+    [Header("조리 설정")]
     [SerializeField] private float _failDelay = 0.5f;
+    [SerializeField] private float _servingDuration = 0.5f;
 
     private CookingOrder _cookingOrder;
     private CookingState _state = CookingState.Idle;
@@ -19,10 +20,16 @@ public class CookingController : MonoBehaviour
     public int CurrentCommandIndex => _currentCommandIndex;
     public int TotalCommandCount => _commands?.Length ?? 0;
 
+    #region ==== 이벤트 ====
+
     public event Action<int> OnCommandPressed;
     public event Action<int> OnCommandFailed;
     public event Action OnCommandReset;
     public event Action<int> OnCookingCompleted;
+    public event Action OnServingFinished;
+
+    #endregion ==== 이벤트 ====
+
 
     /// <summary>SJY : 영업 시작 시 당일 음식 목록 초기화</summary>
     public void Initialize(IReadOnlyList<int> foodIds)
@@ -121,7 +128,7 @@ public class CookingController : MonoBehaviour
 
             OnCommandFailed?.Invoke(CurrentCommandIndex);
 
-            StartCoroutine(HandleFail());
+            StartCoroutine(Co_HandleFail());
 
             return;
         }
@@ -138,7 +145,7 @@ public class CookingController : MonoBehaviour
     }
 
     /// <summary>SJY : 커맨드 입력 실패 시 일정 시간 입력 제한 후 초기화용 코루틴</summary>
-    private IEnumerator HandleFail()
+    private IEnumerator Co_HandleFail()
     {
         yield return new WaitForSeconds(_failDelay);
 
@@ -159,6 +166,17 @@ public class CookingController : MonoBehaviour
         CPrint.Log($"[CookingController] 조리 성공 음식 ID : {foodId}");
 
         OnCookingCompleted?.Invoke(foodId);
+
+        StartCoroutine(Co_HandleServing());
+    }
+
+    private IEnumerator Co_HandleServing()
+    {
+        yield return new WaitForSeconds(_servingDuration);
+
+        OnServingFinished?.Invoke();
+
+        FinishServing();
     }
 
     /// <summary>SJY : 서빙 후 다음 요리를 위한 초기화 메서드</summary>
