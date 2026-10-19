@@ -36,7 +36,20 @@ public class FishTable : TableLoader<FishData>
     {
         if (Map.ContainsKey(fishID))
         {
-            return Managers.Resource.LoadSprite(ResourceKey.Path.FishC1Sprite, Map[fishID].ResourceName);
+            string spriteName = Map[fishID].ResourceName;
+            int lastIndex = spriteName.LastIndexOf('_');
+
+            if (lastIndex >= 0)
+            {
+                spriteName = spriteName.Substring(0, lastIndex);
+            }
+            else
+            {
+                CPrint.Warning($"[FishTable] 올바르지 않은 리소스 명입니다. {Map[fishID].ResourceName}");
+                return null;
+            }
+            
+            return Managers.Resource.LoadSprite(ResourceKey.Path.FishSprite + spriteName, Map[fishID].ResourceName);
         }
         
         return null;
