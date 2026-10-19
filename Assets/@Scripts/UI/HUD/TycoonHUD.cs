@@ -35,6 +35,8 @@ public class TycoonHUD : BaseHUD
 
     private FoodListScroll _foodListScroll;
 
+    private CookingController _cookingController;
+
     #endregion ===== 참조 =====
 
     #region ===== 애니메이션 =====
@@ -52,6 +54,8 @@ public class TycoonHUD : BaseHUD
         Bind<Button>(typeof(Buttons));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
+
+        _cookingController = gameObject.FindChild<CookingController>();
 
         ResolveFoodDiary();
     }
@@ -96,6 +100,29 @@ public class TycoonHUD : BaseHUD
         if (Managers.Input.KeyDown_4)
         {
             Managers.Data.TrySpendGold(1000);
+        }
+
+        if (_cookingController != null && _cookingController.State == CookingState.Playing && Managers.Input.CanReceivePlayer)
+        {
+            if (Managers.Input.KeyDown_W)
+            {
+                _cookingController.ProcessCommand('W');
+            }
+
+            else if (Managers.Input.KeyDown_A)
+            {
+                _cookingController.ProcessCommand('A');
+            }
+
+            else if (Managers.Input.KeyDown_S)
+            {
+                _cookingController.ProcessCommand('S');
+            }
+
+            else if (Managers.Input.KeyDown_D)
+            {
+                _cookingController.ProcessCommand('D');
+            }
         }
     }
 
