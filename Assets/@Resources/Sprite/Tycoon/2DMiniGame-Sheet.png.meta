@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f5e4dadbdeccc754cb47c192870fbe77
+guid: 71846ae63cb998c45af585516f7512e1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,7 +97,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_0
+      name: cutting_0
       rect:
         serializedVersion: 2
         x: 0
@@ -105,20 +105,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 64175f1dbdf8bcd4cb9669270f3f123e
-      internalID: -1198517511
+      spriteID: a013882cc028a244195a4f8c464b636b
+      internalID: 1903262111
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_1
+      name: cutting_1
       rect:
         serializedVersion: 2
         x: 192
@@ -126,20 +126,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d512d155cf649484e8c9de2d4cdb7641
-      internalID: -455627129
+      spriteID: 3964317569e153e4fac9cb4846a7347b
+      internalID: -1528236098
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_2
+      name: rice_0
       rect:
         serializedVersion: 2
         x: 384
@@ -147,20 +147,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f46ed63c9d5483d49885aa11a54c304c
-      internalID: -1870249595
+      spriteID: c65b85de665076442bcc6200f4fdb796
+      internalID: 40794927
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_3
+      name: rice_1
       rect:
         serializedVersion: 2
         x: 576
@@ -168,20 +168,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b36fc087875c57940b0527f32c287f96
-      internalID: -1132785363
+      spriteID: 2e88a91702b467c4c97cf391951c1908
+      internalID: -260002321
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_4
+      name: wasabi_0
       rect:
         serializedVersion: 2
         x: 768
@@ -189,20 +189,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a6d45cb496f0cdf49b374fa785e93fba
-      internalID: -970322842
+      spriteID: 6424b6e459b3fa9498d89b79bfdff620
+      internalID: -1705953883
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_5
+      name: wasabi_1
       rect:
         serializedVersion: 2
         x: 960
@@ -210,20 +210,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b483cd8656c807845a9ab2c8af55500e
-      internalID: -1121842015
+      spriteID: 58a409e2791cb3043814c49685241085
+      internalID: -1281759391
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_6
+      name: finish_0
       rect:
         serializedVersion: 2
         x: 1152
@@ -231,20 +231,20 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6d430d9a5f3bc3449bff46cd4e9529c6
-      internalID: 1291003642
+      spriteID: eec8a117052af4748a8e3af646198d63
+      internalID: -24992630
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_7
+      name: finish_1
       rect:
         serializedVersion: 2
         x: 1344
@@ -252,56 +252,98 @@ TextureImporter:
         width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c420f25ff265197458807bc9665da046
-      internalID: -1436441268
+      spriteID: e6947156b017fa84782825686f09b768
+      internalID: 1660635152
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_8
+      name: wrongaction
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1536
         y: 0
-        width: 1536
+        width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41868d9135c40b04da5fc7f059fe8ce0
-      internalID: 364299035
+      spriteID: e1515f19980a6794d85151002cd90c76
+      internalID: -897028172
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 2DMiniGame-Sheet_9
+      name: serving_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1728
         y: 0
-        width: 1536
+        width: 192
         height: 108
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4476e881ad89c543b2896a0b06795fe
-      internalID: -628995606
+      spriteID: 823eb25b159d21d428da30adf452e7d4
+      internalID: -245213932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serving_1
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 0
+        width: 192
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41b0701ddff6cfb43a26e2454ec32cb4
+      internalID: 968664106
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: serving_2
+      rect:
+        serializedVersion: 2
+        x: 2112
+        y: 0
+        width: 192
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2394da1324ed36b4cbdea53f3d6634e6
+      internalID: -1622323625
       vertices: []
       indices: 
       edges: []
@@ -309,7 +351,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: cbc66b6635b7c2c4cb446a53e9b22c07
     internalID: 0
     vertices: []
     indices: 
@@ -317,16 +359,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      2DMiniGame-Sheet_0: -1198517511
-      2DMiniGame-Sheet_1: -455627129
-      2DMiniGame-Sheet_2: -1870249595
-      2DMiniGame-Sheet_3: -1132785363
-      2DMiniGame-Sheet_4: -970322842
-      2DMiniGame-Sheet_5: -1121842015
-      2DMiniGame-Sheet_6: 1291003642
-      2DMiniGame-Sheet_7: -1436441268
-      2DMiniGame-Sheet_8: 364299035
-      2DMiniGame-Sheet_9: -628995606
+      cutting_0: 1903262111
+      cutting_1: -1528236098
+      finish_0: -24992630
+      finish_1: 1660635152
+      rice_0: 40794927
+      rice_1: -260002321
+      serving_0: -245213932
+      serving_1: 968664106
+      serving_2: -1622323625
+      wasabi_0: -1705953883
+      wasabi_1: -1281759391
+      wrongaction: -897028172
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

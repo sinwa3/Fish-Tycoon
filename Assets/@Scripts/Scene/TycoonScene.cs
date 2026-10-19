@@ -26,18 +26,17 @@ public class TycoonScene : BaseScene
 
     private TycoonHUD _tycoonHUD;
 
+    [SerializeField]
+    private TycoonBgCtrl _tycoonBgCtrl;
+    
     [Header("영업 전")]
     [SerializeField] private FoodListScroll _foodListScroll;
 
     #endregion ===== 참조 =====
 
-    /// <summary> KDH : 페이즈 변경 이벤트 </summary>
-    public event Action<Phase> OnPhaseChanged;
-
     protected override void OnAwake()
     {
         _tycoonHUD = gameObject.GetComponentInChildren<TycoonHUD>(true);
-
         if (_tycoonHUD == null)
         {
             CPrint.Error("[TycoonScene] _tycoonHUD not found.");
@@ -116,7 +115,7 @@ public class TycoonScene : BaseScene
             _currentPhase++;
         }
 
-        OnPhaseChanged?.Invoke(_currentPhase);
+        UpdatePhaseUI();
     }
     
     /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>
@@ -124,13 +123,20 @@ public class TycoonScene : BaseScene
     {
         _tycoonHUD.UpdatePhaseText(_currentPhase);
 
-        if (_currentPhase == Phase.BeforeBusiness)
+        switch (_currentPhase)
         {
-            _tycoonHUD.OpenFoodDiary();
-        }
-        else
-        {
-            _tycoonHUD.DeactivateFoodDiary();
+            case Phase.BeforeBusiness:
+                _tycoonHUD.OpenFoodDiary();
+                _tycoonBgCtrl.ShowBeforeOpening();
+                break;
+            case Phase.DuringBusiness:
+                _tycoonBgCtrl.ShowOpened();
+                break;
+            case Phase.AfterBusiness:
+                _tycoonHUD.DeactivateFoodDiary();
+                _tycoonBgCtrl.ShowAfter();
+                break;
+            
         }
     }
 

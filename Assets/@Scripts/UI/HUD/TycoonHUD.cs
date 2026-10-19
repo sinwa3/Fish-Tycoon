@@ -68,7 +68,6 @@ public class TycoonHUD : BaseHUD
 
         SubscribeGoldChanged();
         SubscribeSatisfactionChanged();
-        SubscribePhaseChanged();
     }
 
     protected override void OnUpdate()
@@ -106,7 +105,6 @@ public class TycoonHUD : BaseHUD
 
         UnsubscribeGoldChanged();
         UnsubscribeSatisfactionChanged();
-        UnsubscribePhaseChanged();
     }
 
     #region ===== 초기화 =====
@@ -304,24 +302,6 @@ public class TycoonHUD : BaseHUD
         if (Managers.Data != null)
         {
             Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
-        }
-    }
-
-    /// <summary> KDH : 페이즈 변경되었을 때 영업 상태 텍스트 변경을 구독 </summary>
-    private void SubscribePhaseChanged()
-    {
-        if (_tycoonScene != null)
-        {
-            _tycoonScene.OnPhaseChanged += UpdatePhaseText;
-        }
-    }
-
-    /// <summary> KDH : 페이즈 변경되었을 때 영업 상태 텍스트 변경을 구독해제 </summary>
-    private void UnsubscribePhaseChanged()
-    {
-        if (_tycoonScene != null)
-        {
-            _tycoonScene.OnPhaseChanged -= UpdatePhaseText;
         }
     }
 
