@@ -48,7 +48,7 @@ public class FishListScroll : BaseVerticalScroll<FishData>
     {
         DataList = new List<FishData>();
 
-        if (Managers.Table == null)
+        if (Managers.Table == null || Managers.Table.Fish == null)
         {
             return;
         }

@@ -56,7 +56,7 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
     {
         DataList = new List<FoodData>();
 
-        if (Managers.Table == null)
+        if (Managers.Table == null || Managers.Table.Food == null)
         {
             return;
         }
