@@ -45,7 +45,8 @@ public class TycoonHUD : BaseHUD
         ServingImage,
         CookingImage,
         CurrentFoodImage,
-        NextFoodImage
+        NextFoodImage,
+        ServingFoodImage
     }
 
     #region ===== 참조 =====
@@ -103,6 +104,7 @@ public class TycoonHUD : BaseHUD
 
         Get<Image>(Images.ServingImage)?.gameObject.SetActive(false);
         Get<Image>(Images.CookingImage)?.gameObject.SetActive(false);
+        Get<Image>(Images.ServingFoodImage)?.gameObject.SetActive(false);
     }
 
     protected override void OnStart()
@@ -491,12 +493,15 @@ public class TycoonHUD : BaseHUD
         {
             servingImage.gameObject.SetActive(true);
         }
+
+        UpdateServingFoodImage(foodId);
     }
 
     /// <summary>SJY : 서빙 연출 종료 시 이미지 비활성화</summary>
     private void HandleServingFinished()
     {
         Get<Image>(Images.ServingImage)?.gameObject.SetActive(false);
+        Get<Image>(Images.ServingFoodImage)?.gameObject.SetActive(false);
     }
 
     /// <summary>SJY : 커맨드 개수와 진행도에 따라 조리 이미지 변경</summary>
@@ -614,6 +619,27 @@ public class TycoonHUD : BaseHUD
 
         image.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
         image.gameObject.SetActive(image.sprite != null);
+    }
+
+    /// <summary>SJY : 서빙할 음식을 접시위에 표시</summary>
+    private void UpdateServingFoodImage(int foodId)
+    {
+        Image servingFoodImage = Get<Image>(Images.ServingFoodImage);
+
+        if (servingFoodImage == null)
+        {
+            return;
+        }
+
+        if (!Managers.Table.Food.Map.TryGetValue(foodId, out FoodData foodData))
+        {
+            servingFoodImage.gameObject.SetActive(false);
+
+            return;
+        }
+
+        servingFoodImage.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
+        servingFoodImage.gameObject.SetActive(servingFoodImage.sprite != null);
     }
 
     #endregion ==== 조리 커맨드 UI ====
