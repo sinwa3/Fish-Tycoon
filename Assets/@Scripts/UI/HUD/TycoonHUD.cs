@@ -77,6 +77,7 @@ public class TycoonHUD : BaseHUD
     private Image[] _commandImages;
 
     private const string TycoonSpritePath = "Sprite/Tycoon/";
+    private const string FoodSpritePath = "Sprite/Food/Pixel_Sush_64";
 
     #endregion ==== 조리 커맨드 ====
 
@@ -584,6 +585,37 @@ public class TycoonHUD : BaseHUD
         cookingImage.gameObject.SetActive(cookingImage.sprite != null);
     }
 
+    /// <summary>SJY : 현재 음식과 다음 음식 아이콘 갱신</summary>
+    private void UpdateFoodImages()
+    {
+        if (_cookingController == null)
+        {
+            return;
+        }
+
+        UpdateFoodImage(Get<Image>(Images.CurrentFoodImage),_cookingController.CurrentFoodID);
+        UpdateFoodImage(Get<Image>(Images.NextFoodImage),_cookingController.NextFoodID);
+    }
+
+    /// <summary>SJY : 음식 ID로 테이블을 조회하여 아이콘 표시</summary>
+    private void UpdateFoodImage(Image image, int? foodId)
+    {
+        if (image == null)
+        {
+            return;
+        }
+
+        if (!foodId.HasValue || !Managers.Table.Food.Map.TryGetValue(foodId.Value, out FoodData foodData))
+        {
+            image.gameObject.SetActive(false);
+
+            return;
+        }
+
+        image.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
+        image.gameObject.SetActive(image.sprite != null);
+    }
+
     #endregion ==== 조리 커맨드 UI ====
 
     #region ===== 이벤트 =====
@@ -640,6 +672,9 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandReset += ResetCookingImage;
         _cookingController.OnCookingCompleted += HandleCookingCompleted;
         _cookingController.OnServingFinished += HandleServingFinished;
+        _cookingController.OnFoodChanged += UpdateFoodImages;
+
+        UpdateFoodImages();
     }
 
     /// <summary>SJY : 조리 커맨드 이벤트 구독 해제</summary>
@@ -656,6 +691,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandReset -= ResetCookingImage;
         _cookingController.OnCookingCompleted -= HandleCookingCompleted;
         _cookingController.OnServingFinished -= HandleServingFinished;
+        _cookingController.OnFoodChanged -= UpdateFoodImages;
     }
 
     #endregion ===== 이벤트 =====

@@ -16,12 +16,17 @@ public class CookingController : MonoBehaviour
     private char[] _commands;
     private int _currentCommandIndex;
 
+    // 임시 변수 추후에 수정 필요
+    private int _orderedCount;
+
     public CookingState State => _state;
     public int CurrentCommandIndex => _currentCommandIndex;
     public int TotalCommandCount => _commands?.Length ?? 0;
 
-    public int? CurrentFoodID => _cookingOrder?.CurrentFoodID;
-    public int? NextFoodID => _cookingOrder.NextFoodID;
+    private bool HasOrderedFood => _cookingOrder != null && _cookingOrder.CurrentIndex < _orderedCount;
+    private bool HasNextOrderedFood => _cookingOrder != null && _cookingOrder.CurrentIndex + 1 < _orderedCount;
+    public int? CurrentFoodID => HasOrderedFood ? _cookingOrder.CurrentFoodID : null;
+    public int? NextFoodID => HasNextOrderedFood ? _cookingOrder.NextFoodID : null;
 
     #region ==== 이벤트 ====
 
@@ -55,12 +60,34 @@ public class CookingController : MonoBehaviour
         _currentCommandIndex = 0;
         _state = CookingState.Idle;
 
+        _orderedCount = 0;
+        OnFoodChanged?.Invoke();
+    }
+
+    /// <summary>SJY : 손님이 주문한 음식 개수 갱신</summary>
+    public void UpdateOrderedCount(int orderedCount)
+    {
+        if (_cookingOrder == null)
+        {
+            return;
+        }
+
+        if (orderedCount < 0 || orderedCount > _cookingOrder.TotalCount)
+        {
+            CPrint.Warning($"[CookingController] 잘못된 주문 수 : {orderedCount}");
+
+            return;
+        }
+
+        _orderedCount = orderedCount;
+
+        OnFoodChanged?.Invoke();
     }
 
     /// <summary>SJY : 현재 음식의 커맨드를 테이블에서 가져와 조리 시작</summary>
     public void StartCooking()
     {
-        if (_state != CookingState.Idle || _cookingOrder == null || !_cookingOrder.HasCurrentFood)
+        if (_state != CookingState.Idle || !CurrentFoodID.HasValue)
         {
             return;
         }
@@ -175,6 +202,7 @@ public class CookingController : MonoBehaviour
         StartCoroutine(Co_HandleServing());
     }
 
+    /// <summary>SJY : 커맨드 입력 성공시 서빙 연출이되는 딜레이 코루틴</summary>
     private IEnumerator Co_HandleServing()
     {
         yield return new WaitForSeconds(_servingDuration);
@@ -191,12 +219,14 @@ public class CookingController : MonoBehaviour
         {
             return;
         }
-
+            
         _cookingOrder.MoveNext();
 
         _commands = null;
         _currentCommandIndex = 0;
         _state = CookingState.Idle;
+
+        OnFoodChanged?.Invoke();
     }
 
     /// <summary>SJY : 영업 종료 시 조리 데이터 초기화</summary>
@@ -209,6 +239,9 @@ public class CookingController : MonoBehaviour
         _commands = null;
         _currentCommandIndex = 0;
         _state = CookingState.Idle;
+
+        _orderedCount = 0;
+        OnFoodChanged?.Invoke();
     }
 
 }
