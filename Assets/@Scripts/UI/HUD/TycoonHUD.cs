@@ -1,7 +1,6 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
 using UnityEngine.UI;
 
 public class TycoonHUD : BaseHUD
@@ -55,8 +54,6 @@ public class TycoonHUD : BaseHUD
     private TycoonScene _tycoonScene;
 
     private CanvasGroup _foodDiaryCG;
-
-    private FoodListScroll _foodListScroll;
 
     private CookingController _cookingController;
 
@@ -399,6 +396,7 @@ public class TycoonHUD : BaseHUD
     #endregion ===== 활성화 =====
 
     #region ==== 조리 커맨드 UI ====
+    
     /// <summary>SJY : 커맨드 문자에 해당하는 스프라이트 인덱스 반환</summary>
     private int GetCommandSpriteIndex(char command)
     {
