@@ -62,6 +62,25 @@ public class ReputationTable : TableLoader<ReputationData>
         return null;
     }
 
+    /// <summary> KDH : 누적 만족도에 해당하는 현재 평판 데이터를 반환한다. </summary>
+    private ReputationData GetReputationBySatisfaction(int satisfaction)
+    {
+        ReputationData currentReputation = null;
+        
+        foreach (ReputationData data in _reputationCache)
+        {
+            if (data.RequiredSatisfaction > satisfaction)
+            {
+                break;
+            }
+
+            // 현재 만족도에 해당하는 가장 높은 평판 등급을 찾는다.
+            currentReputation = data;
+        }
+
+        return currentReputation;
+    }
+    
     /// <summary> KDH : 현재 평판의 다음 평판 데이터를 반환한다. </summary>
     public ReputationData GetNextReputation(int currentGrade)
     {
@@ -91,6 +110,14 @@ public class ReputationTable : TableLoader<ReputationData>
         
         return data?.CustomerSpawnInterval ?? 0;
     }
+
+    /// <summary> KDH : 현재 누적 만족도에 해당하는 정산 보너스 배율을 반환한다. </summary>
+    public float GetSettlementBonusMultiplier(int satisfaction)
+    {
+        ReputationData data = GetReputationBySatisfaction(satisfaction);
+        
+        return data?.SettlementBonusMultiplier ?? 0;
+    }
     
     /// <summary> KDH : 현재 평판이 최대 등급인지 반환한다. </summary>
     public bool IsMaxReputationGrade(int currentGrade)
@@ -101,24 +128,5 @@ public class ReputationTable : TableLoader<ReputationData>
         }
 
         return currentGrade >= _reputationCache[^1].ReputationGrade;
-    }
-    
-    /// <summary> KDH : 누적 만족도에 해당하는 현재 평판 데이터를 반환한다. </summary>
-    private ReputationData GetReputationBySatisfaction(int satisfaction)
-    {
-        ReputationData currentReputation = null;
-        
-        foreach (ReputationData data in _reputationCache)
-        {
-            if (data.RequiredSatisfaction > satisfaction)
-            {
-                break;
-            }
-
-            // 현재 만족도에 해당하는 가장 높은 평판 등급을 찾는다.
-            currentReputation = data;
-        }
-
-        return currentReputation;
     }
 }

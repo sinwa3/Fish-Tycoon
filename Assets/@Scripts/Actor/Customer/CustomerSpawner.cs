@@ -23,26 +23,38 @@ public class CustomerSpawner : MonoBehaviour
     private float _spawnInterval;
     private float _spawnTimer;
 
-    // 그날 메뉴. 손님마다 Spawn 때 넘긴다
+    // 손님마다 Spawn 때 넘기는 그날 메뉴
     private DailyMenu _dailyMenu;
 
-    // 만석이면 true CustomerSeats.OnFullChanged로 바뀐다
+    // 만석이면 true, CustomerSeats.OnFullChanged로 바뀐다
     private bool _isTimerPaused;
 
     public bool IsOpen => _isOpen;
     public int SpawnedCount => _spawnedCount;
     public int DailyCustomerCount => _dailyCustomerCount;
 
-    // 요리 쪽이 읽는 섞은 그날 메뉴 [번호]가 현재, [번호 + 1]이 다음 음식
+    // 요리 쪽이 읽는 그날 메뉴 [ServedCount]가 지금 만들 음식, [ServedCount + 1]이 다음 음식
     public IReadOnlyList<int> ShuffledCandidates => _dailyMenu?.ShuffledCandidates ?? Array.Empty<int>();
 
-    // 지금까지 주문한 손님 수. 요리는 주문한 만큼만 시작한다
+    // 지금까지 주문한 손님 수. 요리는 주문한 만큼만
     public int OrderedCount => _dailyMenu == null ? 0 : _dailyMenu.OrderedCount;
 
+    /// <summary> KDH : 손님이 주문했을 때 해당 이벤트를 호출 </summary>
+    public event Action<int> OnOrderCountChanged;
+    
     /// <summary> KYH : 하루 손님을 다 받고 마지막 손님이 나가면 발행 </summary>
     public event Action OnBusinessClosed;
 
     #endregion ===== 영업 =====
+
+    #region ===== 요리 전달 =====
+
+    // 지금까지 요리를 받은 손님 수. 다음에 받을 손님의 주문 번호와 같다
+    private int _servedCount;
+
+    public int ServedCount => _servedCount;
+
+    #endregion ===== 요리 전달 =====
 
     #region ===== 손님 목록 =====
 
@@ -150,6 +162,7 @@ public class CustomerSpawner : MonoBehaviour
 
         _spawnTimer = 0.0f;
         _spawnedCount = 0;
+        _servedCount = 0;
 
         _dailyMenu.ShuffleCandidates(_dailyCustomerCount);
 
@@ -205,6 +218,9 @@ public class CustomerSpawner : MonoBehaviour
 
             return;
         }
+        
+        // KDH : 손님이 주문했을 때 이벤트를 연결한다.
+        customer.OnOrdered += HandleCustomerOrdered;
         customer.OnDespawned += HandleCustomerDespawned;
         _activeCustomers.Add(customer);
 
@@ -213,6 +229,50 @@ public class CustomerSpawner : MonoBehaviour
     }
 
     #endregion ===== 입장 =====
+
+    #region ===== 요리 전달 처리 =====
+
+    /// <summary> KYH : 완성된 요리를 다음 차례 손님(먼저 주문한 순서)에게 준다. 요리 쪽이 요리 완성 때 호출, 받으면 true </summary>
+    public bool DeliverFood()
+    {
+        if (!TryFindCustomerByOrderIndex(_servedCount, out CustomerController customer))
+        {
+            CPrint.Warning($"[CustomerSpawner] {_servedCount}번 인덱스 손님 없음, 주문 {OrderedCount}명");
+
+            return false;
+        }
+
+        if (!customer.ReceiveFood())
+        {
+            CPrint.Warning($"[CustomerSpawner] {_servedCount}번 인덱스 손님이 대기 중이 아님");
+
+            return false;
+        }
+
+        _servedCount++;
+
+        return true;
+    }
+
+    /// <summary> KYH : 가게 안 손님 중 주문 번호가 같은 손님을 찾는다. 없으면 false </summary>
+    private bool TryFindCustomerByOrderIndex(int orderIndex, out CustomerController customer)
+    {
+        customer = null;
+
+        foreach (CustomerController activeCustomer in _activeCustomers)
+        {
+            if (activeCustomer.OrderIndex == orderIndex)
+            {
+                customer = activeCustomer;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    #endregion ===== 요리 전달 처리 =====
 
     #region ===== 이벤트 처리 =====
 
@@ -225,11 +285,18 @@ public class CustomerSpawner : MonoBehaviour
     /// <summary> KYH : 나간 손님을 목록에서 빼고 영업 종료인지 확인한다 </summary>
     private void HandleCustomerDespawned(CustomerController customer)
     {
+        customer.OnOrdered -= HandleCustomerOrdered;
         customer.OnDespawned -= HandleCustomerDespawned;
         _activeCustomers.Remove(customer);
         CheckBusinessClosed();
     }
 
+    /// <summary> KDH : 손님 주문 시 현재 주문 수를 전달한다. </summary>
+    private void HandleCustomerOrdered(int orderCount)
+    {
+        OnOrderCountChanged?.Invoke(orderCount);
+    }
+    
     #endregion ===== 이벤트 처리 =====
 
     #region ===== 영업 종료 =====
@@ -256,7 +323,7 @@ public class CustomerSpawner : MonoBehaviour
         OnBusinessClosed?.Invoke();
     }
 
-    /// <summary> KYH : 영업을 중간에 끝낸다. 입장을 멈추고 손님을 모두 내보낸다</summary>
+    /// <summary> KYH : 영업을 중간에 끝낸다. 입장을 멈추고 손님을 모두 내보낸다 </summary>
     public void StopBusiness()
     {
         if (!_isOpen)

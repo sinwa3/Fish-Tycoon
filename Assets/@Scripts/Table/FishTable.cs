@@ -54,4 +54,9 @@ public class FishTable : TableLoader<FishData>
         
         return null;
     }
+
+    public int GetSellPrice(int fishID)
+    {
+        return Map[fishID]?.SellPrice ?? 0;
+    }
 }
