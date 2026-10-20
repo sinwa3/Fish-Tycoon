@@ -7,7 +7,7 @@ public class CustomerEnterState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO: 등장 연출이 생기면 여기서 시작
+        // TODO : 등장 연출이 생기면 여기서 시작
     }
 
     public override void Update(float deltaTime)

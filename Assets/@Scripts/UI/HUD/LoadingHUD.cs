@@ -30,16 +30,13 @@ public class LoadingHUD : BaseHUD
     {
         Bind<Slider>(typeof(Sliders));
         Bind<TMP_Text>(typeof(Texts));
+        
+        _loadingScene = gameObject.FindParent<LoadingScene>();
     }
 
     protected override void OnStart()
     {
         Get<TMP_Text>(Texts.AlertText).gameObject.SetActive(false);
-
-        if (!Managers.Scene.TryGetCurrentScene(out _loadingScene))
-        {
-            CPrint.Error("[LoadingHUD] 현재 Scene을 찾을 수 없습니다.");
-        }
     }
 
     protected override void OnUpdate()

@@ -7,7 +7,7 @@ public class CustomerEatState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO: 먹는 모습
+        // TODO : 먹는 모습
     }
 
     public override void Update(float deltaTime)

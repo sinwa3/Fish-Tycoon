@@ -14,9 +14,9 @@ public class TitleHUD : BaseHUD
     
     protected override void OnAwake()
     {
-        _titleScene = gameObject.FindParent<TitleScene>();
-        
         Bind<Button>(typeof(Buttons));
+        
+        _titleScene = gameObject.FindParent<TitleScene>();
     }
 
     protected override void OnStart()
