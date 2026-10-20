@@ -10,9 +10,6 @@ public class FishListScroll : BaseVerticalScroll<FishData>
     [SerializeField]
     private FishTooltip _fishTooltip;
 
-    [SerializeField]
-    private FoodListScroll _foodListScroll;
-
     #endregion ===== 참조 =====
 
     #region ===== 상태 =====
@@ -80,6 +77,27 @@ public class FishListScroll : BaseVerticalScroll<FishData>
         int selectedCount = GetSelectedFishCount(fishID);
 
         return Mathf.Max(0, inventoryCount - selectedCount);
+    }
+
+    /// <summary> KDH : 요리에 사용하고 남은 생선 수량을 반환한다. </summary>
+    public IReadOnlyDictionary<int, int> GetRemainingFishCounts()
+    {
+        Dictionary<int, int> remainingFishCounts = new();
+
+        foreach (InventoryFishData inventoryFishData in Managers.Data.GetInventoryFishList())
+        {
+            int selectedCount = GetSelectedFishCount(inventoryFishData.FishID);
+            int remainingCount = inventoryFishData.Count - selectedCount;
+
+            if (remainingCount <= 0)
+            {
+                continue;
+            }
+
+            remainingFishCounts.Add(inventoryFishData.FishID, remainingCount);
+        }
+
+        return remainingFishCounts;
     }
 
     /// <summary> KDH : 요리에 사용할 생선 수량을 증가시킨다. </summary>

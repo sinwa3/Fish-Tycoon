@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -295,31 +296,16 @@ public class DataManager
         return true;
     }
     
-    /// <summary> KDH : 보유한 생선을 지정한 수량만큼 차감한다. </summary>
-    public bool TrySpendFish(int fishID, int count = 1)
+    /// <summary> KDH : 보유한 생선을 전부 초기화한다. </summary>
+    public void ClearFishInventory()
     {
-        if (fishID < 0 || count <= 0)
-        {
-            return false;
-        }
+        _saveData.InvenFish.Clear();
+    }
 
-        InventoryFishData fishData = _saveData.InvenFish.Find(fish => fish.FishID == fishID);
-
-        // 인벤토리에 생선이 없거나 수량이 부족한 경우
-        if (fishData == null || fishData.Count < count)
-        {
-            return false;
-        }
-
-        fishData.Count -= count;
-
-        // 보유 수량이 0이면 인벤토리에서 제거
-        if (fishData.Count == 0)
-        {
-            _saveData.InvenFish.Remove(fishData);
-        }
-
-        return true;
+    /// <summary> KDH : 보유한 생선 목록을 읽기 전용으로 반환한다. </summary>
+    public IReadOnlyList<InventoryFishData> GetInventoryFishList()
+    {
+        return _saveData?.InvenFish;
     }
     
     /// <summary> KDH : ID에 해당하는 생선의 보유 개수를 반환한다. </summary>

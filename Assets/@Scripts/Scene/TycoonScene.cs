@@ -112,6 +112,12 @@ public class TycoonScene : BaseScene
     /// <summary> KDH : 페이즈를 다음 단계로 진행시킨다. </summary>
     public void ChangeCurrentPhase()
     {
+        if (_foodListScroll == null)
+        {
+            CPrint.Warning("[TycoonScene] _foodListScroll is null.");
+            return;
+        }
+        
         switch (_currentPhase)
         {
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
@@ -128,16 +134,16 @@ public class TycoonScene : BaseScene
             
             case Phase.DuringBusiness: // 영업 중 => 영업 후
                 _tycoonHUD.SetStoreInfoVisible(true);
+                
+                Managers.UI.OpenPopup<SettlementPopup>().Set(_dailyMenu, _foodListScroll.FishListScroll);
+                
                 _customerSpawner?.StopBusiness();
                 if (CheckFinalDay())
                 {
                     Managers.UI.OpenScreen<EndScreen>().ShowResult(CheckGameClear());
                     return;
                 }
-
-                Managers.Data.ChangeSavedGameMode(GameMode.Tycoon);
-                Managers.Data.SaveData();
-                Managers.UI.OpenToastMessage("저장되었습니다.");
+                
                 break;
             case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
                 Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene);

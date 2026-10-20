@@ -27,6 +27,8 @@ public class AlertPopup : BasePopup
 
     protected override void OnStart()
     {
+        Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimePopup);
+        
         Get<Button>(Buttons.YesBtn).onClick.AddListener(OnClickYes);
         Get<Button>(Buttons.NoBtn).onClick.AddListener(OnClickNo);
     }
@@ -55,7 +57,7 @@ public class AlertPopup : BasePopup
         Get<Button>(Buttons.NoBtn)?.onClick.RemoveAllListeners();
     }
 
-    /// <summary> 팝업의 내용과 선택 시 실행할 동작을 설정한다. </summary>
+    /// <summary> KDH : 팝업의 내용과 선택 시 실행할 동작을 설정한다. </summary>
     public void Set(string title, string content, bool showCancelButton = false, Action yesAction = null)
     {
         _yesAction = yesAction;
@@ -65,14 +67,14 @@ public class AlertPopup : BasePopup
         Get<Button>(Buttons.NoBtn).gameObject.SetActive(showCancelButton);
     }
 
-    /// <summary> Yes 버튼을 선택했을 때 팝업을 닫고 지정된 동작을 실행한다. </summary>
+    /// <summary> KDH : Yes 버튼을 선택했을 때 팝업을 닫고 지정된 동작을 실행한다. </summary>
     private void OnClickYes()
     {
         Close(() => _yesAction?.Invoke());
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);
     }
 
-    /// <summary> No 버튼을 선택했을 때 팝업을 닫는다. </summary>
+    /// <summary> KDH : No 버튼을 선택했을 때 팝업을 닫는다. </summary>
     private void OnClickNo()
     {
         Close();

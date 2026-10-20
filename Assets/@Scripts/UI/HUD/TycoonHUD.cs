@@ -167,7 +167,7 @@ public class TycoonHUD : BaseHUD
         Get<TMP_Text>(Texts.PhaseText)?.SetText(message);
     }
 
-    /// <summary> KDH : 현재 만족도와 평판 레벨을 업데이트한다. </summary>
+    /// <summary> KDH : 현재 만족도와 평판 등급을 업데이트한다. </summary>
     private void UpdateSatisfactionInfo()
     {
         if (Managers.Table.Reputation == null)

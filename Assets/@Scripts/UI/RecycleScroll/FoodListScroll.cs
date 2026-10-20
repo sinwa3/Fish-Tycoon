@@ -12,6 +12,7 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
 
     [SerializeField]
     private FishListScroll _fishListScroll;
+    public FishListScroll FishListScroll => _fishListScroll;
 
     #endregion ===== 참조 =====
 
@@ -98,7 +99,7 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
 
         if (!CanAddFood)
         {
-            Managers.UI.OpenToastMessage("평판 레벨이 부족하여 음식을 추가할 수 없습니다.");
+            Managers.UI.OpenToastMessage("평판 등급이 부족하여 음식을 추가할 수 없습니다.");
             return;
         }
 
