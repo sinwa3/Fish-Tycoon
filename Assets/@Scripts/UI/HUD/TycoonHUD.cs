@@ -58,6 +58,8 @@ public class TycoonHUD : BaseHUD
 
     private FoodListScroll _foodListScroll;
 
+    private CookingController _cookingController;
+
     #endregion ===== 참조 =====
 
     #region ===== 애니메이션 =====
