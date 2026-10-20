@@ -79,7 +79,7 @@ public class TycoonHUD : BaseHUD
     private Image[] _commandImages;
 
     private const string TycoonSpritePath = "Sprite/Tycoon/";
-    private const string FoodSpritePath = "Sprite/Food/Pixel_Sush_64";
+    private const string FoodSpritePath = "Sprite/Food/Pixel_Sushi_64";
 
     #endregion ==== 조리 커맨드 ====
 
@@ -246,9 +246,9 @@ public class TycoonHUD : BaseHUD
             string sheetName = $"Command_{commands[i]}-Sheet";
             string path = TycoonSpritePath + sheetName;
 
-            _normalSprites[i] = Managers.Resource.LoadSprite(path, commands[i] + "_0");
-            _pressedSprites[i] = Managers.Resource.LoadSprite(path, commands[i] + "_1");
-            _failedSprites[i] = Managers.Resource.LoadSprite(path, commands[i] + "_2");
+            _normalSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_0");
+            _pressedSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_1");
+            _failedSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_2");
         }
 
         Image servingImage = Get<Image>(Images.ServingImage);
