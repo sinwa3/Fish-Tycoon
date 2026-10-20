@@ -60,6 +60,8 @@ public class TycoonScene : BaseScene
             // 영업을 준비한다.
             ReadyBusiness();
         }
+        
+        UpdatePhaseUI();
 
         SubscribeBusinessEvents();
         SubscribeBusinessClosed();
@@ -77,7 +79,7 @@ public class TycoonScene : BaseScene
 
     #region ===== 초기화 =====
 
-    /// <summary> KDH : 저장되어 있는 게임모드를 기준으로 현재 페이즈를 초기화하고 해당 정보를 HUD에 업데이트한다. </summary>
+    /// <summary> KDH : 저장되어 있는 게임모드를 기준으로 현재 페이즈를 초기화한다. </summary>
     private void InitializePhase()
     {
         GameMode gameMode = Managers.Data.GetSavedGameMode();
@@ -88,8 +90,6 @@ public class TycoonScene : BaseScene
             GameMode.Stealth => Phase.BeforeBusiness,
             _ => throw new ArgumentOutOfRangeException()
         };
-
-        UpdatePhaseUI();
     }
 
     /// <summary> KDH : 영업을 위한 데이터를 설정한다. </summary>
@@ -133,6 +133,9 @@ public class TycoonScene : BaseScene
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
                 // 만족도, 소지금 UI를 숨긴다.
                 _tycoonHUD.SetStoreInfoVisible(false);
+                
+                // 영업 진행도를 초기화 한다.
+                _tycoonHUD.InitializeBusinessProgress(_maxCustomerCount);
 
                 // DailyMenu를 선택한 음식 리스트로 초기화한다.
                 _dailyMenu = new DailyMenu();
@@ -186,6 +189,11 @@ public class TycoonScene : BaseScene
     /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>
     private void UpdatePhaseUI()
     {
+        if (_tycoonHUD == null)
+        {
+            return;
+        }
+        
         _tycoonHUD.UpdatePhaseText(_currentPhase);
 
         switch (_currentPhase)
@@ -193,18 +201,21 @@ public class TycoonScene : BaseScene
             case Phase.BeforeBusiness:
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
-
+                _tycoonHUD.SetBusinessProgressVisible(false);
+                
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
                 _tycoonHUD.SetNextBtnVisible(false);
+                _tycoonHUD.SetBusinessProgressVisible(true);
 
                 break;
             case Phase.AfterBusiness:
                 _tycoonHUD.DeactivateFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(true);
-
+                _tycoonHUD.SetBusinessProgressVisible(false);
+                
                 _tycoonBgCtrl.ShowAfter();
                 break;
         }

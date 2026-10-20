@@ -18,7 +18,8 @@ public class TycoonHUD : BaseHUD
 
     public enum Sliders
     {
-        SatisfactionSlider
+        SatisfactionSlider,
+        BusinessProgressSlider,
     }
 
     public enum Buttons
@@ -80,7 +81,11 @@ public class TycoonHUD : BaseHUD
 
     #endregion ==== 조리 커맨드 ====
 
-    private int _count = 0;
+    #region ===== 상태 =====
+    
+    private int _servedCount = 0;
+    
+    #endregion ===== 상태 =====
     
     protected override void OnAwake()
     {
@@ -220,6 +225,16 @@ public class TycoonHUD : BaseHUD
         }
     }
 
+    /// <summary> KDH : 영업 진행도를 초기화한다. </summary>
+    public void InitializeBusinessProgress(int maxCustomerCount)
+    {
+        _servedCount = 0;
+
+        Get<Slider>(Sliders.BusinessProgressSlider).minValue = 0;
+        Get<Slider>(Sliders.BusinessProgressSlider).maxValue = Mathf.Max(1, maxCustomerCount);
+        Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(0);
+    }
+    
     /// <summary>SJY : 커맨드 UI 이미지 배열 초기화</summary>
     private void InitializeCommandImages()
     {
@@ -313,6 +328,13 @@ public class TycoonHUD : BaseHUD
         Get<Slider>(Sliders.SatisfactionSlider)?.SetValueWithoutNotify(progress);
     }
 
+    /// <summary> KDH : 음식 서빙이 완료되면 영업 진행도를 갱신한다. </summary>
+    public void UpdateBusinessProgress()
+    {
+        _servedCount = Mathf.Min(_servedCount + 1, (int)Get<Slider>(Sliders.BusinessProgressSlider).maxValue);
+        Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(_servedCount);
+    }
+    
     #endregion ===== 업데이트 =====
 
     #region ===== 활성화 =====
@@ -328,6 +350,12 @@ public class TycoonHUD : BaseHUD
     {
         Get<Slider>(Sliders.SatisfactionSlider)?.gameObject.SetActive(isVisible);
         Get<Image>(Images.GoldFrameImage)?.gameObject.SetActive(isVisible);
+    }
+    
+    /// <summary> KDH : 영업 진행도를 표시/비표시한다. </summary>
+    public void SetBusinessProgressVisible(bool isVisible)
+    {
+        Get<Slider>(Sliders.BusinessProgressSlider)?.gameObject.SetActive(isVisible);
     }
     
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
@@ -693,7 +721,7 @@ public class TycoonHUD : BaseHUD
             Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
         }
     }
-
+    
     /// <summary>SJY : 조리 커맨드 이벤트 구독</summary>
     private void SubscribeCookingEvents()
     {
@@ -710,6 +738,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandReset += ResetCookingImage;
         _cookingController.OnCookingCompleted += HandleCookingCompleted;
         _cookingController.OnServingFinished += HandleServingFinished;
+        _cookingController.OnServingFinished += UpdateBusinessProgress;
         _cookingController.OnFoodChanged += UpdateFoodImages;
 
         UpdateFoodImages();
@@ -729,6 +758,7 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnCommandReset -= ResetCookingImage;
         _cookingController.OnCookingCompleted -= HandleCookingCompleted;
         _cookingController.OnServingFinished -= HandleServingFinished;
+        _cookingController.OnServingFinished -= UpdateBusinessProgress;
         _cookingController.OnFoodChanged -= UpdateFoodImages;
     }
 
