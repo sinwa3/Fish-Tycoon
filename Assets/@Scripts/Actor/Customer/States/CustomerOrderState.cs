@@ -7,13 +7,13 @@ public class CustomerOrderState : BaseCustomerState
 
     public override void Enter()
     {
-        Customer.Order();
     }
 
     public override void Update(float deltaTime)
     {
         if (StateMachine.StateElapsedTime >= CustomerTempValue.OrderDuration)
         {
+            Customer.Order();
             StateMachine.ChangeState<CustomerWaitState>();
         }
     }

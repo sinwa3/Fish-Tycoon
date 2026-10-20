@@ -44,6 +44,11 @@ public class CustomerController : MonoBehaviour
 
     public int OrderedMenuId => _orderedMenuId;
 
+    // 몇 번째로 주문했는지 (섞은 리스트 번호와 같음), 주문 전이면 -1
+    private int _orderIndex = -1;
+
+    public int OrderIndex => _orderIndex;
+
     #endregion ===== 주문 =====
 
     private void Awake()
@@ -106,6 +111,7 @@ public class CustomerController : MonoBehaviour
         _hasReceivedFood = false;
         _waitTime = 0.0f;
         _orderedMenuId = -1;
+        _orderIndex = -1;
 
         HideOrderBubble();
 
@@ -156,6 +162,7 @@ public class CustomerController : MonoBehaviour
             return;
         }
 
+        _orderIndex = _dailyMenu.OrderedCount;
         _orderedMenuId = _dailyMenu.TakeNextMenu();
 
         if (_orderBubble == null)
@@ -181,7 +188,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 음식 =====
 
-    /// <summary> KYH : 완성된 요리를 받는다. 대기 상태일 때만 받고 결과를 반환한다 </summary>
+    /// <summary> KYH : 완성된 요리를 받는다. 대기 상태일 때만 받고 결과를 반환한다, 요리 쪽은 스포너의 DeliverFood를 쓴다 </summary>
     public bool ReceiveFood()
     {
         if (!_stateMachine.IsCurrentState<CustomerWaitState>())
