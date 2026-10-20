@@ -45,13 +45,16 @@ public class CustomerDebugInput : MonoBehaviour
 #endif
     }
 
-    /// <summary> KYH : 가게 안 손님에게 요리를 준다. 대기 중인 손님만 받고 식사, 결제를 거쳐 나간다 </summary>
+    /// <summary> KYH : 주문한 순서대로 대기 중인 손님에게 요리를 준다. 받은 손님은 식사, 결제를 거쳐 나간다 </summary>
     private void ServeWaitingCustomers()
     {
-        // TODO : 요리 전달 기능이 올라가면 DeliverFood로 바꾼다 (ReceiveFood를 직접 부르면 요리 받는 순서가 꼬인다)
-        foreach (CustomerController customer in _customerSpawner.ActiveCustomers)
+        // 주문했는데 아직 요리를 못 받은 손님이 있을 때만 준다
+        while (_customerSpawner.ServedCount < _customerSpawner.OrderedCount)
         {
-            customer.ReceiveFood();
+            if (!_customerSpawner.DeliverFood())
+            {
+                break;
+            }
         }
     }
 }

@@ -58,10 +58,10 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   maskIgnoreDepth:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   useDepthNormals:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   maskedOutlineThickness:
     m_OverrideState: 1
