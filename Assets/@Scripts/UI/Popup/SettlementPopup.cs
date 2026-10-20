@@ -154,7 +154,7 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : 평판 보너스를 UI에 적용한다. </summary>
     private void SetReputationBonusText()
     {
-        Get<TMP_Text>(Texts.ReputationBonusText).text += $" (x{_bonusMultiplier})";
+        Get<TMP_Text>(Texts.ReputationBonusText).text += $" (음식 판매금 x {Mathf.Max(0, _bonusMultiplier - 1)})";
         Get<TMP_Text>(Texts.ReputationBonusValueText).SetText($"+ {_calculatedReputationBonus:N0}");
     }
 

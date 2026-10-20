@@ -49,6 +49,9 @@ public class CustomerController : MonoBehaviour
 
     public int OrderIndex => _orderIndex;
 
+    /// <summary> KDH : 손님이 주문했을 때 발생한다. </summary>
+    public event Action<int> OnOrdered;
+    
     #endregion ===== 주문 =====
 
     private void Awake()
@@ -165,6 +168,8 @@ public class CustomerController : MonoBehaviour
         _orderIndex = _dailyMenu.OrderedCount;
         _orderedMenuId = _dailyMenu.TakeNextMenu();
 
+        OnOrdered?.Invoke(_dailyMenu.OrderedCount);
+        
         if (_orderBubble == null)
         {
             return;

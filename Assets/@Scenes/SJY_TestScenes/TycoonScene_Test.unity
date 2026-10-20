@@ -2349,6 +2349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tycoonBgCtrl: {fileID: 155037849}
   _foodListScroll: {fileID: 78737609}
+  _customerSpawner: {fileID: 0}
 --- !u!4 &395780524
 Transform:
   m_ObjectHideFlags: 0

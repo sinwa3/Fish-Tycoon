@@ -80,6 +80,8 @@ public class TycoonHUD : BaseHUD
 
     #endregion ==== 조리 커맨드 ====
 
+    private int _count = 0;
+    
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
@@ -89,10 +91,10 @@ public class TycoonHUD : BaseHUD
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
 
-        // SJY : TycoonScene의 자식에서 CookingController 검색
-        if (_tycoonScene != null)
+        // SJY : TycoonScene에서 CookingController를 가져옴
+        if (_tycoonScene?.CookingController != null )
         {
-            _cookingController = _tycoonScene.GetComponentInChildren<CookingController>(true);
+            _cookingController = _tycoonScene?.CookingController;
         }
 
         ResolveFoodDiary();
@@ -133,46 +135,46 @@ public class TycoonHUD : BaseHUD
         {
             Managers.Data.AddSatisfaction(100);
         }
-
-        if (Managers.Input.KeyDown_2)
+        else if (Managers.Input.KeyDown_2)
         {
             Managers.Data.SubtractSatisfaction(100);
         }
-
-        if (Managers.Input.KeyDown_3)
+        else if (Managers.Input.KeyDown_3)
         {
             Managers.Data.AddGold(1000);
         }
-
-        if (Managers.Input.KeyDown_4)
+        else if (Managers.Input.KeyDown_4)
         {
             Managers.Data.TrySpendGold(1000);
         }
-
+        
         // SJY : 조리 중 WASD 커맨드 입력
-        if (_cookingController == null || _cookingController.State != CookingState.Playing || !Managers.Input.CanReceivePlayer)
+        if (_cookingController != null)
         {
-            return;
-        }
+            if (_cookingController.State != CookingState.Playing || !Managers.Input.CanReceivePlayer)
+            {
+                return;
+            }
+            
+            if (Managers.Input.KeyDown_W)
+            {
+                _cookingController.ProcessCommand('W');
+            }
 
-        if (Managers.Input.KeyDown_W)
-        {
-            _cookingController.ProcessCommand('W');
-        }
+            else if (Managers.Input.KeyDown_A)
+            {
+                _cookingController.ProcessCommand('A');
+            }
 
-        else if (Managers.Input.KeyDown_A)
-        {
-            _cookingController.ProcessCommand('A');
-        }
+            else if (Managers.Input.KeyDown_S)
+            {
+                _cookingController.ProcessCommand('S');
+            }
 
-        else if (Managers.Input.KeyDown_S)
-        {
-            _cookingController.ProcessCommand('S');
-        }
-
-        else if (Managers.Input.KeyDown_D)
-        {
-            _cookingController.ProcessCommand('D');
+            else if (Managers.Input.KeyDown_D)
+            {
+                _cookingController.ProcessCommand('D');
+            }
         }
     }
 

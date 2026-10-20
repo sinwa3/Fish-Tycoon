@@ -39,6 +39,9 @@ public class CustomerSpawner : MonoBehaviour
     // 지금까지 주문한 손님 수. 요리는 주문한 만큼만
     public int OrderedCount => _dailyMenu == null ? 0 : _dailyMenu.OrderedCount;
 
+    /// <summary> KDH : 손님이 주문했을 때 해당 이벤트를 호출 </summary>
+    public event Action<int> OnOrderCountChanged;
+    
     /// <summary> KYH : 하루 손님을 다 받고 마지막 손님이 나가면 발행 </summary>
     public event Action OnBusinessClosed;
 
@@ -215,7 +218,9 @@ public class CustomerSpawner : MonoBehaviour
 
             return;
         }
-
+        
+        // KDH : 손님이 주문했을 때 이벤트를 연결한다.
+        customer.OnOrdered += HandleCustomerOrdered;
         customer.OnDespawned += HandleCustomerDespawned;
         _activeCustomers.Add(customer);
 
@@ -280,11 +285,18 @@ public class CustomerSpawner : MonoBehaviour
     /// <summary> KYH : 나간 손님을 목록에서 빼고 영업 종료인지 확인한다 </summary>
     private void HandleCustomerDespawned(CustomerController customer)
     {
+        customer.OnOrdered -= HandleCustomerOrdered;
         customer.OnDespawned -= HandleCustomerDespawned;
         _activeCustomers.Remove(customer);
         CheckBusinessClosed();
     }
 
+    /// <summary> KDH : 손님 주문 시 현재 주문 수를 전달한다. </summary>
+    private void HandleCustomerOrdered(int orderCount)
+    {
+        OnOrderCountChanged?.Invoke(orderCount);
+    }
+    
     #endregion ===== 이벤트 처리 =====
 
     #region ===== 영업 종료 =====

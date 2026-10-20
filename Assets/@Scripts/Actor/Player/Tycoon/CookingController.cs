@@ -227,6 +227,11 @@ public class CookingController : MonoBehaviour
         _state = CookingState.Idle;
 
         OnFoodChanged?.Invoke();
+
+        if (CurrentFoodID.HasValue)
+        {
+            StartCooking();
+        }
     }
 
     /// <summary>SJY : 영업 종료 시 조리 데이터 초기화</summary>
