@@ -30,7 +30,7 @@ public class SettlementPopup : BasePopup
     private float _bonusMultiplier;
     private int _calculatedReputationBonus;
 
-    // 남은 물고기 자동 매각 소득
+    // 남은 생선 자동 매각 소득
     private int _calculatedUnsoldFishSales;
 
     protected override void OnAwake()
@@ -118,7 +118,7 @@ public class SettlementPopup : BasePopup
         _calculatedReputationBonus = Mathf.Max(0, bonusAmount - _calculatedFoodSales);
     }
 
-    /// <summary> KDH : 남은 물고기를 자동 매각하여 계산한다. </summary>
+    /// <summary> KDH : 남은 생선을 자동 매각하여 계산한다. </summary>
     private void CalculateUnsoldFishSales()
     {
         if (_fishListScroll == null || Managers.Table.Fish == null)
