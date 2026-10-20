@@ -107,7 +107,7 @@ public class TableParser<TData> where TData : class, new()
     {
         // br : breakLine
         // c : ,
-        return value.Trim('"').Replace("<br>", "\n").Replace("<c>", ",");
+        return value.Trim().Trim('"').Replace("<br>", "\n").Replace("<c>", ",");
     }
 
     /// <summary> KDH : 문자열 값을 해당하는 타입으로 반환한다. </summary>

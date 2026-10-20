@@ -19,7 +19,8 @@ public class TycoonScene : BaseScene
     public readonly int FinalDay = 7;
 
     private int _maxCustomerCount;
-
+    private float _customerSpawnInterval;
+    
     #endregion ===== 상태 =====
 
     #region ===== 참조 =====
@@ -32,6 +33,10 @@ public class TycoonScene : BaseScene
     [Header("영업 전")]
     [SerializeField] private FoodListScroll _foodListScroll;
 
+    [Header("영업 중")]
+    [SerializeField] private CustomerSpawner _customerSpawner;
+    private DailyMenu _dailyMenu;
+    
     #endregion ===== 참조 =====
 
     protected override void OnAwake()
@@ -46,8 +51,14 @@ public class TycoonScene : BaseScene
     protected override void OnStart()
     {
         InitializePhase();
-        
-        SetMaxSelectableFoodCount();
+
+        if (_currentPhase == Phase.BeforeBusiness) // 영업 전이면
+        {
+            // 영업을 준비한다.
+            ReadyBusiness();
+        }
+
+        SubscribeBusinessClosed();
     }
 
     protected override void OnUpdate()
@@ -71,8 +82,8 @@ public class TycoonScene : BaseScene
         UpdatePhaseUI();
     }
 
-    /// <summary> KDH : 영업 시 최대 선택 가능 요리 수량을 설정한다. </summary>
-    private void SetMaxSelectableFoodCount()
+    /// <summary> KDH : 영업을 위한 데이터를 설정한다. </summary>
+    private void ReadyBusiness()
     {
         if (_foodListScroll == null)
         {
@@ -80,11 +91,20 @@ public class TycoonScene : BaseScene
             return;
         }
 
-        _maxCustomerCount = Managers.Table.Reputation.GetCustomerCount(Managers.Data.GetSatisfaction());
+        if (_customerSpawner == null)
+        {
+            CPrint.Error("[TycoonScene] _customerSpawner is null.");
+            return;
+        }
         
+        // 손님 수 세팅        
+        _maxCustomerCount = Managers.Table.Reputation.GetCustomerCount(Managers.Data.GetSatisfaction());
         _foodListScroll.SetMaxSelectableFoodCount(_maxCustomerCount);
+        
+        // 손님 입장 인터버 세팅
+        _customerSpawnInterval = Managers.Table.Reputation.GetCustomerSpawnInterval(Managers.Data.GetSatisfaction());
     }
-    
+
     #endregion ===== 초기화 =====
     
     #region ===== 업데이트 =====
@@ -94,7 +114,21 @@ public class TycoonScene : BaseScene
     {
         switch (_currentPhase)
         {
+            case Phase.BeforeBusiness: // 영업 전 => 영업 중
+                _tycoonHUD.SetStoreInfoVisible(false);
+                
+                // 음식 리스트에서 세팅한 리스트를 전달한다.
+                _dailyMenu = new DailyMenu();
+                foreach (var variables in _foodListScroll.SelectedFoodCounts)
+                {
+                    _dailyMenu.AddMenu(variables.Key, variables.Value);
+                }
+                _customerSpawner?.StartBusiness(_maxCustomerCount, _customerSpawnInterval, _dailyMenu);
+                break;
+            
             case Phase.DuringBusiness: // 영업 중 => 영업 후
+                _tycoonHUD.SetStoreInfoVisible(true);
+                _customerSpawner?.StopBusiness();
                 if (CheckFinalDay())
                 {
                     Managers.UI.OpenScreen<EndScreen>().ShowResult(CheckGameClear());
@@ -105,7 +139,7 @@ public class TycoonScene : BaseScene
                 Managers.Data.SaveData();
                 Managers.UI.OpenToastMessage("저장되었습니다.");
                 break;
-            case Phase.AfterBusiness: // 잠입 씬 전환
+            case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
                 Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene);
                 break;
         }
@@ -127,16 +161,21 @@ public class TycoonScene : BaseScene
         {
             case Phase.BeforeBusiness:
                 _tycoonHUD.OpenFoodDiary();
+                _tycoonHUD.SetNextBtnVisible(false);
+                
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
+                _tycoonHUD.SetNextBtnVisible(false);
+                
                 break;
             case Phase.AfterBusiness:
                 _tycoonHUD.DeactivateFoodDiary();
+                _tycoonHUD.SetNextBtnVisible(true);
+                
                 _tycoonBgCtrl.ShowAfter();
                 break;
-            
         }
     }
 
@@ -167,4 +206,20 @@ public class TycoonScene : BaseScene
     }
     
     #endregion ===== 체크 =====
+
+    #region ===== 이벤트 =====
+
+    /// <summary> KDH : 영업이 종료됐을시 이벤트를 구독한다. </summary>
+    private void SubscribeBusinessClosed()
+    {
+        _customerSpawner.OnBusinessClosed += ChangeCurrentPhase;
+    }
+
+    /// <summary> KDH : 영업이 종료됐을시 이벤트를 구독해제한다. </summary>
+    private void UnsubscribeBusinessClosed()
+    {
+        _customerSpawner.OnBusinessClosed -= ChangeCurrentPhase;
+    }
+    
+    #endregion ===== 이벤트 =====
 }

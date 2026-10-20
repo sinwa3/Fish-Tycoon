@@ -16,7 +16,7 @@ public abstract class ResourceKey
         public const string SlotUI = UI + "SlotUI/";
         
         public const string ItemSprite = Sprite + "Item/";
-        public const string FishC1Sprite = Sprite + "Fish/Fish_C1_64";
+        public const string FishSprite = Sprite + "Fish/";
         public const string FoodSprite = Sprite + "Food/Pixel_Sushi_64";
     }
 

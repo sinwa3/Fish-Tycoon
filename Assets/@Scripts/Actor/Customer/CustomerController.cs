@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 /// <summary> KYH : 손님 본체. 상태 머신을 돌리고 상태들이 쓰는 기능과 정보를 제공한다 </summary>
@@ -31,8 +31,24 @@ public class CustomerController : MonoBehaviour
 
     #endregion ===== 음식과 대기 =====
 
+    #region ===== 주문 =====
+
+    // 자식 오브젝트의 말풍선. Awake에서 찾아 둔다
+    private CustomerOrderBubble _orderBubble;
+
+    // 스포너가 Spawn 때 넘겨주는 그날 메뉴
+    private DailyMenu _dailyMenu;
+
+    // 주문한 메뉴 ID, 주문 전이면 -1
+    private int _orderedMenuId = -1;
+
+    public int OrderedMenuId => _orderedMenuId;
+
+    #endregion ===== 주문 =====
+
     private void Awake()
     {
+        InitializeComponents();
         InitializeStateMachine();
     }
 
@@ -42,6 +58,17 @@ public class CustomerController : MonoBehaviour
     }
 
     #region ===== 초기화 =====
+
+    /// <summary> KYH : 자식의 주문 말풍선을 찾아 둔다 </summary>
+    private void InitializeComponents()
+    {
+        _orderBubble = GetComponentInChildren<CustomerOrderBubble>(true);
+
+        if (_orderBubble == null)
+        {
+            CPrint.Warning("[CustomerController] 말풍선 없음");
+        }
+    }
 
     /// <summary> KYH : 손님 상태 7개를 상태 머신에 등록한다 </summary>
     private void InitializeStateMachine()
@@ -63,7 +90,7 @@ public class CustomerController : MonoBehaviour
     public event Action<CustomerController> OnDespawned;
 
     /// <summary> KYH : 배정받은 좌석에 손님을 세우고 입장 상태부터 시작한다 </summary>
-    public void Spawn(CustomerSeats customerSeats, int seatIndex)
+    public void Spawn(CustomerSeats customerSeats, int seatIndex, DailyMenu dailyMenu)
     {
         if (customerSeats == null)
         {
@@ -74,8 +101,13 @@ public class CustomerController : MonoBehaviour
 
         _customerSeats = customerSeats;
         _seatIndex = seatIndex;
+        _dailyMenu = dailyMenu;
+
         _hasReceivedFood = false;
         _waitTime = 0.0f;
+        _orderedMenuId = -1;
+
+        HideOrderBubble();
 
         Transform seatTransform = _customerSeats.GetSeat(_seatIndex);
 
@@ -111,6 +143,41 @@ public class CustomerController : MonoBehaviour
     }
 
     #endregion ===== 등장과 퇴장 =====
+
+    #region ===== 주문 처리 =====
+
+    /// <summary> KYH : 그날 메뉴에서 하나를 주문하고 말풍선에 띄운다 (주문 상태에서 호출) </summary>
+    public void Order()
+    {
+        if (_dailyMenu == null)
+        {
+            CPrint.Warning("[CustomerController] 그날 메뉴 없음");
+
+            return;
+        }
+
+        _orderedMenuId = _dailyMenu.TakeNextMenu();
+
+        if (_orderBubble == null)
+        {
+            return;
+        }
+
+        _orderBubble.Show(_orderedMenuId);
+    }
+
+    /// <summary> KYH : 주문 말풍선을 끈다 (대기 상태가 끝날 때 호출) </summary>
+    public void HideOrderBubble()
+    {
+        if (_orderBubble == null)
+        {
+            return;
+        }
+
+        _orderBubble.Hide();
+    }
+
+    #endregion ===== 주문 처리 =====
 
     #region ===== 음식 =====
 
