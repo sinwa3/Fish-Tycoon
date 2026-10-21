@@ -152,6 +152,9 @@ public class TycoonScene : BaseScene
 
                 break;
             case Phase.DuringBusiness: // 영업 중 => 영업 후
+                // 영업 중 받은 만족도를 적용시킨다.
+                Managers.Data.AddSatisfaction(_customerSpawner.DailySatisfaction);
+                
                 // 만족도, 소지금 UI를 보인다.
                 _tycoonHUD.SetStoreInfoVisible(true);
 

@@ -13,8 +13,10 @@
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Customer/Customer.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Customer/Customer.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Actor/Customer/CustomerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Actor/Customer/CustomerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
