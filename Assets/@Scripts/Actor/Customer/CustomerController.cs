@@ -29,7 +29,7 @@ public class CustomerController : MonoBehaviour
     public bool HasReceivedFood => _hasReceivedFood;
     public float WaitTime => _waitTime;
 
-    // 자식 오브젝트의 대기 게이지. Awake에서 찾아 둔다
+    // 자식 오브젝트의 대기 게이지
     private CustomerWaitGauge _waitGauge;
 
     #endregion ===== 음식과 대기 =====
@@ -57,12 +57,12 @@ public class CustomerController : MonoBehaviour
     
     #endregion ===== 주문 =====
 
-    #region ===== 만족도 말풍선 =====
+    #region ===== 만족도 표시 =====
 
-    // 자식 오브젝트의 만족도 말풍선. Awake에서 찾아 둔다
-    private CustomerReactionBubble _reactionBubble;
+    // 자식 오브젝트의 만족도 수치 UI
+    private CustomerSatisfactionUI _satisfactionUI;
 
-    #endregion ===== 만족도 말풍선 =====
+    #endregion ===== 만족도 표시 =====
 
     private void Awake()
     {
@@ -77,12 +77,12 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 만족도 말풍선을 찾아 둔다 </summary>
+    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 만족도 수치 UI를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _orderBubble = GetComponentInChildren<CustomerOrderBubble>(true);
         _waitGauge = GetComponentInChildren<CustomerWaitGauge>(true);
-        _reactionBubble = GetComponentInChildren<CustomerReactionBubble>(true);
+        _satisfactionUI = GetComponentInChildren<CustomerSatisfactionUI>(true);
 
         if (_orderBubble == null)
         {
@@ -94,9 +94,9 @@ public class CustomerController : MonoBehaviour
             CPrint.Warning("[CustomerController] 게이지 없음");
         }
 
-        if (_reactionBubble == null)
+        if (_satisfactionUI == null)
         {
-            CPrint.Warning("[CustomerController] 만족도 말풍선 없음");
+            CPrint.Warning("[CustomerController] 만족도 수치 없음");
         }
     }
 
@@ -140,7 +140,6 @@ public class CustomerController : MonoBehaviour
 
         HideOrderBubble();
         HideWaitGauge();
-        HideReactionBubble();
 
         Transform seatTransform = _customerSeats.GetSeat(_seatIndex);
 
@@ -281,7 +280,7 @@ public class CustomerController : MonoBehaviour
     /// <summary> KYH : 손님이 계산할 때 (만족도). 스포너가 하루 합계에 더하는 용도 </summary>
     public event Action<int> OnPaid;
 
-    /// <summary> KYH : 주문한 음식과 기다린 시간으로 만족도를 계산해 알린다 </summary>
+    /// <summary> KYH : 주문한 음식과 기다린 시간으로 만족도를 계산해 띄우고 알린다 </summary>
     public void Pay()
     {
         if (!TryGetOrderedFood(out FoodData foodData))
@@ -293,7 +292,7 @@ public class CustomerController : MonoBehaviour
         SatisfactionGrade grade = GetSatisfactionGrade(remainingRatio);
         int satisfaction = CalculateSatisfaction(foodData, grade);
 
-        ShowReactionBubble(grade);
+        ShowSatisfaction(satisfaction, grade);
         OnPaid?.Invoke(satisfaction);
     }
 
@@ -363,29 +362,18 @@ public class CustomerController : MonoBehaviour
 
     #endregion ===== 결제 =====
 
-    #region ===== 만족도 말풍선 처리 =====
+    #region ===== 만족도 표시 처리 =====
 
-    /// <summary> KYH : 만족도 말풍선을 켠다 (결제할 때) </summary>
-    private void ShowReactionBubble(SatisfactionGrade grade)
+    /// <summary> KYH : 얻은 만족도와 만족 단계를 손님 위에 띄운다 (결제할 때) </summary>
+    private void ShowSatisfaction(int satisfaction, SatisfactionGrade grade)
     {
-        if (_reactionBubble == null)
+        if (_satisfactionUI == null)
         {
             return;
         }
 
-        _reactionBubble.Show(grade);
+        _satisfactionUI.Play(satisfaction, grade);
     }
 
-    /// <summary> KYH : 만족도 말풍선을 끈다 </summary>
-    private void HideReactionBubble()
-    {
-        if (_reactionBubble == null)
-        {
-            return;
-        }
-
-        _reactionBubble.Hide();
-    }
-
-    #endregion ===== 만족도 말풍선 처리 =====
+    #endregion ===== 만족도 표시 처리 =====
 }
