@@ -1,4 +1,4 @@
-﻿/// <summary> KYH : 좌석을 반납하고 가게를 떠나는 상태 </summary>
+/// <summary> KYH : 좌석을 반납하고 가게를 떠나는 상태 </summary>
 public class CustomerExitState : BaseCustomerState
 {
     public CustomerExitState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
@@ -7,14 +7,18 @@ public class CustomerExitState : BaseCustomerState
 
     public override void Enter()
     {
-        Customer.LeaveSeat();
-        Customer.Despawn();
-        // (퇴장 연출이 생기면 Despawn은 연출이 끝난 뒤 Update에서)
+        Customer.PlayExiting();
     }
 
     public override void Update(float deltaTime)
     {
+        if (!Customer.IsExitAnimationFinished())
+        {
+            return;
+        }
 
+        Customer.LeaveSeat();
+        Customer.Despawn();
     }
 
     public override void Exit()

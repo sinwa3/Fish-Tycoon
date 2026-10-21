@@ -64,6 +64,12 @@ public class CustomerController : MonoBehaviour
 
     #endregion ===== 만족도 표시 =====
 
+    #region ===== 애니메이션 =====
+
+    private Animator _animator;
+    
+    #endregion ===== 애니메이션 =====
+
     private void Awake()
     {
         InitializeComponents();
@@ -77,12 +83,13 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 만족도 수치 UI를 찾아 둔다 </summary>
+    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 만족도 수치 UI, 애니메이터를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _orderBubble = GetComponentInChildren<CustomerOrderBubble>(true);
         _waitGauge = GetComponentInChildren<CustomerWaitGauge>(true);
         _satisfactionUI = GetComponentInChildren<CustomerSatisfactionUI>(true);
+        _animator = GetComponentInChildren<Animator>(true);
 
         if (_orderBubble == null)
         {
@@ -97,6 +104,11 @@ public class CustomerController : MonoBehaviour
         if (_satisfactionUI == null)
         {
             CPrint.Warning("[CustomerController] 만족도 수치 없음");
+        }
+
+        if (_animator == null)
+        {
+            CPrint.Warning("[CustomerController] 애니메이터 없음");
         }
     }
 
@@ -376,4 +388,50 @@ public class CustomerController : MonoBehaviour
     }
 
     #endregion ===== 만족도 표시 처리 =====
+
+    #region ===== 애니메이션 처리 =====
+
+    /// <summary> KYH : 대기 애니메이션을 재생한다 (입장, 결제 상태가 시작될 때 호출) </summary>
+    public void PlayIdle()
+    {
+        PlayAnimation(AnimatorKey.Hash.Idle);
+    }
+
+    /// <summary> KYH : 식사 애니메이션을 재생한다 (식사 상태가 시작될 때 호출) </summary>
+    public void PlayEating()
+    {
+        PlayAnimation(AnimatorKey.Hash.Eating);
+    }
+
+    /// <summary> KYH : 퇴장 애니메이션을 재생한다 (퇴장 상태가 시작될 때 호출) </summary>
+    public void PlayExiting()
+    {
+        PlayAnimation(AnimatorKey.Hash.Exiting);
+    }
+
+    /// <summary> KYH : 퇴장 애니메이션이 끝까지 재생됐는지 확인한다 </summary>
+    public bool IsExitAnimationFinished()
+    {
+        if (_animator == null)
+        {
+            return true;
+        }
+
+        AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
+
+        return info.shortNameHash == AnimatorKey.Hash.Exiting && info.normalizedTime >= 1.0f;
+    }
+
+    /// <summary> KYH : 애니메이터 상태를 처음부터 재생한다 </summary>
+    private void PlayAnimation(int stateHash)
+    {
+        if (_animator == null)
+        {
+            return;
+        }
+
+        _animator.Play(stateHash, 0, 0.0f);
+    }
+
+    #endregion ===== 애니메이션 처리 =====
 }

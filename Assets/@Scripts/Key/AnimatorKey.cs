@@ -31,6 +31,13 @@ public abstract class AnimatorKey
 
     public static class Name
     {
+        #region ===== 손님 =====
+
+        public const string Idle = "Idle";
+        public const string Eating = "Eating";
+        public const string Exiting = "Exiting";
+
+        #endregion ===== 손님 =====
         //public const string Idle = "Idle";
     }
 
@@ -67,6 +74,9 @@ public abstract class AnimatorKey
 
         #region ===== State =====
 
+        public static readonly int Idle = Animator.StringToHash(Name.Idle);
+        public static readonly int Eating = Animator.StringToHash(Name.Eating);
+        public static readonly int Exiting = Animator.StringToHash(Name.Exiting);
         //public static readonly int Idle = Animator.StringToHash(Name.Idle);
 
         #endregion ===== State =====

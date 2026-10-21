@@ -1,4 +1,4 @@
-﻿/// <summary> KYH : 받은 요리를 먹는 상태 </summary>
+/// <summary> KYH : 받은 요리를 먹는 상태 </summary>
 public class CustomerEatState : BaseCustomerState
 {
     public CustomerEatState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
@@ -7,7 +7,7 @@ public class CustomerEatState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO : 먹는 모습
+        Customer.PlayEating();
     }
 
     public override void Update(float deltaTime)
