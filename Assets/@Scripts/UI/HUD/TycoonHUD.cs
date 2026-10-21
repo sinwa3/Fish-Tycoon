@@ -136,21 +136,9 @@ public class TycoonHUD : BaseHUD
     {
         base.OnInputKey();
 
-        if (Managers.Input.KeyDown_1)
+        if (Managers.Input.KeyDown_Esc)
         {
-            Managers.Data.AddSatisfaction(100);
-        }
-        else if (Managers.Input.KeyDown_2)
-        {
-            Managers.Data.SubtractSatisfaction(100);
-        }
-        else if (Managers.Input.KeyDown_3)
-        {
-            Managers.Data.AddGold(1000);
-        }
-        else if (Managers.Input.KeyDown_4)
-        {
-            Managers.Data.TrySpendGold(1000);
+            Managers.UI.OpenPopup<PausePopup>();
         }
         
         // SJY : 조리 중 WASD 커맨드 입력

@@ -332,10 +332,10 @@ public class ToastMessage : BaseOverlay
         tmRectTransforms[itemIndex].gameObject.SetActive(true);
 
         // 해당 위치로 이동 애니메이션을 재생
-        _moveTweens[itemIndex] = tmRectTransforms[itemIndex].DOAnchorPos(position, _showDuration).SetEase(Ease.OutCubic);
+        _moveTweens[itemIndex] = tmRectTransforms[itemIndex].DOAnchorPos(position, _showDuration).SetEase(Ease.OutCubic).SetUpdate(true);
 
         // 생명주기 애니메이션
-        Sequence sequence = DOTween.Sequence();
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
 
         // Fade In + Scale
         sequence.Append(tmCanvasGroups[itemIndex].DOFade(1f, _showDuration).SetEase(Ease.OutQuad));
@@ -358,7 +358,7 @@ public class ToastMessage : BaseOverlay
     {
         // 토스트의 생명주기 Sequence에는 영향을 주지 않으며 위치를 이동시킨다.
         _moveTweens[itemIndex]?.Kill();
-        _moveTweens[itemIndex] = tmRectTransforms[itemIndex].DOAnchorPos(position, _moveDuration).SetEase(Ease.OutCubic);
+        _moveTweens[itemIndex] = tmRectTransforms[itemIndex].DOAnchorPos(position, _moveDuration).SetEase(Ease.OutCubic).SetUpdate(true);
     }
 
     /// <summary> KDH : 토스트 메시지의 표시 시간이 끝났을 때 호출된다. </summary>

@@ -1,4 +1,4 @@
-﻿/// <summary> KYH : 식사를 마치고 값을 치르는 상태 </summary>
+/// <summary> KYH : 식사를 마치고 값을 치르는 상태 </summary>
 public class CustomerPayState : BaseCustomerState
 {
     public CustomerPayState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
@@ -7,7 +7,8 @@ public class CustomerPayState : BaseCustomerState
 
     public override void Enter()
     {
-        // TODO : 결제 처리 (골드, 만족도 연결은 다음 작업)
+        Customer.PlayIdle();
+        Customer.Pay();
     }
 
     public override void Update(float deltaTime)

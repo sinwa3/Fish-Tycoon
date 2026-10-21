@@ -9,11 +9,6 @@ public class StealthHUD : BaseHUD
         PhaseText
     }
     
-    public enum Buttons
-    {
-        NextBtn,
-    }
-    
     #region ===== 참조 =====
 
     private StealthScene _stealthScene;
@@ -23,15 +18,12 @@ public class StealthHUD : BaseHUD
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
-        Bind<Button>(typeof(Buttons));
         
         _stealthScene = gameObject.FindParent<StealthScene>();
     }
 
     protected override void OnStart()
     {
-        InitializeBtnEvent();
-        
         SetCurrentDayText();
         
         SubscribePhaseChanged();
@@ -41,18 +33,26 @@ public class StealthHUD : BaseHUD
     {
     }
 
+    public override void OnInputKey()
+    {
+        base.OnInputKey();
+
+        if (Managers.Input.KeyDown_Esc)
+        {
+            Managers.UI.OpenPopup<PausePopup>();
+        }
+        else if (Managers.Input.KeyDown_E)
+        {
+            _stealthScene?.ChangeCurrentPhase();
+        }
+    }
+
     private void OnDestroy()
     {
         UnsubscribePhaseChanged();
     }
 
     #region ===== 초기화 =====
-    
-    /// <summary> KDH : 버튼 이벤트를 초기화한다. </summary>
-    private void InitializeBtnEvent()
-    {
-        Get<Button>(Buttons.NextBtn).onClick.AddListener(() => _stealthScene?.ChangeCurrentPhase());
-    }
     
     /// <summary> KDH : 잠입 씬 첫 진입시 현재 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()

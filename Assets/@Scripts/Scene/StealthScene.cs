@@ -18,6 +18,8 @@ public class StealthScene : BaseScene
     
     protected override void OnAwake()
     {
+        IsCursorLock = true;
+        
         _stealthHUD = GetComponentInChildren<StealthHUD>(true);
         
         if (_stealthHUD == null)

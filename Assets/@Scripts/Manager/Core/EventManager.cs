@@ -7,6 +7,7 @@ public class EventManager
 
     public event Action OnPlayerArrested;
 
+    public event Action OnPause;
     public event Action OnResume;
 
     #endregion ===== 이벤트 =====
@@ -19,6 +20,12 @@ public class EventManager
         OnPlayerArrested?.Invoke();
     }
 
+    /// <summary> KDH : 게임이 일시정지 되었음을 알린다. </summary>
+    public void RaisePause()
+    {
+        OnPause?.Invoke();
+    }
+    
     /// <summary> KDH : 게임이 일시정지 상태에서 해제되었음을 알린다. </summary>
     public void RaiseResume()
     {
