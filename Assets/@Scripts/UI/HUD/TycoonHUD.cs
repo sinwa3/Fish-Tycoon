@@ -136,6 +136,11 @@ public class TycoonHUD : BaseHUD
     {
         base.OnInputKey();
 
+        if (Managers.Input.KeyDown_Esc)
+        {
+            Managers.UI.OpenPopup<PausePopup>();
+        }
+        
         // SJY : 조리 중 WASD 커맨드 입력
         if (_cookingController != null)
         {

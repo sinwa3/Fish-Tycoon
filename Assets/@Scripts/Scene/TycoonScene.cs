@@ -60,7 +60,7 @@ public class TycoonScene : BaseScene
             // 영업을 준비한다.
             ReadyBusiness();
         }
-        
+
         UpdatePhaseUI();
 
         SubscribeBusinessEvents();
@@ -133,7 +133,7 @@ public class TycoonScene : BaseScene
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
                 // 만족도, 소지금 UI를 숨긴다.
                 _tycoonHUD.SetStoreInfoVisible(false);
-                
+
                 // 영업 진행도를 초기화 한다.
                 _tycoonHUD.InitializeBusinessProgress(_maxCustomerCount);
 
@@ -154,7 +154,7 @@ public class TycoonScene : BaseScene
             case Phase.DuringBusiness: // 영업 중 => 영업 후
                 // 영업 중 받은 만족도를 적용시킨다.
                 Managers.Data.AddSatisfaction(_customerSpawner.DailySatisfaction);
-                
+
                 // 만족도, 소지금 UI를 보인다.
                 _tycoonHUD.SetStoreInfoVisible(true);
 
@@ -164,16 +164,8 @@ public class TycoonScene : BaseScene
                 // 손님 스포너를 종료한다.
                 _customerSpawner.StopBusiness();
 
-                // 마지막 날인 경우에는 게임을 끝낸다.
-                if (CheckFinalDay())
-                {
-                    Managers.UI.OpenScreen<EndScreen>().ShowResult(CheckGameClear());
-                }
-                else
-                {
-                    // 정산 팝업
-                    Managers.UI.OpenPopup<SettlementPopup>().Set(_dailyMenu, _foodListScroll.FishListScroll);
-                }
+                // 정산 팝업 (마지막 날인 경우에는 게임을 끝낸다.)
+                Managers.UI.OpenPopup<SettlementPopup>().Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold);
 
                 break;
             case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
@@ -196,7 +188,7 @@ public class TycoonScene : BaseScene
         {
             return;
         }
-        
+
         _tycoonHUD.UpdatePhaseText(_currentPhase);
 
         switch (_currentPhase)
@@ -205,7 +197,7 @@ public class TycoonScene : BaseScene
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(false);
-                
+
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
             case Phase.DuringBusiness:
@@ -218,7 +210,7 @@ public class TycoonScene : BaseScene
                 _tycoonHUD.DeactivateFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(true);
                 _tycoonHUD.SetBusinessProgressVisible(false);
-                
+
                 _tycoonBgCtrl.ShowAfter();
                 break;
         }
@@ -226,10 +218,10 @@ public class TycoonScene : BaseScene
 
     #endregion ===== 업데이트 =====
 
-    #region ===== 체크 =====
+    #region ===== 상태 =====
 
-    /// <summary> KDH : 마지막 날인지 체크한다.  </summary>
-    private bool CheckFinalDay()
+    /// <summary> KDH : 마지막 날인지 확인한다.  </summary>
+    private bool IsFinalDay()
     {
         if (Managers.Data.GetCurrentDay() >= FinalDay)
         {
@@ -239,18 +231,7 @@ public class TycoonScene : BaseScene
         return false;
     }
 
-    /// <summary> KDH : 게임 클리어 조건에 달성했는지에 따라 종료 스크린을 달리하여 오픈한다. </summary>
-    private bool CheckGameClear()
-    {
-        if (Managers.Data.GetCurrentGold() >= TargetGold)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    #endregion ===== 체크 =====
+    #endregion ===== 상태 =====
 
     #region ===== 이벤트 =====
 

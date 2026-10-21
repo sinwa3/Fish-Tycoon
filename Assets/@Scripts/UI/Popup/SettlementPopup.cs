@@ -32,6 +32,9 @@ public class SettlementPopup : BasePopup
 
     // 남은 생선 자동 매각 소득
     private int _calculatedUnsoldFishSales;
+    
+    private bool _isFinalDay;
+    private int _targetGold;
 
     protected override void OnAwake()
     {
@@ -61,11 +64,13 @@ public class SettlementPopup : BasePopup
     }
 
     /// <summary> KDH : 정산 팝업 호출할 때 반드시 Set을 호출하여 데이터를 설정한다. </summary>
-    public void Set(DailyMenu dailyMenu, FishListScroll fishListScroll)
+    public void Set(DailyMenu dailyMenu, FishListScroll fishListScroll, bool isFinalDay, int targetGold)
     {
         _dailyMenu = dailyMenu;
         _fishListScroll = fishListScroll;
-
+        _isFinalDay = isFinalDay;
+        _targetGold = targetGold;
+        
         CalculateFoodSales();
         Managers.Data.AddGold(_calculatedFoodSales);
 
@@ -82,11 +87,30 @@ public class SettlementPopup : BasePopup
         SetTotalMoneyText();
 
         Managers.Data.AddGold(_calculatedFoodSales + _calculatedReputationBonus + _calculatedUnsoldFishSales);
-        Managers.Data.ChangeSavedGameMode(GameMode.Tycoon);
-        Managers.Data.SaveData();
-        Managers.UI.OpenToastMessage("저장되었습니다.");
+
+        if (!_isFinalDay)
+        {
+            Managers.Data.ChangeSavedGameMode(GameMode.Tycoon);
+            Managers.Data.SaveData();
+            Managers.UI.OpenToastMessage("저장되었습니다.");
+        }
+        else
+        {
+            Managers.UI.OpenToastMessage("마지막 날입니다. 다음으로 진행하시면 결과를 확인할 수 있습니다.");
+        }
     }
 
+    /// <summary> KDH : 게임 클리어 조건에 달성했는지에 따라 종료 스크린을 달리한다. </summary>
+    private bool IsGameClear()
+    {
+        if (Managers.Data.GetCurrentGold() >= _targetGold)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
     #region ===== 계산 =====
 
     /// <summary> KDH : 음식 판매금을 계산한다. </summary>
@@ -154,7 +178,8 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : 평판 보너스를 UI에 적용한다. </summary>
     private void SetReputationBonusText()
     {
-        Get<TMP_Text>(Texts.ReputationBonusText).text += $" (음식 판매금 x {Mathf.Max(0, _bonusMultiplier - 1)})";
+        float multiplier = Mathf.Max(0, _bonusMultiplier - 1);
+        Get<TMP_Text>(Texts.ReputationBonusText).SetText($"평판 보너스\n<size=20>(음식 판매금 x {multiplier})</size>");
         Get<TMP_Text>(Texts.ReputationBonusValueText).SetText($"+ {_calculatedReputationBonus:N0}");
     }
 
@@ -180,7 +205,13 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : Exit 버튼을 선택했을 때 팝업을 닫고 지정된 동작을 실행한다. </summary>
     private void OnClickExit()
     {
-        Close();
+        Close(() =>
+        {
+            if (_isFinalDay)
+            {
+                Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameClear());
+            }
+        });
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);
     }
 

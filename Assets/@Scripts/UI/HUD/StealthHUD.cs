@@ -41,6 +41,16 @@ public class StealthHUD : BaseHUD
     {
     }
 
+    public override void OnInputKey()
+    {
+        base.OnInputKey();
+
+        if (Managers.Input.KeyDown_Esc)
+        {
+            Managers.UI.OpenPopup<PausePopup>();
+        }
+    }
+
     private void OnDestroy()
     {
         UnsubscribePhaseChanged();
