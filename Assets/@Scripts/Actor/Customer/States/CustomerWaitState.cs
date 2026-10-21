@@ -7,10 +7,13 @@ public class CustomerWaitState : BaseCustomerState
 
     public override void Enter()
     {
+        Customer.ShowWaitGauge();
     }
 
     public override void Update(float deltaTime)
     {
+        Customer.UpdateWaitGauge(StateMachine.StateElapsedTime);
+
         if (Customer.HasReceivedFood)
         {
             StateMachine.ChangeState<CustomerEatState>();
@@ -21,5 +24,6 @@ public class CustomerWaitState : BaseCustomerState
     {
         Customer.RecordWaitTime(StateMachine.StateElapsedTime);
         Customer.HideOrderBubble();
+        Customer.HideWaitGauge();
     }
 }

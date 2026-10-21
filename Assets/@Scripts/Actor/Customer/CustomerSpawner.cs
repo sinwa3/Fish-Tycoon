@@ -47,6 +47,15 @@ public class CustomerSpawner : MonoBehaviour
 
     #endregion ===== 영업 =====
 
+    #region ===== 하루 합계 =====
+
+    // 그날 결제한 손님들의 만족도 합계
+    private int _dailySatisfaction;
+
+    public int DailySatisfaction => _dailySatisfaction;
+
+    #endregion ===== 하루 합계 =====
+
     #region ===== 요리 전달 =====
 
     // 지금까지 요리를 받은 손님 수. 다음에 받을 손님의 주문 번호와 같다
@@ -162,6 +171,7 @@ public class CustomerSpawner : MonoBehaviour
 
         _spawnTimer = 0.0f;
         _spawnedCount = 0;
+        _dailySatisfaction = 0;
         _servedCount = 0;
 
         _dailyMenu.ShuffleCandidates(_dailyCustomerCount);
@@ -222,6 +232,7 @@ public class CustomerSpawner : MonoBehaviour
         // KDH : 손님이 주문했을 때 이벤트를 연결한다.
         customer.OnOrdered += HandleCustomerOrdered;
         customer.OnDespawned += HandleCustomerDespawned;
+        customer.OnPaid += HandleCustomerPaid;
         _activeCustomers.Add(customer);
 
         customer.Spawn(_customerSeats, seatIndex, _dailyMenu);
@@ -287,6 +298,8 @@ public class CustomerSpawner : MonoBehaviour
     {
         customer.OnOrdered -= HandleCustomerOrdered;
         customer.OnDespawned -= HandleCustomerDespawned;
+        customer.OnPaid -= HandleCustomerPaid;
+
         _activeCustomers.Remove(customer);
         CheckBusinessClosed();
     }
@@ -297,6 +310,12 @@ public class CustomerSpawner : MonoBehaviour
         OnOrderCountChanged?.Invoke(orderCount);
     }
     
+    /// <summary> KYH : 만족도를 하루 합계에 더한다 </summary>
+    private void HandleCustomerPaid(int satisfaction)
+    {
+        _dailySatisfaction += satisfaction;
+    }
+
     #endregion ===== 이벤트 처리 =====
 
     #region ===== 영업 종료 =====
