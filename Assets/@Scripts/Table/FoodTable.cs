@@ -34,26 +34,49 @@ public class FoodTable : TableLoader<FoodData>
         {
             if (variable.Value.FishID == fishID)
             {
-                return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite, variable.Value.ResourceName);
+                string spriteName = variable.Value.ResourceName;
+                int lastIndex = spriteName.LastIndexOf('_');
+
+                if (lastIndex >= 0)
+                {
+                    spriteName = spriteName.Substring(0, lastIndex);
+                }
+                else
+                {
+                    CPrint.Warning($"[FoodTable] 올바르지 않은 리소스 명입니다. {variable.Value.ResourceName}");
+                    return null;
+                }
+                
+                return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite + spriteName, variable.Value.ResourceName);
             }
         }
 
-        CPrint.Warning($"[FoodTable] {fishID}에 해당하는 Sprite가 존재하지 않는다.");
+        CPrint.Warning($"[FoodTable] FishID({fishID})에 해당하는 Sprite가 존재하지 않는다.");
         return null;
     }
     
     /// <summary> KDH : 음식ID에 해당하는 음식 스프라이트를 가져온다. </summary>
     public Sprite GetSpriteByFoodID(int foodID)
     {
-        foreach (var variable in Map)
+        if (Map.ContainsKey(foodID))
         {
-            if (variable.Value.ID == foodID)
-            {
-                return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite, variable.Value.ResourceName);
-            }
-        }
+            string spriteName = Map[foodID].ResourceName;
+            int lastIndex = spriteName.LastIndexOf('_');
 
-        CPrint.Warning($"[FoodTable] {foodID}에 해당하는 Sprite가 존재하지 않는다.");
+            if (lastIndex >= 0)
+            {
+                spriteName = spriteName.Substring(0, lastIndex);
+            }
+            else
+            {
+                CPrint.Warning($"[FoodTable] 올바르지 않은 리소스 명입니다. {Map[foodID].ResourceName}");
+                return null;
+            }
+            
+            return Managers.Resource.LoadSprite(ResourceKey.Path.FoodSprite + spriteName, Map[foodID].ResourceName);
+        }
+        
+        CPrint.Warning($"[FoodTable] FoodID({foodID})에 해당하는 Sprite가 존재하지 않는다.");
         return null;
     }
 }

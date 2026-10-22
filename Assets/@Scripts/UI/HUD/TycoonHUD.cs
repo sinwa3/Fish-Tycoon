@@ -645,7 +645,7 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        image.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
+        image.sprite = Managers.Table.Food.GetSpriteByFoodID(foodData.ID);
         image.gameObject.SetActive(image.sprite != null);
     }
 
@@ -666,7 +666,7 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        servingFoodImage.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
+        servingFoodImage.sprite = Managers.Table.Food.GetSpriteByFoodID(foodData.ID);
         servingFoodImage.gameObject.SetActive(servingFoodImage.sprite != null);
     }
 

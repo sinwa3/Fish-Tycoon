@@ -52,6 +52,7 @@ public class FishTable : TableLoader<FishData>
             return Managers.Resource.LoadSprite(ResourceKey.Path.FishSprite + spriteName, Map[fishID].ResourceName);
         }
         
+        CPrint.Warning($"[FishTable] FishID({fishID})에 해당하는 Sprite가 존재하지 않는다.");
         return null;
     }
 

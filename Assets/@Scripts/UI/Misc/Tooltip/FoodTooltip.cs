@@ -52,8 +52,15 @@ public class FoodTooltip : BaseTooltip
         }
 
         // 기본 음식인 경우에는 생선 이미지를 표시하지 않는다.
-        Get<Image>(Images.Required).gameObject.SetActive(_foodData.FishID != -1);
-        Get<Image>(Images.FishImage).sprite = Managers.Table.Fish.GetSprite(_foodData.FishID);
+        if (_foodData.FishID == -1)
+        {
+            Get<Image>(Images.Required).gameObject.SetActive(false);
+        }
+        else
+        {
+            Get<Image>(Images.Required).gameObject.SetActive(true);
+            Get<Image>(Images.FishImage).sprite = Managers.Table.Fish.GetSprite(_foodData.FishID);
+        }
         
         Get<TMP_Text>(Texts.FoodNameText).text = _foodData.Name;
         Get<TMP_Text>(Texts.PriceValueText).text = _foodData.Price.ToString("N0");
