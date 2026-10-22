@@ -78,6 +78,7 @@ public class SettlementPopup : BasePopup
         Managers.Data.AddGold(_calculatedReputationBonus);
 
         CalculateUnsoldFishSales();
+        Managers.Data.AddGold(_calculatedUnsoldFishSales);
         Managers.Data.ClearFishInventory();
 
         SetStartingMoneyText();
@@ -85,8 +86,6 @@ public class SettlementPopup : BasePopup
         SetReputationBonusText();
         SetUnsoldFishSalesText();
         SetTotalMoneyText();
-
-        Managers.Data.AddGold(_calculatedFoodSales + _calculatedReputationBonus + _calculatedUnsoldFishSales);
 
         if (!_isFinalDay)
         {
