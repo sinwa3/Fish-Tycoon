@@ -14,6 +14,7 @@ public class FoodTooltip : BaseTooltip
 
     public enum Images
     {
+        Required,
         FishImage,
     }
 
@@ -50,6 +51,8 @@ public class FoodTooltip : BaseTooltip
             return;
         }
 
+        // 기본 음식인 경우에는 생선 이미지를 표시하지 않는다.
+        Get<Image>(Images.Required).gameObject.SetActive(_foodData.FishID != -1);
         Get<Image>(Images.FishImage).sprite = Managers.Table.Fish.GetSprite(_foodData.FishID);
         
         Get<TMP_Text>(Texts.FoodNameText).text = _foodData.Name;

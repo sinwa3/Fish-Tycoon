@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary> KDH : 요리 목록의 생선 슬롯을 관리한다. </summary>
@@ -63,12 +64,14 @@ public class FoodListSlot : BaseRecycleSlot<FoodData>
 
         // 요리 이미지를 표시한다.
         Get<Image>(Images.FoodImage).sprite = Managers.Table.Food.GetSpriteByFishID(data.FishID);
-        
+
         // 생선 보유 여부에 따라 UI를 갱신한다.
         bool hasFish = Managers.Data.GetFishCount(data.FishID) > 0;
 
-        Get<Image>(Images.Dim).gameObject.SetActive(!hasFish);
-        Get<Image>(Images.FoodCountFrame).gameObject.SetActive(hasFish);
+        // 기본 음식이거나 생선을 가지고 있는 경우에는 딤을 표시하지 않는다.
+        Get<Image>(Images.Dim).gameObject.SetActive(!(data.FishID == -1 || hasFish));
+        // 기본 음식이거나 생선을 가지고 있는 경우에는 수량 표시
+        Get<Image>(Images.FoodCountFrame).gameObject.SetActive(data.FishID == -1 || hasFish);
         Get<Button>(Buttons.FoodCountUpBtn).gameObject.SetActive(hasFish);
         Get<Button>(Buttons.FoodCountDownBtn).gameObject.SetActive(hasFish);
 
@@ -86,9 +89,11 @@ public class FoodListSlot : BaseRecycleSlot<FoodData>
             return;
         }
 
-        int selectedCount = _foodListScroll.GetSelectedFoodCount(Data.ID);
+        // 기본음식인 경우
+        int selectableCount = _foodListScroll.MaxSelectableFoodCount - _foodListScroll.CurSelectedFoodCount;
+        int selectedCount = Data.FishID == -1 ? Mathf.Max(0, selectableCount) : _foodListScroll.GetSelectedFoodCount(Data.ID);
 
-        Get<TMP_Text>(Texts.FoodCountText).text = selectedCount.ToString("N0");
+        Get<TMP_Text>(Texts.FoodCountText).SetText(selectedCount.ToString("N0"));
 
         // 해당 생선을 추가로 사용할 수 있는지 확인한다.
         bool hasAvailableFish = _foodListScroll.GetAvailableFishCount(Data.FishID) > 0;

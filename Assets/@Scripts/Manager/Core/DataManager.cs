@@ -263,7 +263,7 @@ public class DataManager
     {
         for (int fishID = 0; fishID < 4; fishID++)
         {
-            if (!TryAddFish(fishID, 3))
+            if (!TryAddFish(fishID, 5))
             {
                 CPrint.Warning($"[DataManager] 튜토리얼 생선 지급 실패. FishID: {fishID}");
                 return;
