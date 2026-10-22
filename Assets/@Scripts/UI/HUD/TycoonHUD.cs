@@ -614,7 +614,7 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "cutting_0");
+        cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "idle");
         cookingImage.gameObject.SetActive(cookingImage.sprite != null);
     }
 
