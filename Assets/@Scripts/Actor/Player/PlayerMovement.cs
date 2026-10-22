@@ -63,6 +63,11 @@ public class PlayerMovement : MonoBehaviour
         InitializeStandShape();
     }
 
+    private void OnDisable()
+    {
+        ResetMoveState();
+    }
+
     private void Update()
     {
         UpdateCrouchInput();
@@ -99,9 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (input == null || !input.CanReceivePlayer)
         {
-            _moveDirection = Vector3.zero;
-            _moveSpeed = 0f;
-            IsRunning = false;
+            ResetMoveState();
 
             return;
         }
@@ -110,6 +113,14 @@ public class PlayerMovement : MonoBehaviour
 
         IsRunning = !IsCrouching && input.Key_LeftShift && _moveDirection.sqrMagnitude > 0f && CanRun();
         _moveSpeed = GetMoveSpeed();
+    }
+
+    /// <summary> YSW : 이동 방향, 속도, 달리기 상태를 초기화한다. </summary>
+    private void ResetMoveState()
+    {
+        _moveDirection = Vector3.zero;
+        _moveSpeed = 0f;
+        IsRunning = false;
     }
 
     /// <summary> YSW : 입력 축 값을 플레이어가 바라보는 방향 기준으로 변환한다. </summary>
