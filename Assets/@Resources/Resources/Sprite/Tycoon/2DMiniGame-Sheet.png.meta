@@ -101,7 +101,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 324
         width: 192
         height: 108
       alignment: 0
@@ -111,7 +111,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a013882cc028a244195a4f8c464b636b
+      spriteID: db74a0b314ec7304b8afe8d14cf20f13
       internalID: 1903262111
       vertices: []
       indices: 
@@ -122,7 +122,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 0
+        y: 324
         width: 192
         height: 108
       alignment: 0
@@ -132,7 +132,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3964317569e153e4fac9cb4846a7347b
+      spriteID: fd47f3f39201d894e88f1c7510d04b1d
       internalID: -1528236098
       vertices: []
       indices: 
@@ -143,7 +143,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 384
-        y: 0
+        y: 324
         width: 192
         height: 108
       alignment: 0
@@ -153,7 +153,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c65b85de665076442bcc6200f4fdb796
+      spriteID: db56810f539bc1f4792a51696263c808
       internalID: 40794927
       vertices: []
       indices: 
@@ -164,7 +164,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 576
-        y: 0
+        y: 324
         width: 192
         height: 108
       alignment: 0
@@ -174,7 +174,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e88a91702b467c4c97cf391951c1908
+      spriteID: ac655cac9addb39478b260d7557579ac
       internalID: -260002321
       vertices: []
       indices: 
@@ -184,8 +184,8 @@ TextureImporter:
       name: wasabi_0
       rect:
         serializedVersion: 2
-        x: 768
-        y: 0
+        x: 0
+        y: 216
         width: 192
         height: 108
       alignment: 0
@@ -195,7 +195,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6424b6e459b3fa9498d89b79bfdff620
+      spriteID: 700e6687328646a4ba9f173459e90e50
       internalID: -1705953883
       vertices: []
       indices: 
@@ -205,8 +205,8 @@ TextureImporter:
       name: wasabi_1
       rect:
         serializedVersion: 2
-        x: 960
-        y: 0
+        x: 192
+        y: 216
         width: 192
         height: 108
       alignment: 0
@@ -216,7 +216,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 58a409e2791cb3043814c49685241085
+      spriteID: 5137feaf7e4008144af263a3c1df2d78
       internalID: -1281759391
       vertices: []
       indices: 
@@ -226,8 +226,8 @@ TextureImporter:
       name: finish_0
       rect:
         serializedVersion: 2
-        x: 1152
-        y: 0
+        x: 384
+        y: 216
         width: 192
         height: 108
       alignment: 0
@@ -237,7 +237,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eec8a117052af4748a8e3af646198d63
+      spriteID: 9ca81e93eee86864587eed80a0299871
       internalID: -24992630
       vertices: []
       indices: 
@@ -247,8 +247,8 @@ TextureImporter:
       name: finish_1
       rect:
         serializedVersion: 2
-        x: 1344
-        y: 0
+        x: 576
+        y: 216
         width: 192
         height: 108
       alignment: 0
@@ -258,7 +258,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6947156b017fa84782825686f09b768
+      spriteID: ec03d3c9057d9f54fa66a9af457805a2
       internalID: 1660635152
       vertices: []
       indices: 
@@ -268,8 +268,8 @@ TextureImporter:
       name: wrongaction
       rect:
         serializedVersion: 2
-        x: 1536
-        y: 0
+        x: 0
+        y: 108
         width: 192
         height: 108
       alignment: 0
@@ -279,8 +279,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e1515f19980a6794d85151002cd90c76
-      internalID: -897028172
+      spriteID: fa946eaad091adf458607fe06be643fb
+      internalID: 1797279937
       vertices: []
       indices: 
       edges: []
@@ -289,8 +289,8 @@ TextureImporter:
       name: serving_0
       rect:
         serializedVersion: 2
-        x: 1728
-        y: 0
+        x: 192
+        y: 108
         width: 192
         height: 108
       alignment: 0
@@ -300,7 +300,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 823eb25b159d21d428da30adf452e7d4
+      spriteID: d0caa5be2416e3a41a871c42fe8d6fdf
       internalID: -245213932
       vertices: []
       indices: 
@@ -310,8 +310,8 @@ TextureImporter:
       name: serving_1
       rect:
         serializedVersion: 2
-        x: 1920
-        y: 0
+        x: 384
+        y: 108
         width: 192
         height: 108
       alignment: 0
@@ -321,7 +321,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 41b0701ddff6cfb43a26e2454ec32cb4
+      spriteID: 193824d12e2b9204b927b6d0f953afb4
       internalID: 968664106
       vertices: []
       indices: 
@@ -331,7 +331,28 @@ TextureImporter:
       name: serving_2
       rect:
         serializedVersion: 2
-        x: 2112
+        x: 576
+        y: 108
+        width: 192
+        height: 108
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 71a07a060c4f27b43ae1650ae8884a89
+      internalID: -1622323625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: idle
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 0
         width: 192
         height: 108
@@ -342,8 +363,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2394da1324ed36b4cbdea53f3d6634e6
-      internalID: -1622323625
+      spriteID: ae4188434610c5345a3364a1afa0278f
+      internalID: -551815147
       vertices: []
       indices: 
       edges: []
@@ -363,6 +384,7 @@ TextureImporter:
       cutting_1: -1528236098
       finish_0: -24992630
       finish_1: 1660635152
+      idle: -551815147
       rice_0: 40794927
       rice_1: -260002321
       serving_0: -245213932
@@ -370,7 +392,7 @@ TextureImporter:
       serving_2: -1622323625
       wasabi_0: -1705953883
       wasabi_1: -1281759391
-      wrongaction: -897028172
+      wrongaction: 1797279937
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
