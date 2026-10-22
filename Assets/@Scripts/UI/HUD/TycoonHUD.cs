@@ -614,7 +614,7 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "cutting_0");
+        cookingImage.sprite = Managers.Resource.LoadSprite(TycoonSpritePath + "2DMiniGame-Sheet", "idle");
         cookingImage.gameObject.SetActive(cookingImage.sprite != null);
     }
 
@@ -645,7 +645,7 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        image.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
+        image.sprite = Managers.Table.Food.GetSpriteByFoodID(foodData.ID);
         image.gameObject.SetActive(image.sprite != null);
     }
 
@@ -666,7 +666,7 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        servingFoodImage.sprite = Managers.Resource.LoadSprite(FoodSpritePath, foodData.ResourceName);
+        servingFoodImage.sprite = Managers.Table.Food.GetSpriteByFoodID(foodData.ID);
         servingFoodImage.gameObject.SetActive(servingFoodImage.sprite != null);
     }
 

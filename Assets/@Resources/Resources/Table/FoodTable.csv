@@ -1,18 +1,18 @@
 ﻿ID,생선 ID,이름,판매 가격,손님 만족도,커맨드,리소스명
-0,-1,김초밥,100,10,"W,W,A,A",Pixel_Sushi_64_70
-1,0,연어 초밥,200,20,"W,W,A,A,S,S",Pixel_Sushi_64_26
-2,1,고등어 초밥,200,20,"A,A,D,D,W,W",Pixel_Sushi_64_7
-3,2,전갱이 초밥,250,25,"W,A,W,A,S,S",Pixel_Sushi_64_37
-4,3,광어 초밥,250,25,"W,A,S,D,W,A",Pixel_Sushi_64_41
-5,4,참돔 초밥,450,50,"W,W,A,S,S,D,W,W",Pixel_Sushi_64_30
-6,5,농어 초밥,450,50,"A,S,D,W,A,S,D,W",Pixel_Sushi_64_39
-7,6,방어 초밥,500,50,"W,A,W,D,S,A,S,D",Pixel_Sushi_64_54
-8,7,참치 초밥,500,50,"W,S,A,D,S,W,D,A",Pixel_Sushi_64_63
-9,8,능성어 초밥,900,100,"W,A,D,S,W,D,A,S",Pixel_Sushi_64_43
-10,9,돌돔 초밥,950,100,"W,S,W,A,D,A,D,S",Pixel_Sushi_64_34
-11,10,다금바리 초밥,1000,100,"W,S,A,D,W,S,D,A",Pixel_Sushi_64_18
-12,11,금태 초밥,1000,100,"W,A,S,D,S,W,D,A",Pixel_Sushi_64_48
-13,12,참다랑어 초밥,1800,200,"W,A,S,D,W,A,S,D,W,A,S,D",Pixel_Sushi_64_0
-14,13,줄가자미 초밥,2000,220,"W,S,A,D,W,S,D,A,W,S,A,D",Pixel_Sushi_64_12
-15,14,돗돔 초밥,2800,300,"W,A,D,S,D,W,S,A,W,D,A,S",Pixel_Sushi_64_9
-16,15,황금 참다랑어 초밥,4000,400,"W,S,A,D,S,W,D,A,W,S,D,A",Pixel_Sushi_64_64
+0,-1,김초밥,100,10,"W,W,A,A",Pixel_Sushi1_64_16
+1,0,연어 초밥,200,20,"W,W,A,A,S,S",Pixel_Sushi1_64_0
+2,1,고등어 초밥,200,20,"A,A,D,D,W,W",Pixel_Sushi1_64_1
+3,2,전갱이 초밥,250,25,"W,A,W,A,S,S",Pixel_Sushi1_64_2
+4,3,광어 초밥,250,25,"W,A,S,D,W,A",Pixel_Sushi1_64_3
+5,4,참돔 초밥,450,50,"W,W,A,S,S,D,W,W",Pixel_Sushi1_64_4
+6,5,농어 초밥,450,50,"A,S,D,W,A,S,D,W",Pixel_Sushi1_64_5
+7,6,방어 초밥,500,50,"W,A,W,D,S,A,S,D",Pixel_Sushi1_64_6
+8,7,참치 초밥,500,50,"W,S,A,D,S,W,D,A",Pixel_Sushi1_64_7
+9,8,능성어 초밥,900,100,"W,A,D,S,W,D,A,S",Pixel_Sushi1_64_8
+10,9,돌돔 초밥,950,100,"W,S,W,A,D,A,D,S",Pixel_Sushi1_64_9
+11,10,헬피쉬밤 초밥,1000,100,"S,W,A,S,W,D,S,W",Pixel_Sushi1_64_10
+12,11,금태 초밥,1000,100,"W,A,S,D,S,W,D,A",Pixel_Sushi1_64_11
+13,12,참다랑어 초밥,1800,200,"W,A,S,D,W,A,S,D,W,A,S,D",Pixel_Sushi1_64_12
+14,13,줄가자미 초밥,2000,220,"W,S,A,D,W,S,D,A,W,S,A,D",Pixel_Sushi1_64_13
+15,14,돗돔 초밥,2800,300,"W,A,D,S,D,W,S,A,W,D,A,S",Pixel_Sushi1_64_14
+16,15,황금 참다랑어 초밥,4000,400,"W,S,A,D,S,W,D,A,W,S,D,A",Pixel_Sushi1_64_15

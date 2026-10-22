@@ -5,6 +5,8 @@ public class CustomerOrderBubble : MonoBehaviour
 {
     // 렌더러만 켜고 끄고
     private SpriteRenderer _iconRenderer;
+    // SJY : 말풍선 배경 렌더러
+    private SpriteRenderer _backgroundRenderer;
 
     private void Awake()
     {
@@ -15,10 +17,17 @@ public class CustomerOrderBubble : MonoBehaviour
     private void InitializeComponents()
     {
         _iconRenderer = GetComponent<SpriteRenderer>();
+        // SJY : 말풍선 렌더러
+        _backgroundRenderer = transform.Find("BubbleBackground")?.GetComponent<SpriteRenderer>();
 
         if (_iconRenderer == null)
         {
             CPrint.Warning("[CustomerOrderBubble] 아이콘 렌더러 없음");
+        }
+
+        if (_backgroundRenderer == null)
+        {
+            CPrint.Warning("[CustomerOrderBubble] 말풍선 배경 렌더러 없음");
         }
     }
 
@@ -48,6 +57,12 @@ public class CustomerOrderBubble : MonoBehaviour
 
         _iconRenderer.sprite = icon;
         _iconRenderer.enabled = true;
+
+        // SJY : 음식 이미지와 함께 말풍선 배경 활성화
+        if (_backgroundRenderer != null)
+        {
+            _backgroundRenderer.enabled = true;
+        }
     }
 
     /// <summary> KYH : 말풍선을 끈다 </summary>
@@ -59,5 +74,11 @@ public class CustomerOrderBubble : MonoBehaviour
         }
 
         _iconRenderer.enabled = false;
+
+        // SJY : 음식 이미지와 함께 말풍선 배경 비활성화
+        if (_backgroundRenderer != null)
+        {
+            _backgroundRenderer.enabled = false;
+        }
     }
 }

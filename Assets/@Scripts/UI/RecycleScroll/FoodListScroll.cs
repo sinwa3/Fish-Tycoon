@@ -24,11 +24,10 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
 
     /// <summary> KDH : 영업 시 선택할 수 있는 최대 요리 수량 </summary>
     private int _maxSelectableFoodCount;
+    public int MaxSelectableFoodCount => _maxSelectableFoodCount;
     /// <summary> KDH : 현재 선택한 요리 수량 </summary>
     private int _curSelectedFoodCount;
-
-    /// <summary> KDH : 요리를 추가로 선택할 수 있는지 반환한다. </summary>
-    private bool CanAddFood => _curSelectedFoodCount < _maxSelectableFoodCount;
+    public int CurSelectedFoodCount => _curSelectedFoodCount;
 
     #endregion ===== 상태 =====
 
@@ -65,12 +64,6 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
 
         foreach (var foodData in Managers.Table.Food.Map)
         {
-            // 생선을 사용하지 않는 음식은 목록에서 제외한다.
-            if (foodData.Value.FishID == -1)
-            {
-                continue;
-            }
-
             DataList.Add(foodData.Value);
         }
     }
@@ -97,7 +90,7 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
             return;
         }
 
-        if (!CanAddFood)
+        if (_curSelectedFoodCount >= _maxSelectableFoodCount)
         {
             Managers.UI.OpenToastMessage("평판 등급이 부족하여 음식을 추가할 수 없습니다.");
             return;

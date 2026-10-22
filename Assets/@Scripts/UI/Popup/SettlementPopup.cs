@@ -71,22 +71,22 @@ public class SettlementPopup : BasePopup
         _isFinalDay = isFinalDay;
         _targetGold = targetGold;
         
+        SetStartingMoneyText();
+        
         CalculateFoodSales();
         Managers.Data.AddGold(_calculatedFoodSales);
+        SetFoodSalesText();
 
         CalculateReputationBonus();
         Managers.Data.AddGold(_calculatedReputationBonus);
+        SetReputationBonusText();
 
         CalculateUnsoldFishSales();
+        Managers.Data.AddGold(_calculatedUnsoldFishSales);
         Managers.Data.ClearFishInventory();
-
-        SetStartingMoneyText();
-        SetFoodSalesText();
-        SetReputationBonusText();
         SetUnsoldFishSalesText();
+        
         SetTotalMoneyText();
-
-        Managers.Data.AddGold(_calculatedFoodSales + _calculatedReputationBonus + _calculatedUnsoldFishSales);
 
         if (!_isFinalDay)
         {
@@ -192,8 +192,7 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : 소득 적용 후 현재 소지금을 UI에 적용한다. </summary>
     private void SetTotalMoneyText()
     {
-        int totalMoney = Managers.Data.GetCurrentGold() + _calculatedFoodSales + _calculatedReputationBonus +
-                         _calculatedUnsoldFishSales;
+        int totalMoney = Managers.Data.GetCurrentGold();
 
         Get<TMP_Text>(Texts.TotalMoneyValueText).SetText(totalMoney.ToString("N0"));
     }
