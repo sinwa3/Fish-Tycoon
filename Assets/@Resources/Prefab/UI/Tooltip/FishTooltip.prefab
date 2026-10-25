@@ -304,10 +304,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _direction: 0
   _offset: {x: -5, y: 0}
-  _duration: 0.2
+  _showDuration: 0.5
+  _hideDuration: 0.2
   _startScaleX: 0.85
-  _showEase: 27
-  _hideEase: 5
+  _showEase: 26
+  _hideEase: 27
 --- !u!1 &6040458942955773089
 GameObject:
   m_ObjectHideFlags: 0
