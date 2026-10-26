@@ -17,7 +17,8 @@ public abstract class BaseTooltip : BaseUI
     [SerializeField] private Vector2 _offset = new Vector2(20f, 0f);
 
     [Header("애니메이션")]
-    [SerializeField] private float _duration = 0.2f;
+    [SerializeField] private float _showDuration = 0.2f;
+    [SerializeField] private float _hideDuration = 0.2f;
     [SerializeField] private float _startScaleX = 0.85f;
     [SerializeField] private Ease _showEase = Ease.OutBack;
     [SerializeField] private Ease _hideEase = Ease.InQuad;
@@ -83,8 +84,8 @@ public abstract class BaseTooltip : BaseUI
 
         _canvasGroup.alpha = 0f;
 
-        _tween = DOTween.Sequence().Join(_rect.DOScale(_defaultScale, _duration).SetEase(_showEase))
-            .Join(_canvasGroup.DOFade(1f, _duration));
+        _tween = DOTween.Sequence().Join(_rect.DOScale(_defaultScale, _showDuration).SetEase(_showEase))
+            .Join(_canvasGroup.DOFade(1f, _showDuration).SetEase(Ease.InCirc));
     }
 
     /// <summary> KDH : 파생 클래스에서 툴팁 내용을 갱신한다. </summary>
@@ -142,8 +143,8 @@ public abstract class BaseTooltip : BaseUI
 
         Vector3 targetScale = new Vector3(_defaultScale.x * _startScaleX, _defaultScale.y, _defaultScale.z);
 
-        _tween = DOTween.Sequence().Join(_rect.DOScale(targetScale, _duration).SetEase(_hideEase))
-            .Join(_canvasGroup.DOFade(0f, _duration))
+        _tween = DOTween.Sequence().Join(_rect.DOScale(targetScale, _hideDuration).SetEase(_hideEase))
+            .Join(_canvasGroup.DOFade(0f, _hideDuration))
             .OnComplete(() =>
             {
                 gameObject.SetActive(false);

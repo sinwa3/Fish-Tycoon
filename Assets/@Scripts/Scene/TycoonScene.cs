@@ -196,6 +196,7 @@ public class TycoonScene : BaseScene
             case Phase.BeforeBusiness:
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
+                _tycoonHUD.SetStoreBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(false);
 
                 _tycoonBgCtrl.ShowBeforeOpening();
@@ -203,12 +204,14 @@ public class TycoonScene : BaseScene
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
                 _tycoonHUD.SetNextBtnVisible(false);
+                _tycoonHUD.SetStoreBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(true);
 
                 break;
             case Phase.AfterBusiness:
                 _tycoonHUD.DeactivateFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(true);
+                _tycoonHUD.SetStoreBtnVisible(true);
                 _tycoonHUD.SetBusinessProgressVisible(false);
 
                 _tycoonBgCtrl.ShowAfter();

@@ -26,6 +26,7 @@ public class TycoonHUD : BaseHUD
     {
         NextBtn,
         StartBusinessBtn,
+        StoreBtn,
     }
 
     public enum Images
@@ -48,6 +49,7 @@ public class TycoonHUD : BaseHUD
         NextFoodImage,
         ServingFoodImage,
         GoldFrameImage,
+        ReputationIcon,
     }
     
     #region ===== 참조 =====
@@ -56,6 +58,8 @@ public class TycoonHUD : BaseHUD
 
     private CanvasGroup _foodDiaryCG;
 
+    private ReputationTooltip _reputationTooltip;
+    
     private CookingController _cookingController;
 
     #endregion ===== 참조 =====
@@ -104,6 +108,7 @@ public class TycoonHUD : BaseHUD
 
         ResolveFoodDiary();
 
+        InitializeReputationTooltip();
         InitializeCookingSprites();
         InitializeCommandImages();
 
@@ -118,6 +123,7 @@ public class TycoonHUD : BaseHUD
 
         SetCurrentDayText();
         SetMainQuestValueText();
+        SetReputationIconHover();
 
         UpdateGoldText();
         UpdateSatisfactionInfo();
@@ -188,6 +194,7 @@ public class TycoonHUD : BaseHUD
     {
         Get<Button>(Buttons.NextBtn).onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
         Get<Button>(Buttons.StartBusinessBtn).onClick.AddListener(CloseFoodDiary);
+        Get<Button>(Buttons.StoreBtn).onClick.AddListener(() => Managers.UI.OpenPopup<StorePopup>());
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
@@ -202,6 +209,13 @@ public class TycoonHUD : BaseHUD
         Get<TMP_Text>(Texts.MainQuestValueText).SetText($"{_tycoonScene.TargetGold:N0}");
     }
 
+    /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>
+    private void SetReputationIconHover()
+    {
+        Get<Image>(Images.ReputationIcon).gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterReputation);
+        Get<Image>(Images.ReputationIcon).gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitReputation);
+    }
+    
     /// <summary> KDH : 음식 메뉴 리스트를 참조한다. </summary>
     private void ResolveFoodDiary()
     {
@@ -221,6 +235,18 @@ public class TycoonHUD : BaseHUD
         Get<Slider>(Sliders.BusinessProgressSlider).minValue = 0;
         Get<Slider>(Sliders.BusinessProgressSlider).maxValue = Mathf.Max(1, maxCustomerCount);
         Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(0);
+    }
+
+    /// <summary> KDH : 평판 툴팁을 초기화한다. </summary>
+    private void InitializeReputationTooltip()
+    {
+        if (_reputationTooltip == null)
+        {
+            _reputationTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(ReputationTooltip),
+                transform).GetComponent<ReputationTooltip>();
+        }
+        
+        _reputationTooltip?.gameObject.SetActive(false);
     }
     
     /// <summary>SJY : 커맨드 UI 이미지 배열 초기화</summary>
@@ -327,10 +353,16 @@ public class TycoonHUD : BaseHUD
 
     #region ===== 활성화 =====
 
-    /// <summary> KDH : 임시버튼 표시/비표시한다. </summary>
+    /// <summary> KDH : 다음 버튼[잠입전환] 표시/비표시한다. </summary>
     public void SetNextBtnVisible(bool visible)
     {
         Get<Button>(Buttons.NextBtn)?.gameObject.SetActive(visible);
+    }
+    
+    /// <summary> KDH : 다음 버튼[잠입전환] 표시/비표시한다. </summary>
+    public void SetStoreBtnVisible(bool visible)
+    {
+        Get<Button>(Buttons.StoreBtn)?.gameObject.SetActive(visible);
     }
     
     /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
@@ -708,6 +740,18 @@ public class TycoonHUD : BaseHUD
         {
             Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
         }
+    }
+    
+    /// <summary> KDH : 마우스가 평판 아이콘에 올라오면 평판 정보를 표시한다. </summary>
+    private void OnPointerEnterReputation()
+    {
+        _reputationTooltip?.Show(Get<TMP_Text>(Texts.ReputationValueText).text, Get<Image>(Images.ReputationIcon).rectTransform);
+    }
+
+    /// <summary> KDH : 마우스가 평판 아이콘에서 벗어나면 평판 정보를 숨긴다. </summary>
+    private void OnPointerExitReputation()
+    {
+        _reputationTooltip?.Hide();
     }
     
     /// <summary>SJY : 조리 커맨드 이벤트 구독</summary>
