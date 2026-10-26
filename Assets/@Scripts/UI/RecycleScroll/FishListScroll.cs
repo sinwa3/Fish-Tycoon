@@ -6,8 +6,6 @@ public class FishListScroll : BaseVerticalScroll<FishData>
 {
     #region ===== 참조 =====
 
-    [Header("참조")]
-    [SerializeField]
     private FishTooltip _fishTooltip;
 
     #endregion ===== 참조 =====
@@ -22,6 +20,10 @@ public class FishListScroll : BaseVerticalScroll<FishData>
     protected override void OnAwake()
     {
         SetDataList();
+
+        _fishTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(FishTooltip), transform)
+            .GetComponent<FishTooltip>();
+        _fishTooltip?.gameObject.SetActive(false);
     }
 
     protected override void OnStart()
