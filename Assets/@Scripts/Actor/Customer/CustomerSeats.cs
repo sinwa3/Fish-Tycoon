@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 /// <summary> KYH : 손님 좌석을 빈 자리 중 무작위로 배정하고 반납받으며 만석 여부를 알린다 </summary>
 public class CustomerSeats : MonoBehaviour
 {

@@ -37,7 +37,7 @@ public class CustomerSpawner : MonoBehaviour
     public IReadOnlyList<int> ShuffledCandidates => _dailyMenu?.ShuffledCandidates ?? Array.Empty<int>();
 
     // 지금까지 주문한 손님 수. 요리는 주문한 만큼만
-    public int OrderedCount => _dailyMenu == null ? 0 : _dailyMenu.OrderedCount;
+    public int OrderedCount => _dailyMenu?.OrderedCount ?? 0;
 
     /// <summary> KDH : 손님이 주문했을 때 해당 이벤트를 호출 </summary>
     public event Action<int> OnOrderCountChanged;
@@ -160,7 +160,7 @@ public class CustomerSpawner : MonoBehaviour
 
         if (spawnInterval <= 0.0f)
         {
-            CPrint.Warning("[CustomerSpawner] 스폰 인터벌이 0 이하");
+            CPrint.Warning("[CustomerSpawner] 입장 간격이 0 이하");
 
             return;
         }
@@ -176,7 +176,7 @@ public class CustomerSpawner : MonoBehaviour
 
         _dailyMenu.ShuffleCandidates(_dailyCustomerCount);
 
-        _isTimerPaused = _customerSeats != null ? _customerSeats.IsFull : false;
+        _isTimerPaused = _customerSeats != null && _customerSeats.IsFull;
         _isOpen = true;
     }
 

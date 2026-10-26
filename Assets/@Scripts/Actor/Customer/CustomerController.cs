@@ -228,7 +228,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 음식 =====
 
-    /// <summary> KYH : 완성된 요리를 받는다. 대기 상태일 때만 받고 결과를 반환한다, 요리 쪽은 스포너의 DeliverFood를 쓴다 </summary>
+    /// <summary> KYH : 대기 상태일 때만 요리를 받고 받으면 true (요리 쪽은 스포너의 DeliverFood로 부른다) </summary>
     public bool ReceiveFood()
     {
         if (!_stateMachine.IsCurrentState<CustomerWaitState>())
