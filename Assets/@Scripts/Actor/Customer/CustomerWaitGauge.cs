@@ -25,8 +25,15 @@ public class CustomerWaitGauge : MonoBehaviour
         _backgroundRenderer = gameObject.FindChild<SpriteRenderer>(BackgroundName);
         _fillRenderer = gameObject.FindChild<SpriteRenderer>(FillName);
 
+        if (_backgroundRenderer == null)
+        {
+            CPrint.Warning($"[CustomerWaitGauge] {BackgroundName} 없음");
+        }
+
         if (_fillRenderer == null)
         {
+            CPrint.Warning($"[CustomerWaitGauge] {FillName} 없음");
+
             return;
         }
 

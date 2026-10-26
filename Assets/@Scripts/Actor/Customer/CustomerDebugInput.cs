@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : (테스트용) Space를 누르면 대기 중인 손님에게 요리를 준 것처럼 처리해 내보낸다. 요리 쪽 연결 전 영업 종료, 정산 확인용, 에디터에서만 동작 </summary>
+/// <summary> KYH : (테스트용) Space를 누르면 대기 중인 손님에게 요리를 준다. 에디터에서만 동작한다 </summary>
 public class CustomerDebugInput : MonoBehaviour
 {
     // 같은 오브젝트의 스포너
