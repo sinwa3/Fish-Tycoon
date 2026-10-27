@@ -113,7 +113,7 @@ public class PlayerLook : MonoBehaviour
         _cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
     }
 
-    /// <summary> YSW : 웅크리기 높이 비율에 맞춰 카메라 높이를 변경한다. </summary>
+    /// <summary> YSW : 웅크리기 높이 비율에 맞춰 카메라 높이를 변경한다. (웅크리며 내려간 플레이어 기준점만큼 보정) </summary>
     private void UpdateEyeHeight()
     {
         if (_cameraPivot == null || _playerMovement == null)
@@ -121,7 +121,7 @@ public class PlayerLook : MonoBehaviour
             return;
         }
 
-        float eyeHeight = _eyeOffset.y * _playerMovement.HeightRatio;
+        float eyeHeight = _eyeOffset.y * _playerMovement.HeightRatio + _playerMovement.CrouchPivotOffset;
 
         _cameraPivot.localPosition = new Vector3(_eyeOffset.x, eyeHeight, _eyeOffset.z);
     }
