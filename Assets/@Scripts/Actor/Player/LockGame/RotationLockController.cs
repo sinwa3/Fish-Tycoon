@@ -5,15 +5,27 @@ using UnityEngine;
 /// <summary>SJY : 회전형 자물쇠 미니게임의 락픽 조작 관리</summary>
 public class RotationLockController : MonoBehaviour
 {
+    [Header("참조")]
     [SerializeField] private Transform _lockpickPivot;
+    [SerializeField] private Transform _lockCylinderPivot;
+    [SerializeField ] private Transform _tensionWrenchPivot;
+
+    [Header("락픽 세팅")]
     [SerializeField] private float _rotationSensitivity = 100f;
     [SerializeField] private float _minAngle = -90f;
     [SerializeField] private float _maxAngle = 90f;
 
+    [Header("키 홀 실린더 세팅")]
+    [SerializeField] private float _cylinderRotationSpeed = 90f;
+    [SerializeField] private float _cylinderReturnSpeed = 180f;
+    [SerializeField] private float _maxCylinderAngle = 90f;
+
     private float _currentAngle;
+    private float _currentCylinderAngle;
     private bool _isPlaying;
 
     public float CurrentAngle => _currentAngle;
+    public float CurrentCylinderAngle => _currentCylinderAngle;
     public bool IsPlaying => _isPlaying;
 
     private void Awake()
@@ -29,7 +41,12 @@ public class RotationLockController : MonoBehaviour
             return;
         }
 
-        UpdateLockpickRotation();
+        UpdateCylinderRotation();
+
+        if (!Managers.Input.Key_D)
+        {
+            UpdateLockpickRotation();
+        }
     }
 
     private void OnDisable()
@@ -40,27 +57,39 @@ public class RotationLockController : MonoBehaviour
         }
     }
 
-    /// <summary>SJY : 락픽 참조를 확인하고 회전 각도와 진행 상태를 초기화</summary>
+    /// <summary>SJY : 필요한 참조를 확인하고 회전 각도와 진행 상태를 초기화</summary>
     private void InitializeComponents()
     {
         if (_lockpickPivot == null)
         {
             CPrint.Warning("[RotationLockController] LockpickPivot이 연결되지 않았습니다.");
-
-            _currentAngle = 0f;
-            _isPlaying = false;
         }
+
+        if (_lockCylinderPivot == null)
+        {
+            CPrint.Warning("[RotationLockController] LockCylinderPivot이 연결되지 않았습니다.");
+        }
+
+        if (_tensionWrenchPivot == null)
+        {
+            CPrint.Warning("[RotationLockController] TensionWrenchPivot이 연결되지 않았습니다.");
+        }
+
+        _currentAngle = 0f;
+        _currentCylinderAngle = 0f;
+        _isPlaying = false;
     }
 
-    /// <summary>SJY : 락픽을 초기화하고 플레이어 입력을 차단한 뒤 미니게임을 시작</summary>
+    /// <summary>SJY : 회전각도를 초기화하고 플레이어 입력을 차단한 뒤 미니게임을 시작</summary>
     public void StartMiniGame()
     {
-        if (_isPlaying || _lockpickPivot == null)
+        if (_isPlaying || _lockpickPivot == null || _lockCylinderPivot == null || _tensionWrenchPivot == null)
         {
             return;
         }
 
         _currentAngle = 0f;
+        _currentCylinderAngle = 0f;
         _isPlaying = true;
 
         Managers.Input.SetInputBlocked(this, true);
@@ -68,6 +97,7 @@ public class RotationLockController : MonoBehaviour
         Managers.Input.ClearKeyAxisValue();
 
         UpdateLockpickTransform();
+        UpdateCylinderTransform();
     }
 
     /// <summary>SJY : 미니게임을 종료하고 플레이어 입력 및 마우스 커서 상태를 복구</summary>
@@ -105,4 +135,28 @@ public class RotationLockController : MonoBehaviour
         _lockpickPivot.localRotation = Quaternion.Euler(0f, 0f, _currentAngle);
     }
 
+    /// <summary>SJY : D키 입력에 따라 실린더를 회전시키거나 원래 위치로 복귀</summary>
+    private void UpdateCylinderRotation()
+    {
+        bool isRotating = Managers.Input.Key_D;
+
+        if (isRotating)
+        {
+            _currentCylinderAngle = Mathf.MoveTowards(_currentCylinderAngle, _maxCylinderAngle, _cylinderRotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            _currentCylinderAngle = Mathf.MoveTowards(_currentCylinderAngle, 0f, _cylinderReturnSpeed * Time.deltaTime);
+        }
+
+        UpdateCylinderTransform();
+    }
+
+    private void UpdateCylinderTransform()
+    {
+        Quaternion rotation = Quaternion.Euler(0f, 0f, _currentCylinderAngle);
+
+        _lockCylinderPivot.localRotation = rotation;
+        _tensionWrenchPivot.localRotation = rotation;
+    }
 }
