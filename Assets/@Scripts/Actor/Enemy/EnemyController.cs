@@ -12,6 +12,13 @@ public class EnemyController : MonoBehaviour
 
     #endregion ===== 상태 =====
 
+    #region ===== 기억 =====
+
+    /// <summary> KYH : 감지 결과를 담는 기억 </summary>
+    public EnemyMemory Memory { get; } = new();
+
+    #endregion ===== 기억 =====
+
     private void Awake()
     {
         InitializeStateMachine();
