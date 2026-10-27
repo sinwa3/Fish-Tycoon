@@ -6,7 +6,13 @@ public class StealthHUD : BaseHUD
     public enum Texts
     {
         CurrentDayText,
-        PhaseText
+        PhaseText,
+        NextBtnText
+    }
+
+    public enum Images
+    {
+        QuickSlotBar
     }
     
     #region ===== 참조 =====
@@ -18,6 +24,7 @@ public class StealthHUD : BaseHUD
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
         
         _stealthScene = gameObject.FindParent<StealthScene>();
     }
@@ -25,8 +32,6 @@ public class StealthHUD : BaseHUD
     protected override void OnStart()
     {
         SetCurrentDayText();
-        
-        SubscribePhaseChanged();
     }
 
     protected override void OnUpdate()
@@ -47,17 +52,12 @@ public class StealthHUD : BaseHUD
         }
     }
 
-    private void OnDestroy()
-    {
-        UnsubscribePhaseChanged();
-    }
-
     #region ===== 초기화 =====
     
     /// <summary> KDH : 잠입 씬 첫 진입시 현재 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
-        Get<TMP_Text>(Texts.CurrentDayText).SetText($"{Managers.Data.GetCurrentDay()}일 차");
+        Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
     }
     
     #endregion ===== 초기화 =====
@@ -67,37 +67,35 @@ public class StealthHUD : BaseHUD
     /// <summary> KDH : 현재 상태를 UI에 업데이트 한다. </summary>
     public void UpdatePhaseText(StealthScene.Phase phase)
     {
-        string message = phase switch
+        string phaseStr = phase switch
         {
             StealthScene.Phase.Playing => "잠입",
             StealthScene.Phase.Settlement => "정산",
             _ => string.Empty
         };
 
-        Get<TMP_Text>(Texts.PhaseText)?.SetText(message);
+        Get<TMP_Text>(Texts.PhaseText)?.SetText(phaseStr);
+        
+        // NextBtnText
+        string nextBtnStr = phase switch
+        {
+            StealthScene.Phase.Playing => "[E] 정산하기",
+            StealthScene.Phase.Settlement => "[E] 다음 날로 이동",
+            _ => string.Empty
+        };
+        
+        Get<TMP_Text>(Texts.NextBtnText)?.SetText(nextBtnStr);
     }
     
     #endregion ===== 업데이트 =====
     
-    #region ===== 이벤트 =====
-    
-    /// <summary> KDH : 페이즈 변경되었을 때 상태 텍스트 변경을 구독 </summary>
-    private void SubscribePhaseChanged()
-    {
-        if (_stealthScene != null)
-        {
-            _stealthScene.OnPhaseChanged += UpdatePhaseText;
-        }
-    }
+    #region ===== 활성화 =====
 
-    /// <summary> KDH : 페이즈 변경되었을 때 상태 텍스트 변경을 구독해제 </summary>
-    private void UnsubscribePhaseChanged()
+    /// <summary> KDH : 퀵슬롯을 표시/비표시한다. </summary>
+    public void SetQuickSlotVisible(bool isVisible)
     {
-        if (_stealthScene != null)
-        {
-            _stealthScene.OnPhaseChanged -= UpdatePhaseText;
-        }
+        Get<Image>(Images.QuickSlotBar)?.gameObject.SetActive(isVisible);
     }
     
-    #endregion ===== 이벤트 =====
+    #endregion ===== 활성화 =====
 }

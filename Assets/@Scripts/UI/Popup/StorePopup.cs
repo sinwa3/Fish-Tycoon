@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary> KDH : 상점 카테고리 전환과 상품 목록 UI를 관리한다. </summary>
@@ -16,13 +17,18 @@ public class StorePopup : BasePopup
         CategoryText,
     }
 
+    #region ===== 참조 =====
+
+    [SerializeField] private StoreEquipRecycleScroll _storeEquipRecycleScroll;
+    [SerializeField] private StoreConsumableRecycleScroll _storeConsumableRecycleScroll;
+
+    #endregion ===== 참조 =====
+    
     #region ===== 상태 =====
 
     private ItemType _currentType = ItemType.Equipment;
 
-    #endregion
-
-    #region ===== 생명주기 =====
+    #endregion ===== 상태 =====
 
     protected override void OnAwake()
     {
@@ -35,6 +41,7 @@ public class StorePopup : BasePopup
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimePopup);
         
         InitializeBtnEvent();
+        
         UpdateCategoryUI();
     }
 
@@ -54,24 +61,22 @@ public class StorePopup : BasePopup
     {
     }
 
-    #endregion
-
     #region ===== 초기화 =====
 
     /// <summary> KDH : 카테고리 전환 버튼 이벤트를 초기화한다. </summary>
     private void InitializeBtnEvent()
     {
-        Get<Button>(Buttons.PrevBtn).onClick.AddListener(() => ChangeCategory(-1));
-        Get<Button>(Buttons.NextBtn).onClick.AddListener(() => ChangeCategory(1));
-        Get<Button>(Buttons.ExitBtn).onClick.AddListener(OnClickExit);
+        Get<Button>(Buttons.PrevBtn)?.onClick.AddListener(ChangeCategory);
+        Get<Button>(Buttons.NextBtn)?.onClick.AddListener(ChangeCategory);
+        Get<Button>(Buttons.ExitBtn)?.onClick.AddListener(OnClickExit);
     }
 
-    #endregion
+    #endregion ===== 초기화 =====
 
-    #region ===== 카테고리 =====
+    #region ===== 업데이트 =====
 
     /// <summary> KDH : 방향에 따라 상점 카테고리를 변경한다. </summary>
-    private void ChangeCategory(int direction)
+    private void ChangeCategory()
     {
         _currentType = _currentType switch
         {
@@ -94,9 +99,12 @@ public class StorePopup : BasePopup
         };
 
         Get<TMP_Text>(Texts.CategoryText)?.SetText(categoryName);
+        
+        _storeEquipRecycleScroll?.gameObject.SetActive(_currentType == ItemType.Equipment);
+        _storeConsumableRecycleScroll?.gameObject.SetActive(_currentType == ItemType.Consumable);
     }
 
-    #endregion
+    #endregion ===== 업데이트 =====
     
     #region ===== 이벤트 =====
 

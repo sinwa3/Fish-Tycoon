@@ -22,13 +22,11 @@ public class TitleScene : BaseScene
                 true, () =>
                 {
                     Managers.Data.DeleteSaveData();
-                    Managers.Data.LoadData();
                     Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
                 });
         }
         else
         {
-            Managers.Data.LoadData();
             Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
         }
     }
@@ -38,7 +36,6 @@ public class TitleScene : BaseScene
     {
         if (Managers.Data.IsSaved)
         {
-            Managers.Data.LoadData();
             Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
         }
     }

@@ -14,6 +14,8 @@ public class ScenesManager : MonoBehaviour
 
     #region ===== 다음 씬 =====
 
+    private SceneType _prevScene = SceneType.None;
+    public SceneType PrevScene => _prevScene;
     private SceneType _nextScene = SceneType.None;
     public SceneType NextScene => _nextScene;
 
@@ -38,6 +40,7 @@ public class ScenesManager : MonoBehaviour
         
         if (_currentScene.Type != SceneType.LoadingScene)
         {
+            _prevScene = SceneType.None;
             _nextScene = SceneType.None;
         }
         
@@ -45,7 +48,7 @@ public class ScenesManager : MonoBehaviour
     }
 
     /// <summary> KDH : 로딩 씬을 거쳐 지정된 씬으로 전환한다. </summary>
-    public void LoadSceneWithLoading(SceneType sceneType)
+    public void LoadSceneWithLoading(SceneType nextScene)
     {
         if (_currentScene == null)
         {
@@ -53,7 +56,10 @@ public class ScenesManager : MonoBehaviour
             return;
         }
 
-        _nextScene = sceneType;
+        _prevScene = _currentScene.Type;
+        CPrint.Log($"LoadSceneWithLoading [PrevScene] : ({_prevScene})");
+        _nextScene = nextScene;
+        CPrint.Log($"LoadSceneWithLoading [NextScene] : ({_nextScene})");
 
         ClearCurrentScene();
 

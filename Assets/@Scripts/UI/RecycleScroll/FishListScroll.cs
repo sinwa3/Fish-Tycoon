@@ -150,6 +150,11 @@ public class FishListScroll : BaseVerticalScroll<FishData>
     {
         foreach (BaseRecycleSlot<FishData> slot in Slots)
         {
+            if (!slot.gameObject.activeSelf)
+            {
+                continue;
+            }
+            
             if (slot is not FishListSlot fishSlot || slot.Data == null)
             {
                 continue;

@@ -161,6 +161,11 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
     {
         foreach (BaseRecycleSlot<FoodData> slot in Slots)
         {
+            if (!slot.gameObject.activeSelf)
+            {
+                continue;
+            }
+            
             if (slot is not FoodListSlot foodSlot || slot.Data == null)
             {
                 continue;
