@@ -80,6 +80,8 @@ public class RotationLockController : MonoBehaviour
         _isPlaying = false;
     }
 
+    #region ==== 미니게임 제어 ====
+
     /// <summary>SJY : 회전각도를 초기화하고 플레이어 입력을 차단한 뒤 미니게임을 시작</summary>
     public void StartMiniGame()
     {
@@ -114,6 +116,10 @@ public class RotationLockController : MonoBehaviour
         Managers.Input.SetCursorLock(false);
     }
 
+    #endregion ==== 미니게임 제어 ====
+
+    #region ==== 락픽 회전 ====
+
     /// <summary>SJY : 마우스 X축 입력을 받아 제한 각도 내에서 락픽의 회전값을 갱신</summary>
     private void UpdateLockpickRotation()
     {
@@ -135,6 +141,10 @@ public class RotationLockController : MonoBehaviour
         _lockpickPivot.localRotation = Quaternion.Euler(0f, 0f, _currentAngle);
     }
 
+    #endregion ==== 락픽 회전 ====
+
+    #region ==== 실린더 회전 ====
+
     /// <summary>SJY : D키 입력에 따라 실린더를 회전시키거나 원래 위치로 복귀</summary>
     private void UpdateCylinderRotation()
     {
@@ -152,6 +162,7 @@ public class RotationLockController : MonoBehaviour
         UpdateCylinderTransform();
     }
 
+    /// <summary>SJY : 현재 실린더 각도를 실린더와 텐션 렌치의 Transform에 적용</summary>
     private void UpdateCylinderTransform()
     {
         Quaternion rotation = Quaternion.Euler(0f, 0f, _currentCylinderAngle);
@@ -159,4 +170,7 @@ public class RotationLockController : MonoBehaviour
         _lockCylinderPivot.localRotation = rotation;
         _tensionWrenchPivot.localRotation = rotation;
     }
+
+    #endregion ==== 실린더 회전 ====
+
 }
