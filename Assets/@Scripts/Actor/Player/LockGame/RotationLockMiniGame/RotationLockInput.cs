@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>SJY : 회전형 자물쇠 미니게임의 락픽 조작 관리</summary>
-public class RotationLockController : MonoBehaviour
+/// <summary>SJY : 회전 보안 게임 입력과 3D 오브젝트 회전 관리</summary>
+public class RotationLockInput : MonoBehaviour
 {
     [Header("참조")]
     [SerializeField] private Transform _lockpickPivot;
     [SerializeField] private Transform _lockCylinderPivot;
-    [SerializeField ] private Transform _tensionWrenchPivot;
+    [SerializeField] private Transform _tensionWrenchPivot;
     [SerializeField] private Transform _lockpickAnchor;
 
     [Header("락픽 세팅")]
@@ -19,49 +19,17 @@ public class RotationLockController : MonoBehaviour
     [Header("키 홀 실린더 세팅")]
     [SerializeField] private float _cylinderRotationSpeed = 90f;
     [SerializeField] private float _cylinderReturnSpeed = 180f;
-    [SerializeField] private float _maxCylinderAngle = 90f;
 
     private float _currentAngle;
     private float _currentCylinderAngle;
-    private bool _isPlaying;
 
     public float CurrentAngle => _currentAngle;
     public float CurrentCylinderAngle => _currentCylinderAngle;
-    public bool IsPlaying => _isPlaying;
 
-    private void Awake()
-    {
-        InitializeComponents();
-    }
+    public bool IsReady => _lockpickPivot != null && _lockpickAnchor != null && _lockCylinderPivot != null && _tensionWrenchPivot != null;
 
-
-    void Update()
-    {
-        if (!_isPlaying)
-        {
-            return;
-        }
-
-        UpdateCylinderRotation();
-
-        if (!Managers.Input.Key_D)
-        {
-            UpdateLockpickRotation();
-        }
-
-        UpdateLockpickTransform();
-    }
-
-    private void OnDisable()
-    {
-        if (_isPlaying)
-        {
-            StopMinigame();
-        }
-    }
-
-    /// <summary>SJY : 필요한 참조를 확인하고 회전 각도와 진행 상태를 초기화</summary>
-    private void InitializeComponents()
+    /// <summary>SJY : 필요한 Transform 참조를 검사하고 회전값을 초기화</summary>
+    public void Initialize()
     {
         if (_lockpickPivot == null)
         {
@@ -83,48 +51,40 @@ public class RotationLockController : MonoBehaviour
             CPrint.Warning("[RotationLockController] LockpickAnchor가 연결되지 않았습니다.");
         }
 
-        _currentAngle = 0f;
-        _currentCylinderAngle = 0f;
-        _isPlaying = false;
+        ResetRotation();
     }
 
-    #region ==== 미니게임 제어 ====
-
-    /// <summary>SJY : 회전각도를 초기화하고 플레이어 입력을 차단한 뒤 미니게임을 시작</summary>
-    public void StartMiniGame()
+    public void ResetRotation()
     {
-        if (_isPlaying || _lockpickPivot == null || _lockpickAnchor == null || _lockCylinderPivot == null || _tensionWrenchPivot == null)
+        _currentAngle = 0f;
+        _currentCylinderAngle = 0f;
+
+        if (!IsReady)
         {
             return;
         }
-
-        _currentAngle = 0f;
-        _currentCylinderAngle = 0f;
-        _isPlaying = true;
-
-        Managers.Input.SetInputBlocked(this, true);
-        Managers.Input.SetCursorLock(true);
-        Managers.Input.ClearKeyAxisValue();
 
         UpdateCylinderTransform();
         UpdateLockpickTransform();
     }
 
-    /// <summary>SJY : 미니게임을 종료하고 플레이어 입력 및 마우스 커서 상태를 복구</summary>
-    public void StopMinigame()
+    /// <summary>SJY : 마우스와 D키 입력을 받아 락픽 및 실린더 회전을 갱신</summary>
+    public void UpdateInput(float maxCylinderAngle)
     {
-        if (!_isPlaying)
+        if (!IsReady)
         {
             return;
         }
 
-        _isPlaying = false;
+        UpdateCylinderRotation(maxCylinderAngle);
 
-        Managers.Input.SetInputBlocked(this, false);
-        Managers.Input.SetCursorLock(false);
+        if (!Managers.Input.Key_D)
+        {
+            UpdateLockpickRotation();
+        }
+
+        UpdateLockpickTransform();
     }
-
-    #endregion ==== 미니게임 제어 ====
 
     #region ==== 락픽 회전 ====
 
@@ -153,13 +113,13 @@ public class RotationLockController : MonoBehaviour
     #region ==== 실린더 회전 ====
 
     /// <summary>SJY : D키 입력에 따라 실린더를 회전시키거나 원래 위치로 복귀</summary>
-    private void UpdateCylinderRotation()
+    private void UpdateCylinderRotation(float maxCylinderAngle)
     {
         bool isRotating = Managers.Input.Key_D;
 
         if (isRotating)
         {
-            _currentCylinderAngle = Mathf.MoveTowards(_currentCylinderAngle, _maxCylinderAngle, _cylinderRotationSpeed * Time.deltaTime);
+            _currentCylinderAngle = Mathf.MoveTowards(_currentCylinderAngle, maxCylinderAngle, _cylinderRotationSpeed * Time.deltaTime);
         }
         else
         {
@@ -179,5 +139,4 @@ public class RotationLockController : MonoBehaviour
     }
 
     #endregion ==== 실린더 회전 ====
-
 }
