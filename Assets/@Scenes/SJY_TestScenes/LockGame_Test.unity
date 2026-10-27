@@ -258,6 +258,7 @@ Transform:
   m_Children:
   - {fileID: 2092599996}
   - {fileID: 562011142}
+  - {fileID: 1069530862}
   m_Father: {fileID: 1189247687}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &898332653
@@ -365,6 +366,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898332653}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1069530861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1069530862}
+  m_Layer: 0
+  m_Name: LockPickAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1069530862
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069530861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: -0.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 863880831}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1189247686
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,9 +460,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lockpickPivot: {fileID: 1562895913}
+  _lockCylinderPivot: {fileID: 863880831}
+  _tensionWrenchPivot: {fileID: 1783737140}
+  _lockpickAnchor: {fileID: 1069530862}
   _rotationSensitivity: 200
   _minAngle: -90
   _maxAngle: 90
+  _cylinderRotationSpeed: 90
+  _cylinderReturnSpeed: 180
+  _maxCylinderAngle: -90
 --- !u!1 &1215306816
 GameObject:
   m_ObjectHideFlags: 0

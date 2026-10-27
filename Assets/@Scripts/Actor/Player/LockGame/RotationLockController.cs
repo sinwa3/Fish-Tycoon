@@ -9,6 +9,7 @@ public class RotationLockController : MonoBehaviour
     [SerializeField] private Transform _lockpickPivot;
     [SerializeField] private Transform _lockCylinderPivot;
     [SerializeField ] private Transform _tensionWrenchPivot;
+    [SerializeField] private Transform _lockpickAnchor;
 
     [Header("락픽 세팅")]
     [SerializeField] private float _rotationSensitivity = 100f;
@@ -47,6 +48,8 @@ public class RotationLockController : MonoBehaviour
         {
             UpdateLockpickRotation();
         }
+
+        UpdateLockpickTransform();
     }
 
     private void OnDisable()
@@ -75,6 +78,11 @@ public class RotationLockController : MonoBehaviour
             CPrint.Warning("[RotationLockController] TensionWrenchPivot이 연결되지 않았습니다.");
         }
 
+        if (_lockpickAnchor == null)
+        {
+            CPrint.Warning("[RotationLockController] LockpickAnchor가 연결되지 않았습니다.");
+        }
+
         _currentAngle = 0f;
         _currentCylinderAngle = 0f;
         _isPlaying = false;
@@ -85,7 +93,7 @@ public class RotationLockController : MonoBehaviour
     /// <summary>SJY : 회전각도를 초기화하고 플레이어 입력을 차단한 뒤 미니게임을 시작</summary>
     public void StartMiniGame()
     {
-        if (_isPlaying || _lockpickPivot == null || _lockCylinderPivot == null || _tensionWrenchPivot == null)
+        if (_isPlaying || _lockpickPivot == null || _lockpickAnchor == null || _lockCylinderPivot == null || _tensionWrenchPivot == null)
         {
             return;
         }
@@ -98,8 +106,8 @@ public class RotationLockController : MonoBehaviour
         Managers.Input.SetCursorLock(true);
         Managers.Input.ClearKeyAxisValue();
 
-        UpdateLockpickTransform();
         UpdateCylinderTransform();
+        UpdateLockpickTransform();
     }
 
     /// <summary>SJY : 미니게임을 종료하고 플레이어 입력 및 마우스 커서 상태를 복구</summary>
@@ -131,13 +139,12 @@ public class RotationLockController : MonoBehaviour
         }
 
         _currentAngle = Mathf.Clamp(_currentAngle - mouseX * _rotationSensitivity * Time.deltaTime, _minAngle, _maxAngle);
-
-        UpdateLockpickTransform();
     }
 
     /// <summary>SJY : 현재 회전 각도를 락픽의 Transform에 적용</summary>
     private void UpdateLockpickTransform()
     {
+        _lockpickPivot.position = _lockpickAnchor.position;
         _lockpickPivot.localRotation = Quaternion.Euler(0f, 0f, _currentAngle);
     }
 
