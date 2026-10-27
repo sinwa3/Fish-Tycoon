@@ -21,6 +21,8 @@ public class TycoonScene : BaseScene
     private int _maxCustomerCount;
     private float _customerSpawnInterval;
 
+    public int ServedCount { get; set; }
+    
     #endregion ===== 상태 =====
 
     #region ===== 참조 =====

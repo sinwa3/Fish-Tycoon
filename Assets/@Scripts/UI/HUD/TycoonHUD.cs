@@ -87,12 +87,6 @@ public class TycoonHUD : BaseHUD
 
     #endregion ==== 조리 커맨드 ====
 
-    #region ===== 상태 =====
-    
-    private int _servedCount;
-    
-    #endregion ===== 상태 =====
-    
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
@@ -232,8 +226,6 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 영업 진행도를 초기화한다. </summary>
     public void InitializeBusinessProgress(int maxCustomerCount)
     {
-        _servedCount = 0;
-
         Slider businessProgressSlider = Get<Slider>(Sliders.BusinessProgressSlider);
 
         if (businessProgressSlider != null)
@@ -349,12 +341,17 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 음식 서빙이 완료되면 영업 진행도를 갱신한다. </summary>
     public void UpdateBusinessProgress()
     {
+        if (_tycoonScene == null)
+        {
+            return;
+        }
+        
         Slider businessProgressSlider = Get<Slider>(Sliders.BusinessProgressSlider);
 
         if (businessProgressSlider != null)
         {
-            _servedCount = Mathf.Min(_servedCount + 1, (int)businessProgressSlider.maxValue);
-            businessProgressSlider.SetValueWithoutNotify(_servedCount);
+            _tycoonScene.ServedCount = Mathf.Min(_tycoonScene.ServedCount + 1, (int)businessProgressSlider.maxValue);
+            businessProgressSlider.SetValueWithoutNotify(_tycoonScene.ServedCount);
         }
     }
     
