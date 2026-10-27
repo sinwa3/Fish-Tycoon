@@ -10,52 +10,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/EquipmentData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/EquipmentData.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/QuickSlotData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/QuickSlotData.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/EquipmentType.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/EquipmentType.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/QuickSlotItemType.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Enum/QuickSlotItemType.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/PopupUI/SettlementPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/PopupUI/SettlementPopup.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/PopupUI/StorePopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/PopupUI/StorePopup.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/SlotUI/SlotUI" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/SlotUI/SlotUI.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Sprite/Item/Item" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Sprite/Item/Item.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/ItemTable.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/ItemTable.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/ShopTable.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/ShopTable.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Item/Item.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Item/Item.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/ScenesManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/ScenesManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SoundManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/LoadingScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/LoadingScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TitleScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TitleScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/ItemTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/ItemTable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/ShopTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/ShopTable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/QuickBar.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/QuickBar.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/Tooltip/BaseTooltip.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/Tooltip/BaseTooltip.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/SettlementPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/SettlementPopup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/StorePopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/StorePopup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FishListScroll.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FishListScroll.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FoodListScroll.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FoodListScroll.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
-    </list>
+    <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
