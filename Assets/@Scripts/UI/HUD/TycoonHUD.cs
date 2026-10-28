@@ -242,10 +242,10 @@ public class TycoonHUD : BaseHUD
         if (_reputationTooltip == null)
         {
             _reputationTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(ReputationTooltip),
-                transform).GetComponent<ReputationTooltip>();
+                transform).gameObject.GetOrAddComponent<ReputationTooltip>();
         }
         
-        _reputationTooltip?.gameObject.SetActive(false);
+        _reputationTooltip.gameObject.SetActive(false);
     }
     
     /// <summary>SJY : 커맨드 UI 이미지 배열 초기화</summary>

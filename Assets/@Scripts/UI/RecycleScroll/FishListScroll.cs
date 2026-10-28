@@ -22,8 +22,8 @@ public class FishListScroll : BaseVerticalScroll<FishData>
         SetDataList();
 
         _fishTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(FishTooltip), transform)
-            .GetComponent<FishTooltip>();
-        _fishTooltip?.gameObject.SetActive(false);
+            .gameObject.GetOrAddComponent<FishTooltip>();
+        _fishTooltip.gameObject.SetActive(false);
     }
 
     protected override void OnStart()

@@ -17,6 +17,8 @@ public class QuickSlot : SlotUI
 
     private int _slotIndex = -1;
 
+    private ItemTooltip _itemTooltip;
+    
     private void Awake()
     {
         Bind<Image>(typeof(Images));
@@ -62,8 +64,17 @@ public class QuickSlot : SlotUI
         }
 
         Get<TMP_Text>(Texts.CountText)?.SetText(slotData.Count.ToString());
+        
+        // 툴팁 표시 이벤트를 연결한다.
+        SubscribeItemTooltip();
     }
 
+    /// <summary> KDH : 툴팁을 연결한다. </summary>
+    public void SetTooltip(ItemTooltip tooltip)
+    {
+        _itemTooltip = tooltip;
+    }
+    
     /// <summary> KDH : 퀵슬롯 인덱스를 설정하고 UI를 갱신한다. </summary>
     public void SetSlotIndex(int slotIndex)
     {
@@ -104,4 +115,29 @@ public class QuickSlot : SlotUI
 
         Get<TMP_Text>(Texts.CountText)?.SetText(string.Empty);
     }
+    
+    #region ===== 이벤트 =====
+    
+    /// <summary> KDH : 툴팁 표시 이벤트를 연결한다. </summary>
+    private void SubscribeItemTooltip()
+    {
+        gameObject.ClearEvent();
+
+        gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterItem);
+        gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitItem);
+    }
+    
+    /// <summary> KDH : 마우스가 아이템 아이콘에 올라오면 아이템 정보를 표시한다. </summary>
+    private void OnPointerEnterItem()
+    {
+        _itemTooltip?.Show(Managers.Data.GetQuickSlot(_slotIndex), transform as RectTransform);
+    }
+
+    /// <summary> KDH : 마우스가 평판 아이콘에서 벗어나면 아이템 정보를 숨긴다. </summary>
+    private void OnPointerExitItem()
+    {
+        _itemTooltip?.Hide();
+    }
+    
+    #endregion ===== 이벤트 =====
 }

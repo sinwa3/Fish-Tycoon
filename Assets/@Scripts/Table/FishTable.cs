@@ -56,8 +56,26 @@ public class FishTable : TableLoader<FishData>
         return null;
     }
 
+    /// <summary> KDH : 생선ID에 해당하는 가격정보를 가져온다. </summary>
     public int GetSellPrice(int fishID)
     {
         return Map[fishID]?.SellPrice ?? 0;
+    }
+    
+    /// <summary> KDH : 생선ID에 해당하는 생선정보를 가져온다. </summary>
+    public FishData GetFish(int fishID)
+    {
+        if (fishID < 0)
+        {
+            return null;
+        }
+        
+        if (Map.TryGetValue(fishID, out FishData data))
+        {
+            return data;
+        }
+
+        CPrint.Warning($"[FishTable] ID({fishID}) not found!");
+        return null;
     }
 }

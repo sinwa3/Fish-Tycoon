@@ -50,6 +50,14 @@ public class StealthHUD : BaseHUD
         {
             _stealthScene?.ChangeCurrentPhase();
         }
+        else if (Managers.Input.MouseDown_Wheel)
+        {
+            Managers.Input.SetCursorLock(false);
+        }
+        else if (Managers.Input.MouseDown_Left)
+        {
+            Managers.Input.SetCursorLock(true);
+        }
     }
 
     #region ===== 초기화 =====
