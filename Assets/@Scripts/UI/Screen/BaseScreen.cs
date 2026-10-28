@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary> KDH : 화면 단위 UI의 공통 초기화, 입력 처리 및 닫기 기능을 제공하는 기본 클래스다. </summary>
+/// <summary> KDH : 화면 단위 UI의 초기화, 입력 처리 및 닫기 기능을 제공하는 기본 클래스다. </summary>
 [RequireComponent(typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster))]
 public abstract class BaseScreen : BaseUI
 {

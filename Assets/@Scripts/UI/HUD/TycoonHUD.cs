@@ -48,8 +48,11 @@ public class TycoonHUD : BaseHUD
         CurrentFoodImage,
         NextFoodImage,
         ServingFoodImage,
+        
         GoldFrameImage,
         ReputationIcon,
+        
+        QuickSlotBar
     }
     
     #region ===== 참조 =====
@@ -81,22 +84,15 @@ public class TycoonHUD : BaseHUD
     private Image[] _commandImages;
 
     private const string TycoonSpritePath = "Sprite/Tycoon/";
-    private const string FoodSpritePath = "Sprite/Food/Pixel_Sushi_64";
 
     #endregion ==== 조리 커맨드 ====
 
-    #region ===== 상태 =====
-    
-    private int _servedCount = 0;
-    
-    #endregion ===== 상태 =====
-    
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
         Bind<Button>(typeof(Buttons));
-        Bind<Image>(typeof(Images));    
+        Bind<Image>(typeof(Images));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
 
@@ -192,28 +188,28 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 버튼 이벤트를 초기화한다. </summary>
     private void InitializeBtnEvent()
     {
-        Get<Button>(Buttons.NextBtn).onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
-        Get<Button>(Buttons.StartBusinessBtn).onClick.AddListener(CloseFoodDiary);
-        Get<Button>(Buttons.StoreBtn).onClick.AddListener(() => Managers.UI.OpenPopup<StorePopup>());
+        Get<Button>(Buttons.NextBtn)?.onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
+        Get<Button>(Buttons.StartBusinessBtn)?.onClick.AddListener(CloseFoodDiary);
+        Get<Button>(Buttons.StoreBtn)?.onClick.AddListener(() => Managers.UI.OpenPopup<StorePopup>());
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
-        Get<TMP_Text>(Texts.CurrentDayText).SetText($"{Managers.Data.GetCurrentDay()}일 차");
+        Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
     private void SetMainQuestValueText()
     {
-        Get<TMP_Text>(Texts.MainQuestValueText).SetText($"{_tycoonScene.TargetGold:N0}");
+        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{_tycoonScene.TargetGold:N0} G");
     }
 
     /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>
     private void SetReputationIconHover()
     {
-        Get<Image>(Images.ReputationIcon).gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterReputation);
-        Get<Image>(Images.ReputationIcon).gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitReputation);
+        Get<Image>(Images.ReputationIcon)?.gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterReputation);
+        Get<Image>(Images.ReputationIcon)?.gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitReputation);
     }
     
     /// <summary> KDH : 음식 메뉴 리스트를 참조한다. </summary>
@@ -230,11 +226,14 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 영업 진행도를 초기화한다. </summary>
     public void InitializeBusinessProgress(int maxCustomerCount)
     {
-        _servedCount = 0;
+        Slider businessProgressSlider = Get<Slider>(Sliders.BusinessProgressSlider);
 
-        Get<Slider>(Sliders.BusinessProgressSlider).minValue = 0;
-        Get<Slider>(Sliders.BusinessProgressSlider).maxValue = Mathf.Max(1, maxCustomerCount);
-        Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(0);
+        if (businessProgressSlider != null)
+        {
+            businessProgressSlider.minValue = 0;
+            businessProgressSlider.maxValue = Mathf.Max(1, maxCustomerCount);
+            businessProgressSlider.SetValueWithoutNotify(0);
+        }
     }
 
     /// <summary> KDH : 평판 툴팁을 초기화한다. </summary>
@@ -243,10 +242,10 @@ public class TycoonHUD : BaseHUD
         if (_reputationTooltip == null)
         {
             _reputationTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(ReputationTooltip),
-                transform).GetComponent<ReputationTooltip>();
+                transform).gameObject.GetOrAddComponent<ReputationTooltip>();
         }
         
-        _reputationTooltip?.gameObject.SetActive(false);
+        _reputationTooltip.gameObject.SetActive(false);
     }
     
     /// <summary>SJY : 커맨드 UI 이미지 배열 초기화</summary>
@@ -294,7 +293,7 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 현재 골드 값을 UI에 업데이트 한다. </summary>
     private void UpdateGoldText()
     {
-        Get<TMP_Text>(Texts.GoldValueText)?.SetText(Managers.Data.GetCurrentGold().ToString("N0"));
+        Get<TMP_Text>(Texts.GoldValueText)?.SetText($"{Managers.Data.GetCurrentGold():N0} G");
     }
 
     /// <summary> KDH : 현재 영업 상태를 UI에 업데이트 한다. </summary>
@@ -323,8 +322,7 @@ public class TycoonHUD : BaseHUD
         var info = Managers.Data.GetReputationInfo();
 
         Get<TMP_Text>(Texts.ReputationValueText)?.SetText(info.reputationGrade.ToString("N0"));
-        Get<TMP_Text>(Texts.SatisfactionValueText)
-            ?.SetText($"{info.currentSatisfaction:N0} / {info.requiredSatisfaction:N0}");
+        Get<TMP_Text>(Texts.SatisfactionValueText)?.SetText($"{info.currentSatisfaction:N0} / {info.requiredSatisfaction:N0}");
 
         bool isMaxGrade = Managers.Table.Reputation.IsMaxReputationGrade(info.reputationGrade);
 
@@ -336,17 +334,25 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        float progress = info.requiredSatisfaction > 0
-            ? (float)info.currentSatisfaction / info.requiredSatisfaction
-            : 0f;
+        float progress = info.requiredSatisfaction > 0 ? (float)info.currentSatisfaction / info.requiredSatisfaction : 0f;
         Get<Slider>(Sliders.SatisfactionSlider)?.SetValueWithoutNotify(progress);
     }
 
     /// <summary> KDH : 음식 서빙이 완료되면 영업 진행도를 갱신한다. </summary>
     public void UpdateBusinessProgress()
     {
-        _servedCount = Mathf.Min(_servedCount + 1, (int)Get<Slider>(Sliders.BusinessProgressSlider).maxValue);
-        Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(_servedCount);
+        if (_tycoonScene == null)
+        {
+            return;
+        }
+        
+        Slider businessProgressSlider = Get<Slider>(Sliders.BusinessProgressSlider);
+
+        if (businessProgressSlider != null)
+        {
+            _tycoonScene.ServedCount = Mathf.Min(_tycoonScene.ServedCount + 1, (int)businessProgressSlider.maxValue);
+            businessProgressSlider.SetValueWithoutNotify(_tycoonScene.ServedCount);
+        }
     }
     
     #endregion ===== 업데이트 =====
@@ -376,6 +382,12 @@ public class TycoonHUD : BaseHUD
     public void SetBusinessProgressVisible(bool isVisible)
     {
         Get<Slider>(Sliders.BusinessProgressSlider)?.gameObject.SetActive(isVisible);
+    }
+
+    /// <summary> KDH : 퀵슬롯을 표시/비표시한다. </summary>
+    public void SetQuickSlotVisible(bool isVisible)
+    {
+        Get<Image>(Images.QuickSlotBar)?.gameObject.SetActive(isVisible);
     }
     
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>

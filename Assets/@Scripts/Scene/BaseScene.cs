@@ -10,7 +10,7 @@ public enum SceneType : ushort
     StealthScene,
 }
 
-/// <summary> KDH : 모든 게임 씬의 공통 초기화와 정리 기능을 제공하는 기본 씬 클래스다. </summary>
+/// <summary> KDH : 모든 게임 씬의 초기화와 정리 기능을 제공하는 기본 씬 클래스다. </summary>
 public abstract class BaseScene : MonoBehaviour
 {
     public SceneType Type { get; private set; }
@@ -32,7 +32,7 @@ public abstract class BaseScene : MonoBehaviour
         OnAwake();
     }
 
-    /// <summary> KDH : 씬의 공통 초기화가 완료된 후 Awake 단계에서 실행한다. </summary>
+    /// <summary> KDH : 씬의 초기화가 완료된 후 Awake 단계에서 실행한다. </summary>
     protected abstract void OnAwake();
 
     private void Start()

@@ -842,8 +842,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _direction: 1
-  _offset: {x: 20, y: 0}
-  _showDuration: 0.5
+  _offset: {x: 5, y: 0}
+  _showDuration: 0.3
   _hideDuration: 0.2
   _startScaleX: 0.85
   _showEase: 26

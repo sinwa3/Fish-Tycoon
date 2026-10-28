@@ -25,5 +25,7 @@ public abstract class ResourceKey
     public static class Name
     {
         public const string Event = "EventSystem";
+
+        public const string ShopIcon = "ShopIcon";
     }
 }
