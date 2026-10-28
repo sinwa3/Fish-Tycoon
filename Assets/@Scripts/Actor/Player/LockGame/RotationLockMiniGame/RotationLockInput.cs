@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>SJY : 회전 보안 게임 입력과 3D 오브젝트 회전 관리</summary>
@@ -54,6 +52,7 @@ public class RotationLockInput : MonoBehaviour
         ResetRotation();
     }
 
+    /// <summary>SJY : 락픽과 실린더의 회전값 및 Transform을 초기화</summary>
     public void ResetRotation()
     {
         _currentAngle = 0f;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 /// <summary>SJY : 회전형 자물쇠 미니게임의 시작, 종료 및 진행 상태를 관리</summary>
 public class RotationLockController : MonoBehaviour
@@ -8,10 +9,15 @@ public class RotationLockController : MonoBehaviour
     [SerializeField] private RotationLockLogic _rotationLockLogic;
     
     private bool _isPlaying;
+    private bool _isUnlocked;
     
     public bool IsPlaying => _isPlaying;
+    public bool IsUnlocked => _isUnlocked;
+
     public float CurrentAngle => _rotationLockInput != null ? _rotationLockInput.CurrentAngle : 0f;
     public float CurrentCylinderAngle => _rotationLockInput != null ? _rotationLockInput.CurrentCylinderAngle : 0f;
+
+    public event Action OnUnlockCompleted;
 
     private void Awake()
     {
@@ -21,7 +27,7 @@ public class RotationLockController : MonoBehaviour
 
     private void Update()
     {
-        if (!_isPlaying || _rotationLockInput == null || _rotationLockLogic == null)
+        if (!_isPlaying || _isUnlocked || _rotationLockInput == null || _rotationLockLogic == null)
         {
             return;
         }
@@ -29,6 +35,11 @@ public class RotationLockController : MonoBehaviour
         float maxCylinderAngle = _rotationLockLogic.CalculateMaxCylinderAngle(_rotationLockInput.CurrentAngle);
 
         _rotationLockInput.UpdateInput(maxCylinderAngle);
+
+        if (Managers.Input.Key_D && _rotationLockLogic.IsUnlockCompleted(_rotationLockInput.CurrentAngle, _rotationLockInput.CurrentCylinderAngle))
+        {
+            CompleteUnlock();
+        }
     }
 
     /// <summary>SJY : 오브젝트 비활성화 시 미니게임을 종료</summary>
@@ -67,7 +78,7 @@ public class RotationLockController : MonoBehaviour
 
     #region ==== 미니게임 제어 ====
 
-    /// <summary>SJY : 회전각도를 초기화하고 플레이어 입력을 차단한 뒤 미니게임을 시작</summary>
+    /// <summary>SJY : 회전값과 정답각도를 초기화하고 미니게임을 시작</summary>
     public void StartMiniGame()
     {
         if (_isPlaying || _rotationLockInput == null || _rotationLockLogic == null)
@@ -79,6 +90,8 @@ public class RotationLockController : MonoBehaviour
         {
             return;
         }
+
+        _isUnlocked = false;
 
         _rotationLockInput.ResetRotation();
         _rotationLockLogic.Initialize();
@@ -102,6 +115,21 @@ public class RotationLockController : MonoBehaviour
 
         Managers.Input.SetInputBlocked(this, false);
         Managers.Input.SetCursorLock(false);
+    }
+
+    /// <summary>SJY : 자물쇠 해제 성공 상태로 전환하고 완료 이벤트를 발생</summary>
+    private void CompleteUnlock()
+    {
+        if (_isUnlocked)
+        {
+            return;
+        }
+
+        _isUnlocked = true;
+
+        CPrint.Log("[RotationLockController] 자물쇠 해제 성공");
+
+        OnUnlockCompleted?.Invoke();
     }
 
     #endregion ==== 미니게임 제어 ====
