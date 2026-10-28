@@ -26,13 +26,15 @@ public class RotationLockController : MonoBehaviour
             return;
         }
 
-        _rotationLockInput.UpdateInput(_rotationLockLogic.MaxCylinderAngle);
+        float maxCylinderAngle = _rotationLockLogic.CalculateMaxCylinderAngle(_rotationLockInput.CurrentAngle);
+
+        _rotationLockInput.UpdateInput(maxCylinderAngle);
     }
 
     /// <summary>SJY : 오브젝트 비활성화 시 미니게임을 종료</summary>
     private void OnDisable()
     {
-        StopMinigame();
+        StopMiniGame();
     }
 
     /// <summary>SJY : 입력 및 판정 컴포넌트를 가져오고 초기 상태를 설정</summary>
@@ -79,6 +81,8 @@ public class RotationLockController : MonoBehaviour
         }
 
         _rotationLockInput.ResetRotation();
+        _rotationLockLogic.Initialize();
+
         _isPlaying = true;
 
         Managers.Input.SetInputBlocked(this, true);
@@ -87,7 +91,7 @@ public class RotationLockController : MonoBehaviour
     }
 
     /// <summary>SJY : 미니게임을 종료하고 플레이어 입력 차단과 커서 잠금을 해제</summary>
-    public void StopMinigame()
+    public void StopMiniGame()
     {
         if (!_isPlaying)
         {

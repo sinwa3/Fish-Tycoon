@@ -12,7 +12,7 @@ public class RotationLockInput : MonoBehaviour
     [SerializeField] private Transform _lockpickAnchor;
 
     [Header("락픽 세팅")]
-    [SerializeField] private float _rotationSensitivity = 100f;
+    [SerializeField] private float _rotationSensitivity = 200f;
     [SerializeField] private float _minAngle = -90f;
     [SerializeField] private float _maxAngle = 90f;
 

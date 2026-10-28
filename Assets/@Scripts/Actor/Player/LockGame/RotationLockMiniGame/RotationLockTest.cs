@@ -27,7 +27,7 @@ public class RotationLockTest : MonoBehaviour
 
         if (Managers.Input.KeyDown_Esc)
         {
-            _rotationLockController.StopMinigame();
+            _rotationLockController.StopMiniGame();
         }
 
         if (Managers.Input.KeyDown_1)
