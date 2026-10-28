@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 /// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
+[RequireComponent(typeof(EnemyMovement), typeof(EnemyLook))]
 public class EnemyController : MonoBehaviour
 {
     #region ===== 상태 =====
@@ -20,6 +21,23 @@ public class EnemyController : MonoBehaviour
 
     #endregion ===== 기억 =====
 
+    #region ===== 행동 =====
+
+    /// <summary> KYH : 이동 (상태가 MoveTo, Stop, HasArrived로 쓴다) </summary>
+    public EnemyMovement Movement { get; private set; }
+
+    /// <summary> KYH : 바라보기, 두리번 </summary>
+    public EnemyLook Look { get; private set; }
+
+    #endregion ===== 행동 =====
+
+    #region ===== 순찰 경로 =====
+
+    /// <summary> KYH : 순찰 상태가 도는 경로 (집, 날짜에 맞는 경로를 SetPatrolRoute로 받는다) </summary>
+    public EnemyPatrolRoute PatrolRoute { get; private set; }
+
+    #endregion ===== 순찰 경로 =====
+
     #region ===== 날짜 =====
 
     // 수면하는 날
@@ -34,6 +52,7 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        InitializeComponents();
         InitializeStateMachine();
     }
 
@@ -49,6 +68,23 @@ public class EnemyController : MonoBehaviour
     }
 
     #region ===== 초기화 =====
+
+    /// <summary> KYH : 같은 오브젝트의 이동, 바라보기 컴포넌트를 찾아 둔다 </summary>
+    private void InitializeComponents()
+    {
+        Movement = GetComponent<EnemyMovement>();
+        Look = GetComponent<EnemyLook>();
+
+        if (Movement == null)
+        {
+            CPrint.Warning("[EnemyController] 적 이동 없음");
+        }
+
+        if (Look == null)
+        {
+            CPrint.Warning("[EnemyController] 적 바라보기 없음");
+        }
+    }
 
     /// <summary> KYH : 집주인 상태 5개를 상태 머신에 등록한다 </summary>
     private void InitializeStateMachine()
@@ -74,6 +110,23 @@ public class EnemyController : MonoBehaviour
     }
 
     #endregion ===== 초기화 =====
+
+    #region ===== 순찰 경로 설정 =====
+
+    /// <summary> KYH : 순찰 경로를 바꾼다. 집, 날짜에 맞는 경로를 놓는 쪽이 부른다 </summary>
+    public void SetPatrolRoute(EnemyPatrolRoute patrolRoute)
+    {
+        if (patrolRoute == null)
+        {
+            CPrint.Warning("[EnemyController] 순찰 경로 없음");
+
+            return;
+        }
+
+        PatrolRoute = patrolRoute;
+    }
+
+    #endregion ===== 순찰 경로 설정 =====
 
     #region ===== 상태 선택 =====
 
