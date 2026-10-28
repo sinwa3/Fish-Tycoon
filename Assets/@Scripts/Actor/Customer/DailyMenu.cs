@@ -63,7 +63,7 @@ public class DailyMenu
 
         if (gap < 0)
         {
-            CPrint.Warning($"[DailyMenu] 음식 {_shuffledCandidates.Count}개 손님 {customerCount}명, 음식이 더 많습니다.");
+            CPrint.Warning($"[DailyMenu] 음식 {_shuffledCandidates.Count}개 손님 {customerCount}명, 음식이 더 많음");
 
             _shuffledCandidates.RemoveRange(customerCount, -gap);
         }

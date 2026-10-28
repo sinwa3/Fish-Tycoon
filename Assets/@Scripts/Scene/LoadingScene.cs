@@ -37,7 +37,7 @@ public class LoadingScene : BaseScene
             return;
         }
 
-        LoadSceneAsync(Managers.Scene.NextScene, this.GetCancellationTokenOnDestroy()).Forget();
+        LoadSceneAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 
     protected override void OnUpdate()
@@ -51,7 +51,7 @@ public class LoadingScene : BaseScene
     }
 
     /// <summary> KDH : 게임 데이터와 다음 Scene을 로드한다. </summary>
-    private async UniTask LoadSceneAsync(SceneType nextScene, CancellationToken cancelToken)
+    private async UniTask LoadSceneAsync(CancellationToken cancelToken)
     {
         try
         {
@@ -63,14 +63,20 @@ public class LoadingScene : BaseScene
 
             cancelToken.ThrowIfCancellationRequested();
 
-            // 2. 다음 Scene 비동기 로딩
+            // 2. 데이터 로딩
+            if (Managers.Scene.PrevScene == SceneType.TitleScene)
+            {
+                Managers.Data.LoadData();
+            }
+            
+            // 3. 다음 Scene 비동기 로딩
             await UniTask.Yield(PlayerLoopTiming.Update, cancelToken);
 
-            AsyncOperation operation = SceneManager.LoadSceneAsync(nextScene.ToString());
+            AsyncOperation operation = SceneManager.LoadSceneAsync(Managers.Scene.NextScene.ToString());
 
             if (operation == null)
             {
-                CPrint.Error($"[LoadingScene] Scene 로드 실패: {nextScene}");
+                CPrint.Error($"[LoadingScene] Scene 로드 실패: {Managers.Scene.NextScene}");
                 return;
             }
 

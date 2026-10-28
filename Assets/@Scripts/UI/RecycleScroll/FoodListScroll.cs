@@ -8,11 +8,10 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
 
     [Header("참조")]
     [SerializeField]
-    private FoodTooltip _foodTooltip;
-
-    [SerializeField]
     private FishListScroll _fishListScroll;
     public FishListScroll FishListScroll => _fishListScroll;
+
+    private FoodTooltip _foodTooltip;
 
     #endregion ===== 참조 =====
 
@@ -34,6 +33,10 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
     protected override void OnAwake()
     {
         SetDataList();
+
+        _foodTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(FoodTooltip),
+            _fishListScroll.transform).gameObject.GetOrAddComponent<FoodTooltip>();
+        _foodTooltip.gameObject.SetActive(false);
     }
 
     protected override void OnStart()
@@ -73,7 +76,7 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
     {
         return _fishListScroll != null ? _fishListScroll.GetAvailableFishCount(fishID) : 0;
     }
-    
+
     #region ===== 음식 수량 =====
 
     /// <summary> KDH : 최대 선택 가능 요리 수량을 설정한다. </summary>
@@ -158,6 +161,11 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
     {
         foreach (BaseRecycleSlot<FoodData> slot in Slots)
         {
+            if (!slot.gameObject.activeSelf)
+            {
+                continue;
+            }
+            
             if (slot is not FoodListSlot foodSlot || slot.Data == null)
             {
                 continue;

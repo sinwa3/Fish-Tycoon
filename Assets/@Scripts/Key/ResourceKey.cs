@@ -9,11 +9,13 @@ public abstract class ResourceKey
             
         public const string Misc = Prefab + "Misc/";
         public const string Item = Prefab + "Item/";
+        
         public const string UI = Prefab + "UI/";
         public const string ScreenUI = UI + "ScreenUI/";
         public const string PopupUI = UI + "PopupUI/";
         public const string OverlayUI = UI + "OverlayUI/";
         public const string SlotUI = UI + "SlotUI/";
+        public const string TooltipUI = UI + "Tooltip/";
         
         public const string ItemSprite = Sprite + "Item/";
         public const string FishSprite = Sprite + "Fish/";
@@ -23,5 +25,7 @@ public abstract class ResourceKey
     public static class Name
     {
         public const string Event = "EventSystem";
+
+        public const string ShopIcon = "ShopIcon";
     }
 }

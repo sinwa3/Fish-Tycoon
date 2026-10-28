@@ -5,11 +5,13 @@ public class CustomerWaitState : BaseCustomerState
     {
     }
 
+    /// <summary> KYH : 대기 상태에 들어올 때 호출한다 </summary>
     public override void Enter()
     {
         Customer.ShowWaitGauge();
     }
 
+    /// <summary> KYH : 대기 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
         Customer.UpdateWaitGauge(StateMachine.StateElapsedTime);
@@ -20,6 +22,7 @@ public class CustomerWaitState : BaseCustomerState
         }
     }
 
+    /// <summary> KYH : 대기 상태를 끝낼 때 호출한다 </summary>
     public override void Exit()
     {
         Customer.RecordWaitTime(StateMachine.StateElapsedTime);

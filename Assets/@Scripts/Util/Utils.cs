@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-/// <summary> KDH : 프로젝트 전반에서 사용하는 공통 유틸리티 기능을 제공한다. </summary>
+/// <summary> KDH : 프로젝트 전반에서 사용하는 유틸리티 기능을 제공한다. </summary>
 public static class Utils
 {
     /// <summary> KDH : GameObject에서 지정한 컴포넌트를 가져오고 없으면 추가한다. </summary>

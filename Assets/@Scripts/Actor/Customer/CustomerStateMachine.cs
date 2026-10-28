@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary> KYH : 손님의 상태를 등록하고 현재 상태의 전환과 갱신을 관리한다 </summary>
 public class CustomerStateMachine

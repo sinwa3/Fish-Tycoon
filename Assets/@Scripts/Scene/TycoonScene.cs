@@ -21,6 +21,8 @@ public class TycoonScene : BaseScene
     private int _maxCustomerCount;
     private float _customerSpawnInterval;
 
+    public int ServedCount { get; set; }
+    
     #endregion ===== 상태 =====
 
     #region ===== 참조 =====
@@ -196,20 +198,26 @@ public class TycoonScene : BaseScene
             case Phase.BeforeBusiness:
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
+                _tycoonHUD.SetStoreBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(false);
+                _tycoonHUD.SetQuickSlotVisible(false);
 
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
                 _tycoonHUD.SetNextBtnVisible(false);
+                _tycoonHUD.SetStoreBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(true);
+                _tycoonHUD.SetQuickSlotVisible(false);
 
                 break;
             case Phase.AfterBusiness:
                 _tycoonHUD.DeactivateFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(true);
+                _tycoonHUD.SetStoreBtnVisible(true);
                 _tycoonHUD.SetBusinessProgressVisible(false);
+                _tycoonHUD.SetQuickSlotVisible(true);
 
                 _tycoonBgCtrl.ShowAfter();
                 break;
