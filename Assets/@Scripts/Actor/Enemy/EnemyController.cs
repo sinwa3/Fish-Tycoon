@@ -31,6 +31,13 @@ public class EnemyController : MonoBehaviour
 
     #endregion ===== 행동 =====
 
+    #region ===== 순찰 경로 =====
+
+    /// <summary> KYH : 순찰 상태가 도는 경로 (집, 날짜에 맞는 경로를 SetPatrolRoute로 받는다) </summary>
+    public EnemyPatrolRoute PatrolRoute { get; private set; }
+
+    #endregion ===== 순찰 경로 =====
+
     #region ===== 날짜 =====
 
     // 수면하는 날
@@ -103,6 +110,23 @@ public class EnemyController : MonoBehaviour
     }
 
     #endregion ===== 초기화 =====
+
+    #region ===== 순찰 경로 설정 =====
+
+    /// <summary> KYH : 순찰 경로를 바꾼다. 집, 날짜에 맞는 경로를 놓는 쪽이 부른다 </summary>
+    public void SetPatrolRoute(EnemyPatrolRoute patrolRoute)
+    {
+        if (patrolRoute == null)
+        {
+            CPrint.Warning("[EnemyController] 순찰 경로 없음");
+
+            return;
+        }
+
+        PatrolRoute = patrolRoute;
+    }
+
+    #endregion ===== 순찰 경로 설정 =====
 
     #region ===== 상태 선택 =====
 
