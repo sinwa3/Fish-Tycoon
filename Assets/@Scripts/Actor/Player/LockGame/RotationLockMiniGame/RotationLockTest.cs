@@ -16,6 +16,7 @@ public class RotationLockTest : MonoBehaviour
         }
 
         _rotationLockController.OnUnlockCompleted += HandleUnlockCompleted;
+        _rotationLockController.OnLockpickBroken += HandleLockpickBroken;
         _rotationLockController.StartMiniGame();
     }
 
@@ -45,12 +46,18 @@ public class RotationLockTest : MonoBehaviour
         CPrint.Log("[RotationLockTest] 성공 이벤트 수신");
     }
 
+    private void HandleLockpickBroken()
+    {
+        CPrint.Log("[RotationLockTest] 락픽 파손 이벤트 수신");
+    }
+
     /// <summary>SJY : 테스트 종료 시 성공 이벤트 구독 해제</summary>
     private void OnDestroy()
     {
         if (_rotationLockController != null)
         {
             _rotationLockController.OnUnlockCompleted -= HandleUnlockCompleted;
+            _rotationLockController.OnLockpickBroken -= HandleLockpickBroken;
         }
     }
 }

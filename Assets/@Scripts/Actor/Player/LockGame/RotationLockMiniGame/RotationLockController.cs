@@ -7,6 +7,7 @@ public class RotationLockController : MonoBehaviour
     [Header("참조")]
     [SerializeField] private RotationLockInput _rotationLockInput;
     [SerializeField] private RotationLockLogic _rotationLockLogic;
+    [SerializeField] private LockpickDurability _lockpickDurability;
     
     private bool _isPlaying;
     private bool _isUnlocked;
@@ -18,6 +19,7 @@ public class RotationLockController : MonoBehaviour
     public float CurrentCylinderAngle => _rotationLockInput != null ? _rotationLockInput.CurrentCylinderAngle : 0f;
 
     public event Action OnUnlockCompleted;
+    public event Action OnLockpickBroken;
 
     private void Awake()
     {
@@ -28,6 +30,13 @@ public class RotationLockController : MonoBehaviour
     private void Update()
     {
         if (!_isPlaying || _isUnlocked || _rotationLockInput == null || _rotationLockLogic == null)
+        {
+            return;
+        }
+
+        CheckUnlockAttempt();
+
+        if (!_isPlaying)
         {
             return;
         }
@@ -61,6 +70,11 @@ public class RotationLockController : MonoBehaviour
             _rotationLockLogic = GetComponent<RotationLockLogic>();
         }
 
+        if (_lockpickDurability == null)
+        {
+            _lockpickDurability = GetComponent<LockpickDurability>();
+        }
+
         if (_rotationLockInput == null)
         {
             CPrint.Warning("[RotationLockController] RotationLockInput이 없습니다.");
@@ -71,7 +85,13 @@ public class RotationLockController : MonoBehaviour
             CPrint.Warning("[RotationLockController] RotationLockLogic이 없습니다.");
         }
 
+        if (_lockpickDurability == null)
+        {
+            CPrint.Warning("[RotationLockController] LockpickDurability가 없습니다.");
+        }
+
         _isPlaying = false;
+        _isUnlocked = false;
 
         _rotationLockInput?.Initialize();
     }
@@ -81,7 +101,7 @@ public class RotationLockController : MonoBehaviour
     /// <summary>SJY : 회전값과 정답각도를 초기화하고 미니게임을 시작</summary>
     public void StartMiniGame()
     {
-        if (_isPlaying || _rotationLockInput == null || _rotationLockLogic == null)
+        if (_isPlaying || _rotationLockInput == null || _rotationLockLogic == null || _lockpickDurability == null)
         {
             return;
         }
@@ -95,6 +115,7 @@ public class RotationLockController : MonoBehaviour
 
         _rotationLockInput.ResetRotation();
         _rotationLockLogic.Initialize();
+        _lockpickDurability.Initialize();
 
         _isPlaying = true;
 
@@ -133,4 +154,39 @@ public class RotationLockController : MonoBehaviour
     }
 
     #endregion ==== 미니게임 제어 ====
+
+    #region ==== 내구도 ====
+
+    /// <summary>SJY : D키로 해제를 시도했을 때 잘못된 각도라면 내구도를 감소</summary>
+    private void CheckUnlockAttempt()
+    {
+        if (!Managers.Input.KeyDown_D || _lockpickDurability == null)
+        {
+            return;
+        }
+
+        if (_rotationLockLogic.IsCorrectAngle(_rotationLockInput.CurrentAngle))
+        {
+            return;
+        }
+
+        _lockpickDurability.ApplyDamage();
+
+        if (_lockpickDurability.IsBroken)
+        {
+            HandleLockpickBroken();
+        }
+    }
+
+    /// <summary>SJY : 락픽이 파손되면 미니게임 종료 후 실패 이벤트를 발생 (추후 수정 - 종료시킬지 이어서할지)</summary>
+    private void HandleLockpickBroken()
+    {
+        CPrint.Log("[RotationLockController] 락픽 파손");
+
+        StopMiniGame();
+
+        OnLockpickBroken?.Invoke();
+    }
+
+    #endregion ==== 내구도 ====
 }

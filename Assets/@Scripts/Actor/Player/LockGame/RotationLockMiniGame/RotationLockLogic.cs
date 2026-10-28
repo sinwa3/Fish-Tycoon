@@ -53,19 +53,22 @@ public class RotationLockLogic : MonoBehaviour
 
         return Mathf.Lerp(_wrongCylinderAngle, _maxCylinderAngle, rotationRatio);
     }
+    public bool IsCorrectAngle(float currentAngle)
+    {
+        return Mathf.Abs(currentAngle - _targetAngle) <= _angleTolerance;
+    }
 
     /// <summary>SJY : 실린더가 최대 회전 각도에 도달했는지 확인하여 잠금 해제 성공 여부를 반환</summary>
     public bool IsUnlockCompleted(float currentAngle, float currentCylinderAngle)
     {
-        float angleDifference = Mathf.Abs(currentAngle - _targetAngle);
-
-        if (angleDifference > _angleTolerance)
+        if (!IsCorrectAngle(currentAngle))
         {
             return false;
         }
 
         return Mathf.Abs(currentCylinderAngle - _maxCylinderAngle) <= 0.01f;
     }
+
 
 #if UNITY_EDITOR
     /// <summary>SJY : Scene 뷰에 정답 각도와 판정 범위 표시</summary>

@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 1189247688}
   - component: {fileID: 1189247691}
   - component: {fileID: 1189247690}
+  - component: {fileID: 1189247692}
   m_Layer: 0
   m_Name: RotationLock
   m_TagString: Untagged
@@ -463,6 +464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationLockInput: {fileID: 1189247691}
   _rotationLockLogic: {fileID: 1189247690}
+  _lockpickDurability: {fileID: 0}
 --- !u!114 &1189247690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,6 +507,20 @@ MonoBehaviour:
   _maxAngle: 90
   _cylinderRotationSpeed: 90
   _cylinderReturnSpeed: 180
+--- !u!114 &1189247692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1189247686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6a966bfdf421c49b5ba54bb6d604fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDurability: 100
+  _damageAmount: 20
 --- !u!1 &1215306816
 GameObject:
   m_ObjectHideFlags: 0
