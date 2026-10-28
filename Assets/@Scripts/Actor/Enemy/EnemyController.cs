@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 
 /// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
+[RequireComponent(typeof(EnemyMovement), typeof(EnemyLook))]
 public class EnemyController : MonoBehaviour
 {
     #region ===== 상태 =====
@@ -20,6 +21,16 @@ public class EnemyController : MonoBehaviour
 
     #endregion ===== 기억 =====
 
+    #region ===== 행동 =====
+
+    /// <summary> KYH : 이동 (상태가 MoveTo, Stop, HasArrived로 쓴다) </summary>
+    public EnemyMovement Movement { get; private set; }
+
+    /// <summary> KYH : 바라보기, 두리번 </summary>
+    public EnemyLook Look { get; private set; }
+
+    #endregion ===== 행동 =====
+
     #region ===== 날짜 =====
 
     // 수면하는 날
@@ -34,6 +45,7 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
+        InitializeComponents();
         InitializeStateMachine();
     }
 
@@ -49,6 +61,23 @@ public class EnemyController : MonoBehaviour
     }
 
     #region ===== 초기화 =====
+
+    /// <summary> KYH : 같은 오브젝트의 이동, 바라보기 컴포넌트를 찾아 둔다 </summary>
+    private void InitializeComponents()
+    {
+        Movement = GetComponent<EnemyMovement>();
+        Look = GetComponent<EnemyLook>();
+
+        if (Movement == null)
+        {
+            CPrint.Warning("[EnemyController] 적 이동 없음");
+        }
+
+        if (Look == null)
+        {
+            CPrint.Warning("[EnemyController] 적 바라보기 없음");
+        }
+    }
 
     /// <summary> KYH : 집주인 상태 5개를 상태 머신에 등록한다 </summary>
     private void InitializeStateMachine()

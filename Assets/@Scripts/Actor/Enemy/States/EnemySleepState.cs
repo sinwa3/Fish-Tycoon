@@ -8,7 +8,8 @@ public class EnemySleepState : BaseEnemyState
     /// <summary> KYH : 수면 상태에 들어올 때 호출한다 </summary>
     protected override void Enter()
     {
-        // TODO : 이동 멈춤
+        Enemy.Movement.Stop();
+        Enemy.Look.StopLook();
     }
 
     /// <summary> KYH : 수면 상태를 갱신한다 </summary>
