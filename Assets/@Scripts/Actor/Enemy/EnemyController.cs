@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 /// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
-[RequireComponent(typeof(EnemyMovement), typeof(EnemyLook))]
+[RequireComponent(typeof(EnemyMovement), typeof(EnemyLook), typeof(EnemySight))]
 public class EnemyController : MonoBehaviour
 {
     #region ===== 상태 =====
@@ -30,6 +30,13 @@ public class EnemyController : MonoBehaviour
     public EnemyLook Look { get; private set; }
 
     #endregion ===== 행동 =====
+
+    #region ===== 감지 =====
+
+    /// <summary> KYH : 시야 </summary>
+    public EnemySight Sight { get; private set; }
+
+    #endregion ===== 감지 =====
 
     #region ===== 순찰 경로 =====
 
@@ -69,11 +76,12 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 같은 오브젝트의 이동, 바라보기 컴포넌트를 찾아 둔다 </summary>
+    /// <summary> KYH : 이동, 바라보기, 시야 컴포넌트를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         Movement = GetComponent<EnemyMovement>();
         Look = GetComponent<EnemyLook>();
+        Sight = GetComponent<EnemySight>();
 
         if (Movement == null)
         {
@@ -83,6 +91,11 @@ public class EnemyController : MonoBehaviour
         if (Look == null)
         {
             CPrint.Warning("[EnemyController] 적 바라보기 없음");
+        }
+
+        if (Sight == null)
+        {
+            CPrint.Warning("[EnemyController] 적 시야 감지 없음");
         }
     }
 
