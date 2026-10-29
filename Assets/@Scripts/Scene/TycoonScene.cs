@@ -304,7 +304,10 @@ public class TycoonScene : BaseScene
     /// <summary> KDH : 음식 서빙이 끝나면 손님에게 음식을 전달한다. </summary>
     private void HandleServingFinished()
     {
-        _customerSpawner?.DeliverFood();
+        if (_customerSpawner?.DeliverFood() == true)
+        {
+            Managers.Quest?.ReportProgress(Type, QuestType.Serving);
+        }
     }
 
     #endregion ===== 이벤트 =====

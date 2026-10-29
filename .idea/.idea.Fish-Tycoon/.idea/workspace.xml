@@ -11,15 +11,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/InputManagers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/InputManagers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/FishTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/FishTable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/QuickSlotBar.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/QuickSlotBar.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FishListScroll.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FishListScroll.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FoodListScroll.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FoodListScroll.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Slot/QuickSlot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Slot/QuickSlot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/RecycleSlot/StoreSlot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/RecycleSlot/StoreSlot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,6 +54,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/EventManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/InputManagers.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/QuestManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/ResourceManagers.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Manager/Core/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -59,6 +65,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Scene/BaseScene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/FoodTable.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Table/TableParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/HUD/BaseHUD.cs" root0="FORCE_HIGHLIGHTING" />
@@ -133,10 +140,10 @@
       <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="3163">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="14969">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="3163" />
+      <option name="pid" value="14969" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>

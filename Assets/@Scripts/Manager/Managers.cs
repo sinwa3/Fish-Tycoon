@@ -53,6 +53,9 @@ public class Managers : MonoBehaviour
     private readonly DataManager _data = new();
     public static DataManager Data => Instance?._data;
     
+    private readonly QuestManager _quest = new();
+    public static QuestManager Quest => Instance?._quest;
+    
     #endregion ===== CORE =====
 
     #region ===== Mono =====
