@@ -53,9 +53,19 @@ public class RotationLockLogic : MonoBehaviour
 
         return Mathf.Lerp(_wrongCylinderAngle, _maxCylinderAngle, rotationRatio);
     }
+
+    /// <summary>SJY : 현재 락픽 각도가 정답 허용 범위에 있는지 확인</summary>
     public bool IsCorrectAngle(float currentAngle)
     {
         return Mathf.Abs(currentAngle - _targetAngle) <= _angleTolerance;
+    }
+
+    /// <summary>SJY : 현재 락픽 각도와 정답 각도의 차이가 회전 제한 범위를 초과했는지 확인</summary>
+    public bool IsOutsideFalloffRange(float currentAngle)
+    {
+        float angleDifference = Mathf.Abs(currentAngle - _targetAngle);
+
+        return angleDifference > _angleFalloffRange;
     }
 
     /// <summary>SJY : 실린더가 최대 회전 각도에 도달했는지 확인하여 잠금 해제 성공 여부를 반환</summary>

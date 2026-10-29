@@ -8,12 +8,18 @@ public class RotationLockController : MonoBehaviour
     [SerializeField] private RotationLockInput _rotationLockInput;
     [SerializeField] private RotationLockLogic _rotationLockLogic;
     [SerializeField] private LockpickDurability _lockpickDurability;
+
+    [Header("내구도 감소 설정")]
+    [SerializeField] private float _smallDamage = 20f;
+    [SerializeField] private float _largeDamage = 30f;
     
     private bool _isPlaying;
     private bool _isUnlocked;
-    
+    private bool _isReplacing;
+
     public bool IsPlaying => _isPlaying;
     public bool IsUnlocked => _isUnlocked;
+    public bool IsReplacing => _isReplacing;
 
     public float CurrentAngle => _rotationLockInput != null ? _rotationLockInput.CurrentAngle : 0f;
     public float CurrentCylinderAngle => _rotationLockInput != null ? _rotationLockInput.CurrentCylinderAngle : 0f;
@@ -29,14 +35,14 @@ public class RotationLockController : MonoBehaviour
 
     private void Update()
     {
-        if (!_isPlaying || _isUnlocked || _rotationLockInput == null || _rotationLockLogic == null)
+        if (!_isPlaying || _isUnlocked || _isReplacing | _rotationLockInput == null || _rotationLockLogic == null)
         {
             return;
         }
 
         CheckUnlockAttempt();
 
-        if (!_isPlaying)
+        if (!_isPlaying || _isReplacing)
         {
             return;
         }
@@ -112,6 +118,7 @@ public class RotationLockController : MonoBehaviour
         }
 
         _isUnlocked = false;
+        _isReplacing = false;
 
         _rotationLockInput.ResetRotation();
         _rotationLockLogic.Initialize();
@@ -133,6 +140,7 @@ public class RotationLockController : MonoBehaviour
         }
 
         _isPlaying = false;
+        _isReplacing = false;
 
         Managers.Input.SetInputBlocked(this, false);
         Managers.Input.SetCursorLock(false);
@@ -165,12 +173,16 @@ public class RotationLockController : MonoBehaviour
             return;
         }
 
-        if (_rotationLockLogic.IsCorrectAngle(_rotationLockInput.CurrentAngle))
+        float currentAngle = _rotationLockInput.CurrentAngle;
+
+        if (_rotationLockLogic.IsCorrectAngle(currentAngle))
         {
             return;
         }
 
-        _lockpickDurability.ApplyDamage();
+        float damage = _rotationLockLogic.IsOutsideFalloffRange(currentAngle) ? _largeDamage : _smallDamage;
+
+        _lockpickDurability.ApplyDamage(damage);
 
         if (_lockpickDurability.IsBroken)
         {
@@ -181,11 +193,32 @@ public class RotationLockController : MonoBehaviour
     /// <summary>SJY : 락픽이 파손되면 미니게임 종료 후 실패 이벤트를 발생 (추후 수정 - 종료시킬지 이어서할지)</summary>
     private void HandleLockpickBroken()
     {
+        if (_isReplacing)
+        {
+            return;
+        }
+        
+        _isReplacing = true;
+
         CPrint.Log("[RotationLockController] 락픽 파손");
 
-        StopMiniGame();
-
         OnLockpickBroken?.Invoke();
+    }
+
+    public void ReplaceLockpick()
+    {
+        if (!_isPlaying || !_isReplacing || _rotationLockInput == null || _lockpickDurability == null)
+        {
+            return;
+        }
+
+        _rotationLockInput.ResetRotation();
+        _lockpickDurability.Initialize();
+
+        _isReplacing = false;
+
+        CPrint.Log("[RotationLockController] 새 락픽 교체 완료");
+
     }
 
     #endregion ==== 내구도 ====
