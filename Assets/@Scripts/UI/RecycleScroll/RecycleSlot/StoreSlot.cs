@@ -82,6 +82,7 @@ public class StoreSlot : BaseRecycleSlot<ShopData>
         {
             case PurchaseStatus.Available:
                 Managers.UI.OpenToastMessage($"{_item.Name} 구매 완료");
+                Managers.Quest?.ReportProgress(SceneType.TycoonScene, QuestType.PurchaseItem);
                 break;
 
             case PurchaseStatus.InsufficientGold:

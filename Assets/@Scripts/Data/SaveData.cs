@@ -27,4 +27,12 @@ public class SaveData
 
     /// <summary> 저장 당시 게임 모드 </summary>
     public GameMode SavedGameMode = GameMode.Stealth;
+    
+    /// <summary> 타이쿤 씬에서 진행 중인 서브 퀘스트의 테이블 ID와 진행도 </summary>
+    public int TycoonSubQuestID;
+    public int TycoonSubQuestProgress;
+
+    /// <summary> 잠입 씬에서 진행 중인 서브 퀘스트의 테이블 ID와 진행도 </summary>
+    public int StealthSubQuestID;
+    public int StealthSubQuestProgress;
 }

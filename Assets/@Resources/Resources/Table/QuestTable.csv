@@ -1,0 +1,11 @@
+﻿ID,씬,유형,목표,보상,내용
+1001,TycoonScene,Serving,3,1000,요리를 손님에게 서빙하세요
+1002,TycoonScene,PurchaseItem,1,2500,상점에서 아이템을 구매하세요
+1003,TycoonScene,Serving,5,4000,요리를 손님에게 서빙하세요
+1004,TycoonScene,PurchaseItem,2,5500,상점에서 아이템을 구매하세요
+1005,TycoonScene,Serving,7,7000,요리를 손님에게 서빙하세요
+1006,TycoonScene,PurchaseItem,3,8500,상점에서 아이템을 구매하세요
+1007,TycoonScene,Serving,9,10000,요리를 손님에게 서빙하세요
+1008,TycoonScene,PurchaseItem,4,11500,상점에서 아이템을 구매하세요
+2001,StealthScene,UnLockCursor,1,1000,휠 클릭 : 커서 언락
+2002,StealthScene,LockCursor,1,1000,커서 언락 상태에서 왼쪽 클릭 : 커서 락
