@@ -5,6 +5,7 @@ public class PinLockPin : MonoBehaviour
 {
     [Header("참조")]
     [SerializeField] private Transform _pinMotion;
+    [SerializeField] private Transform _lockpickAnchor;
 
     [Header("핀 이동 설정")]
     /// <summary>SJY : 핀이 출발 위치에서 아래로 이동할 거리</summary>
@@ -31,8 +32,10 @@ public class PinLockPin : MonoBehaviour
     private PinLockState _state = PinLockState.Idle;
 
     public PinLockState State => _state;
-    public bool IsReady => _pinMotion != null;
+    public bool IsReady => _pinMotion != null && _lockpickAnchor != null;
     public bool IsFixed => _state == PinLockState.Fixed;
+    public bool CanFix => _state == PinLockState.BottomWindow;
+    public Transform LockpickAnchor => _lockpickAnchor;
 
     /// <summary>SJY : 최초 핀 위치 저장 및 상태 초기화</summary>
     public void Initialize()
