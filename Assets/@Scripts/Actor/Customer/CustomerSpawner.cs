@@ -243,7 +243,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 요리 전달 처리 =====
 
-    /// <summary> KYH : 완성된 요리를 다음 차례 손님(먼저 주문한 순서)에게 준다. 요리 쪽이 요리 완성 때 호출, 받으면 true </summary>
+    /// <summary> KYH : 완성된 요리를 먼저 주문한 손님에게 준다. 받으면 true </summary>
     public bool DeliverFood()
     {
         if (!TryFindCustomerByOrderIndex(_servedCount, out CustomerController customer))

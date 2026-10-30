@@ -18,6 +18,13 @@ public class EnemySight : MonoBehaviour
 
     #endregion ===== 상태 =====
 
+    #region ===== 추격 =====
+
+    /// <summary> KYH : 플레이어 위치 </summary>
+    public Vector3 PlayerPosition => _player != null ? _player.position : transform.position;
+
+    #endregion ===== 추격 =====
+
     #region ===== 플레이어 =====
 
     private Transform _player;
@@ -183,6 +190,23 @@ public class EnemySight : MonoBehaviour
     }
 
     #endregion ===== 시야 검사 =====
+
+    #region ===== 잡기 검사 =====
+
+    /// <summary> KYH : 플레이어를 잡을 수 있는지 돌려준다 </summary>
+    public bool CanCatchPlayer()
+    {
+        if (!IsPlayerVisible)
+        {
+            return false;
+        }
+
+        Vector3 targetDirection = Vector3.ProjectOnPlane(_player.position - transform.position, Vector3.up);
+
+        return targetDirection.sqrMagnitude <= EnemyTempValue.CatchDistance * EnemyTempValue.CatchDistance;
+    }
+
+    #endregion ===== 잡기 검사 =====
 
     #region ===== 기억 =====
 

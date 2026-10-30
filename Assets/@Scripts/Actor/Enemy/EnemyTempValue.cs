@@ -24,4 +24,13 @@ public static class EnemyTempValue
     public const float SightCheckInterval = 0.2f;
     // 시야 자극 세기
     public const float SightStimulusStrength = 1.0f;
+
+    // 추격 중 목적지를 다시 잡는 간격(초)
+    public const float ChaseRepathInterval = 0.2f;
+    // 놓친 뒤 이 시간 동안은 실제 플레이어 위치로 쫓는다
+    public const float ChaseTrackDuration = 1.0f;
+    // 이 시간 동안 못 보면 놓친 것으로 본다
+    public const float LoseSightDuration = 3.0f;
+    // 이 거리 안에서 보이면 잡는다 (수평 거리)
+    public const float CatchDistance = 1.2f;
 }
