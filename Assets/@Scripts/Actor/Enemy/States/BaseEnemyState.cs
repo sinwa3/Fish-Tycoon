@@ -21,7 +21,7 @@ public abstract class BaseEnemyState
         Enter();
     }
 
-    /// <summary> KYH : 할 일을 마쳤음을 알린다. 상태 자신만 부른다 </summary>
+    /// <summary> KYH : 할 일 마친 걸 알린다. 상태 자신만 부른다 </summary>
     protected void Finish()
     {
         IsFinished = true;
