@@ -5,13 +5,13 @@ using UnityEngine;
 /// <summary>SJY : 핀 조절형 자물쇠의 락픽 수량, 내구도, 자동 교체 및 성공 판정을 테스트</summary>
 public class PinLockTest : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private PinLockController _pinLockController;
-    [SerializeField] private LockpickDurability _lockpickDurability;
 
     [Header("테스트 설정")]
     [SerializeField] private int _startingLockpickCount = 5;
     [SerializeField] private float _replacementDelay = 1f;
+
+    private PinLockController _pinLockController;
+    private LockpickDurability _lockpickDurability;
 
     private int _currentLockpickCount;
     private string _lockpickCountInput;

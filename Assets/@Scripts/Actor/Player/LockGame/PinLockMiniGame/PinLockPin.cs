@@ -3,9 +3,6 @@ using UnityEngine;
 /// <summary>SJY : 핀 조절형 자물쇠의 개인 핀 이동 및 고정 상태 관리</summary>
 public class PinLockPin : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private Transform _pinMotion;
-    [SerializeField] private Transform _lockpickAnchor;
 
     [Header("핀 이동 설정")]
     /// <summary>SJY : 핀이 출발 위치에서 아래로 이동할 거리</summary>
@@ -18,6 +15,9 @@ public class PinLockPin : MonoBehaviour
     [SerializeField] private float _botomWindowDuration = 0.25f;
     /// <summary>SJY : 핀이 원위치로 돌아오는데 걸리는 시간</summary>
     [SerializeField] private float _returnDuration = 0.2f;
+
+    private Transform _pinMotion;
+    private Transform _lockpickAnchor;
 
     private Vector3 _initPosition;
     /// <summary>SJY : S키로 핀을 튕겼을 때 내려가는 시간</summary>
@@ -40,6 +40,8 @@ public class PinLockPin : MonoBehaviour
     /// <summary>SJY : 최초 핀 위치 저장 및 상태 초기화</summary>
     public void Initialize()
     {
+        InitializeReferences();
+
         if (!IsReady)
         {
             return;
@@ -52,6 +54,24 @@ public class PinLockPin : MonoBehaviour
         }
 
         ResetPin();
+    }
+
+    private void InitializeReferences()
+    {
+        if (_pinMotion == null)
+        {
+            _pinMotion = gameObject.FindChild<Transform>("PinMotion", true);
+        }
+
+        if (_lockpickAnchor == null)
+        {
+            _lockpickAnchor = gameObject.FindChild<Transform>("LockPickAnchor", true);
+        }
+
+        if (!IsReady)
+        {
+            CPrint.Warning($"[PinLockPin] {name}의 PinMotion or LockpickAnchor를 찾지 못했습니다.");
+        }
     }
 
     /// <summary>SJY : 핀을 시작 위치와 대기 상태로 초기화</summary>

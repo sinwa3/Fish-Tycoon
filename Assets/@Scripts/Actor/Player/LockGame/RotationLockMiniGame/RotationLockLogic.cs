@@ -17,14 +17,20 @@ public class RotationLockLogic : MonoBehaviour
     [SerializeField] private float _wrongCylinderAngle = -5f;
 
     [Header("Gizmo 설정")]
-    [SerializeField] private Transform _lockCylinderPivot;
     [SerializeField] private bool _showAngleGizmo = true;
     [SerializeField] private float _gizmoRadius = 1.5f;
+
+    private Transform _lockCylinderPivot;
 
     private float _targetAngle;
 
     public float MaxCylinderAngle => _maxCylinderAngle;
     public float TargetAngle => _targetAngle;
+
+    private void Awake()
+    {
+        _lockCylinderPivot = gameObject.FindChild<Transform>("LockCylinderPivot", true);
+    }
 
     /// <summary>SJY : 미니게임 시작 시 정답 각도를 무작위로 설정</summary>
     public void Initialize()

@@ -5,13 +5,13 @@ using UnityEngine;
 /// <summary>SJY : 자물쇠 미니게임 테스트</summary>
 public class RotationLockTest : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private RotationLockController _rotationLockController;
-    [SerializeField] private LockpickDurability _lockpickDurability;
 
     [Header("테스트 설정")]
     [SerializeField] private int _startingLockpickCount = 3;
     [SerializeField] private float _replacementDelay = 0.5f;
+
+    private RotationLockController _rotationLockController;
+    private LockpickDurability _lockpickDurability;
 
     private int _currentLockpickCount;
     private string _lockpickCountInput;

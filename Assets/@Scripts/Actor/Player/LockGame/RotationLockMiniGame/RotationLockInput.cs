@@ -3,11 +3,6 @@ using UnityEngine;
 /// <summary>SJY : 회전 보안 게임 입력과 3D 오브젝트 회전 관리</summary>
 public class RotationLockInput : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private Transform _lockpickPivot;
-    [SerializeField] private Transform _lockCylinderPivot;
-    [SerializeField] private Transform _tensionWrenchPivot;
-    [SerializeField] private Transform _lockpickAnchor;
 
     [Header("락픽 세팅")]
     [SerializeField] private float _rotationSensitivity = 200f;
@@ -17,6 +12,11 @@ public class RotationLockInput : MonoBehaviour
     [Header("키 홀 실린더 세팅")]
     [SerializeField] private float _cylinderRotationSpeed = 90f;
     [SerializeField] private float _cylinderReturnSpeed = 180f;
+
+    private Transform _lockpickPivot;
+    private Transform _lockCylinderPivot;
+    private Transform _tensionWrenchPivot;
+    private Transform _lockpickAnchor;
 
     private float _currentAngle;
     private float _currentCylinderAngle;
@@ -29,27 +29,38 @@ public class RotationLockInput : MonoBehaviour
     /// <summary>SJY : 필요한 Transform 참조를 검사하고 회전값을 초기화</summary>
     public void Initialize()
     {
+        InitializeReferences();
+
+        ResetRotation();
+    }
+
+    /// <summary>SJY : Pivot과 Anchor 자동 참조</summary>
+    private void InitializeReferences()
+    {
         if (_lockpickPivot == null)
         {
-            CPrint.Warning("[RotationLockController] LockpickPivot이 연결되지 않았습니다.");
+            _lockpickPivot = gameObject.FindChild<Transform>("LockPickPivot", true);
         }
 
         if (_lockCylinderPivot == null)
         {
-            CPrint.Warning("[RotationLockController] LockCylinderPivot이 연결되지 않았습니다.");
+            _lockCylinderPivot = gameObject.FindChild<Transform>("LockCylinderPivot", true);
         }
 
         if (_tensionWrenchPivot == null)
         {
-            CPrint.Warning("[RotationLockController] TensionWrenchPivot이 연결되지 않았습니다.");
+            _tensionWrenchPivot = gameObject.FindChild<Transform>("TensionWrenchPivot", true);
         }
 
         if (_lockpickAnchor == null)
         {
-            CPrint.Warning("[RotationLockController] LockpickAnchor가 연결되지 않았습니다.");
+            _lockpickAnchor = gameObject.FindChild<Transform>("LockPickAnchor", true);
         }
 
-        ResetRotation();
+        if (!IsReady)
+        {
+            CPrint.Warning("[RotationLockInput] Pivot 또는 Anchor를 찾지 못했습니다.");
+        }
     }
 
     /// <summary>SJY : 락픽과 실린더의 회전값 및 Transform을 초기화</summary>

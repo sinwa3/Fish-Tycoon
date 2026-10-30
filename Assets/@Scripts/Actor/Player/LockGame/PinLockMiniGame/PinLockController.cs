@@ -4,11 +4,6 @@ using UnityEngine;
 /// <summary>SJY : 핀 조절형 자물쇠의 선택, 고정, 성공 및 파손 상태 관리</summary>
 public class PinLockController : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private PinLockInput _pinLockInput;
-    [SerializeField] private LockpickDurability _lockpickDurability;
-    [SerializeField] private PinLockPin[] _pins;
-    [SerializeField] private Transform _lockpickPivot;
 
     [Header("락픽 설정")]
     [SerializeField] private float _lockpickMoveSpeed = 8f;
@@ -17,6 +12,11 @@ public class PinLockController : MonoBehaviour
 
     [Header("내구도 설정")]
     [SerializeField] private float _failedAttempDamage = 25f;
+
+    private PinLockInput _pinLockInput;
+    private LockpickDurability _lockpickDurability;
+    private PinLockPin[] _pins;
+    private Transform _lockpickPivot;
 
     private int _curentPinIndex;
     private int _fixedPinCount;
@@ -107,10 +107,36 @@ public class PinLockController : MonoBehaviour
             CPrint.Warning("[PinLockController] LockpickDurability가 없습니다.");
         }
 
+        InitializeHierarchyReferences();
+
         _isPlaying = false;
         _isUnlocked = false;
         _isReplacing = false;
+    }
 
+    /// <summary>SJY : 락픽과 핀 배열을 자동 검색하고 핀 순서를 정렬</summary>
+    private void InitializeHierarchyReferences()
+    {
+        if (_lockpickPivot == null)
+        {
+            _lockpickPivot = gameObject.FindChild<Transform>("Lockpick", true);
+        }
+
+        if (_pins == null || _pins.Length == 0)
+        {
+            _pins = GetComponentsInChildren<PinLockPin>(true);
+            Array.Sort(_pins, (a, b) => string.CompareOrdinal(a.name, b.name));
+        }
+
+        if (_lockpickPivot == null)
+        {
+            CPrint.Warning("[PinLockController] Lockpick을 찾지 못했습니다.");
+        }
+
+        if (_pins == null || _pins.Length == 0)
+        {
+            CPrint.Warning("[PinLockController] PinLockPin을 찾지 못했습니다.");
+        }
     }
 
     #region ==== 미니게임 제어 ====
@@ -123,12 +149,28 @@ public class PinLockController : MonoBehaviour
             return;
         }
 
-        if (_pins == null || _pins.Length == 0)
+        if (_pins == null || _pins.Length == 0 || _lockpickPivot == null || Managers.Input == null)
         {
             return;
         }
 
+        foreach (PinLockPin pin in _pins)
+        {
+            if (pin == null)
+            {
+                return;
+            }
+
+            pin.Initialize();
+
+            if (!pin.IsReady)
+            {
+                return;
+            }
+        }
+
         ResetAllPins();
+
         _lockpickDurability.Initialize();
 
         _isPlaying = true;
@@ -185,7 +227,7 @@ public class PinLockController : MonoBehaviour
             pin.Initialize();
         }
 
-        UpdateLockpickPosition();
+        ResetLockpickPosition();
     }
 
     #endregion ==== 미니게임 제어 ====
@@ -318,7 +360,7 @@ public class PinLockController : MonoBehaviour
     /// <summary>SJY : 락픽을 첫 번째 핀의 Anchor 위치록 빠르게 이동</summary>
     private void ResetLockpickPosition()
     {
-        if (_lockpickPivot == null || _pins == null || _pins.Length == 0)
+        if (_lockpickPivot == null || _pins == null || _pins.Length == 0 || _pins[0] == null)
         {
             return;
         }

@@ -4,14 +4,14 @@ using System;
 /// <summary>SJY : 회전형 자물쇠 미니게임의 시작, 종료 및 진행 상태를 관리</summary>
 public class RotationLockController : MonoBehaviour
 {
-    [Header("참조")]
-    [SerializeField] private RotationLockInput _rotationLockInput;
-    [SerializeField] private RotationLockLogic _rotationLockLogic;
-    [SerializeField] private LockpickDurability _lockpickDurability;
 
     [Header("내구도 감소 설정")]
     [SerializeField] private float _smallDamage = 20f;
     [SerializeField] private float _largeDamage = 30f;
+    
+    private RotationLockInput _rotationLockInput;
+    private RotationLockLogic _rotationLockLogic;
+    private LockpickDurability _lockpickDurability;
     
     private bool _isPlaying;
     private bool _isUnlocked;
@@ -31,7 +31,6 @@ public class RotationLockController : MonoBehaviour
     {
         InitializeComponents();
     }
-
 
     private void Update()
     {
@@ -107,7 +106,7 @@ public class RotationLockController : MonoBehaviour
     /// <summary>SJY : 회전값과 정답각도를 초기화하고 미니게임을 시작</summary>
     public void StartMiniGame()
     {
-        if (_isPlaying || _rotationLockInput == null || _rotationLockLogic == null || _lockpickDurability == null)
+        if (_isPlaying || _rotationLockInput == null || _rotationLockLogic == null || _lockpickDurability == null || Managers.Input == null)
         {
             return;
         }
@@ -142,8 +141,11 @@ public class RotationLockController : MonoBehaviour
         _isPlaying = false;
         _isReplacing = false;
 
-        Managers.Input.SetInputBlocked(this, false);
-        Managers.Input.SetCursorLock(false);
+        if (Managers.Input != null)
+        {
+            Managers.Input.SetInputBlocked(this, false);
+            Managers.Input.SetCursorLock(false);
+        }
     }
 
     /// <summary>SJY : 자물쇠 해제 성공 상태로 전환하고 완료 이벤트를 발생</summary>
