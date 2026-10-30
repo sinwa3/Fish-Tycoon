@@ -24,7 +24,7 @@ public class PinLockController : MonoBehaviour
     private bool _isUnlocked;
     private bool _isReplacing;
 
-    public int CurrentPinindex => _curentPinIndex;
+    public int CurrentPinIndex => _curentPinIndex;
     public int TotalPinCount => _pins != null ? _pins.Length : 0;
     public int FixedPinCount => _fixedPinCount;
 
