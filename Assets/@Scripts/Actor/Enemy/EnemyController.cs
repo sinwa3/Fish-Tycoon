@@ -166,7 +166,7 @@ public class EnemyController : MonoBehaviour
             return typeof(EnemySleepState);
         }
 
-        if (Memory.AlertLevel == AlertLevel.Detected)
+        if (Memory.AlertLevel == AlertLevel.Detected && !Memory.IsGaugeDecayAllowed)
         {
             return typeof(EnemyChaseState);
         }
