@@ -22,8 +22,15 @@ public class PinLockTest : MonoBehaviour
     /// <summary>SJY : 테스트용 컴포넌트 참조와 초기 락픽 수량을 설정</summary>
     private void Awake()
     {
-        if (_pinLockController == null) _pinLockController = GetComponent<PinLockController>();
-        if (_lockpickDurability == null) _lockpickDurability = GetComponent<LockpickDurability>();
+        if (_pinLockController == null)
+        {
+            _pinLockController = GetComponent<PinLockController>();
+        }
+
+        if (_lockpickDurability == null)
+        {
+            _lockpickDurability = GetComponent<LockpickDurability>();
+        }
 
         _currentLockpickCount = Mathf.Max(0, _startingLockpickCount);
         _lockpickCountInput = _currentLockpickCount.ToString();
@@ -36,6 +43,7 @@ public class PinLockTest : MonoBehaviour
         if (_pinLockController == null || _lockpickDurability == null)
         {
             CPrint.Warning("[PinLockTest] 필요한 컴포넌트가 연결되지 않았습니다.");
+
             return;
         }
 
@@ -146,10 +154,12 @@ public class PinLockTest : MonoBehaviour
         if (!int.TryParse(_lockpickCountInput, out int count) || count < 0)
         {
             ShowMessage("0 이상의 정수를 입력해 주세요.", 2f);
+
             return;
         }
 
         _currentLockpickCount = count;
+
         ShowMessage($"락픽 {_currentLockpickCount}개 설정 완료", 1.5f);
     }
 
@@ -164,6 +174,7 @@ public class PinLockTest : MonoBehaviour
         if (_currentLockpickCount <= 0)
         {
             ShowMessage("소지한 락픽이 없습니다.", 2f);
+
             return;
         }
 
@@ -185,6 +196,7 @@ public class PinLockTest : MonoBehaviour
         }
 
         _pinLockController.StopMiniGame();
+
         ShowMessage("미니게임 종료", 1.5f);
     }
 
@@ -200,6 +212,7 @@ public class PinLockTest : MonoBehaviour
         CPrint.Log($"[PinLockTest] 잠금 해제 성공 / 남은 락픽 : {_currentLockpickCount}");
 
         _pinLockController.StopMiniGame();
+
         ShowMessage("잠금 해제 성공!\n락픽 1개 소모", 2f);
     }
 
@@ -214,6 +227,7 @@ public class PinLockTest : MonoBehaviour
         {
             _pinLockController.StopMiniGame();
             ShowMessage("락픽 파손!\n남은 락픽이 없어 미니게임 종료", 3f);
+
             return;
         }
 
@@ -234,6 +248,7 @@ public class PinLockTest : MonoBehaviour
         if (_pinLockController != null && _pinLockController.IsPlaying && _pinLockController.IsReplacing)
         {
             _pinLockController.ReplaceLockpick();
+
             ShowMessage("새 락픽으로 교체 완료!\n1번 핀부터 다시 시작", 2f);
         }
 
