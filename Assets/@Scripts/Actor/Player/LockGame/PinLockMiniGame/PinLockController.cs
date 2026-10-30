@@ -43,7 +43,40 @@ public class PinLockController : MonoBehaviour
 
     private void Update()
     {
-        
+        if (!_isPlaying || _isUnlocked || _isReplacing || _pins == null || _pins.Length == 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _pins.Length; i++)
+        {
+            _pins[i].UpdateMovement(Time.deltaTime);
+        }
+
+        UpdatePinSelection();
+        UpdateLockpickPosition();
+
+        if (!IsLockpickArrived())
+        {
+            return;
+        }
+
+        PinLockPin currentPin = _pins[_curentPinIndex];
+
+        if (currentPin.IsFixed)
+        {
+            return;
+        }
+
+        if (_pinLockInput.IsFlickPressed)
+        {
+            currentPin.FlickPin();
+        }
+
+        if (_pinLockInput.IsFixPressed && currentPin.State != PinLockState.Idle)
+        {
+            CheckFixAttempt(currentPin);
+        }
     }
 
     private void OnDisable()
@@ -117,6 +150,11 @@ public class PinLockController : MonoBehaviour
         _isPlaying = false;
         _isReplacing= false;
 
+        if (Managers.Input == null)
+        {
+            return;
+        }
+
         Managers.Input.SetInputBlocked(this, false);
     }
 
@@ -147,7 +185,7 @@ public class PinLockController : MonoBehaviour
             pin.Initialize();
         }
 
-        UpdateSelectionIndicator();
+        UpdateLockpickPosition();
     }
 
     #endregion ==== 미니게임 제어 ====
@@ -259,7 +297,7 @@ public class PinLockController : MonoBehaviour
     #region ==== 락픽 이동 ====
 
     /// <summary>SJY : 현재 선택된 핀의 Anchor 위치로 락픽을 이동</summary>
-	private void UpdateSelectionIndicator()
+	private void UpdateLockpickPosition()
     {
         if (_lockpickPivot == null || _pins == null || _pins.Length == 0)
         {

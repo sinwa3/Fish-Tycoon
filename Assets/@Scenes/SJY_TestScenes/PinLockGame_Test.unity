@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 15770880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.294, y: 1.267, z: -0.35}
+  m_LocalPosition: {x: -1.72, y: 1.06, z: -0.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -164,6 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 139183040}
+  - component: {fileID: 139183041}
   m_Layer: 0
   m_Name: PinSlot1
   m_TagString: Untagged
@@ -187,8 +188,28 @@ Transform:
   - {fileID: 1444115552}
   - {fileID: 1868664016}
   - {fileID: 449161620}
+  - {fileID: 1719915875}
   m_Father: {fileID: 1073052181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &139183041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139183039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinMotion: {fileID: 449161620}
+  _lockpickAnchor: {fileID: 1719915875}
+  _travelDistance: 1.5
+  _minFallDuration: 0.4
+  _maxFallDuration: 0.8
+  _botomWindowDuration: 0.25
+  _returnDuration: 0.2
 --- !u!1 &300787840
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,7 +587,7 @@ Transform:
   m_GameObject: {fileID: 430055869}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.2058, y: 0, z: 0}
+  m_LocalPosition: {x: -3.07, y: 0.24, z: 0}
   m_LocalScale: {x: 5.4114943, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -684,6 +705,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 589309390}
+  - component: {fileID: 589309391}
   m_Layer: 0
   m_Name: PinSlot4
   m_TagString: Untagged
@@ -707,8 +729,28 @@ Transform:
   - {fileID: 1200832217}
   - {fileID: 1676734786}
   - {fileID: 618370429}
+  - {fileID: 1473393525}
   m_Father: {fileID: 1073052181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &589309391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589309389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinMotion: {fileID: 618370429}
+  _lockpickAnchor: {fileID: 1473393525}
+  _travelDistance: 1.5
+  _minFallDuration: 0.4
+  _maxFallDuration: 0.8
+  _botomWindowDuration: 0.25
+  _returnDuration: 0.2
 --- !u!1 &618370428
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,6 +1384,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1354579667}
+  - component: {fileID: 1354579671}
+  - component: {fileID: 1354579670}
+  - component: {fileID: 1354579669}
+  - component: {fileID: 1354579668}
   m_Layer: 0
   m_Name: PinLock
   m_TagString: Untagged
@@ -1367,6 +1413,72 @@ Transform:
   - {fileID: 15770881}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1354579668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354579666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6a966bfdf421c49b5ba54bb6d604fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxDurability: 100
+  _damageAmount: 20
+--- !u!114 &1354579669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354579666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2996c58e6158cb543af99283359a576e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinLockController: {fileID: 1354579671}
+  _lockpickDurability: {fileID: 1354579668}
+  _startingLockpickCount: 5
+  _replacementDelay: 1
+--- !u!114 &1354579670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354579666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9958d8d766edff45b864dd1ce812789, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1354579671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354579666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46ec0d2fdbd1c7347af62e4db26778cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinLockInput: {fileID: 1354579670}
+  _lockpickDurability: {fileID: 1354579668}
+  _pins:
+  - {fileID: 139183041}
+  - {fileID: 1702994719}
+  - {fileID: 1496768238}
+  - {fileID: 589309391}
+  _lockpickPivot: {fileID: 15770881}
+  _lockpickMoveSpeed: 8
+  _arrivalTolerance: 0.01
+  _resetMoveSpeed: 10
+  _failedAttempDamage: 25
 --- !u!1 &1398550538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,6 +1830,68 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454787635}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1460060756
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1460060757}
+  m_Layer: 0
+  m_Name: LockPickAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1460060757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460060756}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -0.3509}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1702994718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1473393524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1473393525}
+  m_Layer: 0
+  m_Name: LockPickAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1473393525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473393524}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -0.3509}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 589309390}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1496768236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,6 +1901,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1496768237}
+  - component: {fileID: 1496768238}
   m_Layer: 0
   m_Name: PinSlot3
   m_TagString: Untagged
@@ -1750,8 +1925,28 @@ Transform:
   - {fileID: 1126268701}
   - {fileID: 1636642990}
   - {fileID: 1068936318}
+  - {fileID: 1861201278}
   m_Father: {fileID: 1073052181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1496768238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1496768236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinMotion: {fileID: 1068936318}
+  _lockpickAnchor: {fileID: 1861201278}
+  _travelDistance: 1.5
+  _minFallDuration: 0.4
+  _maxFallDuration: 0.8
+  _botomWindowDuration: 0.25
+  _returnDuration: 0.2
 --- !u!1 &1528975104
 GameObject:
   m_ObjectHideFlags: 0
@@ -2438,6 +2633,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1702994718}
+  - component: {fileID: 1702994719}
   m_Layer: 0
   m_Name: PinSlot2
   m_TagString: Untagged
@@ -2461,7 +2657,58 @@ Transform:
   - {fileID: 2086022841}
   - {fileID: 326652806}
   - {fileID: 1533611628}
+  - {fileID: 1460060757}
   m_Father: {fileID: 1073052181}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1702994719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702994717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pinMotion: {fileID: 1533611628}
+  _lockpickAnchor: {fileID: 1460060757}
+  _travelDistance: 1.5
+  _minFallDuration: 0.4
+  _maxFallDuration: 0.8
+  _botomWindowDuration: 0.25
+  _returnDuration: 0.2
+--- !u!1 &1719915874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719915875}
+  m_Layer: 0
+  m_Name: LockPickAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1719915875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719915874}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -0.3509}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 139183040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1841253200
 GameObject:
@@ -2491,7 +2738,7 @@ Transform:
   m_GameObject: {fileID: 1841253200}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.258819, w: 0.9659259}
-  m_LocalPosition: {x: 1.69, y: -0.121, z: 0}
+  m_LocalPosition: {x: -0.17419958, y: 0.11900002, z: 0}
   m_LocalScale: {x: 0.5, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2568,6 +2815,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841253200}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1861201277
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1861201278}
+  m_Layer: 0
+  m_Name: LockPickAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1861201278
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861201277}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -0.3509}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1496768237}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1868664015
 GameObject:
   m_ObjectHideFlags: 0
