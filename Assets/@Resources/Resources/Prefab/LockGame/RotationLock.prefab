@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5738112379130015581}
   - component: {fileID: 3861201388726375569}
   - component: {fileID: 6652166680005511305}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RotationLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,9 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab79251e245b4534496fa7127110003f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationLockInput: {fileID: 5738112379130015581}
-  _rotationLockLogic: {fileID: 3861201388726375569}
-  _lockpickDurability: {fileID: 0}
   _smallDamage: 20
   _largeDamage: 30
 --- !u!114 &1587127611498040977
@@ -69,8 +66,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed33724634952f548a947de7f0f56941, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationLockController: {fileID: 4279980599472726390}
-  _lockpickDurability: {fileID: 0}
   _startingLockpickCount: 3
   _replacementDelay: 0.5
 --- !u!114 &5738112379130015581
@@ -85,10 +80,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e0d0defea2691428261e219f4b5397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lockpickPivot: {fileID: 2043346992243067431}
-  _lockCylinderPivot: {fileID: 7847557379821951485}
-  _tensionWrenchPivot: {fileID: 5996014151436686792}
-  _lockpickAnchor: {fileID: 3642356969163923575}
   _rotationSensitivity: 200
   _minAngle: -90
   _maxAngle: 90
@@ -112,7 +103,6 @@ MonoBehaviour:
   _angleFalloffRange: 40
   _maxCylinderAngle: -90
   _wrongCylinderAngle: -5
-  _lockCylinderPivot: {fileID: 7847557379821951485}
   _showAngleGizmo: 1
   _gizmoRadius: 1.5
 --- !u!114 &6652166680005511305
@@ -141,7 +131,7 @@ GameObject:
   - component: {fileID: 8736743715383208581}
   - component: {fileID: 989275437881503390}
   - component: {fileID: 8322064046971255552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KeyHole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +233,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5996014151436686792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TensionWrenchPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7847557379821951485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockCylinderPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -309,7 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2043346992243067431}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +334,7 @@ GameObject:
   - component: {fileID: 921300432133670006}
   - component: {fileID: 8517266159021278985}
   - component: {fileID: 4433936863331647398}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockCylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -448,7 +438,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3642356969163923575}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +472,7 @@ GameObject:
   - component: {fileID: 6429941040284058831}
   - component: {fileID: 4535401095840539925}
   - component: {fileID: 6605437535373622774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,7 +579,7 @@ GameObject:
   - component: {fileID: 4718058725303833381}
   - component: {fileID: 3772162186363009637}
   - component: {fileID: 6912870980029591716}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -694,7 +684,7 @@ GameObject:
   - component: {fileID: 7380177775933631388}
   - component: {fileID: 7909417520179328914}
   - component: {fileID: 2098146183080303010}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WrenchMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

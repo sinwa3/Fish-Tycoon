@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8418359618765504625}
   - component: {fileID: 7528458906130161186}
   - component: {fileID: 155583504937383715}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1931981933975743286}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lockpick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - component: {fileID: 4817591964528290617}
   - component: {fileID: 8910347077596611543}
   - component: {fileID: 6908958157483233776}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 4317473029871591878}
   - component: {fileID: 4035226118767901894}
   - component: {fileID: 7744941014384447273}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BackPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,7 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3375011927793662860}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 5277241177521364113}
   - component: {fileID: 6779605294369032433}
   - component: {fileID: 5016984370202425730}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TopFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -495,7 +495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8247818973999994944}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,7 +535,7 @@ GameObject:
   - component: {fileID: 4855871155044005766}
   - component: {fileID: 7824960506069217868}
   - component: {fileID: 7972227144293763724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,14 +572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46ec0d2fdbd1c7347af62e4db26778cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pinLockInput: {fileID: 4855871155044005766}
-  _lockpickDurability: {fileID: 7972227144293763724}
-  _pins:
-  - {fileID: 7663640372407692726}
-  - {fileID: 4866557699648661268}
-  - {fileID: 4293035159050861750}
-  - {fileID: 4343457820592907984}
-  _lockpickPivot: {fileID: 1931981933975743286}
   _lockpickMoveSpeed: 8
   _arrivalTolerance: 0.01
   _resetMoveSpeed: 10
@@ -608,8 +600,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2996c58e6158cb543af99283359a576e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pinLockController: {fileID: 6676275846638539403}
-  _lockpickDurability: {fileID: 7972227144293763724}
   _startingLockpickCount: 5
   _replacementDelay: 1
 --- !u!114 &7972227144293763724
@@ -635,7 +625,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8947718998147460527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +659,7 @@ GameObject:
   - component: {fileID: 5815667989781240674}
   - component: {fileID: 6576075498699270298}
   - component: {fileID: 8064127855389020507}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -771,7 +761,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4970483411603964247}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -806,7 +796,7 @@ GameObject:
   - component: {fileID: 2122643590414703436}
   - component: {fileID: 4190424614879532742}
   - component: {fileID: 8582504423075839000}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TargetMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -911,7 +901,7 @@ GameObject:
   - component: {fileID: 5170312276062149228}
   - component: {fileID: 7818110944153958040}
   - component: {fileID: 755892529248655001}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BottomFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1016,7 +1006,7 @@ GameObject:
   - component: {fileID: 3541865336784242906}
   - component: {fileID: 6055997618636668702}
   - component: {fileID: 829504118330259883}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotGuid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1121,7 +1111,7 @@ GameObject:
   - component: {fileID: 7656273649905744042}
   - component: {fileID: 6134427251771268590}
   - component: {fileID: 1441561940419971888}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockpickMesh_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1226,7 +1216,7 @@ GameObject:
   - component: {fileID: 4807717735556698580}
   - component: {fileID: 4648576286175057334}
   - component: {fileID: 5292850382055161578}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotGuid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1329,7 +1319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6475661178971467684}
   - component: {fileID: 4343457820592907984}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinSlot4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1367,8 +1357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pinMotion: {fileID: 771148815331040929}
-  _lockpickAnchor: {fileID: 8947718998147460527}
   _travelDistance: 1.5
   _minFallDuration: 0.4
   _maxFallDuration: 0.8
@@ -1384,7 +1372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8644234574334150537}
   - component: {fileID: 4866557699648661268}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinSlot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1422,8 +1410,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pinMotion: {fileID: 273487879870178115}
-  _lockpickAnchor: {fileID: 2141043996615024527}
   _travelDistance: 1.5
   _minFallDuration: 0.4
   _maxFallDuration: 0.8
@@ -1441,7 +1427,7 @@ GameObject:
   - component: {fileID: 1921611245134701330}
   - component: {fileID: 8226292868258699931}
   - component: {fileID: 3133751552800332513}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockpickMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1546,7 +1532,7 @@ GameObject:
   - component: {fileID: 2933921411340282107}
   - component: {fileID: 6111750685302719231}
   - component: {fileID: 8832428117342676810}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TargetMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1651,7 +1637,7 @@ GameObject:
   - component: {fileID: 1624093951016106728}
   - component: {fileID: 1799114852052697997}
   - component: {fileID: 6624025693372616298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TargetMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1756,7 +1742,7 @@ GameObject:
   - component: {fileID: 8947769121359173185}
   - component: {fileID: 1994302800634090334}
   - component: {fileID: 3174555096557072980}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1860,7 +1846,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273487879870178115}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1893,7 +1879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4885714603467550874}
   - component: {fileID: 4293035159050861750}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinSlot3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1931,8 +1917,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pinMotion: {fileID: 311342526169802574}
-  _lockpickAnchor: {fileID: 3375011927793662860}
   _travelDistance: 1.5
   _minFallDuration: 0.4
   _maxFallDuration: 0.8
@@ -1950,7 +1934,7 @@ GameObject:
   - component: {fileID: 842744527381505698}
   - component: {fileID: 1697524080652701257}
   - component: {fileID: 5435066910734109942}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotGuid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2052,7 +2036,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 261338840649395545}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2083,7 +2067,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2141043996615024527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LockPickAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2117,7 +2101,7 @@ GameObject:
   - component: {fileID: 3826036519014446633}
   - component: {fileID: 549609785186984890}
   - component: {fileID: 8697016478737650985}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SlotGuid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2219,7 +2203,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 771148815331040929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2254,7 +2238,7 @@ GameObject:
   - component: {fileID: 3078296209448731293}
   - component: {fileID: 8018141825209365045}
   - component: {fileID: 8858103954565013559}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2357,7 +2341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6717718567160792619}
   - component: {fileID: 7663640372407692726}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinSlot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2395,8 +2379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36478189dc336a54790bef1c3983bf8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pinMotion: {fileID: 4970483411603964247}
-  _lockpickAnchor: {fileID: 261338840649395545}
   _travelDistance: 1.5
   _minFallDuration: 0.4
   _maxFallDuration: 0.8
@@ -2414,7 +2396,7 @@ GameObject:
   - component: {fileID: 422628883370046299}
   - component: {fileID: 6896004797961195746}
   - component: {fileID: 5853383230496721374}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2516,7 +2498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8411264505331360188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinSlots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2554,7 +2536,7 @@ GameObject:
   - component: {fileID: 3466996126660930659}
   - component: {fileID: 1484593703419029770}
   - component: {fileID: 5846436983102778758}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TargetMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2656,7 +2638,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 311342526169802574}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PinMotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
