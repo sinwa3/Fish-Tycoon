@@ -33,4 +33,7 @@ public static class EnemyTempValue
     public const float LoseSightDuration = 3.0f;
     // 이 거리 안에서 보이면 잡는다 (수평 거리)
     public const float CatchDistance = 1.2f;
+
+    // 조사 목표에서 두리번거리는 시간(초)
+    public const float InvestigateLookAroundDuration = 4.0f;
 }

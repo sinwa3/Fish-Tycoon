@@ -9,6 +9,7 @@ public abstract class ResourceKey
             
         public const string Misc = Prefab + "Misc/";
         public const string Item = Prefab + "Item/";
+        public const string Enemy = Prefab + "Enemy/";
         
         public const string UI = Prefab + "UI/";
         public const string ScreenUI = UI + "ScreenUI/";
@@ -27,5 +28,8 @@ public abstract class ResourceKey
         public const string Event = "EventSystem";
 
         public const string ShopIcon = "ShopIcon";
+
+        public const string Enemy = "Enemy";
+        public const string Fish = "Fish";
     }
-}
+}
