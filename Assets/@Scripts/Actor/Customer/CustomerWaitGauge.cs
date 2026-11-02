@@ -19,7 +19,7 @@ public class CustomerWaitGauge : MonoBehaviour
         InitializeComponents();
     }
 
-    /// <summary> KYH : 자식의 배경, 채움 렌더러를 찾고 채움 막대의 처음 크기를 기억한다 </summary>
+    /// <summary> KYH : 자식의 배경, 게이지 렌더러를 찾고 게이지 막대의 처음 크기를 기억한다 </summary>
     private void InitializeComponents()
     {
         _backgroundRenderer = gameObject.FindChild<SpriteRenderer>(BackgroundName);

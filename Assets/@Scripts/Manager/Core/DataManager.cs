@@ -750,4 +750,45 @@ public class DataManager
     }
 
     #endregion ===== 인벤토리(생선) =====
+    
+    #region ===== 퀘스트 =====
+    
+    /// <summary> KDH : 씬별 서브 퀘스트 상태를 반환한다. </summary>
+    public (int questID, int progress) GetSubQuestState(SceneType scene)
+    {
+        if (_saveData == null)
+        {
+            return (0, 0);
+        }
+
+        return scene switch
+        {
+            SceneType.TycoonScene => (_saveData.TycoonSubQuestID, _saveData.TycoonSubQuestProgress),
+            SceneType.StealthScene => (_saveData.StealthSubQuestID, _saveData.StealthSubQuestProgress),
+            _ => (0, 0),
+        };
+    }
+
+    /// <summary> KDH : 씬별 서브 퀘스트의 ID와 진행도를 데이터에 설정한다. </summary>
+    public void SetSubQuestState(SceneType scene, int questID, int progress)
+    {
+        if (_saveData == null)
+        {
+            return;
+        }
+
+        switch (scene)
+        {
+            case SceneType.TycoonScene:
+                _saveData.TycoonSubQuestID = questID;
+                _saveData.TycoonSubQuestProgress = Mathf.Max(0, progress);
+                break;
+            case SceneType.StealthScene:
+                _saveData.StealthSubQuestID = questID;
+                _saveData.StealthSubQuestProgress = Mathf.Max(0, progress);
+                break;
+        }
+    }
+    
+    #endregion ===== 퀘스트 =====
 }

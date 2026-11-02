@@ -51,6 +51,7 @@ public class InputManager
     public bool KeyDown_A => Input.GetKeyDown(KeyCode.A);
     public bool KeyDown_S => Input.GetKeyDown(KeyCode.S);
     public bool KeyDown_D => Input.GetKeyDown(KeyCode.D);
+    public bool Key_D => Input.GetKey(KeyCode.D);
     
     #endregion ===== 키보드 =====
 

@@ -10,4 +10,27 @@ public static class EnemyTempValue
     public const float TurnSpeed = 180.0f;
     // 두리번 때 처음 방향에서 좌우로 도는 각도
     public const float LookAroundAngle = 60.0f;
+
+    // 시야 거리, 시야각(정면 기준 전체 각도)
+    public const float SightDistance = 10.0f;
+    public const float SightAngle = 110.0f;
+    // 발에서 눈까지 높이
+    public const float EyeHeight = 1.6f;
+    // 플레이어 콜라이더 꼭대기에서 이만큼 아래를 본다
+    public const float SightTargetTopOffset = 0.1f;
+    // 웅크린 플레이어를 볼 때 시야 거리 배율
+    public const float CrouchSightMultiplier = 0.6f;
+    // 시야 검사 간격(초)
+    public const float SightCheckInterval = 0.2f;
+    // 시야 자극 세기
+    public const float SightStimulusStrength = 1.0f;
+
+    // 추격 중 목적지를 다시 잡는 간격(초)
+    public const float ChaseRepathInterval = 0.2f;
+    // 놓친 뒤 이 시간 동안은 실제 플레이어 위치로 쫓는다
+    public const float ChaseTrackDuration = 1.0f;
+    // 이 시간 동안 못 보면 놓친 것으로 본다
+    public const float LoseSightDuration = 3.0f;
+    // 이 거리 안에서 보이면 잡는다 (수평 거리)
+    public const float CatchDistance = 1.2f;
 }

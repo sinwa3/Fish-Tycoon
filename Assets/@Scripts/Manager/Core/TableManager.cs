@@ -12,6 +12,7 @@ public class TableManager
     public ReputationTable Reputation { get; private set; }
     public FishTable Fish { get; private set; }
     public FoodTable Food { get; private set; }
+    public QuestTable Quest { get; private set; }
 
     #endregion ===== 테이블 =====
 
@@ -53,6 +54,11 @@ public class TableManager
             {
                 Food = new FoodTable();
                 Food.Load();
+            }),
+            ("퀘스트테이블", () =>
+            {
+                Quest = new QuestTable();
+                Quest.Load();
             })
         };
     }
