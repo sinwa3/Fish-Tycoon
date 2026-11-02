@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 손님 좌석을 빈 자리 중 무작위로 배정하고 반납받으며 만석 여부를 알린다 </summary>
+/// <summary> KYH : 손님 좌석 배정, 반납, 만석 알림 </summary>
 public class CustomerSeats : MonoBehaviour
 {
     // 이 컴포넌트는 Seats 오브젝트에 붙이고, 자식은 Seat_0 ~ Seat_3 이름으로 둔다
@@ -14,7 +14,7 @@ public class CustomerSeats : MonoBehaviour
     private readonly List<Transform> _seats = new();
     private readonly List<CustomerController> _occupants = new();
 
-    // 무작위 배정 때 빈 좌석 번호를 모으는 임시 목록 (매번 new 하지 않으려고 재사용)
+    // 빈 좌석 번호 임시 목록
     private readonly List<int> _emptySeatIndices = new();
 
     #endregion ===== 좌석 =====
@@ -25,7 +25,7 @@ public class CustomerSeats : MonoBehaviour
 
     public bool IsFull => _isFull;
 
-    /// <summary> KYH : 만석 여부가 바뀔 때 발행 (true = 만석). 스폰의 입장 타이머 정지용 </summary>
+    /// <summary> KYH : 만석 여부가 바뀔 때 발행 (true = 만석) </summary>
     public event Action<bool> OnFullChanged;
 
     #endregion ===== 만석 =====
