@@ -35,8 +35,8 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
         SetDataList();
 
         _foodTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(FoodTooltip),
-            _fishListScroll.transform).GetComponent<FoodTooltip>();
-        _foodTooltip?.gameObject.SetActive(false);
+            _fishListScroll.transform).gameObject.GetOrAddComponent<FoodTooltip>();
+        _foodTooltip.gameObject.SetActive(false);
     }
 
     protected override void OnStart()
@@ -161,6 +161,11 @@ public class FoodListScroll : BaseVerticalScroll<FoodData>
     {
         foreach (BaseRecycleSlot<FoodData> slot in Slots)
         {
+            if (!slot.gameObject.activeSelf)
+            {
+                continue;
+            }
+            
             if (slot is not FoodListSlot foodSlot || slot.Data == null)
             {
                 continue;

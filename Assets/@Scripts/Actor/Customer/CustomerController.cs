@@ -128,7 +128,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 등장과 퇴장 =====
 
-    /// <summary> KYH : 손님이 사라지기 직전에 발행. 스포너가 남은 손님 목록에서 빼는 용도 </summary>
+    /// <summary> KYH : 손님이 사라지기 직전에 발행 </summary>
     public event Action<CustomerController> OnDespawned;
 
     /// <summary> KYH : 배정받은 좌석에 손님을 세우고 입장 상태부터 시작한다 </summary>
@@ -228,7 +228,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 음식 =====
 
-    /// <summary> KYH : 대기 상태일 때만 요리를 받고 받으면 true (요리 쪽은 스포너의 DeliverFood로 부른다) </summary>
+    /// <summary> KYH : 대기 상태일 때만 요리를 받는다. 받으면 true </summary>
     public bool ReceiveFood()
     {
         if (!_stateMachine.IsCurrentState<CustomerWaitState>())
@@ -289,7 +289,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 결제 =====
 
-    /// <summary> KYH : 손님이 계산할 때 (만족도). 스포너가 하루 합계에 더하는 용도 </summary>
+    /// <summary> KYH : 손님이 계산할 때 만족도와 함께 발행 </summary>
     public event Action<int> OnPaid;
 
     /// <summary> KYH : 주문한 음식과 기다린 시간으로 만족도를 계산해 띄우고 알린다 </summary>

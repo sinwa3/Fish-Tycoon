@@ -71,7 +71,10 @@ public abstract class TableLoader<TData> where TData : TableData, new()
                 continue;
             }
 
-            TableMap.Add(data.ID, data);
+            if (!TableMap.TryAdd(data.ID, data))
+            {
+                CPrint.Error($"중복된 테이블 ID: {data.ID}");
+            }
         }
     }
 }

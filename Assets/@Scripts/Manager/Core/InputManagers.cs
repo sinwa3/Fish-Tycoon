@@ -12,6 +12,7 @@ public class InputManager
 
     public bool MouseDown_Left => Input.GetMouseButtonDown(0);
     public bool MouseDown_Right => Input.GetMouseButtonDown(1);
+    public bool MouseDown_Wheel => Input.GetMouseButtonDown(2);
 
     public Vector3 MousePosition => Input.mousePosition;
     

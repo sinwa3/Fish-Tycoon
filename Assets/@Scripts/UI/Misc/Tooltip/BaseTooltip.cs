@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-/// <summary> KDH : 툴팁의 공통 위치와 애니메이션을 관리한다. </summary>
+/// <summary> KDH : 툴팁의 위치와 애니메이션을 관리한다. </summary>
 public abstract class BaseTooltip : BaseUI
 {
     public enum TooltipDirection

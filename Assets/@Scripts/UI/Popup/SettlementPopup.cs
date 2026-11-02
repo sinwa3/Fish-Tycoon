@@ -166,13 +166,13 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : 기본 소지금을 UI에 적용한다. </summary>
     private void SetStartingMoneyText()
     {
-        Get<TMP_Text>(Texts.StartingMoneyValueText).SetText(Managers.Data.GetCurrentGold().ToString("N0"));
+        Get<TMP_Text>(Texts.StartingMoneyValueText).SetText(Managers.Data.GetCurrentGold().ToString("N0") + " G");
     }
 
     /// <summary> KDH : 음식 판매금을 UI에 적용한다. </summary>
     private void SetFoodSalesText()
     {
-        Get<TMP_Text>(Texts.FoodSalesValueText).SetText($"+ {_calculatedFoodSales:N0}");
+        Get<TMP_Text>(Texts.FoodSalesValueText).SetText($"+ {_calculatedFoodSales:N0}" + " G");
     }
 
     /// <summary> KDH : 평판 보너스를 UI에 적용한다. </summary>
@@ -180,13 +180,13 @@ public class SettlementPopup : BasePopup
     {
         float multiplier = Mathf.Max(0, _bonusMultiplier - 1);
         Get<TMP_Text>(Texts.ReputationBonusText).SetText($"평판 보너스\n<size=20>(음식 판매금 x {multiplier})</size>");
-        Get<TMP_Text>(Texts.ReputationBonusValueText).SetText($"+ {_calculatedReputationBonus:N0}");
+        Get<TMP_Text>(Texts.ReputationBonusValueText).SetText($"+ {_calculatedReputationBonus:N0} G");
     }
 
     /// <summary> KDH : 남은 생선 자동 매각 금액을 UI에 적용한다. </summary>
     private void SetUnsoldFishSalesText()
     {
-        Get<TMP_Text>(Texts.UnsoldFishSalesValueText).SetText($"+ {_calculatedUnsoldFishSales:N0}");
+        Get<TMP_Text>(Texts.UnsoldFishSalesValueText).SetText($"+ {_calculatedUnsoldFishSales:N0} G");
     }
 
     /// <summary> KDH : 소득 적용 후 현재 소지금을 UI에 적용한다. </summary>
@@ -194,7 +194,7 @@ public class SettlementPopup : BasePopup
     {
         int totalMoney = Managers.Data.GetCurrentGold();
 
-        Get<TMP_Text>(Texts.TotalMoneyValueText).SetText(totalMoney.ToString("N0"));
+        Get<TMP_Text>(Texts.TotalMoneyValueText).SetText(totalMoney.ToString("N0") + " G");
     }
 
     #endregion ===== UI =====

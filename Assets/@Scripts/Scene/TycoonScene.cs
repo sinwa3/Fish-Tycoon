@@ -21,6 +21,8 @@ public class TycoonScene : BaseScene
     private int _maxCustomerCount;
     private float _customerSpawnInterval;
 
+    public int ServedCount { get; set; }
+    
     #endregion ===== 상태 =====
 
     #region ===== 참조 =====
@@ -198,6 +200,7 @@ public class TycoonScene : BaseScene
                 _tycoonHUD.SetNextBtnVisible(false);
                 _tycoonHUD.SetStoreBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(false);
+                _tycoonHUD.SetQuickSlotVisible(false);
 
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
@@ -206,6 +209,7 @@ public class TycoonScene : BaseScene
                 _tycoonHUD.SetNextBtnVisible(false);
                 _tycoonHUD.SetStoreBtnVisible(false);
                 _tycoonHUD.SetBusinessProgressVisible(true);
+                _tycoonHUD.SetQuickSlotVisible(false);
 
                 break;
             case Phase.AfterBusiness:
@@ -213,6 +217,7 @@ public class TycoonScene : BaseScene
                 _tycoonHUD.SetNextBtnVisible(true);
                 _tycoonHUD.SetStoreBtnVisible(true);
                 _tycoonHUD.SetBusinessProgressVisible(false);
+                _tycoonHUD.SetQuickSlotVisible(true);
 
                 _tycoonBgCtrl.ShowAfter();
                 break;
@@ -299,7 +304,10 @@ public class TycoonScene : BaseScene
     /// <summary> KDH : 음식 서빙이 끝나면 손님에게 음식을 전달한다. </summary>
     private void HandleServingFinished()
     {
-        _customerSpawner?.DeliverFood();
+        if (_customerSpawner?.DeliverFood() == true)
+        {
+            Managers.Quest?.ReportProgress(Type, QuestType.Serving);
+        }
     }
 
     #endregion ===== 이벤트 =====

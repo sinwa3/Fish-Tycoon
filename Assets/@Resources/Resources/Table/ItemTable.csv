@@ -1,3 +1,17 @@
-ID,이름,설명,버프타입,버프값,리소스이름,타입,개수제한
-1,체력 포션,HP를 {0} 회복시킨다.,HP,50,HpPotion,Consumable,99
-2,스태미너 포션,SP를 {0} 회복시킨다.,SP,50,SpPotion,Consumable,99
+﻿ID,이름,설명,적용 값,최대 소지 개수,타입,장비타입,장비 단계,리소스명
+0,싸구려 힙색,퀵 슬롯이 {0}칸 증가합니다.,1,1,Equipment,HipSack,1,Hipsack_0
+1,모던 힙색,퀵 슬롯이 {0}칸 증가합니다.,2,1,Equipment,HipSack,2,Hipsack_1
+2,고급 힙색,퀵 슬롯이 {0}칸 증가합니다.,3,1,Equipment,HipSack,3,Hipsack_2
+3,오트쿠튀르 힙색,퀵 슬롯이 {0}칸 증가합니다.,4,1,Equipment,HipSack,4,Hipsack_3
+4,수면 양말,발소리의 범위가 {0}미터 감소합니다.,-1,1,Equipment,Socks,1,Socks_0
+5,군용 양말,발소리의 범위가 {0}미터 감소합니다.,-2,1,Equipment,Socks,2,Socks_1
+6,요술 양말,발소리의 범위가 {0}미터 감소합니다.,-3,1,Equipment,Socks,3,Socks_2
+7,최첨단 양말,발소리의 범위가 {0}미터 감소합니다.,-4,1,Equipment,Socks,4,Socks_3
+8,가죽 장갑,물고기 획득 시간이 {0}% 단축됩니다.,20,1,Equipment,Glove,1,Gloves_0
+9,목장갑,물고기 획득 시간이 {0}% 단축됩니다.,25,1,Equipment,Glove,2,Gloves_1
+10,끈끈이 장갑,물고기 획득 시간이 {0}% 단축됩니다.,33,1,Equipment,Glove,3,Gloves_2
+11,만능툴,잠긴 물건 해제를 위한 도구입니다.,0,9,Consumable,None,0,Lockpick
+12,병,투척하여 떨어진 곳에 소리를 발생시킵니다.,0,3,Consumable,None,0,Bottle
+13,타이머 장치,설치하여 {0}초 후 소리를 발생시킵니다.,10,3,Consumable,None,0,Clock
+14,스포츠 드링크,"{0}초 후, 스테미나를 최대 회복시킵니다.",2,3,Consumable,None,0,Drink
+15,빨간 버튼,사용하는 즉시 집으로부터 탈출합니다.,0,1,Consumable,None,0,RedButton

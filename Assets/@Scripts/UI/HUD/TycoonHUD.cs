@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class TycoonHUD : BaseHUD
         PhaseText,
 
         MainQuestValueText,
+        SubQuestDescText,
     }
 
     public enum Sliders
@@ -48,10 +50,20 @@ public class TycoonHUD : BaseHUD
         CurrentFoodImage,
         NextFoodImage,
         ServingFoodImage,
+
         GoldFrameImage,
         ReputationIcon,
+
+        QuickSlotBar,
+
+        SubQuest
     }
-    
+
+    public enum Toggles
+    {
+        SubQuestToggle
+    }
+
     #region ===== 참조 =====
 
     private TycoonScene _tycoonScene;
@@ -59,16 +71,20 @@ public class TycoonHUD : BaseHUD
     private CanvasGroup _foodDiaryCG;
 
     private ReputationTooltip _reputationTooltip;
-    
+
     private CookingController _cookingController;
 
     #endregion ===== 참조 =====
 
     #region ===== 애니메이션 =====
 
+    // 다이어리
     private RectTransform _diaryRectTransform;
     private Vector2 _diaryOriginPos;
     private Tween _diaryTween;
+
+    // 퀘스트
+    private Coroutine _subQuestCoroutine;
 
     #endregion ===== 애니메이션 =====
 
@@ -81,27 +97,21 @@ public class TycoonHUD : BaseHUD
     private Image[] _commandImages;
 
     private const string TycoonSpritePath = "Sprite/Tycoon/";
-    private const string FoodSpritePath = "Sprite/Food/Pixel_Sushi_64";
 
     #endregion ==== 조리 커맨드 ====
 
-    #region ===== 상태 =====
-    
-    private int _servedCount = 0;
-    
-    #endregion ===== 상태 =====
-    
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
         Bind<Button>(typeof(Buttons));
-        Bind<Image>(typeof(Images));    
+        Bind<Image>(typeof(Images));
+        Bind<Toggle>(typeof(Toggles));
 
         _tycoonScene = gameObject.FindParent<TycoonScene>();
 
         // SJY : TycoonScene에서 CookingController를 가져옴
-        if (_tycoonScene?.CookingController != null )
+        if (_tycoonScene?.CookingController != null)
         {
             _cookingController = _tycoonScene?.CookingController;
         }
@@ -132,6 +142,13 @@ public class TycoonHUD : BaseHUD
         SubscribeSatisfactionChanged();
 
         SubscribeCookingEvents();
+        
+        SubscribeSubQuestEvents();
+
+        if (Managers.Quest != null)
+        {
+            UpdateSubQuest(Managers.Quest.GetCurrentQuest(SceneType.TycoonScene, out var progress), progress);
+        }
     }
 
     protected override void OnUpdate()
@@ -146,7 +163,7 @@ public class TycoonHUD : BaseHUD
         {
             Managers.UI.OpenPopup<PausePopup>();
         }
-        
+
         // SJY : 조리 중 WASD 커맨드 입력
         if (_cookingController != null)
         {
@@ -154,7 +171,7 @@ public class TycoonHUD : BaseHUD
             {
                 return;
             }
-            
+
             if (Managers.Input.KeyDown_W)
             {
                 _cookingController.ProcessCommand('W');
@@ -185,6 +202,8 @@ public class TycoonHUD : BaseHUD
         UnsubscribeSatisfactionChanged();
 
         UnsubscribeCookingEvents();
+        
+        UnsubscribeSubQuestEvents();
     }
 
     #region ===== 초기화 =====
@@ -192,30 +211,30 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 버튼 이벤트를 초기화한다. </summary>
     private void InitializeBtnEvent()
     {
-        Get<Button>(Buttons.NextBtn).onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
-        Get<Button>(Buttons.StartBusinessBtn).onClick.AddListener(CloseFoodDiary);
-        Get<Button>(Buttons.StoreBtn).onClick.AddListener(() => Managers.UI.OpenPopup<StorePopup>());
+        Get<Button>(Buttons.NextBtn)?.onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
+        Get<Button>(Buttons.StartBusinessBtn)?.onClick.AddListener(CloseFoodDiary);
+        Get<Button>(Buttons.StoreBtn)?.onClick.AddListener(() => Managers.UI.OpenPopup<StorePopup>());
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
-        Get<TMP_Text>(Texts.CurrentDayText).SetText($"{Managers.Data.GetCurrentDay()}일 차");
+        Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
     private void SetMainQuestValueText()
     {
-        Get<TMP_Text>(Texts.MainQuestValueText).SetText($"{_tycoonScene.TargetGold:N0}");
+        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{_tycoonScene.TargetGold:N0} G");
     }
 
     /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>
     private void SetReputationIconHover()
     {
-        Get<Image>(Images.ReputationIcon).gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterReputation);
-        Get<Image>(Images.ReputationIcon).gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitReputation);
+        Get<Image>(Images.ReputationIcon)?.gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterReputation);
+        Get<Image>(Images.ReputationIcon)?.gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitReputation);
     }
-    
+
     /// <summary> KDH : 음식 메뉴 리스트를 참조한다. </summary>
     private void ResolveFoodDiary()
     {
@@ -230,11 +249,14 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 영업 진행도를 초기화한다. </summary>
     public void InitializeBusinessProgress(int maxCustomerCount)
     {
-        _servedCount = 0;
+        Slider businessProgressSlider = Get<Slider>(Sliders.BusinessProgressSlider);
 
-        Get<Slider>(Sliders.BusinessProgressSlider).minValue = 0;
-        Get<Slider>(Sliders.BusinessProgressSlider).maxValue = Mathf.Max(1, maxCustomerCount);
-        Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(0);
+        if (businessProgressSlider != null)
+        {
+            businessProgressSlider.minValue = 0;
+            businessProgressSlider.maxValue = Mathf.Max(1, maxCustomerCount);
+            businessProgressSlider.SetValueWithoutNotify(0);
+        }
     }
 
     /// <summary> KDH : 평판 툴팁을 초기화한다. </summary>
@@ -243,12 +265,12 @@ public class TycoonHUD : BaseHUD
         if (_reputationTooltip == null)
         {
             _reputationTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(ReputationTooltip),
-                transform).GetComponent<ReputationTooltip>();
+                transform).gameObject.GetOrAddComponent<ReputationTooltip>();
         }
-        
-        _reputationTooltip?.gameObject.SetActive(false);
+
+        _reputationTooltip.gameObject.SetActive(false);
     }
-    
+
     /// <summary>SJY : 커맨드 UI 이미지 배열 초기화</summary>
     private void InitializeCommandImages()
     {
@@ -294,7 +316,7 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 현재 골드 값을 UI에 업데이트 한다. </summary>
     private void UpdateGoldText()
     {
-        Get<TMP_Text>(Texts.GoldValueText)?.SetText(Managers.Data.GetCurrentGold().ToString("N0"));
+        Get<TMP_Text>(Texts.GoldValueText)?.SetText($"{Managers.Data.GetCurrentGold():N0} G");
     }
 
     /// <summary> KDH : 현재 영업 상태를 UI에 업데이트 한다. </summary>
@@ -345,10 +367,35 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 음식 서빙이 완료되면 영업 진행도를 갱신한다. </summary>
     public void UpdateBusinessProgress()
     {
-        _servedCount = Mathf.Min(_servedCount + 1, (int)Get<Slider>(Sliders.BusinessProgressSlider).maxValue);
-        Get<Slider>(Sliders.BusinessProgressSlider).SetValueWithoutNotify(_servedCount);
+        if (_tycoonScene == null)
+        {
+            return;
+        }
+
+        Slider businessProgressSlider = Get<Slider>(Sliders.BusinessProgressSlider);
+
+        if (businessProgressSlider != null)
+        {
+            _tycoonScene.ServedCount = Mathf.Min(_tycoonScene.ServedCount + 1, (int)businessProgressSlider.maxValue);
+            businessProgressSlider.SetValueWithoutNotify(_tycoonScene.ServedCount);
+        }
     }
-    
+
+    /// <summary> KDH : 해당 퀘스트 정보로 UI를 업데이트한다. </summary>
+    private void UpdateSubQuest(QuestData quest, int progress, bool isCompleted = false)
+    {
+        if (quest == null)
+        {
+            Get<Image>(Images.SubQuest)?.gameObject.SetActive(false);
+            return;
+        }
+
+        Get<Image>(Images.SubQuest)?.gameObject.SetActive(true);
+        Get<TMP_Text>(Texts.SubQuestDescText)
+            ?.SetText($"{quest.Description}\n({Mathf.Clamp(progress, 0, quest.Goal)} / {quest.Goal})\n");
+        Get<Toggle>(Toggles.SubQuestToggle)?.SetIsOnWithoutNotify(isCompleted);
+    }
+
     #endregion ===== 업데이트 =====
 
     #region ===== 활성화 =====
@@ -358,26 +405,32 @@ public class TycoonHUD : BaseHUD
     {
         Get<Button>(Buttons.NextBtn)?.gameObject.SetActive(visible);
     }
-    
+
     /// <summary> KDH : 다음 버튼[잠입전환] 표시/비표시한다. </summary>
     public void SetStoreBtnVisible(bool visible)
     {
         Get<Button>(Buttons.StoreBtn)?.gameObject.SetActive(visible);
     }
-    
+
     /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
     public void SetStoreInfoVisible(bool isVisible)
     {
         Get<Slider>(Sliders.SatisfactionSlider)?.gameObject.SetActive(isVisible);
         Get<Image>(Images.GoldFrameImage)?.gameObject.SetActive(isVisible);
     }
-    
+
     /// <summary> KDH : 영업 진행도를 표시/비표시한다. </summary>
     public void SetBusinessProgressVisible(bool isVisible)
     {
         Get<Slider>(Sliders.BusinessProgressSlider)?.gameObject.SetActive(isVisible);
     }
-    
+
+    /// <summary> KDH : 퀵슬롯을 표시/비표시한다. </summary>
+    public void SetQuickSlotVisible(bool isVisible)
+    {
+        Get<Image>(Images.QuickSlotBar)?.gameObject.SetActive(isVisible);
+    }
+
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
     public void OpenFoodDiary()
     {
@@ -446,7 +499,7 @@ public class TycoonHUD : BaseHUD
     #endregion ===== 활성화 =====
 
     #region ==== 조리 커맨드 UI ====
-    
+
     /// <summary>SJY : 커맨드 문자에 해당하는 스프라이트 인덱스 반환</summary>
     private int GetCommandSpriteIndex(char command)
     {
@@ -511,7 +564,8 @@ public class TycoonHUD : BaseHUD
     /// <summary>SJY : 지정된 커맨드의 스프라이트 변경</summary>
     private void UpdateCommandSprite(int commandIndex, Sprite[] sprites)
     {
-        if (_cookingController == null || _commandImages == null || commandIndex < 0 || commandIndex >= _commandImages.Length)
+        if (_cookingController == null || _commandImages == null || commandIndex < 0 ||
+            commandIndex >= _commandImages.Length)
         {
             return;
         }
@@ -547,7 +601,7 @@ public class TycoonHUD : BaseHUD
 
         Get<Image>(Images.CookingImage)?.gameObject.SetActive(false);
 
-        Image servingImage = Get<Image>(Images.ServingImage); 
+        Image servingImage = Get<Image>(Images.ServingImage);
 
         if (servingImage != null && servingImage.sprite != null)
         {
@@ -586,7 +640,7 @@ public class TycoonHUD : BaseHUD
 
         int startIndex = 0;
 
-        for (int i = 0; i <stageNames.Length; i++)
+        for (int i = 0; i < stageNames.Length; i++)
         {
             int stageCount = baseCount + (i < remainder ? 1 : 0);
 
@@ -658,8 +712,8 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        UpdateFoodImage(Get<Image>(Images.CurrentFoodImage),_cookingController.CurrentFoodID);
-        UpdateFoodImage(Get<Image>(Images.NextFoodImage),_cookingController.NextFoodID);
+        UpdateFoodImage(Get<Image>(Images.CurrentFoodImage), _cookingController.CurrentFoodID);
+        UpdateFoodImage(Get<Image>(Images.NextFoodImage), _cookingController.NextFoodID);
     }
 
     /// <summary>SJY : 음식 ID로 테이블을 조회하여 아이콘 표시</summary>
@@ -704,6 +758,37 @@ public class TycoonHUD : BaseHUD
 
     #endregion ==== 조리 커맨드 UI ====
 
+    #region ===== 퀘스트 =====
+    
+    private void StartSubQuestCompletion(QuestProgressEvent progressEvent)
+    {
+        if (_subQuestCoroutine != null)
+        {
+            StopCoroutine(_subQuestCoroutine);
+        }
+
+        _subQuestCoroutine = StartCoroutine(Co_ShowSubQuestCompletion(progressEvent));
+    }
+
+    private IEnumerator Co_ShowSubQuestCompletion(QuestProgressEvent progressEvent)
+    {
+        // 완료 표시
+        UpdateSubQuest(progressEvent.CompletedQuest, progressEvent.CompletedQuest.Goal, true);
+        Managers.Quest.SetCompletionSequenceActive(true);
+        yield return new WaitForSeconds(0.8f);
+
+        // 보상 표시
+        Get<TMP_Text>(Texts.SubQuestDescText)?.SetText($"{progressEvent.CompletedQuest.GoldReward:N0} G 획득!");
+        yield return new WaitForSeconds(1.2f);
+
+        // 다음 퀘스트 표시
+        UpdateSubQuest(progressEvent.NextQuest, 0);
+        Managers.Quest.SetCompletionSequenceActive(false);
+        _subQuestCoroutine = null;
+    }
+    
+    #endregion ===== 퀘스트 =====
+    
     #region ===== 이벤트 =====
 
     /// <summary> KDH : 골드 변화시 UI 업데이트를 구독 </summary>
@@ -741,17 +826,23 @@ public class TycoonHUD : BaseHUD
             Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
         }
     }
-    
-    /// <summary> KDH : 마우스가 평판 아이콘에 올라오면 평판 정보를 표시한다. </summary>
-    private void OnPointerEnterReputation()
+
+    /// <summary> KDH : 퀘스트 진행도 변화시 UI 업데이트를 구독 </summary>
+    private void SubscribeSubQuestEvents()
     {
-        _reputationTooltip?.Show(Get<TMP_Text>(Texts.ReputationValueText).text, Get<Image>(Images.ReputationIcon).rectTransform);
+        if (Managers.Quest != null)
+        {
+            Managers.Quest.OnQuestProgressed += OnSubQuestProgressed;
+        }
     }
 
-    /// <summary> KDH : 마우스가 평판 아이콘에서 벗어나면 평판 정보를 숨긴다. </summary>
-    private void OnPointerExitReputation()
+    /// <summary> KDH : 퀘스트 진행도 변화시 UI 업데이트를 구독해제 </summary>
+    private void UnsubscribeSubQuestEvents()
     {
-        _reputationTooltip?.Hide();
+        if (Managers.Quest != null)
+        {
+            Managers.Quest.OnQuestProgressed -= OnSubQuestProgressed;
+        }
     }
     
     /// <summary>SJY : 조리 커맨드 이벤트 구독</summary>
@@ -794,5 +885,35 @@ public class TycoonHUD : BaseHUD
         _cookingController.OnFoodChanged -= UpdateFoodImages;
     }
 
+    /// <summary> KDH : 마우스가 평판 아이콘에 올라오면 평판 정보를 표시한다. </summary>
+    private void OnPointerEnterReputation()
+    {
+        _reputationTooltip?.Show(Get<TMP_Text>(Texts.ReputationValueText).text,
+            Get<Image>(Images.ReputationIcon).rectTransform);
+    }
+
+    /// <summary> KDH : 마우스가 평판 아이콘에서 벗어나면 평판 정보를 숨긴다. </summary>
+    private void OnPointerExitReputation()
+    {
+        _reputationTooltip?.Hide();
+    }
+    
+    /// <summary> KDH : 퀘스트가 진행됐을 때 서브 퀘스트의 완료 여부에 따라 표시를 달리한다. </summary>
+    private void OnSubQuestProgressed(QuestProgressEvent progressEvent)
+    {
+        if (progressEvent.Scene != SceneType.TycoonScene)
+        {
+            return;
+        }
+
+        if (progressEvent.IsCompleted)
+        {
+            StartSubQuestCompletion(progressEvent);
+            return;
+        }
+
+        UpdateSubQuest(progressEvent.CurrentQuest, progressEvent.Progress);
+    }
+    
     #endregion ===== 이벤트 =====
 }
