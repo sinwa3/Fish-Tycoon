@@ -4176,6 +4176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 158026903}
+  - component: {fileID: 158026904}
   m_Layer: 0
   m_Name: Props_01
   m_TagString: Untagged
@@ -4463,6 +4464,25 @@ Transform:
   - {fileID: 1879195484}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &158026904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158026902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &159988513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4962,6 +4982,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 169895644}
+  - component: {fileID: 169895645}
   m_Layer: 0
   m_Name: Props_02
   m_TagString: Untagged
@@ -5122,6 +5143,25 @@ Transform:
   - {fileID: 372138420}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &169895645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169895643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &175022288
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11449,6 +11489,7 @@ GameObject:
   - component: {fileID: 389890485}
   - component: {fileID: 389890484}
   - component: {fileID: 389890483}
+  - component: {fileID: 389890491}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -11606,6 +11647,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &389890491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389890482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &390739965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33875,7 +33935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1137165482}
   m_Layer: 0
-  m_Name: GlovalLight
+  m_Name: GlobalLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36141,6 +36201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1244276576}
+  - component: {fileID: 1244276577}
   m_Layer: 0
   m_Name: CeilingCollider
   m_TagString: Untagged
@@ -36166,6 +36227,25 @@ Transform:
   - {fileID: 2167318391630885621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1244276577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1244276575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 1
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
 --- !u!1001 &1247074590
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36419,7 +36499,7 @@ MonoBehaviour:
   _enemySpawnInfos:
   - SpawnPoint: {fileID: 1782895076}
     PatrolRoute: {fileID: 328713403}
-  _fishPickupPrefab: {fileID: 5388596724479281051, guid: 8f6cefa3811359a4bbe2336f6a5fd00b,
+  _fishPickupPrefab: {fileID: 6067154470577134196, guid: 154ca91a181681c42a8c170ed78b42b6,
     type: 3}
   _fishSpawnPoints: []
   _minFishSpawnCount: 3

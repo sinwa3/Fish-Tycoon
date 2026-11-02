@@ -17,10 +17,9 @@ public class SpawnManager : MonoBehaviour
     }
 
     [Header("집주인")]
-    // TODO : 경로가 정해지면 Managers.Resource.Load로 불러온다
-    [SerializeField] private EnemyController _enemyPrefab;
-
     [SerializeField] private List<EnemySpawnInfo> _enemySpawnInfos = new();
+
+    private EnemyController _enemyPrefab;
 
     private readonly List<EnemyController> _spawnedEnemies = new();
 
@@ -32,8 +31,7 @@ public class SpawnManager : MonoBehaviour
     #region ===== 생선 =====
 
     [Header("생선")]
-    // TODO : 경로가 정해지면 Managers.Resource.Load로 불러온다
-    [SerializeField] private FishPickup _fishPickupPrefab;
+    private FishPickup _fishPickupPrefab;
 
     /// <summary> KimYH : 생선이 놓일 수 있는 위치. 비워두면 씬의 FishSpawnPoint를 모두 찾는다. </summary>
     [SerializeField] private List<FishSpawnPoint> _fishSpawnPoints = new();
@@ -42,6 +40,11 @@ public class SpawnManager : MonoBehaviour
     [SerializeField, Min(0)] private int _maxFishSpawnCount = 6;
 
     #endregion ===== 생선 =====
+
+    private void Awake()
+    {
+        LoadPrefabs();
+    }
 
     private void Start()
     {
@@ -56,6 +59,24 @@ public class SpawnManager : MonoBehaviour
             _maxFishSpawnCount = _minFishSpawnCount;
         }
     }
+
+    #region ===== 프리팹 로드 =====
+
+    /// <summary> KimYH : 집주인, 생선 프리팹을 불러온다 (ResourceManager가 캐싱) </summary>
+    private void LoadPrefabs()
+    {
+        ResourceManager resource = Managers.Resource;
+
+        if (resource == null)
+        {
+            return;
+        }
+
+        _enemyPrefab = resource.Load<EnemyController>(ResourceKey.Path.Enemy + ResourceKey.Name.Enemy);
+        _fishPickupPrefab = resource.Load<FishPickup>(ResourceKey.Path.Item + ResourceKey.Name.Fish);
+    }
+
+    #endregion ===== 프리팹 로드 =====
 
     #region ===== 집주인 생성 =====
 
