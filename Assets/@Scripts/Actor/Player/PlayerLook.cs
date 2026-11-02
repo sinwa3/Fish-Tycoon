@@ -13,6 +13,10 @@ public class PlayerLook : MonoBehaviour
     [Tooltip("서 있을 때 플레이어 기준 카메라(눈)의 로컬 위치")]
     [SerializeField] private Vector3 _eyeOffset = new Vector3(0f, 1.6f, 0f);
 
+    [Header("카메라")]
+    [Tooltip("카메라가 그리기 시작하는 최소 거리. 크면 벽에 붙었을 때 벽이 뚫려 보인다.")]
+    [SerializeField] private float _nearClipPlane = 0.05f;
+
     [Header("감도")]
     [SerializeField] private float _mouseSensitivity = 2f;
 
@@ -45,6 +49,7 @@ public class PlayerLook : MonoBehaviour
     {
         InitializeComponents();
         InitializeCameraPivot();
+        InitializeCameraClip();
         InitializeCameraPosition();
     }
 
@@ -82,8 +87,26 @@ public class PlayerLook : MonoBehaviour
 
         if (_cameraPivot == null)
         {
-            Debug.LogWarning($"{nameof(PlayerLook)} : 카메라를 찾을 수 없습니다.");
+            CPrint.Warning($"{nameof(PlayerLook)} : 카메라를 찾을 수 없습니다.");
         }
+    }
+
+    /// <summary> YSW : 벽에 가까이 붙어도 잘려 보이지 않도록 카메라의 최소 그리기 거리를 줄인다. </summary>
+    private void InitializeCameraClip()
+    {
+        if (_cameraPivot == null)
+        {
+            return;
+        }
+
+        Camera playerCamera = _cameraPivot.GetComponent<Camera>();
+
+        if (playerCamera == null)
+        {
+            return;
+        }
+
+        playerCamera.nearClipPlane = _nearClipPlane;
     }
 
     /// <summary> YSW : 카메라를 플레이어의 자식으로 옮기고 눈 위치에 맞춘다. </summary>
