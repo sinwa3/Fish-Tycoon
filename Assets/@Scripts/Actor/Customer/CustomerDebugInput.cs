@@ -45,7 +45,7 @@ public class CustomerDebugInput : MonoBehaviour
 #endif
     }
 
-    /// <summary> KYH : 주문한 순서대로 대기 중인 손님에게 요리를 준다. 받은 손님은 식사, 결제를 거쳐 나간다 </summary>
+    /// <summary> KYH : 주문한 순서대로 대기 중인 손님에게 요리를 준다 </summary>
     private void ServeWaitingCustomers()
     {
         // 주문했는데 아직 요리를 못 받은 손님이 있을 때만 준다
