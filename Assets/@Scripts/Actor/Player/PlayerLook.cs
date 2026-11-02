@@ -20,6 +20,10 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float _minPitch = -80f;
     [SerializeField] private float _maxPitch = 80f;
 
+    [Header("숨었을 때")]
+    [Tooltip("숨어 있을 때 숨는 위치의 정면 기준으로 좌우를 둘러볼 수 있는 최대 각도")]
+    [SerializeField] private float _hiddenYawLimit = 75f;
+
     #endregion ===== 설정 =====
 
     #region ===== 상태 =====
@@ -27,6 +31,13 @@ public class PlayerLook : MonoBehaviour
     private PlayerMovement _playerMovement;
 
     private float _pitch;
+
+    // 숨어 있는 동안 카메라가 붙어 있는 지점 (없으면 몸에 붙어 있음)
+    private Transform _viewAnchor;
+    private float _hiddenYaw;
+
+    /// <summary> YSW : 카메라가 몸이 아닌 다른 지점(숨는 위치 등)에 붙어 있는지 여부 </summary>
+    public bool IsViewAttached => _viewAnchor != null;
 
     #endregion ===== 상태 =====
 
@@ -109,6 +120,15 @@ public class PlayerLook : MonoBehaviour
         _pitch -= input.MouseAxisY * _mouseSensitivity;
         _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
 
+        if (IsViewAttached)
+        {
+            // 숨어 있을 때는 몸 대신 카메라만 숨는 위치 기준으로 둘러본다.
+            _hiddenYaw = Mathf.Clamp(_hiddenYaw + yaw, -_hiddenYawLimit, _hiddenYawLimit);
+            _cameraPivot.localRotation = Quaternion.Euler(_pitch, _hiddenYaw, 0f);
+
+            return;
+        }
+
         transform.Rotate(0f, yaw, 0f);
         _cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
     }
@@ -116,7 +136,7 @@ public class PlayerLook : MonoBehaviour
     /// <summary> YSW : 웅크리기 높이 비율에 맞춰 카메라 높이를 변경한다. (웅크리며 내려간 플레이어 기준점만큼 보정) </summary>
     private void UpdateEyeHeight()
     {
-        if (_cameraPivot == null || _playerMovement == null)
+        if (_cameraPivot == null || _playerMovement == null || IsViewAttached)
         {
             return;
         }
@@ -140,4 +160,40 @@ public class PlayerLook : MonoBehaviour
     }
 
     #endregion ===== 시점 처리 =====
+
+    #region ===== 시점 고정 =====
+
+    /// <summary> YSW : 카메라를 몸에서 떼어 지정한 지점(숨는 위치 등)에 붙인다. 지점의 정면을 바라보며 시작한다. </summary>
+    public void AttachView(Transform anchor)
+    {
+        if (_cameraPivot == null || anchor == null)
+        {
+            return;
+        }
+
+        _viewAnchor = anchor;
+        _hiddenYaw = 0f;
+        _pitch = 0f;
+
+        _cameraPivot.SetParent(anchor, false);
+        _cameraPivot.localPosition = Vector3.zero;
+        _cameraPivot.localRotation = Quaternion.identity;
+    }
+
+    /// <summary> YSW : 카메라를 다시 몸의 눈 위치로 되돌린다. </summary>
+    public void DetachView()
+    {
+        if (_cameraPivot == null || !IsViewAttached)
+        {
+            return;
+        }
+
+        _viewAnchor = null;
+        _hiddenYaw = 0f;
+
+        InitializeCameraPosition();
+        UpdateEyeHeight();
+    }
+
+    #endregion ===== 시점 고정 =====
 }
