@@ -13,6 +13,10 @@ public class PlayerLook : MonoBehaviour
     [Tooltip("서 있을 때 플레이어 기준 카메라(눈)의 로컬 위치")]
     [SerializeField] private Vector3 _eyeOffset = new Vector3(0f, 1.6f, 0f);
 
+    [Tooltip("완전히 웅크렸을 때 눈높이 비율 (서 있을 때 발~눈 높이 대비). 충돌 높이와 따로 조절된다.")]
+    [Range(0.1f, 1f)]
+    [SerializeField] private float _crouchEyeRatio = 0.45f;
+
     [Header("카메라")]
     [Tooltip("카메라가 그리기 시작하는 최소 거리. 크면 벽에 붙었을 때 벽이 뚫려 보인다.")]
     [SerializeField] private float _nearClipPlane = 0.05f;
@@ -164,7 +168,11 @@ public class PlayerLook : MonoBehaviour
             return;
         }
 
-        float eyeHeight = _eyeOffset.y * _playerMovement.HeightRatio + _playerMovement.CrouchPivotOffset;
+        // 발 기준 눈높이를 웅크림 진행도에 맞춰 줄이고, 내려간 플레이어 기준점만큼 보정해 로컬 높이로 바꾼다.
+        float standPivotHeight = _playerMovement.StandPivotHeight;
+        float standEyeHeight = standPivotHeight + _eyeOffset.y;
+        float eyeRatio = Mathf.Lerp(1f, _crouchEyeRatio, _playerMovement.CrouchProgress);
+        float eyeHeight = standEyeHeight * eyeRatio - standPivotHeight + _playerMovement.CrouchPivotOffset;
 
         _cameraPivot.localPosition = new Vector3(_eyeOffset.x, eyeHeight, _eyeOffset.z);
     }
