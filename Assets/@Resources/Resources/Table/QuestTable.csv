@@ -7,5 +7,7 @@
 1006,TycoonScene,PurchaseItem,3,8500,상점에서 아이템을 구매하세요
 1007,TycoonScene,Serving,9,10000,요리를 손님에게 서빙하세요
 1008,TycoonScene,PurchaseItem,4,11500,상점에서 아이템을 구매하세요
-2001,StealthScene,UnLockCursor,1,1000,휠 클릭 : 커서 언락
-2002,StealthScene,LockCursor,1,1000,커서 언락 상태에서 왼쪽 클릭 : 커서 락
+2001,StealthScene,PinLock,1,1000,[1번] : 핀 자물쇠를 해제하세요
+2002,StealthScene,RotationLock,1,1000,[2번] : 회전 자물쇠를 해제하세요
+2003,StealthScene,UnLockCursor,1,1000,휠 클릭 : 커서 언락
+2004,StealthScene,LockCursor,1,1000,커서 언락 상태에서 왼쪽 클릭 : 커서 락

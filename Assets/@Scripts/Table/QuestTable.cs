@@ -6,6 +6,9 @@ public enum QuestType
     LockCursor,
     UnLockCursor,
     PurchaseItem,
+    
+    PinLock,
+    RotationLock,
 }
 
 /// <summary> KDH : 테이블 1행의 칼럼명과 일치확인, 그 값에 맞는 자료형 수정 필수 </summary>

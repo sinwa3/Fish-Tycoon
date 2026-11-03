@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class StealthScene : BaseScene
 {
     /// <summary> KDH : 순서 중요 </summary>
@@ -7,10 +9,21 @@ public class StealthScene : BaseScene
         Settlement, // 정산
     }
 
-    private Phase _currentPhase;
+    #region ===== 참조 =====
 
     private StealthHUD _stealthHUD;
 
+    [SerializeField] private Camera _camera;
+    public Camera Camera => _camera;
+    
+    #endregion ===== 참조 =====
+    
+    #region ===== 상태 =====
+    
+    private Phase _currentPhase;
+    
+    #endregion ===== 상태 =====
+    
     protected override void OnAwake()
     {
         IsCursorLock = true;
@@ -21,13 +34,18 @@ public class StealthScene : BaseScene
         {
             CPrint.Error("[StealthScene] _stealthHUD not found.");
         }
+
+        if (_camera == null)
+        {
+            _camera = Camera.main;
+        }
     }
 
     protected override void OnStart()
     {
         // (임시)
-        int randID = UnityEngine.Random.Range(0, Managers.Table.Fish.Map.Count);
-        int randCnt = UnityEngine.Random.Range(1, 10);
+        int randID = Random.Range(0, Managers.Table.Fish.Map.Count);
+        int randCnt = Random.Range(1, 10);
         if (Managers.Data.TryAddFishToQuickSlot(randID, randCnt))
         {
             Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name}) {randCnt}개 지급되었습니다.");

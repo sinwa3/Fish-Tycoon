@@ -9774,6 +9774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccc28ad9177004ec18be6121f353aee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 334754111}
 --- !u!4 &314873795
 Transform:
   m_ObjectHideFlags: 0
@@ -10288,7 +10289,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
