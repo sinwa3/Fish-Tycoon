@@ -10,6 +10,8 @@ public abstract class LayerKey
         public const int Furniture = 6;
         public const int Fish = 7;
         public const int SecurityMinigame = 8;
+        public const int Wall = 9;
+        public const int Door = 10;
     }
 
     public static class Mask
@@ -22,5 +24,7 @@ public abstract class LayerKey
         public const int Furniture = 1 << Idx.Furniture;
         public const int Fish = 1 << Idx.Fish;
         public const int SecurityMinigame = 1 << Idx.SecurityMinigame;
+        public const int Wall = 1 << Idx.Wall;
+        public const int Door = 1 << Idx.Door;
     }
 }

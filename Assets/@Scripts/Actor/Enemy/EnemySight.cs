@@ -191,6 +191,24 @@ public class EnemySight : MonoBehaviour
 
     #endregion ===== 시야 검사 =====
 
+    #region ===== 거리 비율 =====
+
+    /// <summary> KYH : 시야 거리에 대한 플레이어 거리 비율을 돌려준다 (0 ~ 1) </summary>
+    public float GetSightDistanceRatio()
+    {
+        if (_player == null)
+        {
+            return 1.0f;
+        }
+
+        float allowDistance = EnemyTempValue.SightDistance * GetCrouchSightMultiplier();
+        Vector3 targetDirection = GetPlayerTargetPoint() - GetEyePosition();
+
+        return Mathf.Clamp01(targetDirection.magnitude / allowDistance);
+    }
+
+    #endregion ===== 거리 비율 =====
+
     #region ===== 잡기 검사 =====
 
     /// <summary> KYH : 플레이어를 잡을 수 있는지 돌려준다 </summary>

@@ -13,6 +13,12 @@ public class StealthScene : BaseScene
 
     private StealthHUD _stealthHUD;
 
+    [SerializeField] private GameObject _player;
+    private PlayerMovement _playerMovement;
+    public PlayerMovement PlayerMovement => _playerMovement ??= _player?.GetOrAddComponent<PlayerMovement>();
+    private PlayerStamina _playerStamina;
+    public PlayerStamina PlayerStamina => _playerStamina ??= _player?.GetOrAddComponent<PlayerStamina>();
+    
     [SerializeField] private Camera _camera;
     public Camera Camera => _camera;
     

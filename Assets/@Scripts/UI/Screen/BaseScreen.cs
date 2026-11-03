@@ -7,8 +7,6 @@ public abstract class BaseScreen : BaseUI
 {
     public override int SortingOrder => 1;
 
-    protected bool IsClosing;
-
     private void Awake()
     {
         OnAwake();
@@ -44,15 +42,8 @@ public abstract class BaseScreen : BaseUI
         Close();
     }
 
-    public virtual void Close()
+    protected virtual void Close()
     {
-        if (IsClosing)
-        {
-            return;
-        }
-
-        IsClosing = true;
-
         Managers.UI.CloseAll();
     }
 }

@@ -170,6 +170,8 @@ public class UIManager
 
         CurrentScreen.gameObject.DestroyGO();
         CurrentScreen = null;
+        
+        Managers.Input.SetCursorLock(Managers.Scene.CurrentScene.DefaultCursorLock);
     }
 
     #endregion ===== Screen =====

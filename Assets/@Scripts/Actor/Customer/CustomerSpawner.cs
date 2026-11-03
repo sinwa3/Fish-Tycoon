@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 입장 간격마다 손님을 들여보내고 손님을 다 받아 모두 나가면 영업 종료를 알린다 </summary>
+/// <summary> KYH : 손님을 들여보내고 모두 나가면 영업 종료를 알린다 </summary>
 public class CustomerSpawner : MonoBehaviour
 {
     #region ===== 연결 =====
@@ -33,7 +33,7 @@ public class CustomerSpawner : MonoBehaviour
     public int SpawnedCount => _spawnedCount;
     public int DailyCustomerCount => _dailyCustomerCount;
 
-    // 요리 쪽이 읽는 그날 메뉴 [ServedCount]가 지금 만들 음식, [ServedCount + 1]이 다음 음식
+    // 요리 쪽이 읽는 그날 메뉴 [ServedCount]가 지금 만들 음식
     public IReadOnlyList<int> ShuffledCandidates => _dailyMenu?.ShuffledCandidates ?? Array.Empty<int>();
 
     // 지금까지 주문한 손님 수. 요리는 주문한 만큼만
