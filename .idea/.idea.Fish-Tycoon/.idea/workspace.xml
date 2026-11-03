@@ -12,13 +12,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/UIManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/FishTable.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/FishTable.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/SecurityMinigameScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/SecurityMinigameScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/FishTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/FishTable.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

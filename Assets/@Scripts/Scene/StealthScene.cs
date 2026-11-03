@@ -54,7 +54,7 @@ public class StealthScene : BaseScene
         int randCnt = Random.Range(1, 10);
         if (Managers.Data.TryAddFishToQuickSlot(randID, randCnt))
         {
-            Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name}) {randCnt}개 지급되었습니다.");
+            Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name})[{Managers.Table.Fish.Map[randID].GradeType}] {randCnt}개 지급되었습니다.");
         }
 
         InitializePhase();
