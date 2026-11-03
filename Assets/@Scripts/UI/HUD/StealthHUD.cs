@@ -12,55 +12,55 @@ public class StealthHUD : BaseHUD
         PhaseText,
 
         GoldValueText,
-        
+
         SubQuestDescText,
-        
+
         NextBtnText,
     }
 
     public enum Images
     {
         QuickSlotBar,
-        
+
         SubQuest
     }
-    
+
     public enum Toggles
     {
         SubQuestToggle
     }
-    
+
     #region ===== 참조 =====
 
     private StealthScene _stealthScene;
 
     #endregion ===== 참조 =====
-    
+
     #region ===== 애니메이션 =====
-    
+
     // 퀘스트
     private Coroutine _subQuestCoroutine;
 
     #endregion ===== 애니메이션 =====
-    
+
     protected override void OnAwake()
     {
         Bind<TMP_Text>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<Toggle>(typeof(Toggles));
-        
+
         _stealthScene = gameObject.FindParent<StealthScene>();
     }
 
     protected override void OnStart()
     {
         SetCurrentDayText();
-        
+
         UpdateGoldText();
-        
+
         SubscribeGoldChanged();
         SubscribeSubQuestEvents();
-        
+
         if (Managers.Quest != null)
         {
             UpdateSubQuest(Managers.Quest.GetCurrentQuest(SceneType.StealthScene, out var progress), progress);
@@ -78,6 +78,16 @@ public class StealthHUD : BaseHUD
         if (Managers.Input.KeyDown_Esc)
         {
             Managers.UI.OpenPopup<PausePopup>();
+        }
+        else if (Managers.Input.KeyDown_1)
+        {
+            Managers.UI.OpenScreen<SecurityMinigameScreen>()
+                ?.Set(SecurityMinigameScreen.MinigameType.PinLock, _stealthScene?.Camera);
+        }
+        else if (Managers.Input.KeyDown_2)
+        {
+            Managers.UI.OpenScreen<SecurityMinigameScreen>()
+                ?.Set(SecurityMinigameScreen.MinigameType.RotationLock, _stealthScene?.Camera);
         }
         else if (Managers.Input.KeyDown_E)
         {
@@ -104,23 +114,23 @@ public class StealthHUD : BaseHUD
     }
 
     #region ===== 초기화 =====
-    
+
     /// <summary> KDH : 잠입 씬 첫 진입시 현재 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
         Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
     }
-    
+
     #endregion ===== 초기화 =====
-    
+
     #region ===== 업데이트 =====
-    
+
     /// <summary> KDH : 현재 골드 값을 UI에 업데이트 한다. </summary>
     private void UpdateGoldText()
     {
         Get<TMP_Text>(Texts.GoldValueText)?.SetText($"{Managers.Data.GetCurrentGold():N0} G");
     }
-    
+
     /// <summary> KDH : 현재 상태를 UI에 업데이트 한다. </summary>
     public void UpdatePhaseText(StealthScene.Phase phase)
     {
@@ -132,7 +142,7 @@ public class StealthHUD : BaseHUD
         };
 
         Get<TMP_Text>(Texts.PhaseText)?.SetText(phaseStr);
-        
+
         // NextBtnText
         string nextBtnStr = phase switch
         {
@@ -140,10 +150,10 @@ public class StealthHUD : BaseHUD
             StealthScene.Phase.Settlement => "[E] 다음 날로 이동",
             _ => string.Empty
         };
-        
+
         Get<TMP_Text>(Texts.NextBtnText)?.SetText(nextBtnStr);
     }
-    
+
     /// <summary> KDH : 해당 퀘스트 정보로 UI를 업데이트한다. </summary>
     private void UpdateSubQuest(QuestData quest, int progress, bool isCompleted = false)
     {
@@ -158,9 +168,9 @@ public class StealthHUD : BaseHUD
             ?.SetText($"{quest.Description}\n({Mathf.Clamp(progress, 0, quest.Goal)} / {quest.Goal})\n");
         Get<Toggle>(Toggles.SubQuestToggle)?.SetIsOnWithoutNotify(isCompleted);
     }
-    
+
     #endregion ===== 업데이트 =====
-    
+
     #region ===== 활성화 =====
 
     /// <summary> KDH : 퀵슬롯을 표시/비표시한다. </summary>
@@ -168,11 +178,11 @@ public class StealthHUD : BaseHUD
     {
         Get<Image>(Images.QuickSlotBar)?.gameObject.SetActive(isVisible);
     }
-    
+
     #endregion ===== 활성화 =====
-    
+
     #region ===== 퀘스트 =====
-    
+
     private void StartSubQuestCompletion(QuestProgressEvent progressEvent)
     {
         if (_subQuestCoroutine != null)
@@ -199,11 +209,11 @@ public class StealthHUD : BaseHUD
         Managers.Quest.SetCompletionSequenceActive(false);
         _subQuestCoroutine = null;
     }
-    
+
     #endregion ===== 퀘스트 =====
-    
+
     #region ===== 이벤트 =====
-    
+
     /// <summary> KDH : 골드 변화시 UI 업데이트를 구독 </summary>
     private void SubscribeGoldChanged()
     {
@@ -221,7 +231,7 @@ public class StealthHUD : BaseHUD
             Managers.Data.OnGoldChanged -= UpdateGoldText;
         }
     }
-    
+
     /// <summary> KDH : 퀘스트 진행도 변화시 UI 업데이트를 구독 </summary>
     private void SubscribeSubQuestEvents()
     {
@@ -239,7 +249,7 @@ public class StealthHUD : BaseHUD
             Managers.Quest.OnQuestProgressed -= OnSubQuestProgressed;
         }
     }
-    
+
     /// <summary> KDH : 퀘스트가 진행됐을 때 서브 퀘스트의 완료 여부에 따라 표시를 달리한다. </summary>
     private void OnSubQuestProgressed(QuestProgressEvent progressEvent)
     {
@@ -256,6 +266,6 @@ public class StealthHUD : BaseHUD
 
         UpdateSubQuest(progressEvent.CurrentQuest, progressEvent.Progress);
     }
-    
+
     #endregion ===== 이벤트 =====
 }

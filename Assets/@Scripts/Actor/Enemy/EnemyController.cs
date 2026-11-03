@@ -176,7 +176,7 @@ public class EnemyController : MonoBehaviour
             return typeof(EnemyInvestigateState);
         }
 
-        if (Memory.AlertLevel == AlertLevel.Suspicious)
+        if (Memory.AlertLevel >= AlertLevel.Suspicious)
         {
             return typeof(EnemySuspectState);
         }

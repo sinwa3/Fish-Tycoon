@@ -177,4 +177,15 @@ public static class Utils
         Application.Quit();
 #endif
     }
+    
+    /// <summary> KDH : 대상과 모든 자식 오브젝트의 레이어를 설정한다. </summary>
+    public static void SetLayerRecursively(GameObject target, int layerIndex)
+    {
+        target.layer = layerIndex;
+
+        foreach (Transform child in target.transform)
+        {
+            SetLayerRecursively(child.gameObject, layerIndex);
+        }
+    }
 }
