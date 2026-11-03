@@ -11,21 +11,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/RecycleSlot/StoreSlot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/RecycleSlot/StoreSlot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/FishTable.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Table/FishTable.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/FishTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/FishTable.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,15 +129,13 @@
       <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="14969">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="14969" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list>
-          <MonoRuntime />
-        </list>
+        <list />
       </option>
       <option name="selectedOptions">
         <list />
@@ -220,6 +207,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/@Scripts/Controller/Stealth/EnemySpawnCtrl.cs</url>
+          <line>69</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/@Scripts/Controller/Stealth/EnemySpawnCtrl.cs" containingFunctionPresentation="Method 'SpawnEnemies'">
+            <startOffsets>
+              <option value="1611" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1675" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

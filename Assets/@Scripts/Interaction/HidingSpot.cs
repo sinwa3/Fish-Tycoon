@@ -5,11 +5,16 @@ public class HidingSpot : MonoBehaviour, IInteractable
 {
     #region ===== 설정 =====
 
+    private const float GizmoFieldOfView = 60f;
+    private const float GizmoViewDistance = 1.5f;
+    private const float GizmoNearClip = 0.3f;
+    private const float GizmoAspect = 16f / 9f;
+
     [Header("위치")]
-    [Tooltip("숨었을 때 플레이어(발밑)가 위치할 곳. 비워두면 이 오브젝트 위치를 사용한다.")]
+    [Tooltip("숨었을 때 카메라(눈)가 위치할 곳. 문 바로 바깥쪽에 두고 파란 화살표(정면)가 밖을 보도록 한다. (안쪽에 두면 문 안쪽 면만 보인다) 비워두면 이 오브젝트 위치를 사용한다.")]
     [SerializeField] private Transform _hidePoint;
 
-    [Tooltip("나올 때 플레이어가 위치할 곳. 비워두면 숨기 전 위치로 돌아간다.")]
+    [Tooltip("나올 때 플레이어 몸이 나타날 곳. 비워두면 숨기 전 자리에 다시 나타난다.")]
     [SerializeField] private Transform _exitPoint;
 
     [Header("안내")]
@@ -19,7 +24,7 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
     #region ===== 상태 =====
 
-    /// <summary> YSW : 숨었을 때 플레이어가 위치할 지점 </summary>
+    /// <summary> YSW : 숨었을 때 카메라(눈)가 위치할 지점 </summary>
     public Transform HidePoint => _hidePoint != null ? _hidePoint : transform;
 
     /// <summary> YSW : 나올 때 플레이어가 위치할 지점 (없으면 null) </summary>
@@ -66,11 +71,17 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
     #region ===== 디버그 =====
 
-    /// <summary> YSW : 씬 뷰에 숨는 위치(초록)와 나오는 위치(노랑)를 표시한다. </summary>
+    /// <summary> YSW : 씬 뷰에 숨었을 때 시점(초록, 선은 바라보는 방향)과 나오는 위치(노랑)를 표시한다. </summary>
     private void DrawPointGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(HidePoint.position, 0.2f);
+        Gizmos.DrawWireSphere(HidePoint.position, 0.1f);
+
+        // 숨었을 때 카메라가 보게 될 범위를 사각뿔로 표시한다. (가까운 면 0.3 = 카메라 Near Clip)
+        Matrix4x4 previousMatrix = Gizmos.matrix;
+        Gizmos.matrix = Matrix4x4.TRS(HidePoint.position, HidePoint.rotation, Vector3.one);
+        Gizmos.DrawFrustum(Vector3.zero, GizmoFieldOfView, GizmoViewDistance, GizmoNearClip, GizmoAspect);
+        Gizmos.matrix = previousMatrix;
 
         if (_exitPoint == null)
         {

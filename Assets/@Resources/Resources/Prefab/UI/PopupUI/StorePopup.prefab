@@ -1761,6 +1761,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: StoreConsumableRecycleScroll
       objectReference: {fileID: 0}
+    - target: {fileID: 2830971841384191475, guid: 74a0ccc2dbfd940e38e3bb47c3f29fac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4527714170679556777, guid: 74a0ccc2dbfd940e38e3bb47c3f29fac,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1860,6 +1865,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6819349083344087213, guid: 74a0ccc2dbfd940e38e3bb47c3f29fac,
+        type: 3}
+      propertyPath: _scrollSensitivity
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8646570550078788105, guid: 74a0ccc2dbfd940e38e3bb47c3f29fac,
         type: 3}
@@ -2061,6 +2071,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StoreEquipRecycleScroll
+      objectReference: {fileID: 0}
+    - target: {fileID: 8328982010021657821, guid: a8e734664b4744715bdef6cc309c65cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8880355461131407241, guid: a8e734664b4744715bdef6cc309c65cf,
+        type: 3}
+      propertyPath: _scrollSensitivity
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
