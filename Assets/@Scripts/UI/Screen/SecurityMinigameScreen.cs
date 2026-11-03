@@ -61,7 +61,7 @@ public class SecurityMinigameScreen : BaseScreen
     {
     }
 
-    public override void Close()
+    protected override void Close()
     {
         base.Close();
         

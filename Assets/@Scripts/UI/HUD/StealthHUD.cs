@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -10,19 +9,23 @@ public class StealthHUD : BaseHUD
     {
         CurrentDayText,
         PhaseText,
-
+        SubQuestDescText,
+        
         GoldValueText,
 
-        SubQuestDescText,
-
+        ControlGuideText,
+        StaminaValueText,
+        
         NextBtnText,
     }
 
     public enum Images
     {
+        SubQuest,
+        
+        StaminaFillImage,
+        
         QuickSlotBar,
-
-        SubQuest
     }
 
     public enum Toggles
@@ -36,6 +39,12 @@ public class StealthHUD : BaseHUD
 
     #endregion ===== 참조 =====
 
+    #region ===== 상태 =====
+
+    private bool _isCursorGuideLocked;
+    
+    #endregion ===== 상태 =====
+    
     #region ===== 애니메이션 =====
 
     // 퀘스트
@@ -54,12 +63,15 @@ public class StealthHUD : BaseHUD
 
     protected override void OnStart()
     {
+        _isCursorGuideLocked = Cursor.lockState == CursorLockMode.Locked;
+        
         SetCurrentDayText();
 
         UpdateGoldText();
 
         SubscribeGoldChanged();
         SubscribeSubQuestEvents();
+        SubscribeStaminaChanged();
 
         if (Managers.Quest != null)
         {
@@ -69,6 +81,7 @@ public class StealthHUD : BaseHUD
 
     protected override void OnUpdate()
     {
+        UpdateControlGuideText();
     }
 
     public override void OnInputKey()
@@ -97,12 +110,16 @@ public class StealthHUD : BaseHUD
         {
             // 커서 잠금 해제
             Managers.Input.SetCursorLock(false);
+            _isCursorGuideLocked = false;
+                
             Managers.Quest.ReportProgress(SceneType.StealthScene, QuestType.UnLockCursor);
         }
         else if (Managers.Input.MouseDown_Left && Cursor.lockState == CursorLockMode.None)
         {
             // 커서 잠금
             Managers.Input.SetCursorLock(true);
+            _isCursorGuideLocked = true;
+            
             Managers.Quest.ReportProgress(SceneType.StealthScene, QuestType.LockCursor);
         }
     }
@@ -111,6 +128,7 @@ public class StealthHUD : BaseHUD
     {
         UnsubscribeGoldChanged();
         UnsubscribeSubQuestEvents();
+        UnsubscribeStaminaChanged();
     }
 
     #region ===== 초기화 =====
@@ -169,6 +187,39 @@ public class StealthHUD : BaseHUD
         Get<Toggle>(Toggles.SubQuestToggle)?.SetIsOnWithoutNotify(isCompleted);
     }
 
+    /// <summary> KDH : 커서 잠금 상태에 맞는 조작법을 표시한다. </summary>
+    private void UpdateControlGuideText()
+    {
+        TMP_Text controlGuideText = Get<TMP_Text>(Texts.ControlGuideText);
+
+        if (_stealthScene == null || controlGuideText == null)
+        {
+            return;
+        }
+        
+        string crouchInstruction = _stealthScene.PlayerMovement != null
+            ? (_stealthScene.PlayerMovement.IsCrouching ? "[Ctrl] 웅크리기 해제" : "[Ctrl] 웅크리기")
+            : "[Ctrl] 웅크리기";
+        string cursorInstruction = _isCursorGuideLocked ? "[휠 클릭] 커서 락 해제" : "[좌클릭] 커서 락";
+
+        controlGuideText.SetText($"[W A S D] 이동\n[E] 상호작용\n[Left Shift] 달리기\n{crouchInstruction}" +
+                                 $"\n" +
+                                 $"\n{cursorInstruction}");
+    }
+    
+    /// <summary> KDH : 플레이어 스태미너를 게이지와 수치에 반영한다. </summary>
+    private void UpdateStaminaUI(float currentStamina, float maxStamina)
+    {
+        Image staminaFillImage = Get<Image>(Images.StaminaFillImage);
+        
+        if (staminaFillImage != null)
+        {
+            staminaFillImage.fillAmount = maxStamina > 0f ? Mathf.Clamp01(currentStamina / maxStamina) : 0f;
+        }
+
+        Get<TMP_Text>(Texts.StaminaValueText)?.SetText($"{currentStamina:0} / {maxStamina:0}");
+    }
+    
     #endregion ===== 업데이트 =====
 
     #region ===== 활성화 =====
@@ -267,5 +318,23 @@ public class StealthHUD : BaseHUD
         UpdateSubQuest(progressEvent.CurrentQuest, progressEvent.Progress);
     }
 
+    /// <summary> KDH : 플레이어 스태미너 변경 이벤트를 구독한다. </summary>
+    private void SubscribeStaminaChanged()
+    {
+        if (_stealthScene?.PlayerStamina != null)
+        {
+            _stealthScene.PlayerStamina.OnStaminaChanged += UpdateStaminaUI;
+        }
+    }
+
+    /// <summary> KDH : 플레이어 스태미너 변경 이벤트 구독을 해제한다. </summary>
+    private void UnsubscribeStaminaChanged()
+    {
+        if (_stealthScene?.PlayerStamina != null)
+        {
+            _stealthScene.PlayerStamina.OnStaminaChanged -= UpdateStaminaUI;
+        }
+    }
+    
     #endregion ===== 이벤트 =====
 }
