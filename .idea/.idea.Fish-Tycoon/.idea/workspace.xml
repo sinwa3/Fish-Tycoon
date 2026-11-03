@@ -11,20 +11,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/QuestTable.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Prefab/Enemy.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Prefab/Enemy/PatrolRoute.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Prefab/Enemy/PatrolRoute.prefab.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/TycoonScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Table/TableLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/StealthHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/RecycleSlot/StoreSlot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/RecycleSlot/StoreSlot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Controller/TycoonBgCtrl.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Controller/TycoonBgCtrl.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SpawnManager.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SpawnManager.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -39,6 +34,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Controller/EnemySpawnCtrl.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/EquipmentData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/InventoryItemData.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Data/SaveData.cs" root0="FORCE_HIGHLIGHTING" />
@@ -140,10 +136,10 @@
       <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="14969">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="92473">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="14969" />
+      <option name="pid" value="92473" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -220,6 +216,19 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/@Scripts/Controller/Stealth/EnemySpawnCtrl.cs</url>
+          <line>69</line>
+          <properties documentPath="$PROJECT_DIR$/Assets/@Scripts/Controller/Stealth/EnemySpawnCtrl.cs" containingFunctionPresentation="Method 'SpawnEnemies'">
+            <startOffsets>
+              <option value="1611" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1675" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
