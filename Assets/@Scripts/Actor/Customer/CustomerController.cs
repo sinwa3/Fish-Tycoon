@@ -47,7 +47,7 @@ public class CustomerController : MonoBehaviour
 
     public int OrderedMenuId => _orderedMenuId;
 
-    // 몇 번째로 주문했는지 (섞은 리스트 번호와 같음), 주문 전이면 -1
+    // 몇 번째로 주문했는지, 주문 전이면 -1
     private int _orderIndex = -1;
 
     public int OrderIndex => _orderIndex;

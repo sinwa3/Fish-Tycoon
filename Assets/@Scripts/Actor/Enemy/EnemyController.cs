@@ -3,6 +3,7 @@ using UnityEngine;
 
 /// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
 [RequireComponent(typeof(EnemyMovement), typeof(EnemyLook), typeof(EnemySight))]
+[RequireComponent(typeof(EnemySuspicionGauge))]
 public class EnemyController : MonoBehaviour
 {
     #region ===== 상태 =====
@@ -36,6 +37,9 @@ public class EnemyController : MonoBehaviour
     /// <summary> KYH : 시야 </summary>
     public EnemySight Sight { get; private set; }
 
+    /// <summary> KYH : 의심 게이지 </summary>
+    public EnemySuspicionGauge SuspicionGauge { get; private set; }
+
     #endregion ===== 감지 =====
 
     #region ===== 순찰 경로 =====
@@ -52,8 +56,8 @@ public class EnemyController : MonoBehaviour
     // 날짜가 시작하는 첫날
     private const int FirstDay = 1;
 
-    // 1일 차인지
-    private bool _isSleepDay;
+    /// <summary> KYH : 수면하는 날인지 </summary>
+    public bool IsSleepDay { get; private set; }
 
     #endregion ===== 날짜 =====
 
@@ -76,12 +80,13 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 이동, 바라보기, 시야 컴포넌트를 캐싱한다 </summary>
+    /// <summary> KYH : 이동, 바라보기, 시야, 의심 게이지 컴포넌트를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         Movement = GetComponent<EnemyMovement>();
         Look = GetComponent<EnemyLook>();
         Sight = GetComponent<EnemySight>();
+        SuspicionGauge = GetComponent<EnemySuspicionGauge>();
 
         if (Movement == null)
         {
@@ -96,6 +101,11 @@ public class EnemyController : MonoBehaviour
         if (Sight == null)
         {
             CPrint.Warning("[EnemyController] 적 시야 감지 없음");
+        }
+
+        if (SuspicionGauge == null)
+        {
+            CPrint.Warning("[EnemyController] 적 의심 게이지 없음");
         }
     }
 
@@ -119,7 +129,7 @@ public class EnemyController : MonoBehaviour
             CPrint.Warning($"[EnemyController] {day}일 차, 저장 데이터 안 불러와짐");
         }
 
-        _isSleepDay = day == SleepDay;
+        IsSleepDay = day == SleepDay;
     }
 
     #endregion ===== 초기화 =====
@@ -161,7 +171,7 @@ public class EnemyController : MonoBehaviour
     /// <summary> KYH : 기억을 보고 맞는 상태의 타입을 돌려준다 </summary>
     private Type SelectState()
     {
-        if (_isSleepDay)
+        if (IsSleepDay)
         {
             return typeof(EnemySleepState);
         }

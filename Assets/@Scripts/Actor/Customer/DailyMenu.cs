@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 그날 준비한 메뉴를 손님 수만큼 섞어 두고, 주문 순서대로 하나씩 내준다 </summary>
+/// <summary> KYH : 그날 메뉴를 섞어 두고 주문 순서대로 내준다 </summary>
 public class DailyMenu
 {
     // 메뉴 ID별 준비한 수량
@@ -35,7 +35,7 @@ public class DailyMenu
         _menuCounts[menuId] = menuCount + count;
     }
 
-    /// <summary> KYH : 메뉴를 손님 수 길이로 풀고 모자라면 김초밥으로 채우고 섞는다 </summary>
+    /// <summary> KYH : 메뉴를 손님 수만큼 채우고 섞는다 </summary>
     public void ShuffleCandidates(int customerCount)
     {
         _shuffledCandidates.Clear();

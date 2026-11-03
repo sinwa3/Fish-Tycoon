@@ -36,4 +36,21 @@ public static class EnemyTempValue
 
     // 조사 목표에서 두리번거리는 시간(초)
     public const float InvestigateLookAroundDuration = 4.0f;
+
+    // 의심 게이지 최대 (발각)
+    public const float MaxGauge = 100.0f;
+    // 보일 때 초당 상승량 (바로 앞, 시야 끝)
+    public const float SightGaugeRiseNear = 80.0f;
+    public const float SightGaugeRiseFar = 20.0f;
+    // 안 보일 때 초당 감소량
+    public const float GaugeDecayRate = 10.0f;
+    // 소리로 오를 수 있는 최대 (발각 바로 아래)
+    public const float SoundGaugeCap = 99.0f;
+    // 단계마다 올라가는 값, 내려가는 값
+    public const float SuspiciousEnterGauge = 30.0f;
+    public const float SuspiciousExitGauge = 20.0f;
+    public const float AlertEnterGauge = 60.0f;
+    public const float AlertExitGauge = 50.0f;
+    public const float DetectedEnterGauge = 100.0f;
+    public const float DetectedExitGauge = 80.0f;
 }
