@@ -28,6 +28,8 @@ public class StealthScene : BaseScene
     [SerializeField] private Camera _camera;
     public Camera Camera => _camera;
     
+    [SerializeField] private PixelationTransition _pixelationTransition;
+    
     #endregion ===== 참조 =====
     
     #region ===== 상태 =====
@@ -63,6 +65,10 @@ public class StealthScene : BaseScene
             Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name})[{Managers.Table.Fish.Map[randID].GradeType}] {randCnt}개 지급되었습니다.");
         }
 
+        // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
+        Managers.Input?.SetInputBlocked(this, true);
+        _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
+        
         InitializePhase();
     }
 
