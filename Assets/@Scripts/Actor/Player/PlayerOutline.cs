@@ -32,13 +32,18 @@ public class PlayerOutline : MonoBehaviour
     {
         InteractableOutline nextOutline = null;
 
-        if (target is Component targetComponnet)
+        if (target is Component targetComponent)
         {
-            nextOutline = targetComponnet.GetComponent<InteractableOutline>();
+            nextOutline = targetComponent.GetComponent<InteractableOutline>();
 
             if (nextOutline == null)
             {
-                nextOutline = targetComponnet.GetComponentInChildren<InteractableOutline>();
+                nextOutline = targetComponent.GetComponentInChildren<InteractableOutline>(true);
+            }
+
+            if (nextOutline == null)
+            {
+                nextOutline = targetComponent.GetComponentInParent<InteractableOutline>();
             }
         }
 

@@ -1,65 +1,63 @@
+
 using UnityEngine;
 
-/// <summary>SJY : 상호작용 오브젝트의 OutlineMaterial을 자동으로 찾아 표시 상태를 제어</summary>
+/// <summary>SJY : 상호작용 오브젝트에 등록된 OutlineMaterial을 자동으로 찾아 표시 상태를 제어한다.</summary>
 public class InteractableOutline : MonoBehaviour
 {
     private const string OutlineMaterialName = "OutlineMaterial";
 
-    private MeshRenderer[] _targetRenderers;
-    private Material[][] _normalMaterials;
-    private Material[][] _outlineMaterials;
+    private MeshRenderer _meshRenderer;
+    private Material[] _normalMaterials;
+    private Material[] _outlineMaterials;
+    private bool _hasOutlineMaterial;
     private bool _isOutlined;
 
+    /// <summary>SJY : MeshRenderer와 Material을 초기화한다.</summary>
     private void Awake()
     {
         InitializeComponents();
         InitializeMaterials();
-        //SetOutline(false);
         ApplyOutline(false);
     }
 
-    /// <summary>SJY : 자신과 자식 오브젝트의 MeshRenderer를 자동으로 검색</summary>
+    /// <summary>SJY : 현재 오브젝트의 MeshRenderer를 가져온다.</summary>
     private void InitializeComponents()
     {
-        _targetRenderers = GetComponentsInChildren<MeshRenderer>(true);
+        _meshRenderer = GetComponent<MeshRenderer>();
     }
 
-    /// <summary>SJY : 마지막 Outline Material을 분리하여 저장</summary>
+    /// <summary>SJY : 마지막 슬롯에 등록된 OutlineMaterial을 찾아 저장한다.</summary>
     private void InitializeMaterials()
     {
-        _normalMaterials = new Material[_targetRenderers.Length][];
-        _outlineMaterials = new Material[_targetRenderers.Length][];
+        Material[] materials = _meshRenderer.sharedMaterials;
 
-        for (int i = 0; i < _targetRenderers.Length; i++)
+        if (materials.Length < 2)
         {
-            Material[] materials = _targetRenderers[i].sharedMaterials;
-
-            if (materials.Length < 2)
-            {
-                continue;
-            }
-
-            Material lastMaterial = materials[materials.Length - 1];
-
-            if (lastMaterial == null || !lastMaterial.name.StartsWith(OutlineMaterialName))
-            {
-                continue;
-            }
-
-            _outlineMaterials[i] = materials;
-            _normalMaterials[i] = new Material[materials.Length - 1];
-
-            for (int j = 0; j < _normalMaterials[i].Length; j++)
-            {
-                _normalMaterials[i][j] = materials[j];
-            }
+            return;
         }
+
+        Material lastMaterial = materials[materials.Length - 1];
+
+        if (lastMaterial == null || !lastMaterial.name.StartsWith(OutlineMaterialName))
+        {
+            return;
+        }
+
+        _outlineMaterials = materials;
+        _normalMaterials = new Material[materials.Length - 1];
+
+        for (int i = 0; i < _normalMaterials.Length; i++)
+        {
+            _normalMaterials[i] = materials[i];
+        }
+
+        _hasOutlineMaterial = true;
     }
 
-    /// <summary>SJY : 외부에서 아웃라인 활성화 여부를 지정</summary>
+    /// <summary>SJY : 아웃라인을 켜거나 끈다.</summary>
     public void SetOutline(bool isEnabled)
     {
-        if (_isOutlined == isEnabled)
+        if (!_hasOutlineMaterial || _isOutlined == isEnabled)
         {
             return;
         }
@@ -67,33 +65,21 @@ public class InteractableOutline : MonoBehaviour
         ApplyOutline(isEnabled);
     }
 
-    /// <summary>SJY : 저장된 Material 배열을 적용하여 아웃라인을 켜거나 끔</summary>
+    /// <summary>SJY : OutlineMaterial을 MeshRenderer에 추가하거나 제거한다.</summary>
     private void ApplyOutline(bool isEnabled)
     {
-        if (_targetRenderers == null || _normalMaterials == null)
+        if (!_hasOutlineMaterial || _meshRenderer == null)
         {
             return;
         }
 
-        for (int i = 0; i < _targetRenderers.Length; i++)
-        {
-            if (_targetRenderers[i] == null || _normalMaterials[i] == null)
-            {
-                continue;
-            }
-
-            _targetRenderers[i].sharedMaterials = isEnabled ? _outlineMaterials[i] : _normalMaterials[i];
-        }
-
+        _meshRenderer.sharedMaterials = isEnabled ? _outlineMaterials : _normalMaterials;
         _isOutlined = isEnabled;
     }
 
-    /// <summary>SJY :  오브젝트 비활성화 시 아웃라인을 숨김</summary>
+    /// <summary>SJY : 오브젝트 비활성화 시 아웃라인을 숨긴다.</summary>
     private void OnDisable()
     {
-        if (_targetRenderers != null)
-        {
-            ApplyOutline(false);
-        }
+        ApplyOutline(false);
     }
 }
