@@ -9,6 +9,12 @@ public class StealthScene : BaseScene
         Settlement, // 정산
     }
 
+    #region ===== 이벤트 =====
+
+    public event System.Action<Vector3, float> OnNoiseMade;
+
+    #endregion ===== 이벤트 =====
+
     #region ===== 참조 =====
 
     private StealthHUD _stealthHUD;
@@ -21,6 +27,8 @@ public class StealthScene : BaseScene
     
     [SerializeField] private Camera _camera;
     public Camera Camera => _camera;
+    
+    [SerializeField] private PixelationTransition _pixelationTransition;
     
     #endregion ===== 참조 =====
     
@@ -57,6 +65,10 @@ public class StealthScene : BaseScene
             Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name})[{Managers.Table.Fish.Map[randID].GradeType}] {randCnt}개 지급되었습니다.");
         }
 
+        // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
+        Managers.Input?.SetInputBlocked(this, true);
+        _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
+        
         InitializePhase();
     }
 
@@ -129,4 +141,14 @@ public class StealthScene : BaseScene
     }
 
     #endregion ===== 업데이트 =====
+
+    #region ===== 이벤트 발행 =====
+
+    /// <summary> KYH : 소음이 났음을 알린다. </summary>
+    public void RaiseNoiseMade(Vector3 position, float loudness)
+    {
+        OnNoiseMade?.Invoke(position, loudness);
+    }
+
+    #endregion ===== 이벤트 발행 =====
 }

@@ -15,7 +15,7 @@ public static class EnemyTempValue
     public const float SightDistance = 10.0f;
     public const float SightAngle = 110.0f;
     // 발에서 눈까지 높이
-    public const float EyeHeight = 1.6f;
+    public const float EyeHeight = 1.5f;
     // 플레이어 콜라이더 꼭대기에서 이만큼 아래를 본다
     public const float SightTargetTopOffset = 0.1f;
     // 웅크린 플레이어를 볼 때 시야 거리 배율
@@ -53,4 +53,16 @@ public static class EnemyTempValue
     public const float AlertExitGauge = 50.0f;
     public const float DetectedEnterGauge = 100.0f;
     public const float DetectedExitGauge = 80.0f;
+
+    // 크기 1당 들리는 반경(m)
+    public const float SoundRangePerLoudness = 5.0f;
+    // 벽, 닫힌 문 하나를 지날 때마다 곱하는 값
+    public const float WallSoundMultiplier = 0.5f;
+    public const float DoorSoundMultiplier = 0.7f;
+    // 들린 세기가 이 값보다 작으면 못 들은 것으로 본다
+    public const float SoundHearThreshold = 0.1f;
+    // 들린 세기 1당 게이지 상승량
+    public const float SoundGaugePerLoudness = 25.0f;
+    // 소리 위치를 바닥에서 띄우는 높이 (바닥에 레이가 맞지 않게)
+    public const float SoundSourceHeight = 0.1f;
 }

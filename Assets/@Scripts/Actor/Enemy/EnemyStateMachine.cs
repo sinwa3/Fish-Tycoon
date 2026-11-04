@@ -68,7 +68,7 @@ public class EnemyStateMachine
 
     #region ===== 상태 전환 =====
 
-    /// <summary> KYH : 지정한 타입의 상태로 전환한다 (우선순위 함수가 고른 타입을 받는다) </summary>
+    /// <summary> KYH : 지정한 타입의 상태로 전환한다 </summary>
     public void ChangeState(Type type)
     {
         if (!_stateMap.TryGetValue(type, out BaseEnemyState nextState))
@@ -114,7 +114,7 @@ public class EnemyStateMachine
 
     #region ===== 상태 확인 =====
 
-    /// <summary> KYH : 현재 상태가 지정한 타입인지 확인한다 (우선순위 함수가 고른 타입과 비교) </summary>
+    /// <summary> KYH : 현재 상태가 지정한 타입인지 확인한다 </summary>
     public bool IsCurrentState(Type type)
     {
         if (_currentState == null)
