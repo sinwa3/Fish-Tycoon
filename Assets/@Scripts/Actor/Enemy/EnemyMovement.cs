@@ -28,7 +28,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 목표까지 갈 수 있으면 출발하고 true, 갈 수 없으면 false를 돌려준다 </summary>
+    /// <summary> KYH : 목표로 출발하고 갈 수 있는지 돌려준다 </summary>
     public bool MoveTo(Vector3 target)
     {
         if (_agent == null)
