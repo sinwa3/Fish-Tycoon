@@ -151,8 +151,6 @@ public class PixelationRendererFeature : ScriptableRendererFeature
 
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
-            
-            Debug.Log($"[PixelationRendererFeature] Execute: {PixelationTransition.CurrentPixelSize}");
         }
 
         #endregion ===== 렌더링 =====
