@@ -1,5 +1,13 @@
 using UnityEngine;
 
+public enum GradeType
+{
+    Normal,
+    Rare,
+    Epic,
+    Legendary,
+}
+
 /// <summary> KDH : 생선 데이터를 정의한다. </summary>
 public class FishData : TableData
 {
@@ -15,15 +23,17 @@ public class FishData : TableData
     [CsvField("생선 판매가")]
     public int SellPrice;
 
-    // -1 (구매불가)
-    [CsvField("생선 구매가")] 
-    public int BuyPrice;
+    [CsvField("등급")] 
+    public string Grade;
 
     [CsvField("습득 확률 가중치")]
     public int AcquireWeight;
 
     [CsvField("리소스명")]
     public string ResourceName;
+    
+    /// <summary> KDH : 생선의 등급을 반환한다. </summary>
+    public GradeType GradeType => Utils.TryParseEnum(Grade, out GradeType grade) ? grade : GradeType.Normal;
 }
 
 /// <summary> KDH : 생선 테이블을 관리한다. </summary>
