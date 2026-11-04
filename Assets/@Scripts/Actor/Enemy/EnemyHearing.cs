@@ -6,12 +6,23 @@ public class EnemyHearing : MonoBehaviour
     #region ===== 상태 =====
 
     private EnemyController _enemy;
+    private StealthScene _stealthScene;
 
     #endregion ===== 상태 =====
 
     private void Awake()
     {
         InitializeComponents();
+    }
+
+    private void OnEnable()
+    {
+        SubscribeEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsubscribeEvents();
     }
 
     #region ===== 초기화 =====
@@ -28,6 +39,35 @@ public class EnemyHearing : MonoBehaviour
     }
 
     #endregion ===== 초기화 =====
+
+    #region ===== 이벤트 =====
+
+    /// <summary> KYH : 잠입 씬의 소음 이벤트를 구독한다 </summary>
+    private void SubscribeEvents()
+    {
+        _stealthScene = Managers.Scene.CurrentScene as StealthScene;
+
+        if (_stealthScene == null)
+        {
+            return;
+        }
+
+        _stealthScene.OnNoiseMade += HearNoise;
+    }
+
+    /// <summary> KYH : 소음 이벤트 구독을 해제한다 </summary>
+    private void UnsubscribeEvents()
+    {
+        if (_stealthScene == null)
+        {
+            return;
+        }
+
+        _stealthScene.OnNoiseMade -= HearNoise;
+        _stealthScene = null;
+    }
+
+    #endregion ===== 이벤트 =====
 
     #region ===== 소음 받기 =====
 
