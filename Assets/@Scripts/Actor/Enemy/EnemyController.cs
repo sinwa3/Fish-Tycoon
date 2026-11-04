@@ -3,7 +3,7 @@ using UnityEngine;
 
 /// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
 [RequireComponent(typeof(EnemyMovement), typeof(EnemyLook), typeof(EnemySight))]
-[RequireComponent(typeof(EnemySuspicionGauge))]
+[RequireComponent(typeof(EnemySuspicionGauge), typeof(EnemyHearing))]
 public class EnemyController : MonoBehaviour
 {
     #region ===== 상태 =====
@@ -39,6 +39,9 @@ public class EnemyController : MonoBehaviour
 
     /// <summary> KYH : 의심 게이지 </summary>
     public EnemySuspicionGauge SuspicionGauge { get; private set; }
+
+    /// <summary> KYH : 소음 듣기 </summary>
+    public EnemyHearing Hearing { get; private set; }
 
     #endregion ===== 감지 =====
 
@@ -80,13 +83,14 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 이동, 바라보기, 시야, 의심 게이지 컴포넌트를 캐싱한다 </summary>
+    /// <summary> KYH : 이동, 바라보기, 시야, 의심 게이지, 듣기 컴포넌트를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         Movement = GetComponent<EnemyMovement>();
         Look = GetComponent<EnemyLook>();
         Sight = GetComponent<EnemySight>();
         SuspicionGauge = GetComponent<EnemySuspicionGauge>();
+        Hearing = GetComponent<EnemyHearing>();
 
         if (Movement == null)
         {
@@ -106,6 +110,11 @@ public class EnemyController : MonoBehaviour
         if (SuspicionGauge == null)
         {
             CPrint.Warning("[EnemyController] 적 의심 게이지 없음");
+        }
+
+        if (Hearing == null)
+        {
+            CPrint.Warning("[EnemyController] 적 소음 듣기 없음");
         }
     }
 

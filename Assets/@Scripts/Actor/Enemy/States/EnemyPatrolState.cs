@@ -49,7 +49,7 @@ public class EnemyPatrolState : BaseEnemyState
         Enemy.Movement.Stop();
     }
 
-    /// <summary> KYH : 지금 번호의 웨이포인트로 출발한다. 갈 수 없으면 다음 번호로 넘기고, 모든 지점이 안 되면 false </summary>
+    /// <summary> KYH : 지금 웨이포인트로 출발하고 갈 수 있는지 돌려준다 </summary>
     private bool MoveToCurrentWaypoint()
     {
         EnemyPatrolRoute patrolRoute = Enemy.PatrolRoute;
