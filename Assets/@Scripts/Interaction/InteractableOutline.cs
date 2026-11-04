@@ -1,115 +1,101 @@
-using JetBrains.Annotations;
 using UnityEngine;
 
-/// <summary>SJY : 상호작용 오브젝트의 Material을 교체하여 아웃라인을 표시한다.</summary>
+/// <summary>SJY : 상호작용 오브젝트의 OutlineMaterial을 자동으로 찾아 표시 상태를 제어</summary>
 public class InteractableOutline : MonoBehaviour
 {
-    [SerializeField] private Material _outlineMaterial;
-    [SerializeField] private bool _showOutline;
+    private const string OutlineMaterialName = "OutlineMaterial";
 
-    private Renderer[] _renderers;
-    private Material[][] _originalMaterials;
+    private MeshRenderer[] _targetRenderers;
+    private Material[][] _normalMaterials;
     private Material[][] _outlineMaterials;
-
-    private bool _isInitialized;
-    private bool _isOutlineApplied;
-    private bool _isDirty;
+    private bool _isOutlined;
 
     private void Awake()
     {
         InitializeComponents();
         InitializeMaterials();
-        ApplyOutline(_showOutline);
+        SetOutline(false);
     }
 
-    /// <summary>SJY : 자신과 자식의 Renderer를 자동으로 검색</summary>
+    /// <summary>SJY : 자신과 자식 오브젝트의 MeshRenderer를 자동으로 검색</summary>
     private void InitializeComponents()
     {
-        _renderers = GetComponentsInChildren<Renderer>(true);
+        _targetRenderers = GetComponentsInChildren<MeshRenderer>(true);
     }
 
-    /// <summary>SJY : 원본 Material을 저장하고 교체용 Material 배열을 생성</summary>
+    /// <summary>SJY : 마지막 Outline Material을 분리하여 저장</summary>
     private void InitializeMaterials()
     {
-        _isInitialized = false;
-        if (_renderers == null || _outlineMaterial == null)
+        _normalMaterials = new Material[_targetRenderers.Length][];
+        _outlineMaterials = new Material[_targetRenderers.Length][];
+
+        for (int i = 0; i < _targetRenderers.Length; i++)
         {
-            return;
-        }
+            Material[] materials = _targetRenderers[i].sharedMaterials;
 
-        _originalMaterials = new Material[_renderers.Length][];
-        _outlineMaterials = new Material[_renderers.Length][];
-
-        for (int i = 0; i < _renderers.Length; i++)
-        {
-            _originalMaterials[i] = _renderers[i].sharedMaterials;
-            _outlineMaterials[i] = new Material[_originalMaterials[i].Length];
-
-            for (int j = 0; j < _outlineMaterials[i].Length; j++)
-            {
-                _outlineMaterials[i][j] = _outlineMaterial;
-            }
-        }
-
-        _isInitialized = true;
-        _isOutlineApplied = false;
-    }
-
-    private void Update()
-    {
-        if (!_isInitialized)
-        {
-            return;
-        }
-
-        if (_isDirty || _isOutlineApplied != _showOutline)
-        {
-            _isDirty = false;
-            ApplyOutline(_showOutline);
-        }
-    }
-
-    /// <summary>SJY : 외부에서 아웃라인 활성화 여부를 변경</summary>
-    public void SetOutline(bool isEnabled)
-    {
-        _showOutline = isEnabled;
-        ApplyOutline(isEnabled);
-    }
-
-    private void ApplyOutline(bool isEnabled)
-    {
-        if (!_isInitialized)
-        {
-            return;
-        }
-
-        for (int i = 0; i < _renderers.Length; i++)
-        {
-            if (_renderers[i] == null)
+            if (materials.Length < 2 || materials[materials.Length - 1] == null)
             {
                 continue;
             }
 
-            _renderers[i].sharedMaterials = isEnabled ? _outlineMaterials[i] : _originalMaterials[i];
+            if (materials[materials.Length - 1].name != OutlineMaterialName)
+            {
+                continue;
+            }
+
+            _outlineMaterials[i] = materials;
+            _normalMaterials[i] = new Material[materials.Length - 1];
+
+            for (int j = 0; j < _normalMaterials[i].Length; j++)
+            {
+                _normalMaterials[i][j] = materials[j];
+            }
+        }
+    }
+
+    /// <summary>SJY : 외부에서 아웃라인 활성화 여부를 지정</summary>
+    public void SetOutline(bool isEnabled)
+    {
+        if (_isOutlined == isEnabled)
+        {
+            return;
         }
 
-        _isOutlineApplied = isEnabled;
+        for (int i = 0; i < _targetRenderers.Length; i++)
+        {
+            if (_targetRenderers[i] == null || _normalMaterials[i] == null)
+            {
+                continue;
+            }
+
+            _targetRenderers[i].sharedMaterials = isEnabled ? _outlineMaterials[i] : _normalMaterials[i];
+        }
+
+        _isOutlined = isEnabled;
     }
 
-    private void OnValidate()
+    /// <summary>SJY : 저장된 Material 배열을 적용하여 아웃라인을 켜거나 끔</summary>
+    private void ApplyOutline(bool isEnabled)
     {
-        _isDirty = true;
+        for (int i = 0; i < _targetRenderers.Length; i++)
+        {
+            if (_targetRenderers[i] == null || _normalMaterials[i] == null)
+            {
+                continue;
+            }
+
+            _targetRenderers[i].sharedMaterials = isEnabled ? _outlineMaterials[i] : _normalMaterials[i];
+        }
+
+        _isOutlined = isEnabled;
     }
 
-    /// <summary>SJY : </summary>
+    /// <summary>SJY :  오브젝트 비활성화 시 아웃라인을 숨김</summary>
     private void OnDisable()
     {
-        ApplyOutline(false);
-        _isInitialized = false;
-    }
-
-    private void OnDestroy()
-    {
-        ApplyOutline(false);
+        if (_targetRenderers != null)
+        {
+            ApplyOutline(false);
+        }
     }
 }
