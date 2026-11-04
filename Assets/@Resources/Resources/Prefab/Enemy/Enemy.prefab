@@ -2815,6 +2815,9 @@ GameObject:
   - component: {fileID: 6067503565646892286}
   - component: {fileID: 8080989991451842725}
   - component: {fileID: 7344075870869105959}
+  - component: {fileID: 6106583035372517276}
+  - component: {fileID: 7928342619419640018}
+  - component: {fileID: 8261112614608867871}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2856,7 +2859,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 4585227c2f2c642009cc90bdb4880d3f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2943,6 +2946,45 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa33c59539436bf408c5e835a54c422f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6106583035372517276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208544490719316847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5395bd2721e0ff4b8f8d903bec90ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sightBlockLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &7928342619419640018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208544490719316847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 566408446c2013241b1140b6ca396790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8261112614608867871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208544490719316847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc75eccfb6c84748afbbac7f943cca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &503686718610944122

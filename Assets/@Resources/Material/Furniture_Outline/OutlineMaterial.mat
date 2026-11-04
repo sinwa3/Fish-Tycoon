@@ -51,10 +51,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _MaxOutlineDistance: 10
-    - _OutlineThickness: 0.1
+    - _MaxOutlineDistance: 3
+    - _OutlineThickness: 5
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _OutlineColor: {r: 1, g: 0.99468976, b: 0.7150943, a: 1}
+    - _OutlineColor: {r: 1, g: 0.9980737, b: 0.6320754, a: 1}
   m_BuildTextureStacks: []

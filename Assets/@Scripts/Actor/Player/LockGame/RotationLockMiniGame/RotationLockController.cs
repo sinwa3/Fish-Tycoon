@@ -125,8 +125,6 @@ public class RotationLockController : MonoBehaviour
 
         _isPlaying = true;
 
-        Managers.Input.SetInputBlocked(this, true);
-        Managers.Input.SetCursorLock(true);
         Managers.Input.ClearKeyAxisValue();
     }
 
@@ -140,12 +138,6 @@ public class RotationLockController : MonoBehaviour
 
         _isPlaying = false;
         _isReplacing = false;
-
-        if (Managers.Input != null)
-        {
-            Managers.Input.SetInputBlocked(this, false);
-            Managers.Input.SetCursorLock(false);
-        }
     }
 
     /// <summary>SJY : 자물쇠 해제 성공 상태로 전환하고 완료 이벤트를 발생</summary>

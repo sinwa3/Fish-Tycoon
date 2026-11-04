@@ -95,7 +95,7 @@ public class EnemyLook : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, EnemyTempValue.TurnSpeed * Time.deltaTime);
     }
 
-    /// <summary> KYH : 처음 방향을 기준으로 좌우로 한 번 돌고 끝나면 처음 방향으로 돌아온다 </summary>
+    /// <summary> KYH : 좌우로 한 번 돌고 처음 방향으로 돌아온다 </summary>
     private void UpdateLookAround()
     {
         _lookAroundTimer += Time.deltaTime;

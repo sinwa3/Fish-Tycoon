@@ -171,7 +171,10 @@ public class TycoonScene : BaseScene
 
                 break;
             case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
-                Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene);
+                Managers.UI.OpenLoadingUI(1f, () =>
+                {
+                    Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene);
+                });
                 break;
         }
 
