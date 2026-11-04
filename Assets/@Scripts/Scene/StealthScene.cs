@@ -9,6 +9,12 @@ public class StealthScene : BaseScene
         Settlement, // 정산
     }
 
+    #region ===== 이벤트 =====
+
+    public event System.Action<Vector3, float> OnNoiseMade;
+
+    #endregion ===== 이벤트 =====
+
     #region ===== 참조 =====
 
     private StealthHUD _stealthHUD;
@@ -129,4 +135,14 @@ public class StealthScene : BaseScene
     }
 
     #endregion ===== 업데이트 =====
+
+    #region ===== 이벤트 발행 =====
+
+    /// <summary> KYH : 소음이 났음을 알린다. </summary>
+    public void RaiseNoiseMade(Vector3 position, float loudness)
+    {
+        OnNoiseMade?.Invoke(position, loudness);
+    }
+
+    #endregion ===== 이벤트 발행 =====
 }
