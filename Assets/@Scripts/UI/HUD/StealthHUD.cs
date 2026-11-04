@@ -102,7 +102,7 @@ public class StealthHUD : BaseHUD
             Managers.UI.OpenScreen<SecurityMinigameScreen>()
                 ?.Set(SecurityMinigameScreen.MinigameType.RotationLock, _stealthScene?.Camera);
         }
-        else if (Managers.Input.KeyDown_E)
+        else if (Managers.Input.KeyDown_F)
         {
             _stealthScene?.ChangeCurrentPhase();
         }
@@ -161,11 +161,11 @@ public class StealthHUD : BaseHUD
 
         Get<TMP_Text>(Texts.PhaseText)?.SetText(phaseStr);
 
-        // NextBtnText
+        // (임시)NextBtnText
         string nextBtnStr = phase switch
         {
-            StealthScene.Phase.Playing => "[E] 정산하기",
-            StealthScene.Phase.Settlement => "[E] 다음 날로 이동",
+            StealthScene.Phase.Playing => "[F] 정산하기",
+            StealthScene.Phase.Settlement => "[F] 다음 날로 이동",
             _ => string.Empty
         };
 
