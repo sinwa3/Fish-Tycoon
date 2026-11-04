@@ -14,7 +14,8 @@ public class InteractableOutline : MonoBehaviour
     {
         InitializeComponents();
         InitializeMaterials();
-        SetOutline(false);
+        //SetOutline(false);
+        ApplyOutline(false);
     }
 
     /// <summary>SJY : 자신과 자식 오브젝트의 MeshRenderer를 자동으로 검색</summary>
@@ -33,12 +34,14 @@ public class InteractableOutline : MonoBehaviour
         {
             Material[] materials = _targetRenderers[i].sharedMaterials;
 
-            if (materials.Length < 2 || materials[materials.Length - 1] == null)
+            if (materials.Length < 2)
             {
                 continue;
             }
 
-            if (materials[materials.Length - 1].name != OutlineMaterialName)
+            Material lastMaterial = materials[materials.Length - 1];
+
+            if (lastMaterial == null || !lastMaterial.name.StartsWith(OutlineMaterialName))
             {
                 continue;
             }
@@ -61,22 +64,17 @@ public class InteractableOutline : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < _targetRenderers.Length; i++)
-        {
-            if (_targetRenderers[i] == null || _normalMaterials[i] == null)
-            {
-                continue;
-            }
-
-            _targetRenderers[i].sharedMaterials = isEnabled ? _outlineMaterials[i] : _normalMaterials[i];
-        }
-
-        _isOutlined = isEnabled;
+        ApplyOutline(isEnabled);
     }
 
     /// <summary>SJY : 저장된 Material 배열을 적용하여 아웃라인을 켜거나 끔</summary>
     private void ApplyOutline(bool isEnabled)
     {
+        if (_targetRenderers == null || _normalMaterials == null)
+        {
+            return;
+        }
+
         for (int i = 0; i < _targetRenderers.Length; i++)
         {
             if (_targetRenderers[i] == null || _normalMaterials[i] == null)
