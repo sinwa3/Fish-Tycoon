@@ -628,7 +628,7 @@ GameObject:
   - component: {fileID: 1390757794232767902}
   - component: {fileID: 6927456111847839591}
   m_Layer: 5
-  m_Name: ClearImage
+  m_Name: OverImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1075,7 +1075,7 @@ GameObject:
   - component: {fileID: 6819303958945670178}
   - component: {fileID: 8627104854466614738}
   m_Layer: 5
-  m_Name: OverImage
+  m_Name: ClearImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

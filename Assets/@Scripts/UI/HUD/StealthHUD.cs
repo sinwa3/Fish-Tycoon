@@ -17,8 +17,6 @@ public class StealthHUD : BaseHUD
 
         ControlGuideText,
         StaminaValueText,
-        
-        NextBtnText,
     }
 
     public enum Images
@@ -119,10 +117,6 @@ public class StealthHUD : BaseHUD
             Managers.UI.OpenScreen<SecurityMinigameScreen>()
                 ?.Set(SecurityMinigameScreen.MinigameType.RotationLock, _stealthScene?.Camera);
         }
-        else if (Managers.Input.KeyDown_F)
-        {
-            _stealthScene?.ChangeCurrentPhase();
-        }
         else if (Managers.Input.MouseDown_Wheel && Cursor.lockState == CursorLockMode.Locked)
         {
             // 커서 잠금 해제
@@ -197,16 +191,6 @@ public class StealthHUD : BaseHUD
         };
 
         Get<TMP_Text>(Texts.PhaseText)?.SetText(phaseStr);
-
-        // (임시)NextBtnText
-        string nextBtnStr = phase switch
-        {
-            StealthScene.Phase.Playing => "[F] 정산하기",
-            StealthScene.Phase.Settlement => "[F] 다음 날로 이동",
-            _ => string.Empty
-        };
-
-        Get<TMP_Text>(Texts.NextBtnText)?.SetText(nextBtnStr);
     }
 
     /// <summary> KDH : 해당 퀘스트 정보로 UI를 업데이트한다. </summary>

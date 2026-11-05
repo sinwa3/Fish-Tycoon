@@ -73,6 +73,7 @@ public class DataManager
     /// <summary> KDH : 세이버 데이터를 삭제한다. </summary>
     public void DeleteSaveData()
     {
+        CPrint.Log("삭제");
         if (!IsSaved)
         {
             CPrint.Warning("[DataManager] 삭제할 데이터가 존재하지 않습니다.");

@@ -6,6 +6,7 @@ public class EventManager
     #region ===== 이벤트 =====
 
     public event Action OnPlayerArrested;
+    public event Action OnPlayerEscaped;
 
     public event Action OnPause;
     public event Action OnResume;
@@ -18,6 +19,12 @@ public class EventManager
     public void RaisePlayerArrested()
     {
         OnPlayerArrested?.Invoke();
+    }
+    
+    /// <summary> KDH : 플레이어가 탈출했음을 알린다. </summary>
+    public void RaisePlayerEscaped()
+    {
+        OnPlayerEscaped?.Invoke();
     }
 
     /// <summary> KDH : 게임이 일시정지 되었음을 알린다. </summary>

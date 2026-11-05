@@ -70,7 +70,7 @@ public class ExitDoor : MonoBehaviour, IInteractable
         return !_hasExited;
     }
 
-    /// <summary> YSW : 스텔스 씬의 다음 단계(정산)로 넘어간다. </summary>
+    /// <summary> YSW : 탈출 이벤트를 발생시킨다. </summary>
     public void Interact(GameObject interactor)
     {
         if (_hasExited)
@@ -78,17 +78,10 @@ public class ExitDoor : MonoBehaviour, IInteractable
             return;
         }
 
-        StealthScene stealthScene = Managers.Scene != null ? Managers.Scene.CurrentScene as StealthScene : null;
-
-        if (stealthScene == null)
+        if (Managers.Event != null)
         {
-            CPrint.Warning($"{nameof(ExitDoor)} : 현재 씬이 StealthScene이 아니라 나갈 수 없습니다.");
-
-            return;
+            Managers.Event.RaisePlayerEscaped();
         }
-
-        _hasExited = true;
-        stealthScene.ChangeCurrentPhase();
     }
 
     #endregion ===== 상호작용 =====

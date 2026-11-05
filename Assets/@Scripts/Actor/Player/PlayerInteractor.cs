@@ -195,6 +195,11 @@ public class PlayerInteractor : MonoBehaviour
     /// <summary> YSW : 현재 상태에 맞는 안내 문구를 반환한다. </summary>
     private string GetPromptText()
     {
+        if (Managers.Scene == null || Managers.UI.CurrentScreen != null || Managers.UI.CurrentPopup != null)
+        {
+            return null;
+        }
+        
         if (IsHiding)
         {
             return "[E] 나오기";

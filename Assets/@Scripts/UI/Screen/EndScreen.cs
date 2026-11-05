@@ -1,6 +1,6 @@
 using UnityEngine.UI;
 
-/// <summary> KDH :  </summary>
+/// <summary> KDH : 7일차 정산 후 분기에 따라 표시하는 종료화면 </summary>
 public class EndScreen : BaseScreen
 {
     private enum Buttons
