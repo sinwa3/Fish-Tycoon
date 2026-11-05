@@ -11,6 +11,8 @@ public class StealthHUD : BaseHUD
         PhaseText,
         SubQuestDescText,
         
+        ReputationValueText,
+        SatisfactionValueText,
         GoldValueText,
 
         ControlGuideText,
@@ -23,9 +25,16 @@ public class StealthHUD : BaseHUD
     {
         SubQuest,
         
+        ReputationIcon,
+        
         StaminaFillImage,
         
         QuickSlotBar,
+    }
+
+    public enum Sliders
+    {
+        SatisfactionSlider
     }
 
     public enum Toggles
@@ -37,6 +46,8 @@ public class StealthHUD : BaseHUD
 
     private StealthScene _stealthScene;
 
+    private ReputationTooltip _reputationTooltip;
+    
     #endregion ===== 참조 =====
 
     #region ===== 상태 =====
@@ -57,8 +68,11 @@ public class StealthHUD : BaseHUD
         Bind<TMP_Text>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<Toggle>(typeof(Toggles));
+        Bind<Slider>(typeof(Sliders));
 
         _stealthScene = gameObject.FindParent<StealthScene>();
+        
+        InitializeReputationTooltip();
     }
 
     protected override void OnStart()
@@ -66,12 +80,15 @@ public class StealthHUD : BaseHUD
         _isCursorGuideLocked = Cursor.lockState == CursorLockMode.Locked;
         
         SetCurrentDayText();
-
+        SetReputationIconHover();
+        
         UpdateGoldText();
-
+        UpdateSatisfactionInfo();
+        
         SubscribeGoldChanged();
         SubscribeSubQuestEvents();
         SubscribeStaminaChanged();
+        SubscribeSatisfactionChanged();
 
         if (Managers.Quest != null)
         {
@@ -129,6 +146,7 @@ public class StealthHUD : BaseHUD
         UnsubscribeGoldChanged();
         UnsubscribeSubQuestEvents();
         UnsubscribeStaminaChanged();
+        UnsubscribeSatisfactionChanged();
     }
 
     #region ===== 초기화 =====
@@ -139,6 +157,25 @@ public class StealthHUD : BaseHUD
         Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
     }
 
+    /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>
+    private void SetReputationIconHover()
+    {
+        Get<Image>(Images.ReputationIcon)?.gameObject.BindEvent(UIEventType.PointerEnter, OnPointerEnterReputation);
+        Get<Image>(Images.ReputationIcon)?.gameObject.BindEvent(UIEventType.PointerExit, OnPointerExitReputation);
+    }
+    
+    /// <summary> KDH : 평판 툴팁을 초기화한다. </summary>
+    private void InitializeReputationTooltip()
+    {
+        if (_reputationTooltip == null)
+        {
+            _reputationTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(ReputationTooltip),
+                transform).gameObject.GetOrAddComponent<ReputationTooltip>();
+        }
+
+        _reputationTooltip.gameObject.SetActive(false);
+    }
+    
     #endregion ===== 초기화 =====
 
     #region ===== 업데이트 =====
@@ -218,6 +255,37 @@ public class StealthHUD : BaseHUD
         }
 
         Get<TMP_Text>(Texts.StaminaValueText)?.SetText($"{currentStamina:0} / {maxStamina:0}");
+    }
+    
+    /// <summary> KDH : 현재 만족도와 평판 등급을 업데이트한다. </summary>
+    private void UpdateSatisfactionInfo()
+    {
+        if (Managers.Table.Reputation == null)
+        {
+            CPrint.Error("[TycoonHUD] : 현재 테이블 데이터가 존재하지 않습니다.");
+            return;
+        }
+
+        var info = Managers.Data.GetReputationInfo();
+
+        Get<TMP_Text>(Texts.ReputationValueText)?.SetText(info.reputationGrade.ToString("N0"));
+        Get<TMP_Text>(Texts.SatisfactionValueText)
+            ?.SetText($"{info.currentSatisfaction:N0} / {info.requiredSatisfaction:N0}");
+
+        bool isMaxGrade = Managers.Table.Reputation.IsMaxReputationGrade(info.reputationGrade);
+
+        if (isMaxGrade) // 만렙인경우
+        {
+            Get<Slider>(Sliders.SatisfactionSlider)?.SetValueWithoutNotify(1f);
+            Get<TMP_Text>(Texts.SatisfactionValueText)?.SetText("MAX");
+
+            return;
+        }
+
+        float progress = info.requiredSatisfaction > 0
+            ? (float)info.currentSatisfaction / info.requiredSatisfaction
+            : 0f;
+        Get<Slider>(Sliders.SatisfactionSlider)?.SetValueWithoutNotify(progress);
     }
     
     #endregion ===== 업데이트 =====
@@ -334,6 +402,37 @@ public class StealthHUD : BaseHUD
         {
             _stealthScene.PlayerStamina.OnStaminaChanged -= UpdateStaminaUI;
         }
+    }
+    
+    /// <summary> KDH : 만족도 변화시 UI 업데이트를 구독 </summary>
+    private void SubscribeSatisfactionChanged()
+    {
+        if (Managers.Data != null)
+        {
+            Managers.Data.OnSatisfactionChanged += UpdateSatisfactionInfo;
+        }
+    }
+
+    /// <summary> KDH : 만족도 변화시 UI 업데이트를 구독해제 </summary>
+    private void UnsubscribeSatisfactionChanged()
+    {
+        if (Managers.Data != null)
+        {
+            Managers.Data.OnSatisfactionChanged -= UpdateSatisfactionInfo;
+        }
+    }
+    
+    /// <summary> KDH : 마우스가 평판 아이콘에 올라오면 평판 정보를 표시한다. </summary>
+    private void OnPointerEnterReputation()
+    {
+        _reputationTooltip?.Show(Get<TMP_Text>(Texts.ReputationValueText).text,
+            Get<Image>(Images.ReputationIcon).rectTransform);
+    }
+
+    /// <summary> KDH : 마우스가 평판 아이콘에서 벗어나면 평판 정보를 숨긴다. </summary>
+    private void OnPointerExitReputation()
+    {
+        _reputationTooltip?.Hide();
     }
     
     #endregion ===== 이벤트 =====
