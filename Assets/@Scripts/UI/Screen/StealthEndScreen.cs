@@ -82,8 +82,9 @@ public class StealthEndScreen : BaseScreen
         {
             Managers.Data.SettleQuickSlotFish();
         }
-        else // 체포되면 만족도를 감소시킨다.
+        else // 체포되면 훔친 생선을 전부 초기화하고 만족도를 감소시킨다.
         {
+            Managers.Data.ClearFishes();
             Managers.Data.SubtractSatisfaction(100);
         }
 

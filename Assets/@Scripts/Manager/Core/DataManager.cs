@@ -663,12 +663,32 @@ public class DataManager
 
         foreach (QuickSlotData slot in _saveData.QuickSlots)
         {
-            if (slot.Type != QuickSlotItemType.Consumable)
+            if (slot.Type == QuickSlotItemType.Consumable)
             {
                 continue;
             }
 
             ClearQuickSlot(slot);
+        }
+
+        OnQuickSlotChanged?.Invoke();
+        OnStoreChanged?.Invoke();
+    }
+    
+    /// <summary> KDH : 퀵슬롯에서 생선만 초기화한다. </summary>
+    public void ClearFishes()
+    {
+        if (_saveData?.QuickSlots == null)
+        {
+            return;
+        }
+
+        foreach (QuickSlotData slot in _saveData.QuickSlots)
+        {
+            if (slot.Type == QuickSlotItemType.Fish)
+            {
+                ClearQuickSlot(slot);
+            }
         }
 
         OnQuickSlotChanged?.Invoke();
