@@ -13,9 +13,11 @@ public class PlayerInteractor : MonoBehaviour
     [Header("감지")]
     [SerializeField] private float _interactDistance = 2f;
 
-    [Tooltip("레이가 검사할 레이어 (벽도 포함해야 벽 너머 오브젝트가 잡히지 않는다)")]
-    [SerializeField] private LayerMask _interactLayers = ~0;
-
+    [Tooltip("상호작용 대상 레이어")]
+    [SerializeField] private LayerMask _interactLayers = LayerKey.Mask.Interaction;
+    [Tooltip("상호작용 차폐 레이어")]
+    [SerializeField] private LayerMask _obstacleLayers = LayerKey.Mask.Wall | LayerKey.Mask.Door;
+    
     [Header("디버그")]
     [Tooltip("UI가 없을 때 화면에 상호작용 안내를 임시로 표시한다.")]
     [SerializeField] private bool _showDebugPrompt = true;
@@ -93,12 +95,13 @@ public class PlayerInteractor : MonoBehaviour
         SetTarget(FindTarget());
     }
 
-    /// <summary> YSW : 레이에 맞은 오브젝트가 상호작용 가능하면 반환한다. </summary>
+    /// <summary> YSW : 레이에 맞은 오브젝트가 상호작용 가능하고 장애물에 가려지지 않았다면 반환한다. </summary>
     private IInteractable FindTarget()
     {
         Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, _interactDistance, _interactLayers, QueryTriggerInteraction.Ignore))
+        // 1. 상호작용 대상 검사
+        if (!Physics.Raycast(ray, out RaycastHit hit, _interactDistance, _interactLayers, QueryTriggerInteraction.Collide))
         {
             return null;
         }
@@ -106,6 +109,12 @@ public class PlayerInteractor : MonoBehaviour
         IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
 
         if (interactable == null || !interactable.CanInteract(gameObject))
+        {
+            return null;
+        }
+
+        // 2. 대상까지의 거리에서 장애물 검사
+        if (Physics.Raycast(ray, hit.distance, _obstacleLayers, QueryTriggerInteraction.Ignore))
         {
             return null;
         }
@@ -186,6 +195,11 @@ public class PlayerInteractor : MonoBehaviour
     /// <summary> YSW : 현재 상태에 맞는 안내 문구를 반환한다. </summary>
     private string GetPromptText()
     {
+        if (Managers.Scene == null || Managers.UI.CurrentScreen != null || Managers.UI.CurrentPopup != null)
+        {
+            return null;
+        }
+        
         if (IsHiding)
         {
             return "[E] 나오기";

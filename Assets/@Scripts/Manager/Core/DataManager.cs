@@ -73,6 +73,7 @@ public class DataManager
     /// <summary> KDH : 세이버 데이터를 삭제한다. </summary>
     public void DeleteSaveData()
     {
+        CPrint.Log("삭제");
         if (!IsSaved)
         {
             CPrint.Warning("[DataManager] 삭제할 데이터가 존재하지 않습니다.");
@@ -662,12 +663,32 @@ public class DataManager
 
         foreach (QuickSlotData slot in _saveData.QuickSlots)
         {
-            if (slot.Type != QuickSlotItemType.Consumable)
+            if (slot.Type == QuickSlotItemType.Consumable)
             {
                 continue;
             }
 
             ClearQuickSlot(slot);
+        }
+
+        OnQuickSlotChanged?.Invoke();
+        OnStoreChanged?.Invoke();
+    }
+    
+    /// <summary> KDH : 퀵슬롯에서 생선만 초기화한다. </summary>
+    public void ClearFishes()
+    {
+        if (_saveData?.QuickSlots == null)
+        {
+            return;
+        }
+
+        foreach (QuickSlotData slot in _saveData.QuickSlots)
+        {
+            if (slot.Type == QuickSlotItemType.Fish)
+            {
+                ClearQuickSlot(slot);
+            }
         }
 
         OnQuickSlotChanged?.Invoke();

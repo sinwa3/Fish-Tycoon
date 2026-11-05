@@ -101,9 +101,9 @@ public class SettlementPopup : BasePopup
     }
 
     /// <summary> KDH : 게임 클리어 조건에 달성했는지에 따라 종료 스크린을 달리한다. </summary>
-    private bool IsGameClear()
+    private bool IsGameOver()
     {
-        if (Managers.Data.GetCurrentGold() >= _targetGold)
+        if (Managers.Data.GetCurrentGold() < _targetGold)
         {
             return true;
         }
@@ -208,7 +208,7 @@ public class SettlementPopup : BasePopup
         {
             if (_isFinalDay)
             {
-                Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameClear());
+                Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameOver());
             }
         });
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);

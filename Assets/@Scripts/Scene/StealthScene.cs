@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class StealthScene : BaseScene
 {
@@ -53,6 +55,23 @@ public class StealthScene : BaseScene
         {
             _camera = Camera.main;
         }
+        
+        // (임시) 플레이어가 잡혔을 때 종료 화면 활성화 구독
+        if (Managers.Event != null)
+        {
+            Managers.Event.OnPlayerArrested += OnArrested;
+            Managers.Event.OnPlayerEscaped += OnEscaped;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // (임시) 플레이어가 잡혔을 때 종료 화면 활성화 구독해제
+        if (Managers.Event != null)
+        {
+            Managers.Event.OnPlayerArrested -= OnArrested;
+            Managers.Event.OnPlayerEscaped -= OnEscaped;
+        }
     }
 
     protected override void OnStart()
@@ -91,26 +110,8 @@ public class StealthScene : BaseScene
     #region ===== 업데이트 =====
 
     /// <summary> KDH : 페이즈를 다음 단계로 진행시킨다. </summary>
-    public void ChangeCurrentPhase()
+    private void ChangeCurrentPhase()
     {
-        switch (_currentPhase)
-        {
-            case Phase.Playing: // 잠입 => 정산
-                Managers.Data.SetNextDay();
-                Managers.Data.ChangeSavedGameMode(GameMode.Stealth);
-
-                Managers.Data.ClearConsumables();
-                Managers.Data.SettleQuickSlotFish();
-
-                Managers.Data.SaveData();
-
-                Managers.UI.OpenToastMessage("저장되었습니다.");
-                break;
-            case Phase.Settlement: // 정산 => 타이쿤 씬
-                Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
-                break;
-        }
-
         if (_currentPhase < Phase.Settlement)
         {
             _currentPhase++;
@@ -150,5 +151,19 @@ public class StealthScene : BaseScene
         OnNoiseMade?.Invoke(position, loudness);
     }
 
+    /// <summary> KDH : 플레이어가 잡혔을 때 종료화면을 표시한다. </summary>
+    private void OnArrested()
+    {
+        ChangeCurrentPhase();
+        Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(true);
+    }
+    
+    /// <summary> KDH : 플레이어가 탈출했을 때 종료화면을 표시한다. </summary>
+    private void OnEscaped()
+    {
+        ChangeCurrentPhase();
+        Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(false);
+    }
+    
     #endregion ===== 이벤트 발행 =====
 }

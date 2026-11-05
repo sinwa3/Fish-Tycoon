@@ -67,6 +67,12 @@ public class PlayerMovement : MonoBehaviour
     /// <summary> YSW : 웅크리면서 플레이어 기준점(transform)이 서 있을 때보다 내려간 거리. 카메라 높이 보정에 사용한다. </summary>
     public float CrouchPivotOffset => (_standHeight - _characterController.height) * 0.5f;
 
+    /// <summary> YSW : 서 있을 때 발에서 플레이어 기준점(transform)까지의 높이 </summary>
+    public float StandPivotHeight => _standHeight * 0.5f - _characterController.center.y;
+
+    /// <summary> YSW : 웅크림 진행도 (0 = 완전히 서 있음, 1 = 완전히 웅크림). 전환 중에는 그 사이 값이다. </summary>
+    public float CrouchProgress => GetCrouchProgress();
+
     #endregion ===== 상태 =====
 
     private void Awake()
@@ -237,8 +243,7 @@ public class PlayerMovement : MonoBehaviour
     /// <summary> YSW : 웅크리기 상태에 맞춰 높이 비율을 부드럽게 변경하고 충돌 크기에 반영한다. </summary>
     private void UpdateCrouchHeight()
     {
-        float minRatio = _characterController.radius * 2f / _standHeight;
-        float targetRatio = IsCrouching ? Mathf.Max(_crouchHeightRatio, minRatio) : 1f;
+        float targetRatio = IsCrouching ? GetFullCrouchRatio() : 1f;
 
         if (Mathf.Approximately(HeightRatio, targetRatio))
         {
@@ -291,6 +296,27 @@ public class PlayerMovement : MonoBehaviour
         }
 
         HeightRatio = ratio;
+    }
+
+    /// <summary> YSW : 완전히 웅크렸을 때의 높이 비율 (캡슐이 지름보다 낮아질 수 없으므로 그 아래로는 내려가지 않는다) </summary>
+    private float GetFullCrouchRatio()
+    {
+        float minRatio = _characterController.radius * 2f / _standHeight;
+
+        return Mathf.Clamp(_crouchHeightRatio, minRatio, 1f);
+    }
+
+    /// <summary> YSW : 현재 높이 비율이 서기~완전히 웅크림 사이 어디쯤인지 0~1로 반환한다. </summary>
+    private float GetCrouchProgress()
+    {
+        float fullCrouchRatio = GetFullCrouchRatio();
+
+        if (fullCrouchRatio >= 1f)
+        {
+            return 0f;
+        }
+
+        return Mathf.Clamp01((1f - HeightRatio) / (1f - fullCrouchRatio));
     }
 
     /// <summary> YSW : 머리 위에 일어설 공간이 있는지 검사한다. </summary>

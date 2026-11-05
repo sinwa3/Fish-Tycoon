@@ -37,6 +37,11 @@ public static class EnemyTempValue
     // 조사 목표에서 두리번거리는 시간(초)
     public const float InvestigateLookAroundDuration = 4.0f;
 
+    // 이 거리 안의 닫힌 문을 보면 멈춰서 연다
+    public const float DoorDetectDistance = 1.0f;
+    // 문을 열고 지나가기 전까지 기다리는 시간(초)
+    public const float DoorOpenWaitDuration = 0.5f;
+
     // 의심 게이지 최대 (발각)
     public const float MaxGauge = 100.0f;
     // 보일 때 초당 상승량 (바로 앞, 시야 끝)

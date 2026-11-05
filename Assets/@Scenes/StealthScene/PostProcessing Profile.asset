@@ -47,7 +47,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 2112
   maskDrawingMode:
     m_OverrideState: 1
     m_Value: 0
