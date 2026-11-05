@@ -73,7 +73,7 @@ public static class InteractionFurnitureSetup
                     continue;
                 }
 
-                if (candidate.GetComponentInParent<InteractionFurniture>(true) != null)
+                if (candidate.GetComponentInParent<Door>(true) != null)
                 {
                     continue;
                 }
