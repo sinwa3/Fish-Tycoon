@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 행동 =====
 
-    /// <summary> KYH : 이동 (상태가 MoveTo, Stop, HasArrived로 쓴다) </summary>
+    /// <summary> KYH : 이동 </summary>
     public EnemyMovement Movement { get; private set; }
 
     /// <summary> KYH : 바라보기, 두리번 </summary>
@@ -47,7 +47,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 순찰 경로 =====
 
-    /// <summary> KYH : 순찰 상태가 도는 경로 (집, 날짜에 맞는 경로를 SetPatrolRoute로 받는다) </summary>
+    /// <summary> KYH : 순찰 상태가 도는 경로 </summary>
     public EnemyPatrolRoute PatrolRoute { get; private set; }
 
     #endregion ===== 순찰 경로 =====
@@ -145,7 +145,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 순찰 경로 설정 =====
 
-    /// <summary> KYH : 순찰 경로를 바꾼다. 집, 날짜에 맞는 경로를 놓는 쪽이 부른다 </summary>
+    /// <summary> KYH : 순찰 경로를 바꾼다 </summary>
     public void SetPatrolRoute(EnemyPatrolRoute patrolRoute)
     {
         if (patrolRoute == null)
