@@ -24,7 +24,7 @@ public class LoadingUI : BaseOverlay
 
         background.DOKill();
 
-        background.DOFade(1f, fadeTime).From(0f).SetEase(Ease.InQuad)
+        background.DOFade(1f, fadeTime).From(0f).SetEase(Ease.InQuad).SetUpdate(true)
             .OnComplete(() => completionAction?.Invoke());
     }
 
@@ -38,7 +38,7 @@ public class LoadingUI : BaseOverlay
         Sequence sequence = DOTween.Sequence();
 
         sequence.AppendInterval(0.1f);
-        sequence.Append(background.DOFade(0f, fadeTime).From(1f).SetEase(Ease.OutQuad));
+        sequence.Append(background.DOFade(0f, fadeTime).From(1f).SetEase(Ease.OutQuad).SetUpdate(true));
         sequence.OnComplete(() =>
         {
             completionAction?.Invoke();

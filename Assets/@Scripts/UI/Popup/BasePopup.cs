@@ -77,8 +77,6 @@ public abstract class BasePopup : BaseUI
 
     private void Start()
     {
-        Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimePopup);
-
         OnStart();
     }
 

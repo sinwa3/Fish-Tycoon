@@ -12,6 +12,7 @@ public class InputManager
 
     public bool MouseDown_Left => Input.GetMouseButtonDown(0);
     public bool MouseDown_Right => Input.GetMouseButtonDown(1);
+    public bool MouseDown_Wheel => Input.GetMouseButtonDown(2);
 
     public Vector3 MousePosition => Input.mousePosition;
     
@@ -46,10 +47,12 @@ public class InputManager
     public bool KeyDown_9 => Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9);
     
     public bool KeyDown_E => Input.GetKeyDown(KeyCode.E);
+    public bool KeyDown_F => Input.GetKeyDown(KeyCode.F);
     public bool KeyDown_W => Input.GetKeyDown(KeyCode.W);
     public bool KeyDown_A => Input.GetKeyDown(KeyCode.A);
     public bool KeyDown_S => Input.GetKeyDown(KeyCode.S);
     public bool KeyDown_D => Input.GetKeyDown(KeyCode.D);
+    public bool Key_D => Input.GetKey(KeyCode.D);
     
     #endregion ===== 키보드 =====
 

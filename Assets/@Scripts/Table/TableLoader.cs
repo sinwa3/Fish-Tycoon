@@ -15,6 +15,7 @@ public abstract class TableLoader<TData> where TData : TableData, new()
     private readonly TableParser<TData> _tableParser = new();
 
     protected readonly Dictionary<int, TData> TableMap = new();
+    public IReadOnlyDictionary<int, TData> Map => TableMap;
 
     protected abstract string TableName { get; }
 
@@ -70,7 +71,10 @@ public abstract class TableLoader<TData> where TData : TableData, new()
                 continue;
             }
 
-            TableMap.Add(data.ID, data);
+            if (!TableMap.TryAdd(data.ID, data))
+            {
+                CPrint.Error($"중복된 테이블 ID: {data.ID}");
+            }
         }
     }
 }

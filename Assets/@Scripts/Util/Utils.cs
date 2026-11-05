@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-/// <summary> KDH : 프로젝트 전반에서 사용하는 공통 유틸리티 기능을 제공한다. </summary>
+/// <summary> KDH : 프로젝트 전반에서 사용하는 유틸리티 기능을 제공한다. </summary>
 public static class Utils
 {
     /// <summary> KDH : GameObject에서 지정한 컴포넌트를 가져오고 없으면 추가한다. </summary>
@@ -176,5 +176,16 @@ public static class Utils
 #else
         Application.Quit();
 #endif
+    }
+    
+    /// <summary> KDH : 대상과 모든 자식 오브젝트의 레이어를 설정한다. </summary>
+    public static void SetLayerRecursively(GameObject target, int layerIndex)
+    {
+        target.layer = layerIndex;
+
+        foreach (Transform child in target.transform)
+        {
+            SetLayerRecursively(child.gameObject, layerIndex);
+        }
     }
 }

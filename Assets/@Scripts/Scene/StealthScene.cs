@@ -1,0 +1,154 @@
+using UnityEngine;
+
+public class StealthScene : BaseScene
+{
+    /// <summary> KDH : 순서 중요 </summary>
+    public enum Phase
+    {
+        Playing, // 잠입 중
+        Settlement, // 정산
+    }
+
+    #region ===== 이벤트 =====
+
+    public event System.Action<Vector3, float> OnNoiseMade;
+
+    #endregion ===== 이벤트 =====
+
+    #region ===== 참조 =====
+
+    private StealthHUD _stealthHUD;
+
+    [SerializeField] private GameObject _player;
+    private PlayerMovement _playerMovement;
+    public PlayerMovement PlayerMovement => _playerMovement ??= _player?.GetOrAddComponent<PlayerMovement>();
+    private PlayerStamina _playerStamina;
+    public PlayerStamina PlayerStamina => _playerStamina ??= _player?.GetOrAddComponent<PlayerStamina>();
+    
+    [SerializeField] private Camera _camera;
+    public Camera Camera => _camera;
+    
+    [SerializeField] private PixelationTransition _pixelationTransition;
+    
+    #endregion ===== 참조 =====
+    
+    #region ===== 상태 =====
+    
+    private Phase _currentPhase;
+    
+    #endregion ===== 상태 =====
+    
+    protected override void OnAwake()
+    {
+        IsCursorLock = true;
+
+        _stealthHUD = GetComponentInChildren<StealthHUD>(true);
+
+        if (_stealthHUD == null)
+        {
+            CPrint.Error("[StealthScene] _stealthHUD not found.");
+        }
+
+        if (_camera == null)
+        {
+            _camera = Camera.main;
+        }
+    }
+
+    protected override void OnStart()
+    {
+        // (임시)
+        int randID = Random.Range(0, Managers.Table.Fish.Map.Count);
+        int randCnt = Random.Range(1, 10);
+        if (Managers.Data.TryAddFishToQuickSlot(randID, randCnt))
+        {
+            Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name})[{Managers.Table.Fish.Map[randID].GradeType}] {randCnt}개 지급되었습니다.");
+        }
+
+        // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
+        Managers.Input?.SetInputBlocked(this, true);
+        _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
+        
+        InitializePhase();
+    }
+
+    protected override void OnUpdate()
+    {
+    }
+
+    #region ===== 초기화 =====
+
+    /// <summary> KDH : 페이즈 상태를 초기화하고 페이즈 변화 이벤트를 발생한다. </summary>
+    private void InitializePhase()
+    {
+        _currentPhase = Phase.Playing;
+
+        _stealthHUD?.UpdatePhaseText(_currentPhase);
+    }
+
+    #endregion ===== 초기화 =====
+
+    #region ===== 업데이트 =====
+
+    /// <summary> KDH : 페이즈를 다음 단계로 진행시킨다. </summary>
+    public void ChangeCurrentPhase()
+    {
+        switch (_currentPhase)
+        {
+            case Phase.Playing: // 잠입 => 정산
+                Managers.Data.SetNextDay();
+                Managers.Data.ChangeSavedGameMode(GameMode.Stealth);
+
+                Managers.Data.ClearConsumables();
+                Managers.Data.SettleQuickSlotFish();
+
+                Managers.Data.SaveData();
+
+                Managers.UI.OpenToastMessage("저장되었습니다.");
+                break;
+            case Phase.Settlement: // 정산 => 타이쿤 씬
+                Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
+                break;
+        }
+
+        if (_currentPhase < Phase.Settlement)
+        {
+            _currentPhase++;
+        }
+
+        UpdatePhaseUI();
+    }
+
+    /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>
+    private void UpdatePhaseUI()
+    {
+        if (_stealthHUD == null)
+        {
+            return;
+        }
+
+        _stealthHUD.UpdatePhaseText(_currentPhase);
+
+        switch (_currentPhase)
+        {
+            case Phase.Playing:
+                _stealthHUD.SetQuickSlotVisible(true);
+                break;
+            case Phase.Settlement:
+                _stealthHUD.SetQuickSlotVisible(false);
+                break;
+        }
+    }
+
+    #endregion ===== 업데이트 =====
+
+    #region ===== 이벤트 발행 =====
+
+    /// <summary> KYH : 소음이 났음을 알린다. </summary>
+    public void RaiseNoiseMade(Vector3 position, float loudness)
+    {
+        OnNoiseMade?.Invoke(position, loudness);
+    }
+
+    #endregion ===== 이벤트 발행 =====
+}

@@ -143,7 +143,6 @@ public class SoundManager : MonoBehaviour
     /// <summary> KDH : 새로운 씬이 로드되었을 때 SoundManager의 씬 종속 참조를 정리한다. </summary>
     private void HandleSceneLoaded()
     {
-        CPrint.Log("씬 로드");
         RemoveOtherAudioListeners();
     }
 

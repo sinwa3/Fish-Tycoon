@@ -5,6 +5,8 @@ using UnityEngine;
 public class ResourceManager
 {
     private readonly Dictionary<System.Type, Dictionary<string, Object>> _loadedObjectMap = new();
+    /// <summary> KDH : Resources.LoadAll로 로드한 스프라이트 시트 캐싱 </summary>
+    private readonly Dictionary<string, Sprite[]> _loadedSpriteMap = new();
 
     #region ===== 로드 =====
 
@@ -73,6 +75,62 @@ public class ResourceManager
         return loadedObject;
     }
     
+    /// <summary> KDH : 지정한 Resources 경로의 스프라이트 시트를 로드하고 캐싱한다. </summary>
+    private Sprite[] LoadAllSprites(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            CPrint.Error("[ResourceManager] SpriteSheet path가 비어 있습니다.");
+            return null;
+        }
+
+        if (_loadedSpriteMap.TryGetValue(path, out Sprite[] cachedSprites))
+        {
+            return cachedSprites;
+        }
+
+        Sprite[] loadedSprites = Resources.LoadAll<Sprite>(path);
+
+        if (loadedSprites == null || loadedSprites.Length == 0)
+        {
+            CPrint.Error($"[ResourceManager] SpriteSheet를 로드하지 못했습니다. Path: {path}");
+            return null;
+        }
+
+        _loadedSpriteMap.Add(path, loadedSprites);
+
+        return loadedSprites;
+    }
+
+    /// <summary> KDH : 지정한 Resources 경로의 스프라이트 시트에서 이름에 해당하는 스프라이트를 반환한다. </summary>
+    public Sprite LoadSprite(string path, string spriteName)
+    {
+        if (string.IsNullOrWhiteSpace(spriteName))
+        {
+            CPrint.Error("[ResourceManager] Sprite name이 비어 있습니다.");
+            return null;
+        }
+
+        Sprite[] sprites = LoadAllSprites(path);
+
+        if (sprites == null)
+        {
+            return null;
+        }
+
+        foreach (Sprite sprite in sprites)
+        {
+            if (sprite.name == spriteName)
+            {
+                return sprite;
+            }
+        }
+
+        CPrint.Error($"[ResourceManager] Sprite를 찾지 못했습니다. Path: {path}, Name: {spriteName}");
+
+        return null;
+    }
+    
     #endregion ===== 로드 =====
 
     #region ===== 생성 =====
@@ -123,6 +181,8 @@ public class ResourceManager
     public void Clear()
     {
         _loadedObjectMap.Clear();
+        _loadedSpriteMap.Clear();
+
         Resources.UnloadUnusedAssets();
     }
 

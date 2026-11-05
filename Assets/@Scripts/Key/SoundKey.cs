@@ -20,6 +20,8 @@ public abstract class SoundKey
 
         public enum SfxType
         {
+            ChimeConfirm,
+            ChimeCancel,
             ChimePopup,
         }
         

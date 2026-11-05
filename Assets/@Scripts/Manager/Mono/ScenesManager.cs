@@ -14,6 +14,8 @@ public class ScenesManager : MonoBehaviour
 
     #region ===== 다음 씬 =====
 
+    private SceneType _prevScene = SceneType.None;
+    public SceneType PrevScene => _prevScene;
     private SceneType _nextScene = SceneType.None;
     public SceneType NextScene => _nextScene;
 
@@ -38,6 +40,7 @@ public class ScenesManager : MonoBehaviour
         
         if (_currentScene.Type != SceneType.LoadingScene)
         {
+            _prevScene = SceneType.None;
             _nextScene = SceneType.None;
         }
         
@@ -45,7 +48,7 @@ public class ScenesManager : MonoBehaviour
     }
 
     /// <summary> KDH : 로딩 씬을 거쳐 지정된 씬으로 전환한다. </summary>
-    public void LoadSceneWithLoading(SceneType sceneType)
+    public void LoadSceneWithLoading(SceneType nextScene)
     {
         if (_currentScene == null)
         {
@@ -53,7 +56,10 @@ public class ScenesManager : MonoBehaviour
             return;
         }
 
-        _nextScene = sceneType;
+        _prevScene = _currentScene.Type;
+        CPrint.Log($"LoadSceneWithLoading [PrevScene] : ({_prevScene})");
+        _nextScene = nextScene;
+        CPrint.Log($"LoadSceneWithLoading [NextScene] : ({_nextScene})");
 
         ClearCurrentScene();
 
@@ -66,19 +72,6 @@ public class ScenesManager : MonoBehaviour
         ClearCurrentScene();
         
         SceneManager.LoadScene(scene.ToString());
-    }
-
-    /// <summary> KDH : 현재 씬이 지정한 BaseScene 타입인지 확인한다. </summary>
-    public bool IsCurrentScene<T>() where T : BaseScene
-    {
-        return _currentScene is T;
-    }
-
-    /// <summary> KDH : 현재 씬을 지정한 타입으로 반환한다. </summary>
-    public bool TryGetCurrentScene<T>(out T scene) where T : BaseScene
-    {
-        scene = _currentScene as T;
-        return scene != null;
     }
 
     /// <summary> KDH : 현재 등록된 씬을 정리한다. </summary>

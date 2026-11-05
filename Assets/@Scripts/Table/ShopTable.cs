@@ -6,18 +6,21 @@ public class ShopData : TableData
     [CsvField("아이템ID")]
     public int ItemID;
 
-    [CsvField("판매가격")]
+    [CsvField("가격")]
     public int SellPrice;
 
-    [CsvField("판매중")]
+    [CsvField("판매 중")]
     public bool IsSell;
+
+    [CsvField("반복 구매 가능")]
+    public bool CanRepurchase;
 }
 
 public class ShopTable : TableLoader<ShopData>
 {
     protected override string TableName => "ShopTable";
 
-    private readonly Dictionary<ItemType, List<int>> _sellingItemIdList = new();
+    private readonly Dictionary<ItemType, List<ShopData>> _sellingItemDataList = new();
 
     /// <summary> KDH : 현재 판매 중인 아이템을 타입별로 분류하여 초기화한다. </summary>
     private void InitializeSellingItemList()
@@ -36,51 +39,36 @@ public class ShopTable : TableLoader<ShopData>
                 return;
             }
             
-            if (!_sellingItemIdList.TryGetValue(item.Type, out List<int> itemIdList))
+            if (!_sellingItemDataList.TryGetValue(item.Type, out List<ShopData> itemDataList))
             {
-                itemIdList = new List<int>();
-                _sellingItemIdList.Add(item.Type, itemIdList);
+                itemDataList = new List<ShopData>();
+                _sellingItemDataList.Add(item.Type, itemDataList);
             }
 
-            itemIdList.Add(data.ItemID);
+            itemDataList.Add(data);
         }
     }
     
     /// <summary> KDH : 아이템 타입에 해당하는 현재 판매 중인 아이템 목록을 가져온다. </summary>
-    public IReadOnlyList<int> GetSellingItemIdList(ItemType itemType)
+    public IReadOnlyList<ShopData> GetSellingItemDataList(ItemType itemType)
     {
-        if (_sellingItemIdList.Count == 0)
+        if (_sellingItemDataList.Count == 0)
         {
             InitializeSellingItemList();
         }
 
-        if (_sellingItemIdList.ContainsKey(itemType))
-        {
-            return _sellingItemIdList[itemType];
-        }
-
-        return null;
+        return _sellingItemDataList.GetValueOrDefault(itemType);
     }
 
     /// <summary> KDH : 아이템ID에 해당하는 판매가격을 획득한다.  </summary>
     public int GetItemSellPrice(int itemID)
     {
-        if (TableMap.ContainsKey(itemID))
-        {
-            return TableMap[itemID].SellPrice;
-        }
-
-        return 0;
+        return TableMap.TryGetValue(itemID, out var value) ? value.SellPrice : 0;
     }
-    
-    /// <summary> KDH : 아이템ID에 해당하는 판매가격을 [판매가격 : ?]구조로 획득한다.  </summary>
-    public string GetItemSellPriceStr(int itemID)
-    {
-        if (TableMap.ContainsKey(itemID))
-        {
-            return $"<br><color=yellow>판매가격 : {GetItemSellPrice(itemID):N0}</color>";
-        }
 
-        return string.Empty;
+    /// <summary> KDH : 현재 해당아이템이 판매중인지 반환한다. </summary>
+    public bool IsSelling(int itemID)
+    {
+        return TableMap.TryGetValue(itemID, out var value) && value.IsSell;
     }
 }
