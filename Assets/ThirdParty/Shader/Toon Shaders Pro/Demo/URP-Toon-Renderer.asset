@@ -150,7 +150,8 @@ MonoBehaviour:
   - {fileID: -6887640358875686789}
   - {fileID: -7503374331161842922}
   - {fileID: -6877637519902778870}
-  m_RendererFeatureMap: adc0de57c6d2eee57b1892fc952f6aa050b0591a444cd81c166b50e6cca8de970ada4b6c1db98da0
+  - {fileID: 4339925179362984540}
+  m_RendererFeatureMap: adc0de57c6d2eee57b1892fc952f6aa050b0591a444cd81c166b50e6cca8de970ada4b6c1db98da05c42b4ebf4823a3c
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -199,3 +200,20 @@ MonoBehaviour:
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &4339925179362984540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcffed8b1a18426fb1b8e417e2fb2509, type: 3}
+  m_Name: InteractionOutlineRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  _outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  _outlineWidth: 3
+  _ignoreDepth: 1
+  _renderPassEvent: 550
