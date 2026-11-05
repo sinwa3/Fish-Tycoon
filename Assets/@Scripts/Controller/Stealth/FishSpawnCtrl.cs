@@ -187,7 +187,10 @@ public class FishSpawnCtrl : MonoBehaviour
         Transform point = spawnPoint.transform;
         Transform parent = spawnPoint.AttachToPoint ? point : null;
 
-        FishPickup fish = Instantiate(_fishPickupPrefab, point.position, point.rotation, parent);
+        Quaternion randomRot = Quaternion.Euler(0.0f, UnityEngine.Random.Range(0.0f, 360.0f), 0.0f);
+        Quaternion rotation = point.rotation * randomRot * _fishPickupPrefab.transform.rotation;
+
+        FishPickup fish = Instantiate(_fishPickupPrefab, point.position, rotation, parent);
 
         int minCount = Mathf.Max(1, fishData.MinRandomAcquireCount);
         int maxCount = Mathf.Max(minCount, fishData.MaxRandomAcquireCount);
