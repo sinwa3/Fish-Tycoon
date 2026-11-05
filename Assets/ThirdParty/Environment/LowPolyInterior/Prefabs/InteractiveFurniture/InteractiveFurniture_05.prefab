@@ -426,7 +426,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: bff86a951921f2645b9a79c7130c1104,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7318571448330345212}
+      addedObject: {fileID: 6623269483835737232}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: bff86a951921f2645b9a79c7130c1104,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1793111206012179399}
   m_SourcePrefab: {fileID: 100100000, guid: bff86a951921f2645b9a79c7130c1104, type: 3}
 --- !u!1 &2586706569320404309 stripped
 GameObject:
@@ -468,7 +472,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7318571448330345212
+--- !u!95 &6623269483835737232
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2586706569320404309}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 71eae66ae73c09b498e105d6a77b94e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1793111206012179399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -477,11 +502,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2586706569320404309}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!4 &2586706569320499573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: bff86a951921f2645b9a79c7130c1104,
@@ -575,7 +600,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: bff86a951921f2645b9a79c7130c1104,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7380703385162247316}
+      addedObject: {fileID: 3630189915142543078}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: bff86a951921f2645b9a79c7130c1104,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 929470383795691731}
   m_SourcePrefab: {fileID: 100100000, guid: bff86a951921f2645b9a79c7130c1104, type: 3}
 --- !u!1 &4731367924627551750 stripped
 GameObject:
@@ -617,7 +646,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7380703385162247316
+--- !u!95 &3630189915142543078
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4731367924627551750}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2a1e090150c2d3a4eb3ab5ce7d76ea2b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &929470383795691731
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -626,11 +676,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4731367924627551750}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!4 &4731367924627778086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: bff86a951921f2645b9a79c7130c1104,
@@ -724,7 +774,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: bff86a951921f2645b9a79c7130c1104,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1861728964609213891}
+      addedObject: {fileID: 940076631669330966}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: bff86a951921f2645b9a79c7130c1104,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 86459822743660493}
   m_SourcePrefab: {fileID: 100100000, guid: bff86a951921f2645b9a79c7130c1104, type: 3}
 --- !u!1 &8982018672744744950 stripped
 GameObject:
@@ -766,7 +820,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1861728964609213891
+--- !u!95 &940076631669330966
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8982018672744744950}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c0563070603d01d4eba4f4f1183eafe1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &86459822743660493
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -775,11 +850,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8982018672744744950}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!4 &8982018672745241558 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: bff86a951921f2645b9a79c7130c1104,
