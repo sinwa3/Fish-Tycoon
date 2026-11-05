@@ -137,7 +137,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: c144fb2434c139e4aa9224055e764eb5,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5195195944124122384}
+      addedObject: {fileID: 8647377867452135900}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: c144fb2434c139e4aa9224055e764eb5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 347732479377417765}
   m_SourcePrefab: {fileID: 100100000, guid: c144fb2434c139e4aa9224055e764eb5, type: 3}
 --- !u!4 &2926649451094398085 stripped
 Transform:
@@ -185,7 +189,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5195195944124122384
+--- !u!95 &8647377867452135900
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926649451094558885}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 02da2bd24d8e52548831f9f85f08b400, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &347732479377417765
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,11 +219,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2926649451094558885}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!1001 &5992693915099043047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -440,7 +465,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: c144fb2434c139e4aa9224055e764eb5,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3296501480874152433}
+      addedObject: {fileID: 1385521307950195762}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: c144fb2434c139e4aa9224055e764eb5,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6904854773382013732}
   m_SourcePrefab: {fileID: 100100000, guid: c144fb2434c139e4aa9224055e764eb5, type: 3}
 --- !u!4 &7210113630082206058 stripped
 Transform:
@@ -488,7 +517,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3296501480874152433
+--- !u!95 &1385521307950195762
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7210113630082635082}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87a0e8f7caebe5b4b995a1b85e1a3ff6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6904854773382013732
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -497,11 +547,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7210113630082635082}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!1001 &9020864338702334258
 PrefabInstance:
   m_ObjectHideFlags: 0

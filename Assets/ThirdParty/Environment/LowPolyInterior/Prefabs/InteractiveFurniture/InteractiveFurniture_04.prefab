@@ -137,7 +137,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b1a65990f85f3134fa79c83dfd1f74fc,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4758382847909618455}
+      addedObject: {fileID: 536113327640727155}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: b1a65990f85f3134fa79c83dfd1f74fc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9149804368529402080}
   m_SourcePrefab: {fileID: 100100000, guid: b1a65990f85f3134fa79c83dfd1f74fc, type: 3}
 --- !u!1 &422149011048845585 stripped
 GameObject:
@@ -179,7 +183,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4758382847909618455
+--- !u!95 &536113327640727155
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422149011048845585}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 120def6a70be03746b63310eaf44516b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9149804368529402080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,11 +213,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 422149011048845585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!4 &422149011049205041 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: b1a65990f85f3134fa79c83dfd1f74fc,
@@ -375,7 +400,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: b1a65990f85f3134fa79c83dfd1f74fc,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7500452935746725868}
+      addedObject: {fileID: 5661178858856367346}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: b1a65990f85f3134fa79c83dfd1f74fc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3246771998911345739}
   m_SourcePrefab: {fileID: 100100000, guid: b1a65990f85f3134fa79c83dfd1f74fc, type: 3}
 --- !u!4 &5709423208818785665 stripped
 Transform:
@@ -423,7 +452,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7500452935746725868
+--- !u!95 &5661178858856367346
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5709423208818811297}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6dc734e4e92b49d4bafce8f81e5f6cf3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3246771998911345739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -432,11 +482,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5709423208818811297}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!1001 &7594819310973798149
 PrefabInstance:
   m_ObjectHideFlags: 0

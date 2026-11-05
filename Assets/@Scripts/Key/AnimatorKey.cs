@@ -25,6 +25,8 @@ public abstract class AnimatorKey
         #region ===== Trigger =====
 
         //public const string DoIdleChange = "DoIdleChange";
+        public const string DoOpen = "DoOpen";
+        public const string DoClose = "DoClose";
 
         #endregion ===== Trigger =====
     }
@@ -69,6 +71,8 @@ public abstract class AnimatorKey
         #region ===== Trigger =====
 
         //public static readonly int DoIdleChange = Animator.StringToHash(Parameter.DoIdleChange);
+        public static readonly int DoOpen = Animator.StringToHash(Parameter.DoOpen);
+        public static readonly int DoClose = Animator.StringToHash(Parameter.DoClose);
 
         #endregion ===== Trigger =====
 

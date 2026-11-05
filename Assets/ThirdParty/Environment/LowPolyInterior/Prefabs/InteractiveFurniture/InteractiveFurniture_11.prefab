@@ -223,7 +223,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 9381b1a1e3be5024c8dc0039047ad603,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7069325401525071286}
+      addedObject: {fileID: 674945150717321651}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 9381b1a1e3be5024c8dc0039047ad603,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1221085990707440347}
   m_SourcePrefab: {fileID: 100100000, guid: 9381b1a1e3be5024c8dc0039047ad603, type: 3}
 --- !u!4 &1575900252328911688 stripped
 Transform:
@@ -271,7 +275,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7069325401525071286
+--- !u!95 &674945150717321651
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575900252329017192}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 291bf42b5932c1d418b3ffb420b70e34, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1221085990707440347
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,11 +305,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1575900252329017192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!1001 &3698236110937339556
 PrefabInstance:
   m_ObjectHideFlags: 0

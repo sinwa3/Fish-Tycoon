@@ -207,7 +207,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: af02ee3090e70994d9aafd99e46c7b38,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7911839351187319037}
+      addedObject: {fileID: 5165961499422054683}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: af02ee3090e70994d9aafd99e46c7b38,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1536144266499552481}
   m_SourcePrefab: {fileID: 100100000, guid: af02ee3090e70994d9aafd99e46c7b38, type: 3}
 --- !u!1 &738185916437391388 stripped
 GameObject:
@@ -249,7 +253,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7911839351187319037
+--- !u!95 &5165961499422054683
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 738185916437391388}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56acef68322390e42a71b74910a68746, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1536144266499552481
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -258,11 +283,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 738185916437391388}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
 --- !u!4 &738185916437623868 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: af02ee3090e70994d9aafd99e46c7b38,
@@ -348,7 +373,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 570659e35090028438319c50853b7002,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1638506982974492322}
+      addedObject: {fileID: 6452444233385577628}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 570659e35090028438319c50853b7002,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6681427624171979829}
   m_SourcePrefab: {fileID: 100100000, guid: 570659e35090028438319c50853b7002, type: 3}
 --- !u!4 &4918459177044220422 stripped
 Transform:
@@ -396,7 +425,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1638506982974492322
+--- !u!95 &6452444233385577628
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4918459177044313638}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a48ebf36508f0db4f9a841cf3f840753, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6681427624171979829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -405,8 +455,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4918459177044313638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
+  m_Script: {fileID: 11500000, guid: c2fc4adb5d1beac4da3c29489e70c4d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
+  _openText: "\uC5F4\uAE30"
+  _closeText: "\uB2EB\uAE30"
