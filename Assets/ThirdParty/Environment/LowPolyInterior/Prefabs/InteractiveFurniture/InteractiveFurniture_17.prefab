@@ -179,8 +179,6 @@ GameObject:
   - component: {fileID: 8306363812677962385}
   - component: {fileID: 5954100091850304282}
   - component: {fileID: 130845872893168073}
-  - component: {fileID: 2427810307595005928}
-  - component: {fileID: 5538439869964696369}
   m_Layer: 6
   m_Name: InteractiveFurniture17_01
   m_TagString: Untagged
@@ -275,29 +273,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 857422a27476d1c439d4c461eca81b51, type: 3}
---- !u!114 &2427810307595005928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8357330487488276848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62dbfa27b9b38a74d8b657e493d59308, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5538439869964696369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8357330487488276848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
