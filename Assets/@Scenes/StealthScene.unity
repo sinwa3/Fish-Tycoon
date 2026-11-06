@@ -15934,15 +15934,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6285483229360151846, guid: d1ab15203f6ff044ca9f25076061931a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 502524038}
-    - targetCorrespondingSourceObject: {fileID: 258137859812641922, guid: d1ab15203f6ff044ca9f25076061931a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 502524037}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1ab15203f6ff044ca9f25076061931a, type: 3}
 --- !u!4 &502524034 stripped
 Transform:
@@ -15950,46 +15942,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 502524033}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &502524035 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 258137859812641922, guid: d1ab15203f6ff044ca9f25076061931a,
-    type: 3}
-  m_PrefabInstance: {fileID: 502524033}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &502524036 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6285483229360151846, guid: d1ab15203f6ff044ca9f25076061931a,
-    type: 3}
-  m_PrefabInstance: {fileID: 502524033}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &502524037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502524035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
---- !u!114 &502524038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 502524036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
 --- !u!1001 &504395585
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48617,15 +48569,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6285483229360151846, guid: d1ab15203f6ff044ca9f25076061931a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1467912087}
-    - targetCorrespondingSourceObject: {fileID: 258137859812641922, guid: d1ab15203f6ff044ca9f25076061931a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1467912086}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1ab15203f6ff044ca9f25076061931a, type: 3}
 --- !u!4 &1467912083 stripped
 Transform:
@@ -48633,46 +48577,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1467912082}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1467912084 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 258137859812641922, guid: d1ab15203f6ff044ca9f25076061931a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1467912082}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1467912085 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6285483229360151846, guid: d1ab15203f6ff044ca9f25076061931a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1467912082}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1467912086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467912084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
---- !u!114 &1467912087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1467912085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34b96e92d749c754b8947f2ec401efdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactionText: "\uC5F4\uAE30"
-  _canInteract: 1
 --- !u!1001 &1472366651
 PrefabInstance:
   m_ObjectHideFlags: 0
