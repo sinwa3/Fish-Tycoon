@@ -146,6 +146,11 @@ public class StealthScene : BaseScene
     /// <summary> KDH : 플레이어가 잡혔을 때 종료화면을 표시한다. </summary>
     private void OnArrested()
     {
+        if (_currentPhase == Phase.Settlement)
+        {
+            return;
+        }
+        
         ChangeCurrentPhase();
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(true);
     }
@@ -153,6 +158,11 @@ public class StealthScene : BaseScene
     /// <summary> KDH : 플레이어가 탈출했을 때 종료화면을 표시한다. </summary>
     private void OnEscaped()
     {
+        if (_currentPhase == Phase.Settlement)
+        {
+            return;
+        }
+        
         ChangeCurrentPhase();
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(false);
     }
