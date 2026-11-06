@@ -76,14 +76,6 @@ public class StealthScene : BaseScene
 
     protected override void OnStart()
     {
-        // (임시)
-        int randID = Random.Range(0, Managers.Table.Fish.Map.Count);
-        int randCnt = Random.Range(1, 10);
-        if (Managers.Data.TryAddFishToQuickSlot(randID, randCnt))
-        {
-            Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name})[{Managers.Table.Fish.Map[randID].GradeType}] {randCnt}개 지급되었습니다.");
-        }
-
         // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
         Managers.Input?.SetInputBlocked(this, true);
         _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
@@ -154,6 +146,11 @@ public class StealthScene : BaseScene
     /// <summary> KDH : 플레이어가 잡혔을 때 종료화면을 표시한다. </summary>
     private void OnArrested()
     {
+        if (_currentPhase == Phase.Settlement)
+        {
+            return;
+        }
+        
         ChangeCurrentPhase();
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(true);
     }
@@ -161,6 +158,11 @@ public class StealthScene : BaseScene
     /// <summary> KDH : 플레이어가 탈출했을 때 종료화면을 표시한다. </summary>
     private void OnEscaped()
     {
+        if (_currentPhase == Phase.Settlement)
+        {
+            return;
+        }
+        
         ChangeCurrentPhase();
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(false);
     }

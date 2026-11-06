@@ -545,10 +545,7 @@ public class DataManager
     {
         QuickSlotData slot = GetQuickSlot(slotIndex);
 
-        if (slot == null ||
-            slot.Type != QuickSlotItemType.Consumable ||
-            slot.ItemID < 0 ||
-            slot.Count <= 0)
+        if (slot == null || slot.Type != QuickSlotItemType.Consumable || slot.ItemID < 0 || slot.Count <= 0)
         {
             return false;
         }
@@ -627,11 +624,13 @@ public class DataManager
     }
 
     /// <summary> KDH : 잠입 중 획득한 생선을 인벤토리로 이동하고 해당 퀵슬롯을 비운다. </summary>
-    public void SettleQuickSlotFish()
+    public int SettleQuickSlotFish()
     {
+        int count = 0;
+        
         if (_saveData?.QuickSlots == null)
         {
-            return;
+            return count;
         }
 
         foreach (QuickSlotData slot in _saveData.QuickSlots)
@@ -647,10 +646,13 @@ public class DataManager
                 continue;
             }
 
+            count += slot.Count;
             ClearQuickSlot(slot);
         }
 
         OnQuickSlotChanged?.Invoke();
+
+        return count;
     }
 
     /// <summary> KDH : 퀵슬롯에서 소비 아이템만 초기화한다. </summary>
@@ -665,10 +667,8 @@ public class DataManager
         {
             if (slot.Type == QuickSlotItemType.Consumable)
             {
-                continue;
+                ClearQuickSlot(slot);
             }
-
-            ClearQuickSlot(slot);
         }
 
         OnQuickSlotChanged?.Invoke();
@@ -676,23 +676,28 @@ public class DataManager
     }
     
     /// <summary> KDH : 퀵슬롯에서 생선만 초기화한다. </summary>
-    public void ClearFishes()
+    public int ClearFishes()
     {
+        int count = 0;
+        
         if (_saveData?.QuickSlots == null)
         {
-            return;
+            return count;
         }
-
+        
         foreach (QuickSlotData slot in _saveData.QuickSlots)
         {
             if (slot.Type == QuickSlotItemType.Fish)
             {
+                count += slot.Count;
                 ClearQuickSlot(slot);
             }
         }
 
         OnQuickSlotChanged?.Invoke();
         OnStoreChanged?.Invoke();
+        
+        return count;
     }
 
     /// <summary> KDH : 퀵슬롯 데이터를 빈 상태로 초기화한다. </summary>

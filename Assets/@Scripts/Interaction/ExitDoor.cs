@@ -78,6 +78,8 @@ public class ExitDoor : MonoBehaviour, IInteractable
             return;
         }
 
+        _hasExited = true;
+
         if (Managers.Event != null)
         {
             Managers.Event.RaisePlayerEscaped();

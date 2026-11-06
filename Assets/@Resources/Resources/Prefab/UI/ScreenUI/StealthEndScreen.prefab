@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2003581667052545540}
   - component: {fileID: 7685643708096811744}
   m_Layer: 5
-  m_Name: DescText
+  m_Name: ClearDescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 6046982728984870200}
   - component: {fileID: 4227564624719369814}
   m_Layer: 5
-  m_Name: DescText
+  m_Name: OverDescText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

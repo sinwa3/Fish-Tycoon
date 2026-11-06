@@ -1,6 +1,7 @@
+using TMPro;
 using UnityEngine.UI;
 
-/// <summary> KDH : 잠입 씬에서 분기에 따라 표시하는 종료화면 </summary>
+/// <summary> KDH : 잠입 씬에서 분기에 따라 표시하는 종료화면 (정산) </summary>
 public class StealthEndScreen : BaseScreen
 {
     private enum Buttons
@@ -15,12 +16,19 @@ public class StealthEndScreen : BaseScreen
         OverImage
     }
 
+    private enum Texts
+    {
+        ClearDescText,
+        OverDescText
+    }
+
     private bool _isArrested;
 
     protected override void OnAwake()
     {
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
+        Bind<TMP_Text>(typeof(Texts));
     }
 
     protected override void OnStart()
@@ -80,12 +88,20 @@ public class StealthEndScreen : BaseScreen
 
         if (!_isArrested) // 체포 되지 않았다면 생선을 보관한다.
         {
-            Managers.Data.SettleQuickSlotFish();
+            int settledCount = Managers.Data.SettleQuickSlotFish();
+            
+            string clearDescStr = $"사용하지 않은 도구는 버리고 훔친 생선 {settledCount}마리를 가게에 옮겼습니다.";
+            Get<TMP_Text>(Texts.ClearDescText).SetText(clearDescStr);
         }
         else // 체포되면 훔친 생선을 전부 초기화하고 만족도를 감소시킨다.
         {
-            Managers.Data.ClearFishes();
-            Managers.Data.SubtractSatisfaction(100);
+            int clearedCount = Managers.Data.ClearFishes();
+            int satisfactionPenalty = 100 * clearedCount;
+
+            Managers.Data.SubtractSatisfaction(satisfactionPenalty);
+
+            string overDescStr = $"훔친 생선 {clearedCount}마리를 몰수당하고 가게 만족도가 {satisfactionPenalty} 감소했습니다.";
+            Get<TMP_Text>(Texts.OverDescText).SetText(overDescStr);
         }
 
         Managers.Data.SaveData();
