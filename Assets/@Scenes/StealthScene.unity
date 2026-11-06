@@ -13222,7 +13222,7 @@ MonoBehaviour:
     m_Bits: 2176
   _obstacleLayers:
     serializedVersion: 2
-    m_Bits: 1536
+    m_Bits: 1600
   _showDebugPrompt: 1
 --- !u!114 &389890486
 MonoBehaviour:
