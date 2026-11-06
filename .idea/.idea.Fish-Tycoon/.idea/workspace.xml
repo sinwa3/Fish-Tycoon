@@ -12,35 +12,14 @@
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Item/fish.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Item/fish.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/ScreenUI/StealthEndScreen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/ScreenUI/StealthEndScreen.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene/NavMesh-NavMeshSurface 1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene/NavMesh-NavMeshSurface 1.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene/PostProcessing Profile.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene/PostProcessing Profile.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Actor/Player/PlayerInteractor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Actor/Player/PlayerInteractor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FurnitureInteractable_Test.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FurnitureInteractable_Test.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Interaction/InteractableOutline.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Interaction/InteractableOutline.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Key/LayerKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/LayerKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_01.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_01.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_02.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_02.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_03.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_03.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_04 Variant.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_04 Variant.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_04.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_04.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_05.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_05.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_06.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_06.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_07.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_07.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_09.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_09.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_11.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_11.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_12.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_12.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_13.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_13.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_14.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_14.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_15.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_15.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_16.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_16.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_17.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_17.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_18.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveFurniture_18.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveSink_02.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveSink_02.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveSink_03.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/InteractiveSink_03.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/Oven_02.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Environment/LowPolyInterior/Prefabs/InteractiveFurniture/Oven_02.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Shader/Toon Shaders Pro/Demo/URP-Toon-Renderer.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Shader/Toon Shaders Pro/Demo/URP-Toon-Renderer.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FishPickup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FishPickup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/StealthEndScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/StealthEndScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +73,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Slot/SlotUI.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Util/Extension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@2.5.11/Runtime/CompilerServices/StateMachineRunner.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.core@14.0.12/ShaderLibrary/Common.hlsl" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/ScrollRect.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/10f16eb438b24f73a6b4a6c383f4ef54177000/ec/08e41ed5/SceneManager.cs" root0="SKIP_HIGHLIGHTING" />
@@ -156,13 +136,15 @@
       <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="1533">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="1533" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list />
+        <list>
+          <MonoRuntime />
+        </list>
       </option>
       <option name="selectedOptions">
         <list />
@@ -234,19 +216,6 @@
           <properties exception="System.Threading.ThreadAbortException" breakIfHandledByOtherCode="false" displayValue="System.Threading.ThreadAbortException" />
           <option name="timeStamp" value="3" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/@Scripts/Controller/Stealth/EnemySpawnCtrl.cs</url>
-          <line>69</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/@Scripts/Controller/Stealth/EnemySpawnCtrl.cs" containingFunctionPresentation="Method 'SpawnEnemies'">
-            <startOffsets>
-              <option value="1611" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1675" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>

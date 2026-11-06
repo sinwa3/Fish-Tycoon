@@ -76,14 +76,6 @@ public class StealthScene : BaseScene
 
     protected override void OnStart()
     {
-        // (임시)
-        int randID = Random.Range(0, Managers.Table.Fish.Map.Count);
-        int randCnt = Random.Range(1, 10);
-        if (Managers.Data.TryAddFishToQuickSlot(randID, randCnt))
-        {
-            Managers.UI.OpenToastMessage($"(임시) 생선({Managers.Table.Fish.Map[randID].Name})[{Managers.Table.Fish.Map[randID].GradeType}] {randCnt}개 지급되었습니다.");
-        }
-
         // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
         Managers.Input?.SetInputBlocked(this, true);
         _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));

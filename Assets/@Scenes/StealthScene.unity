@@ -13219,7 +13219,7 @@ MonoBehaviour:
   _interactDistance: 2.5
   _interactLayers:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 2176
   _obstacleLayers:
     serializedVersion: 2
     m_Bits: 1536
