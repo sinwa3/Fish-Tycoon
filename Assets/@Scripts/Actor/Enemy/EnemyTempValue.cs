@@ -33,6 +33,8 @@ public static class EnemyTempValue
     public const float LoseSightDuration = 3.0f;
     // 이 거리 안에서 보이면 잡는다 (수평 거리)
     public const float CatchDistance = 1.2f;
+    // 숨기 직전 이 시간 안에 봤으면 숨는 걸 본 것으로 친다 (시야 검사 간격보다 길어야 한다)
+    public const float HideWitnessWindow = SightCheckInterval * 1.5f;
 
     // 조사 목표에서 두리번거리는 시간(초)
     public const float InvestigateLookAroundDuration = 4.0f;
