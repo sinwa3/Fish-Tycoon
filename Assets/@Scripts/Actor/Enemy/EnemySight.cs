@@ -16,6 +16,9 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 마지막 검사에서 플레이어가 보였는지 </summary>
     public bool IsPlayerVisible { get; private set; }
 
+    /// <summary> KYH : 플레이어가 숨는 순간을 봤는지 (숨어 있는 동안 유지) </summary>
+    public bool IsHideWitnessed { get; private set; }
+
     #endregion ===== 상태 =====
 
     #region ===== 추격 =====
@@ -106,9 +109,48 @@ public class EnemySight : MonoBehaviour
         {
             ReportToMemory(_player.position);
         }
+
+        UpdateHideWitness();
     }
 
     #endregion ===== 검사 주기 =====
+
+    #region ===== 숨는 순간 =====
+
+    /// <summary> KYH : 숨는 순간을 봤는지 정하고 본 동안 위치를 기억에 적는다 </summary>
+    private void UpdateHideWitness()
+    {
+        if (_playerHide == null)
+        {
+            return;
+        }
+
+        if (_enemy == null)
+        {
+            return;
+        }
+
+        if (!_playerHide.IsHiding)
+        {
+            IsHideWitnessed = false;
+
+            return;
+        }
+
+        if (Time.time - _enemy.Memory.LastSeenTime < EnemyTempValue.HideWitnessWindow)
+        {
+            IsHideWitnessed = true;
+        }
+
+        if (!IsHideWitnessed)
+        {
+            return;
+        }
+
+        _enemy.Memory.ReportPlayerSeen(_player.position);
+    }
+
+    #endregion ===== 숨는 순간 =====
 
     #region ===== 시야 검사 =====
 
@@ -214,6 +256,11 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 플레이어를 잡을 수 있는지 돌려준다 </summary>
     public bool CanCatchPlayer()
     {
+        if (IsHideWitnessed)
+        {
+            return _enemy.Movement.HasArrived;
+        }
+
         if (!IsPlayerVisible)
         {
             return false;
