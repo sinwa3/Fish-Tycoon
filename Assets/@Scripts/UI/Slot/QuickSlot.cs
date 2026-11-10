@@ -15,6 +15,11 @@ public class QuickSlot : SlotUI
         CountText,
     }
 
+    [SerializeField] private Sprite _normalSprite;
+    [SerializeField] private Sprite _selectedSprite;
+
+    private Image _slotBackground;
+
     private int _slotIndex = -1;
 
     private ItemTooltip _itemTooltip;
@@ -23,6 +28,8 @@ public class QuickSlot : SlotUI
     {
         Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
+
+        _slotBackground = GetComponent<Image>();
     }
     
     /// <summary> KDH : 현재 슬롯의 아이템 종류에 맞춰 UI를 갱신한다. </summary>
@@ -73,6 +80,22 @@ public class QuickSlot : SlotUI
     public void SetTooltip(ItemTooltip tooltip)
     {
         _itemTooltip = tooltip;
+    }
+
+    /// <summary> KDH : 선택 상태에 따라 슬롯 배경 스프라이트를 교체한다. </summary>
+    public void SetSelected(bool isSelected)
+    {
+        if (_slotBackground == null)
+        {
+            _slotBackground = GetComponent<Image>();
+        }
+
+        if (_slotBackground == null)
+        {
+            return;
+        }
+
+        _slotBackground.sprite = isSelected ? _selectedSprite : _normalSprite;
     }
     
     /// <summary> KDH : 퀵슬롯 인덱스를 설정하고 UI를 갱신한다. </summary>

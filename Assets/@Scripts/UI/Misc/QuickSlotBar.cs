@@ -10,6 +10,13 @@ public class QuickSlotBar : MonoBehaviour
 
     private ItemTooltip _itemTooltip;
 
+    private int _activeSlotCount;
+    private int _selectedSlotIndex = -1;
+    private bool _isSelectionEnabled;
+
+    /// <summary> KDH : 현재 선택한 퀵슬롯 인덱스다. 선택 가능한 슬롯이 없으면 -1이다. </summary>
+    public int SelectedSlotIndex => _selectedSlotIndex;
+
     private void Awake()
     {
         InitializeItemTooltip();
@@ -21,7 +28,7 @@ public class QuickSlotBar : MonoBehaviour
         {
             return;
         }
-        
+
         Managers.Data.OnQuickSlotChanged += RefreshSlots;
         RefreshSlots();
     }
@@ -32,8 +39,85 @@ public class QuickSlotBar : MonoBehaviour
         {
             return;
         }
-        
+
         Managers.Data.OnQuickSlotChanged -= RefreshSlots;
+    }
+
+    /// <summary> KDH : 잠입 HUD에서 전달한 숫자키와 마우스 휠 입력으로 퀵슬롯을 선택한다. </summary>
+    public void OnInputKey()
+    {
+        InputManager input = Managers.Input;
+
+        if (!_isSelectionEnabled || !isActiveAndEnabled || input is not { CanReceivePlayer: true } || _activeSlotCount == 0)
+        {
+            return;
+        }
+
+        int slotIndex = input.KeyDown_1 ? 0
+            : input.KeyDown_2 ? 1
+            : input.KeyDown_3 ? 2
+            : input.KeyDown_4 ? 3
+            : input.KeyDown_5 ? 4
+            : input.KeyDown_6 ? 5
+            : input.KeyDown_7 ? 6
+            : input.KeyDown_8 ? 7
+            : input.KeyDown_9 ? 8
+            : input.KeyDown_0 ? 9
+            : -1;
+
+        if (slotIndex >= 0)
+        {
+            SelectSlot(slotIndex);
+            return;
+        }
+
+        if (Cursor.lockState != CursorLockMode.Locked || Mathf.Approximately(input.MouseWheel, 0f))
+        {
+            return;
+        }
+
+        MoveSelection(input.MouseWheel > 0f ? -1 : 1);
+    }
+
+    /// <summary> KDH : 지정한 퀵슬롯을 선택하고 이전 슬롯의 선택 표시를 해제한다. </summary>
+    public void SelectSlot(int slotIndex)
+    {
+        if (!_isSelectionEnabled || slotIndex < 0 || slotIndex >= _activeSlotCount || _selectedSlotIndex == slotIndex)
+        {
+            return;
+        }
+
+        if (_selectedSlotIndex >= 0 && _selectedSlotIndex < _slots.Count)
+        {
+            _slots[_selectedSlotIndex].SetSelected(false);
+        }
+
+        _selectedSlotIndex = slotIndex;
+        _slots[_selectedSlotIndex].SetSelected(true);
+        _itemTooltip?.Hide();
+    }
+
+    /// <summary> KDH : 처음과 마지막 슬롯을 순환하며 선택 위치를 이동한다. </summary>
+    private void MoveSelection(int direction)
+    {
+        if (_activeSlotCount == 0 || direction == 0)
+        {
+            return;
+        }
+
+        int nextIndex = (_selectedSlotIndex + (direction > 0 ? 1 : -1) + _activeSlotCount) % _activeSlotCount;
+        SelectSlot(nextIndex);
+    }
+
+    /// <summary> KDH : 잠입 HUD에서만 퀵슬롯 선택 기능과 선택 표시를 활성화한다. </summary>
+    public void SetSelectionEnabled(bool isEnabled)
+    {
+        _isSelectionEnabled = isEnabled;
+
+        for (int i = 0; i < _slots.Count; i++)
+        {
+            _slots[i].SetSelected(isEnabled && i == _selectedSlotIndex);
+        }
     }
 
     /// <summary> KDH : 현재 소비 아이템 슬롯 개수에 맞춰 UI를 생성하고 갱신한다. </summary>
@@ -44,12 +128,13 @@ public class QuickSlotBar : MonoBehaviour
         while (_slots.Count < slotCount)
         {
             QuickSlot slot = Managers.UI.MakeSlot<QuickSlot>(transform);
-            slot.SetTooltip(_itemTooltip);
 
             if (slot == null)
             {
                 break;
             }
+
+            slot.SetTooltip(_itemTooltip);
 
             slot.SetSlotIndex(_slots.Count);
             _slots.Add(slot);
@@ -61,17 +146,21 @@ public class QuickSlotBar : MonoBehaviour
             }
         }
 
+        _activeSlotCount = Mathf.Min(slotCount, _slots.Count);
+        _selectedSlotIndex = _activeSlotCount > 0 ? Mathf.Clamp(_selectedSlotIndex, 0, _activeSlotCount - 1) : -1;
+
         for (int i = 0; i < _slots.Count; i++)
         {
-            _slots[i].gameObject.SetActive(i < slotCount);
+            _slots[i].gameObject.SetActive(i < _activeSlotCount);
+            _slots[i].SetSelected(_isSelectionEnabled && i == _selectedSlotIndex);
 
-            if (i < slotCount)
+            if (i < _activeSlotCount)
             {
                 _slots[i].UpdateUI();
             }
         }
     }
-    
+
     /// <summary> KDH : 아이템 설명 툴팁을 초기화한다. </summary>
     private void InitializeItemTooltip()
     {
@@ -79,11 +168,11 @@ public class QuickSlotBar : MonoBehaviour
         {
             _itemTooltip = Managers.Resource.Spawn(ResourceKey.Path.TooltipUI + nameof(ItemTooltip),
                 transform).gameObject.GetOrAddComponent<ItemTooltip>();
-            
+
             LayoutElement layoutElement = _itemTooltip.gameObject.GetOrAddComponent<LayoutElement>();
             layoutElement.ignoreLayout = true;
         }
-        
+
         _itemTooltip.gameObject.SetActive(false);
     }
 }

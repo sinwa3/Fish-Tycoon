@@ -24,6 +24,8 @@ public class StealthHUD : BaseHUD
 
     private StealthScene _stealthScene;
 
+    private QuickSlotBar _quickSlotBar;
+
     private ReputationTooltip _reputationTooltip;
     
     #endregion ===== 참조 =====
@@ -45,6 +47,9 @@ public class StealthHUD : BaseHUD
     {
         Bind<TMP_Text>(typeof(Texts));
         Bind<Image>(typeof(Images));
+
+        _quickSlotBar = Get<Image>(Images.QuickSlotBar)?.GetComponent<QuickSlotBar>();
+        _quickSlotBar?.SetSelectionEnabled(true);
 
         _stealthScene = gameObject.FindParent<StealthScene>();
         
@@ -73,16 +78,6 @@ public class StealthHUD : BaseHUD
         {
             Managers.UI.OpenPopup<PausePopup>();
         }
-        else if (Managers.Input.KeyDown_1)
-        {
-            Managers.UI.OpenScreen<SecurityMinigameScreen>()
-                ?.Set(SecurityMinigameScreen.MinigameType.PinLock, _stealthScene?.Camera);
-        }
-        else if (Managers.Input.KeyDown_2)
-        {
-            Managers.UI.OpenScreen<SecurityMinigameScreen>()
-                ?.Set(SecurityMinigameScreen.MinigameType.RotationLock, _stealthScene?.Camera);
-        }
         else if (Managers.Input.MouseDown_Wheel && Cursor.lockState == CursorLockMode.Locked)
         {
             // 커서 잠금 해제
@@ -98,6 +93,10 @@ public class StealthHUD : BaseHUD
             _isCursorGuideLocked = true;
             
             Managers.Quest.ReportProgress(SceneType.StealthScene, QuestType.LockCursor);
+        }
+        else
+        {
+            _quickSlotBar?.OnInputKey();
         }
     }
 
@@ -150,7 +149,8 @@ public class StealthHUD : BaseHUD
                                  $"\n[Left Shift] 달리기" +
                                  $"\n{crouchInstruction}" +
                                  $"\n" +
-                                 $"\n{cursorInstruction}");
+                                 $"\n{cursorInstruction}" +
+                                 $"\n[숫자키 / 휠] 퀵슬롯 선택");
     }
     
     /// <summary> KDH : 플레이어 스태미너를 게이지와 수치에 반영한다. </summary>
