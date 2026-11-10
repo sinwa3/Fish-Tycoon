@@ -3,6 +3,13 @@ using UnityEngine;
 /// <summary> KYH : 소음을 받아 기억에 적고 의심 게이지를 올린다 </summary>
 public class EnemyHearing : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 소리 위치를 바닥에서 띄우는 높이 (바닥에 레이가 맞지 않게)
+    private const float SoundSourceHeight = 0.1f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     private EnemyController _enemy;
@@ -158,13 +165,13 @@ public class EnemyHearing : MonoBehaviour
     /// <summary> KYH : 소리가 나는 점을 돌려준다 </summary>
     private Vector3 GetSoundSourcePoint(Vector3 position)
     {
-        return position + Vector3.up * EnemyTempValue.SoundSourceHeight;
+        return position + Vector3.up * SoundSourceHeight;
     }
 
     /// <summary> KYH : 집주인 귀 위치를 돌려준다 </summary>
     private Vector3 GetEarPosition()
     {
-        return transform.position + Vector3.up * EnemyTempValue.EyeHeight;
+        return transform.position + Vector3.up * EnemySight.EyeHeight;
     }
 
     #endregion ===== 들린 세기 =====

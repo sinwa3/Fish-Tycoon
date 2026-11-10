@@ -3,6 +3,21 @@ using UnityEngine;
 /// <summary> KYH : 플레이어가 보이는지 검사하고 기억에 적는다 </summary>
 public class EnemySight : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 발에서 눈까지 높이 (소리, 문 감지도 이 높이를 쓴다)
+    public const float EyeHeight = 1.5f;
+    // 플레이어 콜라이더 꼭대기에서 이만큼 아래를 본다
+    private const float SightTargetTopOffset = 0.1f;
+    // 시야 검사 간격(초)
+    private const float SightCheckInterval = 0.2f;
+    // 시야 자극 세기
+    private const float SightStimulusStrength = 1.0f;
+    // 숨기 직전 이 시간 안에 봤으면 숨는 걸 본 것으로 친다 (시야 검사 간격보다 길어야 한다)
+    private const float HideWitnessWindow = SightCheckInterval * 1.5f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     // 레이캐스트가 맞힐 레이어
@@ -102,7 +117,7 @@ public class EnemySight : MonoBehaviour
             return;
         }
 
-        _checkTimer = EnemyTempValue.SightCheckInterval;
+        _checkTimer = SightCheckInterval;
         IsPlayerVisible = CheckPlayerVisible();
 
         if (IsPlayerVisible)
@@ -137,7 +152,7 @@ public class EnemySight : MonoBehaviour
             return;
         }
 
-        if (Time.time - _enemy.Memory.LastSeenTime < EnemyTempValue.HideWitnessWindow)
+        if (Time.time - _enemy.Memory.LastSeenTime < HideWitnessWindow)
         {
             IsHideWitnessed = true;
         }
@@ -220,7 +235,7 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 집주인 눈 위치를 돌려준다 </summary>
     private Vector3 GetEyePosition()
     {
-        return transform.position + Vector3.up * EnemyTempValue.EyeHeight;
+        return transform.position + Vector3.up * EyeHeight;
     }
 
     /// <summary> KYH : 가림을 검사할 플레이어 쪽 점을 돌려준다 </summary>
@@ -228,7 +243,7 @@ public class EnemySight : MonoBehaviour
     {
         Bounds bounds = _playerController.bounds;
 
-        return new Vector3(bounds.center.x, bounds.max.y - EnemyTempValue.SightTargetTopOffset, bounds.center.z);
+        return new Vector3(bounds.center.x, bounds.max.y - SightTargetTopOffset, bounds.center.z);
     }
 
     #endregion ===== 시야 검사 =====
@@ -284,7 +299,7 @@ public class EnemySight : MonoBehaviour
         }
 
         _enemy.Memory.ReportPlayerSeen(playerPosition);
-        _enemy.Memory.ReportStimulus(playerPosition, EnemyTempValue.SightStimulusStrength, StimulusType.Sight);
+        _enemy.Memory.ReportStimulus(playerPosition, SightStimulusStrength, StimulusType.Sight);
     }
 
     #endregion ===== 기억 =====

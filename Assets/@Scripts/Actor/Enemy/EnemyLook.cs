@@ -11,11 +11,19 @@ public class EnemyLook : MonoBehaviour
         LookAround
     }
 
+    #region ===== 수치 =====
+
+    private const float MinLookDistance = 0.0001f;
+    // 초당 회전 각도
+    private const float TurnSpeed = 180.0f;
+    // 두리번 때 처음 방향에서 좌우로 도는 각도
+    private const float LookAroundAngle = 60.0f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     private LookMode _lookMode = LookMode.None;
-
-    private const float MinLookDistance = 0.0001f;
 
     // LookAt으로 바라볼 위치
     private Vector3 _lookTarget;
@@ -92,7 +100,7 @@ public class EnemyLook : MonoBehaviour
         }
 
         Quaternion lookRotation = Quaternion.LookRotation(lookDirection);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, EnemyTempValue.TurnSpeed * Time.deltaTime);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, TurnSpeed * Time.deltaTime);
     }
 
     /// <summary> KYH : 좌우로 한 번 돌고 처음 방향으로 돌아온다 </summary>
@@ -110,7 +118,7 @@ public class EnemyLook : MonoBehaviour
         }
 
         float t = _lookAroundTimer / _lookAroundDuration;
-        float yAngle = _baseYaw + EnemyTempValue.LookAroundAngle * Mathf.Sin(t * Mathf.PI * 2.0f);
+        float yAngle = _baseYaw + LookAroundAngle * Mathf.Sin(t * Mathf.PI * 2.0f);
         transform.rotation = Quaternion.Euler(0.0f, yAngle, 0.0f);
     }
 
