@@ -8,20 +8,26 @@ public class StorePopup : BasePopup
 {
     public enum Buttons
     {
-        PrevBtn,
-        NextBtn,
+        EquipmentTabBtn,
+        ConsumableTabBtn,
         ExitBtn
     }
 
     public enum Texts
     {
-        CategoryText,
+        EquipmentTabText,
+        ConsumableTabText,
     }
 
     #region ===== 참조 =====
 
+    [Header("스크롤")]
     [SerializeField] private StoreEquipRecycleScroll _storeEquipRecycleScroll;
     [SerializeField] private StoreConsumableRecycleScroll _storeConsumableRecycleScroll;
+    
+    [Header("버튼")]
+    [SerializeField] private Sprite _selectedTabSprite;
+    [SerializeField] private Sprite _unselectedTabSprite;
 
     private UIHighlightCanvas _goldFrameHighlight;
 
@@ -87,8 +93,8 @@ public class StorePopup : BasePopup
     /// <summary> KDH : 카테고리 전환 버튼 이벤트를 초기화한다. </summary>
     private void InitializeBtnEvent()
     {
-        Get<Button>(Buttons.PrevBtn)?.onClick.AddListener(ChangeCategory);
-        Get<Button>(Buttons.NextBtn)?.onClick.AddListener(ChangeCategory);
+        Get<Button>(Buttons.EquipmentTabBtn)?.onClick.AddListener(() => ChangeCategory(ItemType.Equipment));
+        Get<Button>(Buttons.ConsumableTabBtn)?.onClick.AddListener(() => ChangeCategory(ItemType.Consumable));
         Get<Button>(Buttons.ExitBtn)?.onClick.AddListener(OnClickExit);
     }
 
@@ -96,15 +102,15 @@ public class StorePopup : BasePopup
 
     #region ===== 업데이트 =====
 
-    /// <summary> KDH : 방향에 따라 상점 카테고리를 변경한다. </summary>
-    private void ChangeCategory()
+    /// <summary> KDH : 선택한 탭에 해당하는 상점 카테고리로 변경한다. </summary>
+    private void ChangeCategory(ItemType itemType)
     {
-        _currentType = _currentType switch
+        if (_currentType == itemType)
         {
-            ItemType.Equipment => ItemType.Consumable,
-            ItemType.Consumable => ItemType.Equipment,
-            _ => ItemType.Equipment
-        };
+            return;
+        }
+
+        _currentType = itemType;
 
         UpdateCategoryUI();
     }
@@ -112,17 +118,28 @@ public class StorePopup : BasePopup
     /// <summary> KDH : 현재 카테고리 타입에 맞게 UI를 업데이트 한다. </summary>
     private void UpdateCategoryUI()
     {
-        string categoryName = _currentType switch
-        {
-            ItemType.Equipment => "장비",
-            ItemType.Consumable => "소비",
-            _ => string.Empty
-        };
-
-        Get<TMP_Text>(Texts.CategoryText)?.SetText(categoryName);
+        UpdateTabUI(Buttons.EquipmentTabBtn, Texts.EquipmentTabText, _currentType == ItemType.Equipment);
+        UpdateTabUI(Buttons.ConsumableTabBtn, Texts.ConsumableTabText, _currentType == ItemType.Consumable);
 
         _storeEquipRecycleScroll?.gameObject.SetActive(_currentType == ItemType.Equipment);
         _storeConsumableRecycleScroll?.gameObject.SetActive(_currentType == ItemType.Consumable);
+    }
+
+    /// <summary> KDH : 탭의 선택 상태에 맞게 배경 스프라이트와 글자 색상을 갱신한다. </summary>
+    private void UpdateTabUI(Buttons buttonType, Texts textType, bool isSelected)
+    {
+        Button button = Get<Button>(buttonType);
+        TMP_Text text = Get<TMP_Text>(textType);
+
+        if (button != null && button.image != null)
+        {
+            button.image.sprite = isSelected ? _selectedTabSprite : _unselectedTabSprite;
+        }
+
+        if (text != null)
+        {
+            text.color = isSelected ? ColorKey.DarkBrown : ColorKey.DarkGray;
+        }
     }
 
     #endregion ===== 업데이트 =====
