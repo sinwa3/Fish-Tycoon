@@ -83,6 +83,9 @@ public class TycoonHUD : BaseHUD
     private Vector2 _diaryOriginPos;
     private Tween _diaryTween;
 
+    // 상점 버튼
+    private Tween _storeBtnTween;
+    
     // 퀘스트
     private Coroutine _subQuestCoroutine;
 
@@ -197,7 +200,8 @@ public class TycoonHUD : BaseHUD
     private void OnDestroy()
     {
         _diaryTween?.Kill();
-
+        _storeBtnTween?.Kill();
+        
         UnsubscribeGoldChanged();
         UnsubscribeSatisfactionChanged();
 
@@ -392,10 +396,29 @@ public class TycoonHUD : BaseHUD
         Get<Button>(Buttons.NextBtn)?.gameObject.SetActive(visible);
     }
 
-    /// <summary> KDH : 다음 버튼[잠입전환] 표시/비표시한다. </summary>
-    public void SetStoreBtnVisible(bool visible)
+    /// <summary> KDH : 상점 버튼을 표시하고 등장 애니메이션을 재생한다. </summary>
+    public void SetStoreBtnVisible(bool isVisible)
     {
-        Get<Button>(Buttons.StoreBtn)?.gameObject.SetActive(visible);
+        Button storeBtn = Get<Button>(Buttons.StoreBtn);
+
+        if (storeBtn == null)
+        {
+            return;
+        }
+
+        _storeBtnTween?.Kill();
+
+        if (!isVisible)
+        {
+            storeBtn.gameObject.SetActive(false);
+            storeBtn.transform.localScale = Vector3.one;
+            return;
+        }
+
+        storeBtn.transform.localScale = Vector3.one * 0.6f;
+        storeBtn.gameObject.SetActive(true);
+
+        _storeBtnTween = storeBtn.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
     }
 
     /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
