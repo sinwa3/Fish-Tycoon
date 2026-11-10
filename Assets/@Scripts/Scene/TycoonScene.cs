@@ -15,8 +15,8 @@ public class TycoonScene : BaseScene
 
     private Phase _currentPhase;
 
-    public readonly int TargetGold = 100000;
-    public readonly int FinalDay = 7;
+    public static readonly int TargetGold = 100000;
+    public static readonly int FinalDay = 7;
 
     private int _maxCustomerCount;
     private float _customerSpawnInterval;

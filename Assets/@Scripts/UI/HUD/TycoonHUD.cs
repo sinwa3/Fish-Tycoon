@@ -239,7 +239,7 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
     private void SetMainQuestValueText()
     {
-        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{_tycoonScene.TargetGold:N0} G");
+        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{TycoonScene.TargetGold:N0} G");
     }
 
     /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>

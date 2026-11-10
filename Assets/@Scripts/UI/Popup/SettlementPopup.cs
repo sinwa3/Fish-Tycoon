@@ -13,6 +13,8 @@ public class SettlementPopup : BasePopup
 
     public enum Texts
     {
+        TitleText,
+        
         StartingMoneyValueText,
         FoodSalesValueText,
         ReputationBonusText,
@@ -64,6 +66,17 @@ public class SettlementPopup : BasePopup
     protected override void OnStart()
     {
         Get<Button>(Buttons.ExitBtn).onClick.AddListener(OnClickExit);
+
+        // 마지막 날에는 HUD를 표시하지 않는다.
+        if (_isFinalDay)
+        {
+            Managers.UI?.CurrentHUD.SetVisible(false);
+            Get<TMP_Text>(Texts.TitleText)?.SetText($"마지막 정산");
+        }
+        else
+        {
+            Get<TMP_Text>(Texts.TitleText)?.SetText($"{Managers.Data?.GetCurrentDay()}일 차 정산");
+        }
     }
 
     protected override void OnUpdate()
@@ -215,9 +228,19 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : 정산 전 소지금부터 최종 소지금까지 숫자가 증가하는 애니메이션을 재생한다. </summary>
     private void SetTotalMoneyText()
     {
-        int totalMoney = Managers.Data.GetCurrentGold();
         TMP_Text totalMoneyText = Get<TMP_Text>(Texts.TotalMoneyValueText);
-
+        if (totalMoneyText == null)
+        {
+            return;
+        }
+       
+        int totalMoney = Managers.Data.GetCurrentGold();
+        
+        if (_isFinalDay)
+        {
+            totalMoneyText.color = totalMoney < TycoonScene.TargetGold ? Color.red : ColorKey.DodgerBlue;
+        }
+        
         _totalMoneyTween?.Kill();
 
         _totalMoneyTween = DOVirtual.Int(_startingMoney, totalMoney, _totalMoneyAnimationDuration,
@@ -240,7 +263,12 @@ public class SettlementPopup : BasePopup
         {
             if (_isFinalDay)
             {
-                Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameOver());
+                Managers.UI?.OpenLoadingUI(2f, () =>
+                {
+                    Managers.UI.CloseLoadingUI();
+                    Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameOver());
+                });
+                
             }
         });
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);
