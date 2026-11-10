@@ -64,9 +64,17 @@ public class EnemyController : MonoBehaviour
 
     #endregion ===== 날짜 =====
 
+    #region ===== 감지 수치 =====
+
+    /// <summary> KYH : 오늘의 감지, 행동 수치 </summary>
+    public EnemyDetectionData Detection { get; private set; }
+
+    #endregion ===== 감지 수치 =====
+
     private void Awake()
     {
         InitializeComponents();
+        InitializeDetection();
         InitializeStateMachine();
     }
 
@@ -116,6 +124,12 @@ public class EnemyController : MonoBehaviour
         {
             CPrint.Warning("[EnemyController] 적 소음 듣기 없음");
         }
+    }
+
+    /// <summary> KYH : 오늘의 감지 수치를 읽어 둔다 </summary>
+    private void InitializeDetection()
+    {
+        Detection = Managers.Table.EnemyDetection.GetDetectionByDay(Managers.Data.GetCurrentDay());
     }
 
     /// <summary> KYH : 집주인 상태 5개를 상태 머신에 등록한다 </summary>

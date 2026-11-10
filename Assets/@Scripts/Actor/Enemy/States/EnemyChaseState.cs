@@ -35,7 +35,7 @@ public class EnemyChaseState : BaseEnemyState
             return;
         }
 
-        if (GetTimeSinceLastSeen() > EnemyTempValue.LoseSightDuration)
+        if (GetTimeSinceLastSeen() > Enemy.Detection.LoseSightDuration)
         {
             LosePlayer();
 
@@ -70,7 +70,7 @@ public class EnemyChaseState : BaseEnemyState
     /// <summary> KYH : 쫓을 위치를 돌려준다 </summary>
     private Vector3 GetChaseTarget()
     {
-        if (GetTimeSinceLastSeen() <= EnemyTempValue.ChaseTrackDuration)
+        if (GetTimeSinceLastSeen() <= Enemy.Detection.ChaseTrackDuration)
         {
             return Enemy.Sight.PlayerPosition;
         }
