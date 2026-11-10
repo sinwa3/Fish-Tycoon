@@ -7,12 +7,25 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Canvas), typeof(CanvasScaler))]
 public abstract class BasePopup : BaseUI
 {
+    #region ===== 참조 =====
+    
     private Image _background;
-    protected CanvasGroup _bgCanvasGroup;
+
+    private Canvas _canvas;
+    private CanvasGroup _bgCanvasGroup;
+    
+    #endregion ===== 참조 =====
+    
+    #region ===== 상태 =====
+    
     public bool IsRaycastEnabled => _bgCanvasGroup != null && _bgCanvasGroup.blocksRaycasts;
 
     private Action _closeAction;
+    
+    public override int SortingOrder => _canvas == null ? 2 : _canvas.sortingOrder;
 
+    #endregion ===== 상태 =====
+    
     #region ===== 애니메이션 =====
 
     public enum AnimationType
@@ -65,6 +78,7 @@ public abstract class BasePopup : BaseUI
             _background.raycastTarget = true;
         }
 
+        _canvas = GetComponent<Canvas>();
         _bgCanvasGroup = _background.gameObject.GetOrAddComponent<CanvasGroup>();
         _bgCanvasGroup.blocksRaycasts = false;
 

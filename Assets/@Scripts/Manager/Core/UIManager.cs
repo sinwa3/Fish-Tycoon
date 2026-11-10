@@ -16,6 +16,8 @@ public class UIManager
     #region ===== Popup =====
 
     private readonly Stack<BasePopup> _popupStack = new();
+    
+    private const int PopupSortingInterval = 2;
     private int _nextPopupSortingOrder = 2;
 
     #endregion ===== Popup =====
@@ -119,7 +121,8 @@ public class UIManager
 
         if (baseUI is BasePopup)
         {
-            canvas.sortingOrder = _nextPopupSortingOrder++;
+            canvas.sortingOrder = _nextPopupSortingOrder;
+            _nextPopupSortingOrder += PopupSortingInterval;
             return;
         }
 
@@ -218,7 +221,7 @@ public class UIManager
             popup.gameObject.DestroyGO();
         }
 
-        _nextPopupSortingOrder--;
+        _nextPopupSortingOrder -= PopupSortingInterval;
 
         if (_popupStack.Count == 0)
         {

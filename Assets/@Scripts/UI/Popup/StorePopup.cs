@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,8 +23,10 @@ public class StorePopup : BasePopup
     [SerializeField] private StoreEquipRecycleScroll _storeEquipRecycleScroll;
     [SerializeField] private StoreConsumableRecycleScroll _storeConsumableRecycleScroll;
 
+    private UIHighlightCanvas _goldFrameHighlight;
+
     #endregion ===== 참조 =====
-    
+
     #region ===== 상태 =====
 
     private ItemType _currentType = ItemType.Equipment;
@@ -39,9 +42,9 @@ public class StorePopup : BasePopup
     protected override void OnStart()
     {
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimePopup);
-        
+
         InitializeBtnEvent();
-        
+
         UpdateCategoryUI();
     }
 
@@ -59,9 +62,27 @@ public class StorePopup : BasePopup
 
     protected override void DestroyOverride()
     {
+        _goldFrameHighlight?.Restore();
+
+        if (Managers.UI?.CurrentHUD is TycoonHUD tycoonHUD)
+        {
+            tycoonHUD.RestoreSubQuestHighlight();
+        }
     }
 
     #region ===== 초기화 =====
+
+    /// <summary> KDH : 하이라이트를 위해 골드 프레임 이미지를 설정한다. </summary>
+    public void SetGoldFrameImage(Image goldFrameImage)
+    {
+        if (goldFrameImage == null)
+        {
+            return;
+        }
+
+        _goldFrameHighlight = goldFrameImage.gameObject.GetOrAddComponent<UIHighlightCanvas>();
+        _goldFrameHighlight.Highlight(SortingOrder + 1);
+    }
 
     /// <summary> KDH : 카테고리 전환 버튼 이벤트를 초기화한다. </summary>
     private void InitializeBtnEvent()
@@ -99,13 +120,13 @@ public class StorePopup : BasePopup
         };
 
         Get<TMP_Text>(Texts.CategoryText)?.SetText(categoryName);
-        
+
         _storeEquipRecycleScroll?.gameObject.SetActive(_currentType == ItemType.Equipment);
         _storeConsumableRecycleScroll?.gameObject.SetActive(_currentType == ItemType.Consumable);
     }
 
     #endregion ===== 업데이트 =====
-    
+
     #region ===== 이벤트 =====
 
     /// <summary> KDH : Exit 버튼을 선택했을 때 팝업을 닫고 지정된 동작을 실행한다. </summary>

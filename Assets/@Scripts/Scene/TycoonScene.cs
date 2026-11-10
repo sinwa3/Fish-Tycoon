@@ -189,7 +189,7 @@ public class TycoonScene : BaseScene
         {
             case Phase.BeforeBusiness:
                 _tycoonHUD.SetStoreInfoVisible(false); // 만족도, 소지금 UI를 숨긴다.
-                _tycoonHUD.SetQuestVisible(Managers.Data != null && Managers.Data.GetCurrentDay() > 1); // 1일차 영업전은 퀘스트 숨긴다.
+                _tycoonHUD.SetQuestVisible(false);
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
                 _tycoonHUD.SetStoreBtnVisible(false);
@@ -201,6 +201,8 @@ public class TycoonScene : BaseScene
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
 
+                _tycoonHUD.SetQuestVisible(Managers.Data != null &&
+                                           Managers.Data.GetCurrentDay() > 1); // 1일차 영업전은 퀘스트 숨긴다.
                 _tycoonHUD.SetBusinessProgressVisible(true);
                 break;
             case Phase.AfterBusiness:
