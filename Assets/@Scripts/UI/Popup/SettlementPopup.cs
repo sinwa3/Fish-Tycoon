@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary> KDH : 영업이 끝났을 때 소득 및 만족도 정산 팝업 </summary>
 public class SettlementPopup : BasePopup
@@ -12,6 +13,8 @@ public class SettlementPopup : BasePopup
 
     public enum Texts
     {
+        TitleText,
+        
         StartingMoneyValueText,
         FoodSalesValueText,
         ReputationBonusText,
@@ -20,8 +23,20 @@ public class SettlementPopup : BasePopup
         TotalMoneyValueText,
     }
 
+    #region ===== 참조 =====
+
     private DailyMenu _dailyMenu;
     private FishListScroll _fishListScroll;
+
+    #endregion ===== 참조 =====
+
+    #region ===== 설정 =====
+
+    [SerializeField] private float _totalMoneyAnimationDuration = 1.5f;
+
+    #endregion ===== 설정 =====
+
+    #region ===== 상태 =====
 
     // 음식 판매금
     private int _calculatedFoodSales;
@@ -32,9 +47,15 @@ public class SettlementPopup : BasePopup
 
     // 남은 생선 자동 매각 소득
     private int _calculatedUnsoldFishSales;
-    
+
     private bool _isFinalDay;
     private int _targetGold;
+
+    // 애니메이션
+    private int _startingMoney;
+    private Tween _totalMoneyTween;
+
+    #endregion ===== 상태 =====
 
     protected override void OnAwake()
     {
@@ -45,6 +66,17 @@ public class SettlementPopup : BasePopup
     protected override void OnStart()
     {
         Get<Button>(Buttons.ExitBtn).onClick.AddListener(OnClickExit);
+
+        // 마지막 날에는 HUD를 표시하지 않는다.
+        if (_isFinalDay)
+        {
+            Managers.UI?.CurrentHUD.SetVisible(false);
+            Get<TMP_Text>(Texts.TitleText)?.SetText($"마지막 정산");
+        }
+        else
+        {
+            Get<TMP_Text>(Texts.TitleText)?.SetText($"{Managers.Data?.GetCurrentDay()}일 차 정산");
+        }
     }
 
     protected override void OnUpdate()
@@ -70,9 +102,12 @@ public class SettlementPopup : BasePopup
         _fishListScroll = fishListScroll;
         _isFinalDay = isFinalDay;
         _targetGold = targetGold;
-        
+
+        // 정산 전 소지금 저장
+        _startingMoney = Managers.Data.GetCurrentGold();
+
         SetStartingMoneyText();
-        
+
         CalculateFoodSales();
         Managers.Data.AddGold(_calculatedFoodSales);
         SetFoodSalesText();
@@ -85,7 +120,8 @@ public class SettlementPopup : BasePopup
         Managers.Data.AddGold(_calculatedUnsoldFishSales);
         Managers.Data.ClearFishInventory();
         SetUnsoldFishSalesText();
-        
+
+        // 최종 소지금 숫자 증가 애니메이션
         SetTotalMoneyText();
 
         if (!_isFinalDay)
@@ -96,7 +132,7 @@ public class SettlementPopup : BasePopup
         }
         else
         {
-            Managers.UI.OpenToastMessage("마지막 날입니다. 다음으로 진행하시면 결과를 확인할 수 있습니다.");
+            Managers.UI.OpenToastMessage("마지막 날입니다.");
         }
     }
 
@@ -110,7 +146,7 @@ public class SettlementPopup : BasePopup
 
         return false;
     }
-    
+
     #region ===== 계산 =====
 
     /// <summary> KDH : 음식 판매금을 계산한다. </summary>
@@ -189,12 +225,31 @@ public class SettlementPopup : BasePopup
         Get<TMP_Text>(Texts.UnsoldFishSalesValueText).SetText($"+ {_calculatedUnsoldFishSales:N0} G");
     }
 
-    /// <summary> KDH : 소득 적용 후 현재 소지금을 UI에 적용한다. </summary>
+    /// <summary> KDH : 정산 전 소지금부터 최종 소지금까지 숫자가 증가하는 애니메이션을 재생한다. </summary>
     private void SetTotalMoneyText()
     {
+        TMP_Text totalMoneyText = Get<TMP_Text>(Texts.TotalMoneyValueText);
+        if (totalMoneyText == null)
+        {
+            return;
+        }
+       
         int totalMoney = Managers.Data.GetCurrentGold();
+        
+        if (_isFinalDay)
+        {
+            totalMoneyText.color = totalMoney < TycoonScene.TargetGold ? Color.red : ColorKey.DodgerBlue;
+        }
+        
+        _totalMoneyTween?.Kill();
 
-        Get<TMP_Text>(Texts.TotalMoneyValueText).SetText(totalMoney.ToString("N0") + " G");
+        _totalMoneyTween = DOVirtual.Int(_startingMoney, totalMoney, _totalMoneyAnimationDuration,
+                value => { totalMoneyText.SetText($"{value:N0} G"); })
+            .SetEase(Ease.OutCubic).OnComplete(() =>
+            {
+                totalMoneyText.SetText($"{totalMoney:N0} G");
+                _totalMoneyTween = null;
+            });
     }
 
     #endregion ===== UI =====
@@ -208,7 +263,12 @@ public class SettlementPopup : BasePopup
         {
             if (_isFinalDay)
             {
-                Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameOver());
+                Managers.UI?.OpenLoadingUI(2f, () =>
+                {
+                    Managers.UI.CloseLoadingUI();
+                    Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameOver());
+                });
+                
             }
         });
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);

@@ -3,6 +3,17 @@ using UnityEngine;
 /// <summary> KYH : 시야, 소리로 의심 게이지를 올리고 내려 단계를 기억에 적는다 </summary>
 public class EnemySuspicionGauge : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 의심 게이지 최대 (발각)
+    private const float MaxGauge = 100.0f;
+    // 발각 단계로 올라가는 값
+    private const float DetectedEnterGauge = MaxGauge;
+    // 소리로 오를 수 있는 최대 (발각 바로 아래)
+    private const float SoundGaugeCap = DetectedEnterGauge - 1.0f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     private EnemyController _enemy;
@@ -61,10 +72,10 @@ public class EnemySuspicionGauge : MonoBehaviour
         }
         else if (_enemy.Memory.IsGaugeDecayAllowed)
         {
-            Gauge -= EnemyTempValue.GaugeDecayRate * deltaTime;
+            Gauge -= _enemy.Detection.GaugeDecayRate * deltaTime;
         }
 
-        Gauge = Mathf.Clamp(Gauge, 0.0f, EnemyTempValue.MaxGauge);
+        Gauge = Mathf.Clamp(Gauge, 0.0f, MaxGauge);
     }
 
     /// <summary> KYH : 시야로 게이지가 오르는지 돌려준다 </summary>
@@ -76,7 +87,7 @@ public class EnemySuspicionGauge : MonoBehaviour
     /// <summary> KYH : 거리에 따른 초당 상승량을 돌려준다 </summary>
     private float GetSightRiseRate()
     {
-        return Mathf.Lerp(EnemyTempValue.SightGaugeRiseNear, EnemyTempValue.SightGaugeRiseFar, _enemy.Sight.GetSightDistanceRatio());
+        return Mathf.Lerp(_enemy.Detection.SightGaugeRiseNear, _enemy.Detection.SightGaugeRiseFar, _enemy.Sight.GetSightDistanceRatio());
     }
 
     #endregion ===== 게이지 갱신 =====
@@ -86,12 +97,12 @@ public class EnemySuspicionGauge : MonoBehaviour
     /// <summary> KYH : 들린 세기만큼 게이지를 올린다 (발각 바로 아래까지) </summary>
     public void AddSoundGauge(float amount)
     {
-        if (Gauge >= EnemyTempValue.SoundGaugeCap)
+        if (Gauge >= SoundGaugeCap)
         {
             return;
         }
 
-        Gauge = Mathf.Min(Gauge + amount, EnemyTempValue.SoundGaugeCap);
+        Gauge = Mathf.Min(Gauge + amount, SoundGaugeCap);
     }
 
     #endregion ===== 소리 =====
@@ -136,11 +147,11 @@ public class EnemySuspicionGauge : MonoBehaviour
         switch (level)
         {
             case AlertLevel.Suspicious:
-                return EnemyTempValue.SuspiciousEnterGauge;
+                return _enemy.Detection.SuspiciousEnterGauge;
             case AlertLevel.Alert:
-                return EnemyTempValue.AlertEnterGauge;
+                return _enemy.Detection.AlertEnterGauge;
             case AlertLevel.Detected:
-                return EnemyTempValue.DetectedEnterGauge;
+                return DetectedEnterGauge;
             default:
                 return 0.0f;
         }
@@ -152,11 +163,11 @@ public class EnemySuspicionGauge : MonoBehaviour
         switch (level)
         {
             case AlertLevel.Suspicious:
-                return EnemyTempValue.SuspiciousExitGauge;
+                return _enemy.Detection.SuspiciousExitGauge;
             case AlertLevel.Alert:
-                return EnemyTempValue.AlertExitGauge;
+                return _enemy.Detection.AlertExitGauge;
             case AlertLevel.Detected:
-                return EnemyTempValue.DetectedExitGauge;
+                return _enemy.Detection.DetectedExitGauge;
             default:
                 return 0.0f;
         }

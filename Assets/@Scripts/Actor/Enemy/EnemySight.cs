@@ -3,6 +3,21 @@ using UnityEngine;
 /// <summary> KYH : 플레이어가 보이는지 검사하고 기억에 적는다 </summary>
 public class EnemySight : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 발에서 눈까지 높이 (소리, 문 감지도 이 높이를 쓴다)
+    public const float EyeHeight = 1.5f;
+    // 플레이어 콜라이더 꼭대기에서 이만큼 아래를 본다
+    private const float SightTargetTopOffset = 0.1f;
+    // 시야 검사 간격(초)
+    private const float SightCheckInterval = 0.2f;
+    // 시야 자극 세기
+    private const float SightStimulusStrength = 1.0f;
+    // 숨기 직전 이 시간 안에 봤으면 숨는 걸 본 것으로 친다 (시야 검사 간격보다 길어야 한다)
+    private const float HideWitnessWindow = SightCheckInterval * 1.5f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     // 레이캐스트가 맞힐 레이어
@@ -15,6 +30,9 @@ public class EnemySight : MonoBehaviour
 
     /// <summary> KYH : 마지막 검사에서 플레이어가 보였는지 </summary>
     public bool IsPlayerVisible { get; private set; }
+
+    /// <summary> KYH : 플레이어가 숨는 순간을 봤는지 (숨어 있는 동안 유지) </summary>
+    public bool IsHideWitnessed { get; private set; }
 
     #endregion ===== 상태 =====
 
@@ -99,16 +117,55 @@ public class EnemySight : MonoBehaviour
             return;
         }
 
-        _checkTimer = EnemyTempValue.SightCheckInterval;
+        _checkTimer = SightCheckInterval;
         IsPlayerVisible = CheckPlayerVisible();
 
         if (IsPlayerVisible)
         {
             ReportToMemory(_player.position);
         }
+
+        UpdateHideWitness();
     }
 
     #endregion ===== 검사 주기 =====
+
+    #region ===== 숨는 순간 =====
+
+    /// <summary> KYH : 숨는 순간을 봤는지 정하고 본 동안 위치를 기억에 적는다 </summary>
+    private void UpdateHideWitness()
+    {
+        if (_playerHide == null)
+        {
+            return;
+        }
+
+        if (_enemy == null)
+        {
+            return;
+        }
+
+        if (!_playerHide.IsHiding)
+        {
+            IsHideWitnessed = false;
+
+            return;
+        }
+
+        if (Time.time - _enemy.Memory.LastSeenTime < HideWitnessWindow)
+        {
+            IsHideWitnessed = true;
+        }
+
+        if (!IsHideWitnessed)
+        {
+            return;
+        }
+
+        _enemy.Memory.ReportPlayerSeen(_player.position);
+    }
+
+    #endregion ===== 숨는 순간 =====
 
     #region ===== 시야 검사 =====
 
@@ -137,7 +194,7 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 시야 거리 안인지 돌려준다 </summary>
     private bool IsInSightDistance(Vector3 eyePosition, Vector3 targetPosition)
     {
-        float allowDistance = EnemyTempValue.SightDistance * GetCrouchSightMultiplier();
+        float allowDistance = _enemy.Detection.SightDistance * GetCrouchSightMultiplier();
         Vector3 targetDirection = targetPosition - eyePosition;
 
         return targetDirection.sqrMagnitude <= allowDistance * allowDistance;
@@ -148,7 +205,7 @@ public class EnemySight : MonoBehaviour
     {
         Vector3 targetDirection = Vector3.ProjectOnPlane(targetPosition - transform.position, Vector3.up);
 
-        return Vector3.Angle(transform.forward, targetDirection) <= EnemyTempValue.SightAngle * 0.5f;
+        return Vector3.Angle(transform.forward, targetDirection) <= _enemy.Detection.SightAngle * 0.5f;
     }
 
     /// <summary> KYH : 가리는 것이 없는지 돌려준다 </summary>
@@ -172,13 +229,13 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 웅크림에 따른 시야 거리 배율을 돌려준다 </summary>
     private float GetCrouchSightMultiplier()
     {
-        return _playerMovement.IsCrouching ? EnemyTempValue.CrouchSightMultiplier : 1.0f;
+        return _playerMovement.IsCrouching ? _enemy.Detection.CrouchSightMultiplier : 1.0f;
     }
 
     /// <summary> KYH : 집주인 눈 위치를 돌려준다 </summary>
     private Vector3 GetEyePosition()
     {
-        return transform.position + Vector3.up * EnemyTempValue.EyeHeight;
+        return transform.position + Vector3.up * EyeHeight;
     }
 
     /// <summary> KYH : 가림을 검사할 플레이어 쪽 점을 돌려준다 </summary>
@@ -186,7 +243,7 @@ public class EnemySight : MonoBehaviour
     {
         Bounds bounds = _playerController.bounds;
 
-        return new Vector3(bounds.center.x, bounds.max.y - EnemyTempValue.SightTargetTopOffset, bounds.center.z);
+        return new Vector3(bounds.center.x, bounds.max.y - SightTargetTopOffset, bounds.center.z);
     }
 
     #endregion ===== 시야 검사 =====
@@ -201,7 +258,7 @@ public class EnemySight : MonoBehaviour
             return 1.0f;
         }
 
-        float allowDistance = EnemyTempValue.SightDistance * GetCrouchSightMultiplier();
+        float allowDistance = _enemy.Detection.SightDistance * GetCrouchSightMultiplier();
         Vector3 targetDirection = GetPlayerTargetPoint() - GetEyePosition();
 
         return Mathf.Clamp01(targetDirection.magnitude / allowDistance);
@@ -214,6 +271,11 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 플레이어를 잡을 수 있는지 돌려준다 </summary>
     public bool CanCatchPlayer()
     {
+        if (IsHideWitnessed)
+        {
+            return _enemy.Movement.HasArrived;
+        }
+
         if (!IsPlayerVisible)
         {
             return false;
@@ -221,7 +283,7 @@ public class EnemySight : MonoBehaviour
 
         Vector3 targetDirection = Vector3.ProjectOnPlane(_player.position - transform.position, Vector3.up);
 
-        return targetDirection.sqrMagnitude <= EnemyTempValue.CatchDistance * EnemyTempValue.CatchDistance;
+        return targetDirection.sqrMagnitude <= _enemy.Detection.CatchDistance * _enemy.Detection.CatchDistance;
     }
 
     #endregion ===== 잡기 검사 =====
@@ -237,7 +299,7 @@ public class EnemySight : MonoBehaviour
         }
 
         _enemy.Memory.ReportPlayerSeen(playerPosition);
-        _enemy.Memory.ReportStimulus(playerPosition, EnemyTempValue.SightStimulusStrength, StimulusType.Sight);
+        _enemy.Memory.ReportStimulus(playerPosition, SightStimulusStrength, StimulusType.Sight);
     }
 
     #endregion ===== 기억 =====
@@ -247,15 +309,21 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 시야 범위를 그린다 </summary>
     private void DrawSightGizmos()
     {
+        // Play 전에는 오늘 수치가 없다
+        if (_enemy == null || _enemy.Detection == null)
+        {
+            return;
+        }
+
         Gizmos.color = IsPlayerVisible ? Color.red : Color.yellow;
 
         Vector3 eyePosition = GetEyePosition();
-        Gizmos.DrawWireSphere(eyePosition, EnemyTempValue.SightDistance);
+        Gizmos.DrawWireSphere(eyePosition, _enemy.Detection.SightDistance);
 
-        Vector3 rightEdgeDirection = Quaternion.Euler(0.0f, EnemyTempValue.SightAngle * 0.5f, 0.0f) * transform.forward;
-        Vector3 leftEdgeDirection = Quaternion.Euler(0.0f, -EnemyTempValue.SightAngle * 0.5f, 0.0f) * transform.forward;
-        Gizmos.DrawLine(eyePosition, eyePosition + rightEdgeDirection * EnemyTempValue.SightDistance);
-        Gizmos.DrawLine(eyePosition, eyePosition + leftEdgeDirection * EnemyTempValue.SightDistance);
+        Vector3 rightEdgeDirection = Quaternion.Euler(0.0f, _enemy.Detection.SightAngle * 0.5f, 0.0f) * transform.forward;
+        Vector3 leftEdgeDirection = Quaternion.Euler(0.0f, -_enemy.Detection.SightAngle * 0.5f, 0.0f) * transform.forward;
+        Gizmos.DrawLine(eyePosition, eyePosition + rightEdgeDirection * _enemy.Detection.SightDistance);
+        Gizmos.DrawLine(eyePosition, eyePosition + leftEdgeDirection * _enemy.Detection.SightDistance);
     }
 
     #endregion ===== 디버그 =====

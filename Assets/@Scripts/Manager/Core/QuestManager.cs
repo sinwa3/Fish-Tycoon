@@ -50,9 +50,21 @@ public class QuestManager
         return Managers.Table.Quest.GetQuest(scene, questState.questID);
     }
 
-    /// <summary> 게임 플레이에서 발생한 조건으로 현재 퀘스트를 1회 진행한다. </summary>
+    /// <summary> KDH : 게임 플레이에서 발생한 조건으로 현재 퀘스트를 1회 진행한다. </summary>
     public void ReportProgress(SceneType scene, QuestType questType)
     {
+        // 현재 타이쿤 씬 퀘스트만 받는다.
+        if (scene != SceneType.TycoonScene)
+        {
+            return;
+        }
+        
+        if (Managers.Data.GetCurrentDay() < 2) // 2일차 후부터 퀘스트 진행
+        {
+            return;
+        }
+        
+        // 퀘스트 관련 애니메이션 재생 중인경우 
         if (IsCompletionSequence)
         {
             return;

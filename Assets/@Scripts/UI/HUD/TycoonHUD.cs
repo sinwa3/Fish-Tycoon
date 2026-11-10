@@ -12,7 +12,6 @@ public class TycoonHUD : BaseHUD
         ReputationValueText,
         SatisfactionValueText,
         CurrentDayText,
-        PhaseText,
 
         MainQuestValueText,
         SubQuestDescText,
@@ -56,6 +55,7 @@ public class TycoonHUD : BaseHUD
 
         QuickSlotBar,
 
+        Quest,
         SubQuest
     }
 
@@ -83,8 +83,17 @@ public class TycoonHUD : BaseHUD
     private Vector2 _diaryOriginPos;
     private Tween _diaryTween;
 
+    // 상점 버튼
+    private Tween _storeBtnTween;
+
     // 퀘스트
     private Coroutine _subQuestCoroutine;
+    private Tween _subQuestTween;
+    private UIHighlightCanvas _subQuestHighlight;
+
+    // 골드
+    private Tween _goldTween;
+    private int _displayedGold;
 
     #endregion ===== 애니메이션 =====
 
@@ -142,7 +151,7 @@ public class TycoonHUD : BaseHUD
         SubscribeSatisfactionChanged();
 
         SubscribeCookingEvents();
-        
+
         SubscribeSubQuestEvents();
 
         if (Managers.Quest != null)
@@ -197,12 +206,13 @@ public class TycoonHUD : BaseHUD
     private void OnDestroy()
     {
         _diaryTween?.Kill();
+        _storeBtnTween?.Kill();
 
         UnsubscribeGoldChanged();
         UnsubscribeSatisfactionChanged();
 
         UnsubscribeCookingEvents();
-        
+
         UnsubscribeSubQuestEvents();
     }
 
@@ -213,19 +223,23 @@ public class TycoonHUD : BaseHUD
     {
         Get<Button>(Buttons.NextBtn)?.onClick.AddListener(() => _tycoonScene.ChangeCurrentPhase());
         Get<Button>(Buttons.StartBusinessBtn)?.onClick.AddListener(CloseFoodDiary);
-        Get<Button>(Buttons.StoreBtn)?.onClick.AddListener(() => Managers.UI.OpenPopup<StorePopup>());
+        Get<Button>(Buttons.StoreBtn)?.onClick.AddListener(() =>
+        {
+            StorePopup storePopup = Managers.UI.OpenPopup<StorePopup>();
+            storePopup.SetGoldFrameImage(Get<Image>(Images.GoldFrameImage));
+        });
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
-        Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
+        Get<TMP_Text>(Texts.CurrentDayText)?.SetText(Managers.Data.GetCurrentDay().ToString());
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
     private void SetMainQuestValueText()
     {
-        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{_tycoonScene.TargetGold:N0} G");
+        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{TycoonScene.TargetGold:N0} G");
     }
 
     /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>
@@ -313,24 +327,15 @@ public class TycoonHUD : BaseHUD
 
     #region ===== 업데이트 =====
 
-    /// <summary> KDH : 현재 골드 값을 UI에 업데이트 한다. </summary>
+    /// <summary> KDH : 현재 골드 값을 UI에 즉시 적용한다. </summary>
     private void UpdateGoldText()
     {
-        Get<TMP_Text>(Texts.GoldValueText)?.SetText($"{Managers.Data.GetCurrentGold():N0} G");
-    }
+        _goldTween?.Kill();
+        _goldTween = null;
 
-    /// <summary> KDH : 현재 영업 상태를 UI에 업데이트 한다. </summary>
-    public void UpdatePhaseText(TycoonScene.Phase phase)
-    {
-        string message = phase switch
-        {
-            TycoonScene.Phase.BeforeBusiness => "영업 전",
-            TycoonScene.Phase.DuringBusiness => "영업 중",
-            TycoonScene.Phase.AfterBusiness => "영업 후",
-            _ => string.Empty
-        };
+        _displayedGold = Managers.Data.GetCurrentGold();
 
-        Get<TMP_Text>(Texts.PhaseText)?.SetText(message);
+        Get<TMP_Text>(Texts.GoldValueText)?.SetText($"{_displayedGold:N0} G");
     }
 
     /// <summary> KDH : 현재 만족도와 평판 등급을 업데이트한다. </summary>
@@ -406,10 +411,29 @@ public class TycoonHUD : BaseHUD
         Get<Button>(Buttons.NextBtn)?.gameObject.SetActive(visible);
     }
 
-    /// <summary> KDH : 다음 버튼[잠입전환] 표시/비표시한다. </summary>
-    public void SetStoreBtnVisible(bool visible)
+    /// <summary> KDH : 상점 버튼을 표시하고 등장 애니메이션을 재생한다. </summary>
+    public void SetStoreBtnVisible(bool isVisible)
     {
-        Get<Button>(Buttons.StoreBtn)?.gameObject.SetActive(visible);
+        Button storeBtn = Get<Button>(Buttons.StoreBtn);
+
+        if (storeBtn == null)
+        {
+            return;
+        }
+
+        _storeBtnTween?.Kill();
+
+        if (!isVisible)
+        {
+            storeBtn.gameObject.SetActive(false);
+            storeBtn.transform.localScale = Vector3.one;
+            return;
+        }
+
+        storeBtn.transform.localScale = Vector3.one * 0.6f;
+        storeBtn.gameObject.SetActive(true);
+
+        _storeBtnTween = storeBtn.transform.DOScale(Vector3.one, 1f).SetEase(Ease.OutBounce);
     }
 
     /// <summary> KDH : 가게 평판/만족도/소지금을 표시/비표시한다. </summary>
@@ -429,6 +453,12 @@ public class TycoonHUD : BaseHUD
     public void SetQuickSlotVisible(bool isVisible)
     {
         Get<Image>(Images.QuickSlotBar)?.gameObject.SetActive(isVisible);
+    }
+
+    /// <summary> KDH : 퀘스트를 표시/비표시한다. </summary>
+    public void SetQuestVisible(bool isVisible)
+    {
+        Get<Image>(Images.Quest)?.gameObject.SetActive(isVisible);
     }
 
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
@@ -497,6 +527,73 @@ public class TycoonHUD : BaseHUD
     }
 
     #endregion ===== 활성화 =====
+
+    #region ===== 애니메이션 =====
+
+    /// <summary> KDH : 현재 표시 중인 골드에서 최신 골드까지 숫자 변경 애니메이션을 재생한다. </summary>
+    private void AnimateGoldText()
+    {
+        TMP_Text goldText = Get<TMP_Text>(Texts.GoldValueText);
+
+        if (goldText == null)
+        {
+            return;
+        }
+
+        int targetGold = Managers.Data.GetCurrentGold();
+
+        _goldTween?.Kill();
+        _goldTween = null;
+
+        if (_displayedGold == targetGold)
+        {
+            return;
+        }
+
+        _goldTween = DOVirtual.Int(_displayedGold, targetGold, 0.5f, value =>
+        {
+            _displayedGold = value;
+            goldText.SetText($"{value:N0} G");
+        }).SetEase(Ease.OutCubic).SetLink(gameObject).OnComplete(() =>
+        {
+            _displayedGold = targetGold;
+            goldText.SetText($"{targetGold:N0} G");
+            _goldTween = null;
+        });
+    }
+
+    /// <summary> KDH : 상점 팝업 위에 서브 퀘스트를 강조한다. </summary>
+    private void HighlightSubQuest()
+    {
+        if (Managers.UI == null || Managers.UI.CurrentPopup is not StorePopup storePopup)
+        {
+            return;
+        }
+
+        Image subQuestImage = Get<Image>(Images.SubQuest);
+
+        if (subQuestImage == null)
+        {
+            return;
+        }
+
+        _subQuestHighlight = subQuestImage.gameObject.GetOrAddComponent<UIHighlightCanvas>();
+        _subQuestHighlight.Highlight(storePopup.SortingOrder + 1);
+    }
+
+    /// <summary> KDH : 서브 퀘스트 하이라이트를 복원한다. </summary>
+    public void RestoreSubQuestHighlight()
+    {
+        if (_subQuestHighlight == null)
+        {
+            return;
+        }
+
+        _subQuestHighlight.Restore();
+        _subQuestHighlight = null;
+    }
+    
+    #endregion ===== 애니메이션 =====
 
     #region ==== 조리 커맨드 UI ====
 
@@ -759,7 +856,7 @@ public class TycoonHUD : BaseHUD
     #endregion ==== 조리 커맨드 UI ====
 
     #region ===== 퀘스트 =====
-    
+
     private void StartSubQuestCompletion(QuestProgressEvent progressEvent)
     {
         if (_subQuestCoroutine != null)
@@ -770,25 +867,65 @@ public class TycoonHUD : BaseHUD
         _subQuestCoroutine = StartCoroutine(Co_ShowSubQuestCompletion(progressEvent));
     }
 
+    /// <summary> KDH : 서브 퀘스트 완료 연출을 재생한다. </summary>
     private IEnumerator Co_ShowSubQuestCompletion(QuestProgressEvent progressEvent)
     {
         // 완료 표시
         UpdateSubQuest(progressEvent.CompletedQuest, progressEvent.CompletedQuest.Goal, true);
         Managers.Quest.SetCompletionSequenceActive(true);
-        yield return new WaitForSeconds(0.8f);
+
+        // 상점 팝업이 열려 있다면 하이라이트
+        HighlightSubQuest();
+
+        // 스케일 바운스
+        PlaySubQuestBounce();
+
+        if (_subQuestTween != null)
+        {
+            yield return _subQuestTween.WaitForCompletion();
+        }
 
         // 보상 표시
         Get<TMP_Text>(Texts.SubQuestDescText)?.SetText($"{progressEvent.CompletedQuest.GoldReward:N0} G 획득!");
-        yield return new WaitForSeconds(1.2f);
 
+        yield return new WaitForSeconds(1f);
+
+        // 바운스 종료 후 하이라이트 복원
+        RestoreSubQuestHighlight();
+        
         // 다음 퀘스트 표시
         UpdateSubQuest(progressEvent.NextQuest, 0);
         Managers.Quest.SetCompletionSequenceActive(false);
+
         _subQuestCoroutine = null;
     }
-    
+
+    /// <summary> KDH : 서브 퀘스트 완료 시 스케일 바운스 애니메이션을 재생한다. </summary>
+    private void PlaySubQuestBounce()
+    {
+        Image subQuestImage = Get<Image>(Images.SubQuest);
+
+        if (subQuestImage == null)
+        {
+            return;
+        }
+
+        RectTransform rectTransform = subQuestImage.rectTransform;
+
+        _subQuestTween?.Kill();
+
+        rectTransform.localScale = Vector3.one;
+
+        _subQuestTween = rectTransform.DOScale(1.15f, 0.4f).SetEase(Ease.OutBack).SetLoops(2, LoopType.Yoyo)
+            .OnComplete(() =>
+            {
+                rectTransform.localScale = Vector3.one;
+                _subQuestTween = null;
+            });
+    }
+
     #endregion ===== 퀘스트 =====
-    
+
     #region ===== 이벤트 =====
 
     /// <summary> KDH : 골드 변화시 UI 업데이트를 구독 </summary>
@@ -796,7 +933,7 @@ public class TycoonHUD : BaseHUD
     {
         if (Managers.Data != null)
         {
-            Managers.Data.OnGoldChanged += UpdateGoldText;
+            Managers.Data.OnGoldChanged += AnimateGoldText;
         }
     }
 
@@ -805,7 +942,7 @@ public class TycoonHUD : BaseHUD
     {
         if (Managers.Data != null)
         {
-            Managers.Data.OnGoldChanged -= UpdateGoldText;
+            Managers.Data.OnGoldChanged -= AnimateGoldText;
         }
     }
 
@@ -844,7 +981,7 @@ public class TycoonHUD : BaseHUD
             Managers.Quest.OnQuestProgressed -= OnSubQuestProgressed;
         }
     }
-    
+
     /// <summary>SJY : 조리 커맨드 이벤트 구독</summary>
     private void SubscribeCookingEvents()
     {
@@ -897,7 +1034,7 @@ public class TycoonHUD : BaseHUD
     {
         _reputationTooltip?.Hide();
     }
-    
+
     /// <summary> KDH : 퀘스트가 진행됐을 때 서브 퀘스트의 완료 여부에 따라 표시를 달리한다. </summary>
     private void OnSubQuestProgressed(QuestProgressEvent progressEvent)
     {
@@ -914,6 +1051,6 @@ public class TycoonHUD : BaseHUD
 
         UpdateSubQuest(progressEvent.CurrentQuest, progressEvent.Progress);
     }
-    
+
     #endregion ===== 이벤트 =====
 }

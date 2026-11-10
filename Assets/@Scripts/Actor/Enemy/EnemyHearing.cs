@@ -3,6 +3,13 @@ using UnityEngine;
 /// <summary> KYH : 소음을 받아 기억에 적고 의심 게이지를 올린다 </summary>
 public class EnemyHearing : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 소리 위치를 바닥에서 띄우는 높이 (바닥에 레이가 맞지 않게)
+    private const float SoundSourceHeight = 0.1f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     private EnemyController _enemy;
@@ -81,13 +88,13 @@ public class EnemyHearing : MonoBehaviour
 
         float heardLoudness = GetHeardLoudness(position, loudness);
 
-        if (heardLoudness < EnemyTempValue.SoundHearThreshold)
+        if (heardLoudness < _enemy.Detection.SoundHearThreshold)
         {
             return;
         }
 
         ReportToMemory(position, heardLoudness);
-        _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * EnemyTempValue.SoundGaugePerLoudness);
+        _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * _enemy.Detection.SoundGaugePerLoudness);
     }
 
     /// <summary> KYH : 소음을 무시하는지 돌려준다 (수면하는 날, 추격 중) </summary>
@@ -127,8 +134,8 @@ public class EnemyHearing : MonoBehaviour
         // 층 사이 바닥도 Wall 레이어다
         int wallCount = CountBlockers(soundPosition, earPosition, LayerKey.Mask.Wall);
 
-        float doorRatio = Mathf.Pow(EnemyTempValue.DoorSoundMultiplier, doorCount);
-        float wallRatio = Mathf.Pow(EnemyTempValue.WallSoundMultiplier, wallCount);
+        float doorRatio = Mathf.Pow(_enemy.Detection.DoorSoundMultiplier, doorCount);
+        float wallRatio = Mathf.Pow(_enemy.Detection.WallSoundMultiplier, wallCount);
 
         return loudness * distanceRatio * wallRatio * doorRatio;
     }
@@ -141,7 +148,7 @@ public class EnemyHearing : MonoBehaviour
             return 0.0f;
         }
 
-        float radius = loudness * EnemyTempValue.SoundRangePerLoudness;
+        float radius = loudness * _enemy.Detection.SoundRangePerLoudness;
 
         return Mathf.Clamp01(1.0f - distance / radius);
     }
@@ -158,13 +165,13 @@ public class EnemyHearing : MonoBehaviour
     /// <summary> KYH : 소리가 나는 점을 돌려준다 </summary>
     private Vector3 GetSoundSourcePoint(Vector3 position)
     {
-        return position + Vector3.up * EnemyTempValue.SoundSourceHeight;
+        return position + Vector3.up * SoundSourceHeight;
     }
 
     /// <summary> KYH : 집주인 귀 위치를 돌려준다 </summary>
     private Vector3 GetEarPosition()
     {
-        return transform.position + Vector3.up * EnemyTempValue.EyeHeight;
+        return transform.position + Vector3.up * EnemySight.EyeHeight;
     }
 
     #endregion ===== 들린 세기 =====

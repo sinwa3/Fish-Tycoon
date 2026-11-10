@@ -4,6 +4,18 @@ using UnityEngine;
 /// <summary> KYH : 손님 본체. 상태 머신을 돌리고 상태들이 쓰는 기능과 정보를 제공한다 </summary>
 public class CustomerController : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 대기시간 100%. 기다린 시간은 재는 값이고 이건 그 최대값
+    private const float MaxWaitDuration = 20.0f;
+    // 남은 대기시간 비율이 이 값 이하면 절반 배율
+    private const float HalfMultiplierRatio = 0.5f;
+    private const float ZeroMultiplier = 0.0f;
+    private const float HalfMultiplier = 0.5f;
+    private const float FullMultiplier = 1.0f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 행동 =====
 
     private readonly CustomerStateMachine _stateMachine = new();
@@ -311,7 +323,7 @@ public class CustomerController : MonoBehaviour
     /// <summary> KYH : 기다린 시간으로 남은 대기시간 비율(0 ~ 1)을 구한다 </summary>
     private float GetRemainingWaitRatio(float waitTime)
     {
-        return Mathf.Clamp01(1.0f - (waitTime / CustomerTempValue.MaxWaitDuration));
+        return Mathf.Clamp01(1.0f - (waitTime / MaxWaitDuration));
     }
 
     /// <summary> KYH : 남은 대기시간 비율로 만족 단계를 정한다 </summary>
@@ -320,7 +332,7 @@ public class CustomerController : MonoBehaviour
         SatisfactionGrade grade = remainingRatio switch
         {
             <= 0.0f => SatisfactionGrade.Unhappy,
-            <= CustomerTempValue.HalfMultiplierRatio => SatisfactionGrade.Normal,
+            <= HalfMultiplierRatio => SatisfactionGrade.Normal,
             _ => SatisfactionGrade.Happy
         };
 
@@ -332,10 +344,10 @@ public class CustomerController : MonoBehaviour
     {
         float multiplier = grade switch
         {
-            SatisfactionGrade.Unhappy => CustomerTempValue.ZeroMultiplier,
-            SatisfactionGrade.Normal => CustomerTempValue.HalfMultiplier,
-            SatisfactionGrade.Happy => CustomerTempValue.FullMultiplier,
-            _ => CustomerTempValue.FullMultiplier
+            SatisfactionGrade.Unhappy => ZeroMultiplier,
+            SatisfactionGrade.Normal => HalfMultiplier,
+            SatisfactionGrade.Happy => FullMultiplier,
+            _ => FullMultiplier
         };
 
         return multiplier;
