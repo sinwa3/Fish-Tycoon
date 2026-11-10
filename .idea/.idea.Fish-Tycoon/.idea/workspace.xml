@@ -11,15 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/indexLayout.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Item/fish.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/Item/fish.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/ScreenUI/StealthEndScreen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/ScreenUI/StealthEndScreen.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scenes/StealthScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FishPickup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FishPickup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/StealthEndScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/StealthEndScreen.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,15 +129,13 @@
       <option name="MIXED_MODE_DEBUG" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false" ignored-value-for-modified-check="1533">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" useMixedMode="false">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="1533" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list>
-          <MonoRuntime />
-        </list>
+        <list />
       </option>
       <option name="selectedOptions">
         <list />

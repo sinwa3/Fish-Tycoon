@@ -89,12 +89,10 @@ public class StealthScene : BaseScene
 
     #region ===== 초기화 =====
 
-    /// <summary> KDH : 페이즈 상태를 초기화하고 페이즈 변화 이벤트를 발생한다. </summary>
+    /// <summary> KDH : 페이즈 상태를 초기화한다. </summary>
     private void InitializePhase()
     {
         _currentPhase = Phase.Playing;
-
-        _stealthHUD?.UpdatePhaseText(_currentPhase);
     }
 
     #endregion ===== 초기화 =====
@@ -119,8 +117,6 @@ public class StealthScene : BaseScene
         {
             return;
         }
-
-        _stealthHUD.UpdatePhaseText(_currentPhase);
 
         switch (_currentPhase)
         {

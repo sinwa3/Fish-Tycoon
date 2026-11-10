@@ -12,7 +12,6 @@ public class TycoonHUD : BaseHUD
         ReputationValueText,
         SatisfactionValueText,
         CurrentDayText,
-        PhaseText,
 
         MainQuestValueText,
         SubQuestDescText,
@@ -56,6 +55,7 @@ public class TycoonHUD : BaseHUD
 
         QuickSlotBar,
 
+        Quest,
         SubQuest
     }
 
@@ -219,7 +219,7 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 타이쿤 씬 첫 진입시 현재 영업 날짜를 세팅한다. </summary>
     private void SetCurrentDayText()
     {
-        Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}일 차");
+        Get<TMP_Text>(Texts.CurrentDayText)?.SetText(Managers.Data.GetCurrentDay().ToString());
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
@@ -317,20 +317,6 @@ public class TycoonHUD : BaseHUD
     private void UpdateGoldText()
     {
         Get<TMP_Text>(Texts.GoldValueText)?.SetText($"{Managers.Data.GetCurrentGold():N0} G");
-    }
-
-    /// <summary> KDH : 현재 영업 상태를 UI에 업데이트 한다. </summary>
-    public void UpdatePhaseText(TycoonScene.Phase phase)
-    {
-        string message = phase switch
-        {
-            TycoonScene.Phase.BeforeBusiness => "영업 전",
-            TycoonScene.Phase.DuringBusiness => "영업 중",
-            TycoonScene.Phase.AfterBusiness => "영업 후",
-            _ => string.Empty
-        };
-
-        Get<TMP_Text>(Texts.PhaseText)?.SetText(message);
     }
 
     /// <summary> KDH : 현재 만족도와 평판 등급을 업데이트한다. </summary>
@@ -431,6 +417,12 @@ public class TycoonHUD : BaseHUD
         Get<Image>(Images.QuickSlotBar)?.gameObject.SetActive(isVisible);
     }
 
+    /// <summary> KDH : 퀘스트를 표시/비표시한다. </summary>
+    public void SetQuestVisible(bool isVisible)
+    {
+        Get<Image>(Images.Quest)?.gameObject.SetActive(isVisible);
+    }
+    
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
     public void OpenFoodDiary()
     {

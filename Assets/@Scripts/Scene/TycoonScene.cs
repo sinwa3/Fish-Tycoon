@@ -22,7 +22,7 @@ public class TycoonScene : BaseScene
     private float _customerSpawnInterval;
 
     public int ServedCount { get; set; }
-    
+
     #endregion ===== 상태 =====
 
     #region ===== 참조 =====
@@ -133,9 +133,6 @@ public class TycoonScene : BaseScene
         switch (_currentPhase)
         {
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
-                // 만족도, 소지금 UI를 숨긴다.
-                _tycoonHUD.SetStoreInfoVisible(false);
-
                 // 영업 진행도를 초기화 한다.
                 _tycoonHUD.InitializeBusinessProgress(_maxCustomerCount);
 
@@ -157,9 +154,6 @@ public class TycoonScene : BaseScene
                 // 영업 중 받은 만족도를 적용시킨다.
                 Managers.Data.AddSatisfaction(_customerSpawner.DailySatisfaction);
 
-                // 만족도, 소지금 UI를 보인다.
-                _tycoonHUD.SetStoreInfoVisible(true);
-
                 // 쿠킹 컨트롤러를 종료한다.
                 _cookingController.Clear();
 
@@ -167,14 +161,12 @@ public class TycoonScene : BaseScene
                 _customerSpawner.StopBusiness();
 
                 // 정산 팝업 (마지막 날인 경우에는 게임을 끝낸다.)
-                Managers.UI.OpenPopup<SettlementPopup>().Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold);
+                Managers.UI.OpenPopup<SettlementPopup>()
+                    .Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold);
 
                 break;
             case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
-                Managers.UI.OpenLoadingUI(0.5f, () =>
-                {
-                    Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene);
-                });
+                Managers.UI.OpenLoadingUI(0.5f, () => { Managers.Scene.LoadSceneWithLoading(SceneType.StealthScene); });
                 break;
         }
 
@@ -194,11 +186,11 @@ public class TycoonScene : BaseScene
             return;
         }
 
-        _tycoonHUD.UpdatePhaseText(_currentPhase);
-
         switch (_currentPhase)
         {
             case Phase.BeforeBusiness:
+                _tycoonHUD.SetStoreInfoVisible(false); // 만족도, 소지금 UI를 숨긴다.
+                _tycoonHUD.SetQuestVisible(Managers.Data != null && Managers.Data.GetCurrentDay() > 1); // 1일차 영업전은 퀘스트 숨긴다.
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
                 _tycoonHUD.SetStoreBtnVisible(false);
@@ -209,16 +201,15 @@ public class TycoonScene : BaseScene
                 break;
             case Phase.DuringBusiness:
                 _tycoonBgCtrl.ShowOpened();
-                _tycoonHUD.SetNextBtnVisible(false);
-                _tycoonHUD.SetStoreBtnVisible(false);
-                _tycoonHUD.SetBusinessProgressVisible(true);
-                _tycoonHUD.SetQuickSlotVisible(false);
 
+                _tycoonHUD.SetBusinessProgressVisible(true);
                 break;
             case Phase.AfterBusiness:
+                _tycoonHUD.SetStoreInfoVisible(true); // 만족도, 소지금 UI를 보인다.
+                _tycoonHUD.SetQuestVisible(true);
                 _tycoonHUD.DeactivateFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(true);
-                _tycoonHUD.SetStoreBtnVisible(true);
+                _tycoonHUD.SetStoreBtnVisible(Managers.Data?.GetCurrentDay() > 1); // 1일차에는 상점을 숨긴다.
                 _tycoonHUD.SetBusinessProgressVisible(false);
                 _tycoonHUD.SetQuickSlotVisible(true);
 
