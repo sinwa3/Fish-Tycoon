@@ -132,7 +132,7 @@ public class SettlementPopup : BasePopup
         }
         else
         {
-            Managers.UI.OpenToastMessage("마지막 날입니다. 다음으로 진행하시면 결과를 확인할 수 있습니다.");
+            Managers.UI.OpenToastMessage("마지막 날입니다.");
         }
     }
 
