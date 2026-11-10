@@ -179,7 +179,7 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 시야 거리 안인지 돌려준다 </summary>
     private bool IsInSightDistance(Vector3 eyePosition, Vector3 targetPosition)
     {
-        float allowDistance = EnemyTempValue.SightDistance * GetCrouchSightMultiplier();
+        float allowDistance = _enemy.Detection.SightDistance * GetCrouchSightMultiplier();
         Vector3 targetDirection = targetPosition - eyePosition;
 
         return targetDirection.sqrMagnitude <= allowDistance * allowDistance;
@@ -190,7 +190,7 @@ public class EnemySight : MonoBehaviour
     {
         Vector3 targetDirection = Vector3.ProjectOnPlane(targetPosition - transform.position, Vector3.up);
 
-        return Vector3.Angle(transform.forward, targetDirection) <= EnemyTempValue.SightAngle * 0.5f;
+        return Vector3.Angle(transform.forward, targetDirection) <= _enemy.Detection.SightAngle * 0.5f;
     }
 
     /// <summary> KYH : 가리는 것이 없는지 돌려준다 </summary>
@@ -214,7 +214,7 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 웅크림에 따른 시야 거리 배율을 돌려준다 </summary>
     private float GetCrouchSightMultiplier()
     {
-        return _playerMovement.IsCrouching ? EnemyTempValue.CrouchSightMultiplier : 1.0f;
+        return _playerMovement.IsCrouching ? _enemy.Detection.CrouchSightMultiplier : 1.0f;
     }
 
     /// <summary> KYH : 집주인 눈 위치를 돌려준다 </summary>
@@ -243,7 +243,7 @@ public class EnemySight : MonoBehaviour
             return 1.0f;
         }
 
-        float allowDistance = EnemyTempValue.SightDistance * GetCrouchSightMultiplier();
+        float allowDistance = _enemy.Detection.SightDistance * GetCrouchSightMultiplier();
         Vector3 targetDirection = GetPlayerTargetPoint() - GetEyePosition();
 
         return Mathf.Clamp01(targetDirection.magnitude / allowDistance);
@@ -268,7 +268,7 @@ public class EnemySight : MonoBehaviour
 
         Vector3 targetDirection = Vector3.ProjectOnPlane(_player.position - transform.position, Vector3.up);
 
-        return targetDirection.sqrMagnitude <= EnemyTempValue.CatchDistance * EnemyTempValue.CatchDistance;
+        return targetDirection.sqrMagnitude <= _enemy.Detection.CatchDistance * _enemy.Detection.CatchDistance;
     }
 
     #endregion ===== 잡기 검사 =====
@@ -294,15 +294,21 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 시야 범위를 그린다 </summary>
     private void DrawSightGizmos()
     {
+        // Play 전에는 오늘 수치가 없다
+        if (_enemy == null || _enemy.Detection == null)
+        {
+            return;
+        }
+
         Gizmos.color = IsPlayerVisible ? Color.red : Color.yellow;
 
         Vector3 eyePosition = GetEyePosition();
-        Gizmos.DrawWireSphere(eyePosition, EnemyTempValue.SightDistance);
+        Gizmos.DrawWireSphere(eyePosition, _enemy.Detection.SightDistance);
 
-        Vector3 rightEdgeDirection = Quaternion.Euler(0.0f, EnemyTempValue.SightAngle * 0.5f, 0.0f) * transform.forward;
-        Vector3 leftEdgeDirection = Quaternion.Euler(0.0f, -EnemyTempValue.SightAngle * 0.5f, 0.0f) * transform.forward;
-        Gizmos.DrawLine(eyePosition, eyePosition + rightEdgeDirection * EnemyTempValue.SightDistance);
-        Gizmos.DrawLine(eyePosition, eyePosition + leftEdgeDirection * EnemyTempValue.SightDistance);
+        Vector3 rightEdgeDirection = Quaternion.Euler(0.0f, _enemy.Detection.SightAngle * 0.5f, 0.0f) * transform.forward;
+        Vector3 leftEdgeDirection = Quaternion.Euler(0.0f, -_enemy.Detection.SightAngle * 0.5f, 0.0f) * transform.forward;
+        Gizmos.DrawLine(eyePosition, eyePosition + rightEdgeDirection * _enemy.Detection.SightDistance);
+        Gizmos.DrawLine(eyePosition, eyePosition + leftEdgeDirection * _enemy.Detection.SightDistance);
     }
 
     #endregion ===== 디버그 =====

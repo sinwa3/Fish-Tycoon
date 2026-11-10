@@ -81,13 +81,13 @@ public class EnemyHearing : MonoBehaviour
 
         float heardLoudness = GetHeardLoudness(position, loudness);
 
-        if (heardLoudness < EnemyTempValue.SoundHearThreshold)
+        if (heardLoudness < _enemy.Detection.SoundHearThreshold)
         {
             return;
         }
 
         ReportToMemory(position, heardLoudness);
-        _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * EnemyTempValue.SoundGaugePerLoudness);
+        _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * _enemy.Detection.SoundGaugePerLoudness);
     }
 
     /// <summary> KYH : 소음을 무시하는지 돌려준다 (수면하는 날, 추격 중) </summary>
@@ -127,8 +127,8 @@ public class EnemyHearing : MonoBehaviour
         // 층 사이 바닥도 Wall 레이어다
         int wallCount = CountBlockers(soundPosition, earPosition, LayerKey.Mask.Wall);
 
-        float doorRatio = Mathf.Pow(EnemyTempValue.DoorSoundMultiplier, doorCount);
-        float wallRatio = Mathf.Pow(EnemyTempValue.WallSoundMultiplier, wallCount);
+        float doorRatio = Mathf.Pow(_enemy.Detection.DoorSoundMultiplier, doorCount);
+        float wallRatio = Mathf.Pow(_enemy.Detection.WallSoundMultiplier, wallCount);
 
         return loudness * distanceRatio * wallRatio * doorRatio;
     }
@@ -141,7 +141,7 @@ public class EnemyHearing : MonoBehaviour
             return 0.0f;
         }
 
-        float radius = loudness * EnemyTempValue.SoundRangePerLoudness;
+        float radius = loudness * _enemy.Detection.SoundRangePerLoudness;
 
         return Mathf.Clamp01(1.0f - distance / radius);
     }

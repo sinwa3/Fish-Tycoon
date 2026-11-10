@@ -61,7 +61,7 @@ public class EnemySuspicionGauge : MonoBehaviour
         }
         else if (_enemy.Memory.IsGaugeDecayAllowed)
         {
-            Gauge -= EnemyTempValue.GaugeDecayRate * deltaTime;
+            Gauge -= _enemy.Detection.GaugeDecayRate * deltaTime;
         }
 
         Gauge = Mathf.Clamp(Gauge, 0.0f, EnemyTempValue.MaxGauge);
@@ -76,7 +76,7 @@ public class EnemySuspicionGauge : MonoBehaviour
     /// <summary> KYH : 거리에 따른 초당 상승량을 돌려준다 </summary>
     private float GetSightRiseRate()
     {
-        return Mathf.Lerp(EnemyTempValue.SightGaugeRiseNear, EnemyTempValue.SightGaugeRiseFar, _enemy.Sight.GetSightDistanceRatio());
+        return Mathf.Lerp(_enemy.Detection.SightGaugeRiseNear, _enemy.Detection.SightGaugeRiseFar, _enemy.Sight.GetSightDistanceRatio());
     }
 
     #endregion ===== 게이지 갱신 =====
@@ -136,9 +136,9 @@ public class EnemySuspicionGauge : MonoBehaviour
         switch (level)
         {
             case AlertLevel.Suspicious:
-                return EnemyTempValue.SuspiciousEnterGauge;
+                return _enemy.Detection.SuspiciousEnterGauge;
             case AlertLevel.Alert:
-                return EnemyTempValue.AlertEnterGauge;
+                return _enemy.Detection.AlertEnterGauge;
             case AlertLevel.Detected:
                 return EnemyTempValue.DetectedEnterGauge;
             default:
@@ -152,11 +152,11 @@ public class EnemySuspicionGauge : MonoBehaviour
         switch (level)
         {
             case AlertLevel.Suspicious:
-                return EnemyTempValue.SuspiciousExitGauge;
+                return _enemy.Detection.SuspiciousExitGauge;
             case AlertLevel.Alert:
-                return EnemyTempValue.AlertExitGauge;
+                return _enemy.Detection.AlertExitGauge;
             case AlertLevel.Detected:
-                return EnemyTempValue.DetectedExitGauge;
+                return _enemy.Detection.DetectedExitGauge;
             default:
                 return 0.0f;
         }

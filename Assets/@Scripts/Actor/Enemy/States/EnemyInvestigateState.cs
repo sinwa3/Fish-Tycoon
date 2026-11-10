@@ -51,7 +51,7 @@ public class EnemyInvestigateState : BaseEnemyState
     /// <summary> KYH : 멈추고 두리번을 시작한다 </summary>
     private void StartLookAround()
     {
-        Enemy.Look.LookAround(EnemyTempValue.InvestigateLookAroundDuration);
+        Enemy.Look.LookAround(Enemy.Detection.InvestigateLookAroundDuration);
         Enemy.Movement.Stop();
         _isLookingAround = true;
     }

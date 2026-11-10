@@ -7,6 +7,7 @@ public class EnemyMovement : MonoBehaviour
 {
     #region ===== 상태 =====
 
+    private EnemyController _enemy;
     private NavMeshAgent _agent;
     private NavMeshPath _path;
 
@@ -34,11 +35,17 @@ public class EnemyMovement : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : NavMeshAgent를 찾고 경로를 만든다 </summary>
+    /// <summary> KYH : 컨트롤러와 NavMeshAgent를 찾고 경로를 만든다 </summary>
     private void InitializeComponents()
     {
+        _enemy = GetComponent<EnemyController>();
         _agent = GetComponent<NavMeshAgent>();
         _path = new NavMeshPath();
+
+        if (_enemy == null)
+        {
+            CPrint.Warning("[EnemyMovement] 적 컨트롤러 없음");
+        }
 
         if (_agent == null)
         {
@@ -124,10 +131,10 @@ public class EnemyMovement : MonoBehaviour
         switch (speedMode)
         {
             case EnemySpeedMode.Walk:
-                _agent.speed = EnemyTempValue.WalkSpeed;
+                _agent.speed = _enemy.Detection.WalkSpeed;
                 break;
             case EnemySpeedMode.Run:
-                _agent.speed = EnemyTempValue.RunSpeed;
+                _agent.speed = _enemy.Detection.RunSpeed;
                 break;
         }
 
