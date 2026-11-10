@@ -3,6 +3,17 @@ using UnityEngine;
 /// <summary> KYH : 시야, 소리로 의심 게이지를 올리고 내려 단계를 기억에 적는다 </summary>
 public class EnemySuspicionGauge : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 의심 게이지 최대 (발각)
+    private const float MaxGauge = 100.0f;
+    // 발각 단계로 올라가는 값
+    private const float DetectedEnterGauge = MaxGauge;
+    // 소리로 오를 수 있는 최대 (발각 바로 아래)
+    private const float SoundGaugeCap = DetectedEnterGauge - 1.0f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     private EnemyController _enemy;
@@ -64,7 +75,7 @@ public class EnemySuspicionGauge : MonoBehaviour
             Gauge -= _enemy.Detection.GaugeDecayRate * deltaTime;
         }
 
-        Gauge = Mathf.Clamp(Gauge, 0.0f, EnemyTempValue.MaxGauge);
+        Gauge = Mathf.Clamp(Gauge, 0.0f, MaxGauge);
     }
 
     /// <summary> KYH : 시야로 게이지가 오르는지 돌려준다 </summary>
@@ -86,12 +97,12 @@ public class EnemySuspicionGauge : MonoBehaviour
     /// <summary> KYH : 들린 세기만큼 게이지를 올린다 (발각 바로 아래까지) </summary>
     public void AddSoundGauge(float amount)
     {
-        if (Gauge >= EnemyTempValue.SoundGaugeCap)
+        if (Gauge >= SoundGaugeCap)
         {
             return;
         }
 
-        Gauge = Mathf.Min(Gauge + amount, EnemyTempValue.SoundGaugeCap);
+        Gauge = Mathf.Min(Gauge + amount, SoundGaugeCap);
     }
 
     #endregion ===== 소리 =====
@@ -140,7 +151,7 @@ public class EnemySuspicionGauge : MonoBehaviour
             case AlertLevel.Alert:
                 return _enemy.Detection.AlertEnterGauge;
             case AlertLevel.Detected:
-                return EnemyTempValue.DetectedEnterGauge;
+                return DetectedEnterGauge;
             default:
                 return 0.0f;
         }

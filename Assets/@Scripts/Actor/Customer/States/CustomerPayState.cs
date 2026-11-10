@@ -1,6 +1,12 @@
 /// <summary> KYH : 식사를 마치고 값을 치르는 상태 </summary>
 public class CustomerPayState : BaseCustomerState
 {
+    #region ===== 수치 =====
+
+    private const float PayDuration = 1.0f;
+
+    #endregion ===== 수치 =====
+
     public CustomerPayState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
     {
     }
@@ -15,7 +21,7 @@ public class CustomerPayState : BaseCustomerState
     /// <summary> KYH : 결제 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
-        if (StateMachine.StateElapsedTime >= CustomerTempValue.PayDuration)
+        if (StateMachine.StateElapsedTime >= PayDuration)
         {
             StateMachine.ChangeState<CustomerExitState>();
         }

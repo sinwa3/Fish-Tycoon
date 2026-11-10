@@ -3,6 +3,13 @@ using UnityEngine;
 /// <summary> KYH : 플레이어를 달려서 쫓는 상태 </summary>
 public class EnemyChaseState : BaseEnemyState
 {
+    #region ===== 수치 =====
+
+    // 추격 중 목적지를 다시 잡는 간격(초)
+    private const float ChaseRepathInterval = 0.2f;
+
+    #endregion ===== 수치 =====
+
     // 잡았는지
     private bool _isArrested;
     // 다음 목적지 갱신까지 남은 시간
@@ -63,7 +70,7 @@ public class EnemyChaseState : BaseEnemyState
             return;
         }
 
-        _repathTimer = EnemyTempValue.ChaseRepathInterval;
+        _repathTimer = ChaseRepathInterval;
         Enemy.Movement.MoveTo(GetChaseTarget());
     }
 

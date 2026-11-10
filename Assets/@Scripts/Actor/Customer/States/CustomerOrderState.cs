@@ -1,6 +1,12 @@
 /// <summary> KYH : 손님이 메뉴를 주문하는 상태 </summary>
 public class CustomerOrderState : BaseCustomerState
 {
+    #region ===== 수치 =====
+
+    private const float OrderDuration = 1.0f;
+
+    #endregion ===== 수치 =====
+
     public CustomerOrderState(CustomerStateMachine stateMachine, CustomerController customer) : base(stateMachine, customer)
     {
     }
@@ -13,7 +19,7 @@ public class CustomerOrderState : BaseCustomerState
     /// <summary> KYH : 주문 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
-        if (StateMachine.StateElapsedTime >= CustomerTempValue.OrderDuration)
+        if (StateMachine.StateElapsedTime >= OrderDuration)
         {
             Customer.Order();
             StateMachine.ChangeState<CustomerWaitState>();

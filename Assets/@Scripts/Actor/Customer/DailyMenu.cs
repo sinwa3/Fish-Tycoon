@@ -4,6 +4,13 @@ using UnityEngine;
 /// <summary> KYH : 그날 메뉴를 섞어 두고 주문 순서대로 내준다 </summary>
 public class DailyMenu
 {
+    #region ===== 수치 =====
+
+    // 김초밥 메뉴 ID (음식 테이블 ID 0과 같음)
+    private const int BasicSushiId = 0;
+
+    #endregion ===== 수치 =====
+
     // 메뉴 ID별 준비한 수량
     private readonly Dictionary<int, int> _menuCounts = new();
 
@@ -55,7 +62,7 @@ public class DailyMenu
         {
             for (int i = 0; i < gap; i++)
             {
-                _shuffledCandidates.Add(CustomerTempValue.BasicSushiId);
+                _shuffledCandidates.Add(BasicSushiId);
             }
         }
 
@@ -76,7 +83,7 @@ public class DailyMenu
         {
             CPrint.Warning($"[DailyMenu] 주문 {_orderedCount}번째, 리스트 {_shuffledCandidates.Count}칸");
 
-            return CustomerTempValue.BasicSushiId;
+            return BasicSushiId;
         }
 
         int menuId = _shuffledCandidates[_orderedCount];

@@ -5,6 +5,17 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyMovement : MonoBehaviour
 {
+    #region ===== 수치 =====
+
+    // 목표에서 이 거리 안에 바닥이 없으면 갈 수 없는 곳으로 본다
+    private const float SampleMaxDistance = 1.0f;
+    // 이 거리 안의 닫힌 문을 보면 멈춰서 연다
+    private const float DoorDetectDistance = 1.0f;
+    // 문을 열고 지나가기 전까지 기다리는 시간(초)
+    private const float DoorOpenWaitDuration = 0.5f;
+
+    #endregion ===== 수치 =====
+
     #region ===== 상태 =====
 
     private EnemyController _enemy;
@@ -85,7 +96,7 @@ public class EnemyMovement : MonoBehaviour
     /// <summary> KYH : 목표까지 경로를 찾아 Agent에 넣는다 </summary>
     private bool SetAgentPath(Vector3 target)
     {
-        if (!NavMesh.SamplePosition(target, out NavMeshHit hit, EnemyTempValue.SampleMaxDistance, _agent.areaMask))
+        if (!NavMesh.SamplePosition(target, out NavMeshHit hit, SampleMaxDistance, _agent.areaMask))
         {
             return false;
         }
@@ -171,11 +182,11 @@ public class EnemyMovement : MonoBehaviour
     {
         door = null;
 
-        Vector3 eyePosition = transform.position + Vector3.up * EnemyTempValue.EyeHeight;
+        Vector3 eyePosition = transform.position + Vector3.up * EnemySight.EyeHeight;
         Vector3 direction = Vector3.ProjectOnPlane(_agent.steeringTarget - eyePosition, Vector3.up);
 
         // 목표가 문 앞이면 그 문은 찾지 않는다
-        float detectDistance = Mathf.Min(EnemyTempValue.DoorDetectDistance, _agent.remainingDistance);
+        float detectDistance = Mathf.Min(DoorDetectDistance, _agent.remainingDistance);
 
         bool isHit = Physics.Raycast
             (
@@ -222,7 +233,7 @@ public class EnemyMovement : MonoBehaviour
         _agent.velocity = Vector3.zero;
 
         _door.Open(transform.position);
-        _doorOpenTimer = EnemyTempValue.DoorOpenWaitDuration;
+        _doorOpenTimer = DoorOpenWaitDuration;
     }
 
     /// <summary> KYH : 문이 다 열릴 때까지 기다린다 </summary>
