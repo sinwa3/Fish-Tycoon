@@ -173,9 +173,8 @@ public class TycoonScene : BaseScene
         if (_currentPhase < Phase.AfterBusiness)
         {
             _currentPhase++;
+            UpdatePhaseUI();
         }
-
-        UpdatePhaseUI();
     }
 
     /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>
