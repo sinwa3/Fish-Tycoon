@@ -32,6 +32,8 @@ public class StealthScene : BaseScene
     
     [SerializeField] private PixelationTransition _pixelationTransition;
     
+    [SerializeField] private HoldingSystem _holdingSystem;
+    
     #endregion ===== 참조 =====
     
     #region ===== 상태 =====
@@ -64,23 +66,26 @@ public class StealthScene : BaseScene
         }
     }
 
-    private void OnDestroy()
-    {
-        // (임시) 플레이어가 잡혔을 때 종료 화면 활성화 구독해제
-        if (Managers.Event != null)
-        {
-            Managers.Event.OnPlayerArrested -= OnArrested;
-            Managers.Event.OnPlayerEscaped -= OnEscaped;
-        }
-    }
-
     protected override void OnStart()
     {
         // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
         Managers.Input?.SetInputBlocked(this, true);
         _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
         
+        // 플레이어와 HUD에 홀딩 시스템을 연결한다.
+        //_player?.GetComponent<PlayerInteractor>()?.SetHoldingSystem(_holdingSystem);
+        _stealthHUD?.SetHoldingSystem(_holdingSystem);
+        
         InitializePhase();
+    }
+    
+    private void OnDestroy()
+    {
+        if (Managers.Event != null)
+        {
+            Managers.Event.OnPlayerArrested -= OnArrested;
+            Managers.Event.OnPlayerEscaped -= OnEscaped;
+        }
     }
 
     protected override void OnUpdate()

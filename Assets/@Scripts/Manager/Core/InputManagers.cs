@@ -11,6 +11,7 @@ public class InputManager
     public float MouseWheel { get; private set; }
 
     public bool MouseDown_Left => Input.GetMouseButtonDown(0);
+    public bool Mouse_Left => Input.GetMouseButton(0);
     public bool MouseDown_Right => Input.GetMouseButtonDown(1);
     public bool MouseDown_Wheel => Input.GetMouseButtonDown(2);
 
@@ -47,6 +48,7 @@ public class InputManager
     public bool KeyDown_9 => Input.GetKeyDown(KeyCode.Alpha9) || Input.GetKeyDown(KeyCode.Keypad9);
     
     public bool KeyDown_E => Input.GetKeyDown(KeyCode.E);
+    public bool Key_E => Input.GetKey(KeyCode.E);
     public bool KeyDown_F => Input.GetKeyDown(KeyCode.F);
     public bool KeyDown_W => Input.GetKeyDown(KeyCode.W);
     public bool KeyDown_A => Input.GetKeyDown(KeyCode.A);
