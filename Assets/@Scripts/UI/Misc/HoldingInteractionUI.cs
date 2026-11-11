@@ -87,7 +87,8 @@ public class HoldingInteractionUI : BaseUI
         if (type == InteractionType.Fish)
         {
             Image fishIcon = Get<Image>(Images.FishIcon);
-            if (fishIcon != null)
+            // YSW : 아이콘을 넘기지 않으면(획득 전 생선 정보 숨김) 프리팹의 기본 생선 아이콘을 유지한다.
+            if (fishIcon != null && _holdingSystem.Icon != null)
             {
                 fishIcon.sprite = _holdingSystem.Icon;
             }

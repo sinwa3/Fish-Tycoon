@@ -73,7 +73,7 @@ public class StealthScene : BaseScene
         _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
         
         // 플레이어와 HUD에 홀딩 시스템을 연결한다.
-        //_player?.GetComponent<PlayerInteractor>()?.SetHoldingSystem(_holdingSystem);
+        _player?.GetComponent<PlayerInteractor>()?.SetHoldingSystem(_holdingSystem);
         _stealthHUD?.SetHoldingSystem(_holdingSystem);
         
         InitializePhase();
