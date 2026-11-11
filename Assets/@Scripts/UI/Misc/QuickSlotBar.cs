@@ -14,9 +14,6 @@ public class QuickSlotBar : MonoBehaviour
     private int _selectedSlotIndex = -1;
     private bool _isSelectionEnabled;
 
-    /// <summary> KDH : 현재 선택한 퀵슬롯 인덱스다. 선택 가능한 슬롯이 없으면 -1이다. </summary>
-    public int SelectedSlotIndex => _selectedSlotIndex;
-
     private void Awake()
     {
         InitializeItemTooltip();
@@ -43,7 +40,7 @@ public class QuickSlotBar : MonoBehaviour
         Managers.Data.OnQuickSlotChanged -= RefreshSlots;
     }
 
-    /// <summary> KDH : 잠입 HUD에서 전달한 숫자키와 마우스 휠 입력으로 퀵슬롯을 선택한다. </summary>
+    /// <summary> KDH : 잠입 HUD에서 전달한 입력으로 퀵슬롯을 선택하거나 소비 아이템을 사용한다. </summary>
     public void OnInputKey()
     {
         InputManager input = Managers.Input;
@@ -53,6 +50,7 @@ public class QuickSlotBar : MonoBehaviour
             return;
         }
 
+        // 키보드 입력으로 슬롯 전환
         int slotIndex = input.KeyDown_1 ? 0
             : input.KeyDown_2 ? 1
             : input.KeyDown_3 ? 2
@@ -71,12 +69,40 @@ public class QuickSlotBar : MonoBehaviour
             return;
         }
 
+        if (input.MouseDown_Right)
+        {
+            UseSelectedConsumable();
+            return;
+        }
+        
+        // 마우스 휠로 선택 슬롯 전환
         if (Cursor.lockState != CursorLockMode.Locked || Mathf.Approximately(input.MouseWheel, 0f))
         {
             return;
         }
 
         MoveSelection(input.MouseWheel > 0f ? -1 : 1);
+    }
+
+    /// <summary> KDH : 선택한 소비 아이템을 한 개 차감하고 사용 안내를 표시한다. </summary>
+    private void UseSelectedConsumable()
+    {
+        if (Managers.Data == null)
+        {
+            return;
+        }
+        
+        QuickSlotData slot = Managers.Data.GetQuickSlot(_selectedSlotIndex);
+        if (slot is not { Type: QuickSlotItemType.Consumable } || slot.Count <= 0)
+        {
+            return;
+        }
+
+        string itemName = Managers.Table?.Item?.GetItem(slot.ItemID)?.Name ?? "소비 아이템";
+        if (Managers.Data.TryUseConsumable(_selectedSlotIndex))
+        {
+            Managers.UI?.OpenToastMessage($"{itemName} 아이템을 사용했습니다.");
+        }
     }
 
     /// <summary> KDH : 지정한 퀵슬롯을 선택하고 이전 슬롯의 선택 표시를 해제한다. </summary>
