@@ -26,6 +26,8 @@ public class StealthHUD : BaseHUD
 
     private QuickSlotBar _quickSlotBar;
 
+    private HoldingInteractionUI _holdingInteractionUI;
+    
     private ReputationTooltip _reputationTooltip;
     
     #endregion ===== 참조 =====
@@ -51,6 +53,8 @@ public class StealthHUD : BaseHUD
         _quickSlotBar = Get<Image>(Images.QuickSlotBar)?.GetComponent<QuickSlotBar>();
         _quickSlotBar?.SetSelectionEnabled(true);
 
+        _holdingInteractionUI = GetComponentInChildren<HoldingInteractionUI>();
+        
         _stealthScene = gameObject.FindParent<StealthScene>();
         
         InitializeReputationTooltip();
@@ -113,6 +117,12 @@ public class StealthHUD : BaseHUD
         Get<TMP_Text>(Texts.CurrentDayText)?.SetText($"{Managers.Data.GetCurrentDay()}");
     }
 
+    /// <summary> KDH : 잠입 씬 홀딩 이벤트를 전용 HUD 표시부에 연결한다. </summary>
+    public void SetHoldingSystem(HoldingSystem holdingSystem)
+    {
+        _holdingInteractionUI?.Bind(holdingSystem);
+    }
+    
     /// <summary> KDH : 평판 툴팁을 초기화한다. </summary>
     private void InitializeReputationTooltip()
     {
