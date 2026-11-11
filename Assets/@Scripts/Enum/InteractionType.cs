@@ -9,4 +9,5 @@ public enum InteractionType
     Fish,         // 생선 줍기 (홀드)
     ExitDoor,     // 현관문 나가기 (홀드)
     Throwable,    // 던지기 물건 줍기 (즉발)
+    Lock,         // 미니게임 실행 (홀드)
 }
