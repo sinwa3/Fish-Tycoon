@@ -80,7 +80,7 @@ public class ReputationProgressPopup : BasePopup
             // 다음 등급으로 전환하고 승급 메시지 표시
             _sequence.AppendCallback(() =>
             {
-                Get<TMP_Text>(Texts.RankText).SetText($"{grade}");
+                Get<TMP_Text>(Texts.RankText).SetText($"{promotedGrade}");
                 ShowProgress(table, promotedGrade, threshold);
                 Get<TMP_Text>(Texts.PromotionText).SetText("평판 상승!");
             });
