@@ -26,6 +26,7 @@ public class DataManager
     public event Action OnSatisfactionChanged;
     public event Action OnQuickSlotChanged;
     public event Action OnStoreChanged;
+    public event Action<int> OnItemUsed;
 
     #endregion ===== 이벤트 =====
 
@@ -580,6 +581,7 @@ public class DataManager
         }
 
         slot.Count--;
+        OnItemUsed?.Invoke(slot.ItemID);
 
         if (slot.Count == 0)
         {

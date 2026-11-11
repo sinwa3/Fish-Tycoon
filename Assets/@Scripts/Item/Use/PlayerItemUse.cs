@@ -59,23 +59,23 @@ public class PlayerItemUse : MonoBehaviour
     /// <summary> KYH : 아이템 사용 이벤트를 구독한다 </summary>
     private void SubscribeEvents()
     {
-        if (Managers.Event == null)
+        if (Managers.Data == null)
         {
             return;
         }
 
-        Managers.Event.OnItemUsed += HandleItemUsed;
+        Managers.Data.OnItemUsed += HandleItemUsed;
     }
 
     /// <summary> KYH : 아이템 사용 이벤트 구독을 해제한다 </summary>
     private void UnsubscribeEvents()
     {
-        if (Managers.Event == null)
+        if (Managers.Data == null)
         {
             return;
         }
 
-        Managers.Event.OnItemUsed -= HandleItemUsed;
+        Managers.Data.OnItemUsed -= HandleItemUsed;
     }
 
     #endregion ===== 이벤트 =====

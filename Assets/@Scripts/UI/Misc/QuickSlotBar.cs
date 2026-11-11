@@ -114,7 +114,6 @@ public class QuickSlotBar : MonoBehaviour
         if (Managers.Data.TryUseConsumable(_selectedSlotIndex))
         {
             Managers.UI?.OpenToastMessage($"{itemName} 아이템을 사용했습니다.");
-            Managers.Event?.RaiseItemUsed(slot.ItemID);
         }
     }
 
