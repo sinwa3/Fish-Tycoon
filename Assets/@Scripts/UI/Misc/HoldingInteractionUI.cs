@@ -15,6 +15,7 @@ public class HoldingInteractionUI : BaseUI
         FishIcon,
         WardrobeIcon,
         WardrobeArrowIcon,
+        LockIcon,
     }
 
     private enum Texts
@@ -84,6 +85,7 @@ public class HoldingInteractionUI : BaseUI
         Get<Image>(Images.DoorIcon)?.gameObject.SetActive(type == InteractionType.Door);
         Get<Image>(Images.FishIcon)?.gameObject.SetActive(type == InteractionType.Fish);
         Get<Image>(Images.InteractionIcon)?.gameObject.SetActive(type == InteractionType.Furniture);
+        Get<Image>(Images.LockIcon)?.gameObject.SetActive(type == InteractionType.Lock);
         if (type == InteractionType.Fish)
         {
             Image fishIcon = Get<Image>(Images.FishIcon);
