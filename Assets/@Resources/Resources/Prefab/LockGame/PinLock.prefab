@@ -374,7 +374,6 @@ MonoBehaviour:
   _pinMotion: {fileID: 3944824435825132894}
   _springLength: 0.8
   _minScaleRatio: 0.2
-  _isPositiveZTop: 0
 --- !u!1 &1131215000852897932
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,7 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _travelDistance: 0.65202
-  _minFallDuration: 0.05
+  _minFallDuration: 0.1
   _maxFallDuration: 0.25
   _botomWindowDuration: 0.15
   _returnDuration: 0.1
@@ -708,7 +707,6 @@ MonoBehaviour:
   _pinMotion: {fileID: 6491902498527451578}
   _springLength: 0.8
   _minScaleRatio: 0.2
-  _isPositiveZTop: 1
 --- !u!1 &2846199963978208746
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,7 +839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _travelDistance: 0.65202
-  _minFallDuration: 0.05
+  _minFallDuration: 0.1
   _maxFallDuration: 0.25
   _botomWindowDuration: 0.15
   _returnDuration: 0.1
@@ -1061,7 +1059,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _travelDistance: 0.65202
-  _minFallDuration: 0.05
+  _minFallDuration: 0.1
   _maxFallDuration: 0.25
   _botomWindowDuration: 0.15
   _returnDuration: 0.1
@@ -1164,7 +1162,6 @@ MonoBehaviour:
   _pinMotion: {fileID: 6695147970155093183}
   _springLength: 0.8
   _minScaleRatio: 0.2
-  _isPositiveZTop: 1
 --- !u!1 &4600234563117130509
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,7 +1428,6 @@ MonoBehaviour:
   _pinMotion: {fileID: 1293300906168991507}
   _springLength: 0.8
   _minScaleRatio: 0.2
-  _isPositiveZTop: 1
 --- !u!1 &5228203271350889372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1711,7 +1707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _travelDistance: 0.65202
-  _minFallDuration: 0.05
+  _minFallDuration: 0.1
   _maxFallDuration: 0.25
   _botomWindowDuration: 0.15
   _returnDuration: 0.1

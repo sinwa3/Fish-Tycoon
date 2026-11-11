@@ -293,6 +293,7 @@ public class PlayerInteractor : MonoBehaviour
             case InteractionType.Wardrobe:
             case InteractionType.Fish:
             case InteractionType.ExitDoor:
+            case InteractionType.Lock:
                 return true;
 
             default:
