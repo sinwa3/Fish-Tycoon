@@ -6,6 +6,9 @@ public interface IInteractable
     /// <summary> YSW : 화면에 표시할 상호작용 안내 문구 (예: 숨기, 줍기) </summary>
     public string InteractionText { get; }
 
+    /// <summary> YSW : 상호작용 종류 (UI 아이콘/문구, 홀드 여부 등 종류별 처리에 사용) </summary>
+    public InteractionType Type { get; }
+
     /// <summary> YSW : 지정한 상호작용 주체가 지금 상호작용할 수 있는지 반환한다. </summary>
     public bool CanInteract(GameObject interactor);
 

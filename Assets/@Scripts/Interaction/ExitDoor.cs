@@ -27,6 +27,8 @@ public class ExitDoor : MonoBehaviour, IInteractable
 
     public string InteractionText => _interactionText;
 
+    public InteractionType Type => InteractionType.ExitDoor;
+
     #endregion ===== 상태 =====
 
     private void Awake()

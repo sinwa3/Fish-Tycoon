@@ -9,6 +9,8 @@ public class FurnitureInteractable_Test : MonoBehaviour, IInteractable
     /// <summary>SJY : 플레이어 화면에 표시할 상호작용 문구를 반환한다.</summary>
     public string InteractionText => _interactionText;
 
+    public InteractionType Type => InteractionType.Furniture;
+
     private void Awake()
     {
         if (_canInteract)

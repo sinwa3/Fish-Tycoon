@@ -20,6 +20,8 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable
 
     public string InteractionText => IsOpen ? _closeText : _openText;
 
+    public InteractionType Type => InteractionType.Furniture;
+
     #endregion ===== 상태 =====
 
     private void Awake()

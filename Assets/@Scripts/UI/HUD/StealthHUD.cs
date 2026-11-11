@@ -149,7 +149,7 @@ public class StealthHUD : BaseHUD
 
     #region ===== 업데이트 =====
 
-    /// <summary> KDH : 커서 잠금 상태에 맞는 조작법을 표시한다. </summary>
+    /// <summary> KDH : 커서 잠금 상태와 선택한 아이템에 맞는 조작법을 표시한다. </summary>
     private void UpdateControlGuideText()
     {
         TMP_Text controlGuideText = Get<TMP_Text>(Texts.ControlGuideText);
@@ -158,11 +158,16 @@ public class StealthHUD : BaseHUD
         {
             return;
         }
-        
+
         string crouchInstruction = _stealthScene.PlayerMovement != null
             ? (_stealthScene.PlayerMovement.IsCrouching ? "[Ctrl] 웅크리기 해제" : "[Ctrl] 웅크리기")
             : "[Ctrl] 웅크리기";
+
         string cursorInstruction = _isCursorGuideLocked ? "[휠 클릭] 커서 락 해제" : "[좌클릭] 커서 락";
+
+        string itemInstruction = _quickSlotBar != null && _quickSlotBar.HasUsableConsumable 
+            ? "[마우스 우클릭] 아이템 사용"
+            : string.Empty;
 
         controlGuideText.SetText($"[W A S D] 이동" +
                                  $"\n" +
@@ -170,7 +175,8 @@ public class StealthHUD : BaseHUD
                                  $"\n{crouchInstruction}" +
                                  $"\n" +
                                  $"\n{cursorInstruction}" +
-                                 $"\n[숫자키 / 휠] 퀵슬롯 선택");
+                                 $"\n[숫자키 / 휠] 퀵슬롯 선택" +
+                                 $"\n{itemInstruction}");
     }
     
     /// <summary> KDH : 플레이어 스태미너를 게이지와 수치에 반영한다. </summary>
