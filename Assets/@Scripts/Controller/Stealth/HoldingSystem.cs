@@ -1,17 +1,6 @@
 using System;
 using UnityEngine;
 
-/// <summary> KDH : 홀딩 UI에 표시할 상호작용 종류. </summary>
-public enum InteractionType
-{
-    None,
-    Door,
-    Furniture,
-    Wardrobe,
-    WardrobeExit,
-    Fish,
-}
-
 /// <summary> KDH : PlayerInteractor가 전달한 표시 데이터와 진행률을 HUD 이벤트로 전달한다. </summary>
 public class HoldingSystem : MonoBehaviour
 {

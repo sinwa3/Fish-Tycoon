@@ -21,6 +21,8 @@ public class FishPickup : MonoBehaviour, IInteractable
     /// <summary> YSW : 바라봤을 때 표시할 안내 문구 (생선 이름은 획득할 때만 알려준다) </summary>
     public string InteractionText => _interactionText;
 
+    public InteractionType Type => InteractionType.Fish;
+
     /// <summary> KimYH : 이 생선의 ID </summary>
     public int FishID { get; private set; } = -1;
 
