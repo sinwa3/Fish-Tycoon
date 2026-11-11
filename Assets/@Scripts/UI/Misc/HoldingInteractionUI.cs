@@ -81,7 +81,7 @@ public class HoldingInteractionUI : BaseUI
         bool wardrobe = type is InteractionType.Wardrobe or InteractionType.WardrobeExit;
         Get<Image>(Images.WardrobeIcon)?.gameObject.SetActive(wardrobe);
         Get<Image>(Images.WardrobeArrowIcon)?.gameObject.SetActive(type == InteractionType.WardrobeExit);
-        Get<Image>(Images.DoorIcon)?.gameObject.SetActive(type == InteractionType.Door);
+        Get<Image>(Images.DoorIcon)?.gameObject.SetActive(type is InteractionType.Door or InteractionType.ExitDoor);
         Get<Image>(Images.FishIcon)?.gameObject.SetActive(type == InteractionType.Fish);
         Get<Image>(Images.InteractionIcon)?.gameObject.SetActive(type == InteractionType.Furniture);
         if (type == InteractionType.Fish)
