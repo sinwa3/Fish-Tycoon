@@ -9,7 +9,6 @@ public class PinSpring : MonoBehaviour
     [Header("스프링 설정")]
     [SerializeField] private float _springLength = 0.5f;
     [SerializeField, Range(0.01f, 1f)] private float _minScaleRatio = 0.2f;
-    [SerializeField] private bool _isPositiveZTop = true;
 
     private Vector3 _initialPinPosition;
     private Vector3 _initialSpringPosition;

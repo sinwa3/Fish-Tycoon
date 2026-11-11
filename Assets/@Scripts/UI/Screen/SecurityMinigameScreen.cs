@@ -88,7 +88,7 @@ public class SecurityMinigameScreen : BaseScreen
         Managers.UI?.CurrentHUD.SetVisible(false);
 
         CreateMinigame(minigameType);
-        CreateMinigameCamera();
+        CreateMinigameCamera(minigameType);
         
         SetBackgroundBlur();
         
@@ -202,7 +202,7 @@ public class SecurityMinigameScreen : BaseScreen
     #region ===== 카메라 =====
 
     /// <summary> 미니게임 전용 직교 카메라와 조명을 생성한다. </summary>
-    private void CreateMinigameCamera()
+    private void CreateMinigameCamera(MinigameType minigameType)
     {
         if (_minigameRoot == null)
         {
@@ -211,7 +211,6 @@ public class SecurityMinigameScreen : BaseScreen
         
         GameObject cameraObject = new GameObject("SecurityMinigameCamera");
         cameraObject.transform.SetParent(_minigameRoot.transform, false);
-        cameraObject.transform.localPosition = new Vector3(0f, 0f, -5f);
 
         _minigameCamera = cameraObject.GetOrAddComponent<Camera>();
 
@@ -221,7 +220,21 @@ public class SecurityMinigameScreen : BaseScreen
         _minigameCamera.targetTexture = CreateRenderTexture();
 
         _minigameCamera.orthographic = true;
-        _minigameCamera.orthographicSize = 3.5f;
+        
+        switch (minigameType)
+        {
+            case MinigameType.PinLock:
+                cameraObject.transform.localPosition = new Vector3(-0.07f, 0.82f, -1.5f);
+                cameraObject.transform.localEulerAngles = new Vector3(22f, 11f, 0f);
+                _minigameCamera.orthographicSize = 2f;
+                break;
+
+            case MinigameType.RotationLock:
+                cameraObject.transform.localPosition = new Vector3(0f, 0f, -5f);
+                cameraObject.transform.localEulerAngles = Vector3.zero;
+                _minigameCamera.orthographicSize = 3.5f;
+                break;
+        }
 
         GameObject lightObject = new GameObject("SecurityMinigameLight");
         lightObject.transform.SetParent(_minigameRoot.transform, false);
