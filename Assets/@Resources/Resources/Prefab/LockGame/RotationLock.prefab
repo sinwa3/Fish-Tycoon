@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _minTargetAngle: -90
   _maxTargetAngle: 90
-  _angleTolerance: 8
+  _angleTolerance: 10
   _angleFalloffRange: 40
   _maxCylinderAngle: -90
   _wrongCylinderAngle: -5
