@@ -40,6 +40,8 @@ public class Door : MonoBehaviour, IInteractable, IOpenable
 
     public string InteractionText => IsOpen ? _closeText : _openText;
 
+    public InteractionType Type => InteractionType.Door;
+
     private Transform DirectionReference => _directionReference != null ? _directionReference : transform;
 
     #endregion ===== 상태 =====

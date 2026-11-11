@@ -152,7 +152,9 @@ public class TycoonScene : BaseScene
                 break;
             case Phase.DuringBusiness: // 영업 중 => 영업 후
                 // 영업 중 받은 만족도를 적용시킨다.
+                int satisfactionBefore = Managers.Data.GetSatisfaction();
                 Managers.Data.AddSatisfaction(_customerSpawner.DailySatisfaction);
+                int satisfactionAfter = Managers.Data.GetSatisfaction();
 
                 // 쿠킹 컨트롤러를 종료한다.
                 _cookingController.Clear();
@@ -161,8 +163,15 @@ public class TycoonScene : BaseScene
                 _customerSpawner.StopBusiness();
 
                 // 정산 팝업 (마지막 날인 경우에는 게임을 끝낸다.)
-                Managers.UI.OpenPopup<SettlementPopup>()
-                    .Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold);
+                ReputationProgressPopup progressPopup = Managers.UI.OpenPopup<ReputationProgressPopup>();
+                if (progressPopup != null)
+                {
+                    progressPopup.Play(satisfactionBefore, satisfactionAfter, OpenSettlementPopup);
+                }
+                else
+                {
+                    OpenSettlementPopup();
+                }
 
                 break;
             case Phase.AfterBusiness: // 영업 후 => 잠입 씬 전환
@@ -175,6 +184,12 @@ public class TycoonScene : BaseScene
             _currentPhase++;
             UpdatePhaseUI();
         }
+    }
+
+    private void OpenSettlementPopup()
+    {
+        Managers.UI.OpenPopup<SettlementPopup>()
+            .Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold);
     }
 
     /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>

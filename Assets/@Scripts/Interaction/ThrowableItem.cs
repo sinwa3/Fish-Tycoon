@@ -34,6 +34,8 @@ public class ThrowableItem : MonoBehaviour, IInteractable
 
     public string InteractionText => _interactionText;
 
+    public InteractionType Type => InteractionType.Throwable;
+
     #endregion ===== 상태 =====
 
     private void Awake()

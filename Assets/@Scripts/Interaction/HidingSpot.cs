@@ -32,6 +32,8 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
     public string InteractionText => _interactionText;
 
+    public InteractionType Type => InteractionType.Wardrobe;
+
     #endregion ===== 상태 =====
 
     private void OnDrawGizmos()

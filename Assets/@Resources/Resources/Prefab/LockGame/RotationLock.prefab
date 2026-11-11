@@ -1551,7 +1551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e0d0defea2691428261e219f4b5397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rotationSensitivity: 200
+  _rotationSensitivity: 300
   _minAngle: -90
   _maxAngle: 90
   _cylinderRotationSpeed: 90
@@ -1570,7 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _minTargetAngle: -90
   _maxTargetAngle: 90
-  _angleTolerance: 8
+  _angleTolerance: 10
   _angleFalloffRange: 40
   _maxCylinderAngle: -90
   _wrongCylinderAngle: -5

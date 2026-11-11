@@ -26,6 +26,7 @@ public class DataManager
     public event Action OnSatisfactionChanged;
     public event Action OnQuickSlotChanged;
     public event Action OnStoreChanged;
+    public event Action<int> OnItemUsed;
 
     #endregion ===== 이벤트 =====
 
@@ -492,10 +493,39 @@ public class DataManager
         return _saveData.QuickSlots[slotIndex];
     }
 
+    /// <summary> KDH : 생선 획득 전에 기존 스택과 빈 슬롯으로 전체 수량을 받을 수 있는지 검사한다. </summary>
+    public bool CanAddFishToQuickSlot(int fishID, int count = 1)
+    {
+        if (_saveData == null || fishID < 0 || count <= 0)
+        {
+            return false;
+        }
+
+        EnsureQuickSlotCount();
+
+        foreach (QuickSlotData slot in _saveData.QuickSlots)
+        {
+            if (slot.Type == QuickSlotItemType.Fish && slot.ItemID == fishID)
+            {
+                return slot.Count <= int.MaxValue - count;
+            }
+        }
+
+        foreach (QuickSlotData slot in _saveData.QuickSlots)
+        {
+            if (slot.Type == QuickSlotItemType.None)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /// <summary> KDH : 잠입 중 획득한 생선을 퀵슬롯에 추가한다. </summary>
     public bool TryAddFishToQuickSlot(int fishID, int count = 1)
     {
-        if (_saveData == null || fishID < 0 || count <= 0)
+        if (!CanAddFishToQuickSlot(fishID, count))
         {
             return false;
         }
@@ -551,6 +581,7 @@ public class DataManager
         }
 
         slot.Count--;
+        OnItemUsed?.Invoke(slot.ItemID);
 
         if (slot.Count == 0)
         {
