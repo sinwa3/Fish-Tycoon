@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,22 @@ public class QuickSlotBar : MonoBehaviour
     private int _selectedSlotIndex = -1;
     private bool _isSelectionEnabled;
 
+    /// <summary> KDH : 현재 선택한 퀵슬롯에 사용 가능한 소비 아이템이 있는지 확인한다. </summary>
+    public bool HasUsableConsumable
+    {
+        get
+        {
+            if (!_isSelectionEnabled || _selectedSlotIndex < 0 || Managers.Data == null)
+            {
+                return false;
+            }
+
+            QuickSlotData slot = Managers.Data.GetQuickSlot(_selectedSlotIndex);
+
+            return slot is { Type: QuickSlotItemType.Consumable, Count: > 0 };
+        }
+    }
+    
     private void Awake()
     {
         InitializeItemTooltip();
@@ -87,21 +102,19 @@ public class QuickSlotBar : MonoBehaviour
     /// <summary> KDH : 선택한 소비 아이템을 한 개 차감하고 사용 안내를 표시한다. </summary>
     private void UseSelectedConsumable()
     {
-        if (Managers.Data == null)
-        {
-            return;
-        }
-        
-        QuickSlotData slot = Managers.Data.GetQuickSlot(_selectedSlotIndex);
-        if (slot is not { Type: QuickSlotItemType.Consumable } || slot.Count <= 0)
+        if (!HasUsableConsumable)
         {
             return;
         }
 
+        QuickSlotData slot = Managers.Data.GetQuickSlot(_selectedSlotIndex);
+
         string itemName = Managers.Table?.Item?.GetItem(slot.ItemID)?.Name ?? "소비 아이템";
+
         if (Managers.Data.TryUseConsumable(_selectedSlotIndex))
         {
             Managers.UI?.OpenToastMessage($"{itemName} 아이템을 사용했습니다.");
+            Managers.Event?.RaiseItemUsed(slot.ItemID);
         }
     }
 

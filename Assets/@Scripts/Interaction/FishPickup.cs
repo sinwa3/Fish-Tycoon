@@ -8,8 +8,8 @@ public class FishPickup : MonoBehaviour, IInteractable
     private const string DefaultFishName = "생선";
 
     [Header("안내")]
-    [Tooltip("바라봤을 때 표시할 안내 문구. 획득 전에는 어떤 생선인지 알 수 없게 이름을 넣지 않는다.")]
-    [SerializeField] private string _interactionText = "생선 줍기";
+    [Tooltip("상호작용 안내 문구. {0}에 생선 이름이 들어간다.")]
+    [SerializeField] private string _interactionFormat = "{0} 줍기";
 
     [Tooltip("획득 안내 문구. {0}에 생선 이름, {1}에 개수가 들어간다.")]
     [SerializeField] private string _acquireMessageFormat = "{0} {1}마리를 획득했습니다.";
@@ -18,8 +18,8 @@ public class FishPickup : MonoBehaviour, IInteractable
 
     #region ===== 상태 =====
 
-    /// <summary> YSW : 바라봤을 때 표시할 안내 문구 (생선 이름은 획득할 때만 알려준다) </summary>
-    public string InteractionText => _interactionText;
+    /// <summary> YSW : 바라봤을 때 표시할 안내 문구 (생선 이름 포함) </summary>
+    public string InteractionText => string.Format(_interactionFormat, GetFishName());
 
     public InteractionType Type => InteractionType.Fish;
 

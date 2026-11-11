@@ -13,7 +13,7 @@ public class StealthScene : BaseScene
 
     #region ===== 이벤트 =====
 
-    public event System.Action<Vector3, float> OnNoiseMade;
+    public event Action<Vector3, float> OnNoiseMade;
 
     #endregion ===== 이벤트 =====
 
@@ -58,7 +58,7 @@ public class StealthScene : BaseScene
             _camera = Camera.main;
         }
         
-        // (임시) 플레이어가 잡혔을 때 종료 화면 활성화 구독
+        // 플레이어가 잡혔을 때 종료 화면 활성화 구독
         if (Managers.Event != null)
         {
             Managers.Event.OnPlayerArrested += OnArrested;

@@ -342,8 +342,14 @@ public class PlayerInteractor : MonoBehaviour
 
         InteractionType type = CurrentTarget.Type;
 
-        // 생선 아이콘은 넘기지 않는다. (획득 전에는 어떤 생선인지 모르게)
-        _holdingSystem.SetTarget(type, CurrentTarget.InteractionText);
+        if (CurrentTarget is FishPickup fish)
+        {
+            _holdingSystem.SetTarget(type, fish.InteractionText, Managers.Table?.Fish.GetSprite(fish.FishID));
+        }
+        else
+        {
+            _holdingSystem.SetTarget(type, CurrentTarget.InteractionText);
+        }
 
         float progress = RequiresHold(type) ? _holdTimer / GetHoldDuration(type) : 0f;
         _holdingSystem.SetProgress(progress);

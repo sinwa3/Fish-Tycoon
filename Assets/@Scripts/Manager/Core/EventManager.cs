@@ -8,6 +8,8 @@ public class EventManager
     public event Action OnPlayerArrested;
     public event Action OnPlayerEscaped;
 
+    public event Action<int> OnItemUsed;
+    
     public event Action OnPause;
     public event Action OnResume;
 
@@ -39,5 +41,11 @@ public class EventManager
         OnResume?.Invoke();
     }
 
+    /// <summary> KDH : 해당 아이템을 사용했음을 알린다. </summary>
+    public void RaiseItemUsed(int itemID)
+    {
+        OnItemUsed?.Invoke(itemID);
+    }
+    
     #endregion ===== 이벤트 발행 =====
 }
