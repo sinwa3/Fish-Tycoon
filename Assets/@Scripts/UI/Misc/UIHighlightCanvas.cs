@@ -23,6 +23,7 @@ public class UIHighlightCanvas : MonoBehaviour
 
         _originalOverrideSorting = _canvas.overrideSorting;
         _originalSortingOrder = _canvas.sortingOrder;
+        _canvas.additionalShaderChannels = AdditionalCanvasShaderChannels.TexCoord1;
     }
 
     /// <summary> KDH : 지정된 Sorting Order로 UI를 표시한다. </summary>
