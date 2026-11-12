@@ -65,13 +65,16 @@ public class HoldingInteractionUI : BaseUI
 
     #region ===== 업데이트 =====
 
+    /// <summary> KDH : 현재 상호작용 타입에 따라 대상 아이콘과 안내 문구를 갱신한다. </summary>
     private void UpdateTargetUI()
     {
         InteractionType type = _holdingSystem != null ? _holdingSystem.CurrentType : InteractionType.None;
         bool visible = type != InteractionType.None;
         
+        // 상호작용 대상이 존재하는 경우에만 UI 표시
         Get<Image>(Images.Bg)?.gameObject.SetActive(visible);
         
+        // 현재 홀딩 진행률 반영
         UpdateProgressUI(_holdingSystem != null ? _holdingSystem.Progress : 0f);
         
         if (!visible)
@@ -79,6 +82,7 @@ public class HoldingInteractionUI : BaseUI
             return;
         }
 
+        // 상호작용 타입에 맞는 아이콘 표시
         bool wardrobe = type is InteractionType.Wardrobe or InteractionType.WardrobeExit;
         Get<Image>(Images.WardrobeIcon)?.gameObject.SetActive(wardrobe);
         Get<Image>(Images.WardrobeArrowIcon)?.gameObject.SetActive(type == InteractionType.WardrobeExit);
@@ -86,19 +90,22 @@ public class HoldingInteractionUI : BaseUI
         Get<Image>(Images.FishIcon)?.gameObject.SetActive(type == InteractionType.Fish);
         Get<Image>(Images.InteractionIcon)?.gameObject.SetActive(type == InteractionType.Furniture);
         Get<Image>(Images.LockIcon)?.gameObject.SetActive(type == InteractionType.Lock);
+        
+        // 생선 아이콘이 전달된 경우에만 이미지 교체
         if (type == InteractionType.Fish)
         {
             Image fishIcon = Get<Image>(Images.FishIcon);
-            // YSW : 아이콘을 넘기지 않으면(획득 전 생선 정보 숨김) 프리팹의 기본 생선 아이콘을 유지한다.
             if (fishIcon != null && _holdingSystem.Icon != null)
             {
                 fishIcon.sprite = _holdingSystem.Icon;
             }
         }
 
+        // 현재 상호작용 안내 문구 표시
         Get<TMP_Text>(Texts.ActionText)?.SetText(_holdingSystem.ActionText);
     }
 
+    /// <summary> KDH : 홀딩 진행률을 이미지의 Fill Amount에 반영한다. </summary>
     private void UpdateProgressUI(float progress)
     {
         Image progressFill = Get<Image>(Images.HoldingProgressFill);
@@ -114,6 +121,7 @@ public class HoldingInteractionUI : BaseUI
     
     #region ===== 이벤트 =====
     
+    /// <summary> KDH : 상호작용 대상 및 홀딩 진행률 변경 이벤트를 구독한다. </summary>
     private void SubscribeEvents()
     {
         if (_holdingSystem == null)
@@ -121,11 +129,14 @@ public class HoldingInteractionUI : BaseUI
             return;
         }
 
+        // 중복 구독 방지
         UnsubscribeEvents();
+        
         _holdingSystem.OnTargetChanged += UpdateTargetUI;
         _holdingSystem.OnProgressChanged += UpdateProgressUI;
     }
 
+    /// <summary> KDH : 홀딩 시스템 이벤트 구독을 해제한다. </summary>
     private void UnsubscribeEvents()
     {
         if (_holdingSystem == null)

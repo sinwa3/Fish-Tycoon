@@ -7,6 +7,37 @@ public class FishSpawnPoint : MonoBehaviour
 
     public bool AttachToPoint => _attachToPoint;
 
+    /// <summary> KimYH : 이 위치를 막고 있는 가구 파츠 (서랍, 수납장 문). 없으면 null /// </summary>
+    private InteractionFurniture _furniture;
+
+    /// <summary> KimYH : 해당 가구 파츠에 자물쇠가 걸려 있는지 </summary>
+    public bool IsLocked => _furniture != null && _furniture.IsLocked;
+
+    private void Awake()
+    {
+        InitializeFurniture();
+    }
+
+    /// <summary> KimYH : 가구 파츠를 찾는다 </summary>
+    private void InitializeFurniture()
+    {
+        // 서랍 안에 놓인 경우 (InteractiveFurniture_04, 05 등)
+        _furniture = GetComponentInParent<InteractionFurniture>(true);
+
+        if (_furniture != null || transform.parent == null)
+        {
+            return;
+        }
+
+        // 문이 하나뿐인 수납장 본체에 놓인 경우 (InteractiveFurniture_12, 15, 18)
+        InteractionFurniture[] siblingParts = transform.parent.GetComponentsInChildren<InteractionFurniture>(true);
+
+        if (siblingParts.Length == 1)
+        {
+            _furniture = siblingParts[0];
+        }
+    }
+
     // 확인용 기즈모
     private void OnDrawGizmos()
     {

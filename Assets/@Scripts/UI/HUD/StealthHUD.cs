@@ -82,16 +82,6 @@ public class StealthHUD : BaseHUD
         {
             Managers.UI.OpenPopup<PausePopup>();
         }
-        else if (Managers.Input.KeyDown_1) // 임시
-        {
-            Managers.UI.OpenScreen<SecurityMinigameScreen>()
-                ?.Set(SecurityMinigameScreen.MinigameType.PinLock, _stealthScene?.Camera);
-        }
-        else if (Managers.Input.KeyDown_2) // 임시
-        {
-            Managers.UI.OpenScreen<SecurityMinigameScreen>()
-                ?.Set(SecurityMinigameScreen.MinigameType.RotationLock, _stealthScene?.Camera);
-        }
         else if (Managers.Input.MouseDown_Wheel && Cursor.lockState == CursorLockMode.Locked)
         {
             // 커서 잠금 해제

@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -76,9 +77,9 @@ public class TycoonBgCtrl : MonoBehaviour
     }
 
     /// <summary> KDH : 영업 중 배경으로 전환한다. </summary>
-    public void ShowOpened()
+    public void ShowOpened(Action onChanged)
     {
-        ChangeBackground(_openedBackground);
+        ChangeBackground(_openedBackground, onChanged);
     }
 
     /// <summary> KDH : 영업 종료 배경으로 전환한다. </summary>
@@ -88,7 +89,7 @@ public class TycoonBgCtrl : MonoBehaviour
     }
 
     /// <summary> KDH : 지정한 배경으로 부드럽게 전환한다. </summary>
-    private void ChangeBackground(Sprite nextSprite)
+    private void ChangeBackground(Sprite nextSprite, Action onChanged = null)
     {
         if (nextSprite == null || _backgroundA == null || _backgroundB == null)
         {
@@ -136,6 +137,7 @@ public class TycoonBgCtrl : MonoBehaviour
             _backgroundB.gameObject.SetActive(false);
 
             _fadeTween = null;
+            onChanged?.Invoke();
         });
     }
 

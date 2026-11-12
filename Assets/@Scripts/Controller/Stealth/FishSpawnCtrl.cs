@@ -1,22 +1,79 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> KimYH : 생선 위치 중 랜덤하게 골라 생선을 놓는다. 자물쇠가 걸린 가구에는 Epic, Legendary만 놓는다 </summary>
+[DefaultExecutionOrder(100)]
 public class FishSpawnCtrl : MonoBehaviour
 {
     #region ===== 생선 =====
 
-    [Header("생선")]
     private FishPickup _fishPickupPrefab;
 
     /// <summary> KimYH : 생선이 놓일 수 있는 위치. 비워두면 씬의 FishSpawnPoint를 모두 찾는다. </summary>
+    [Header("생선 스폰")]
     [SerializeField] private List<FishSpawnPoint> _fishSpawnPoints = new();
 
     [SerializeField, Min(0)] private int _minFishSpawnCount = 3;
     [SerializeField, Min(0)] private int _maxFishSpawnCount = 6;
 
+    /// <summary> KimYH : 잠긴 가구에서 Legendary가 나올 확률 (나머지는 Epic) </summary>
+    [Header("잠긴 가구 레전더리 비율")]
+    [SerializeField, Range(0.0f, 1.0f)] private float _lockedLegendaryRatio = 0.5f;
+
     #endregion ===== 생선 =====
+
+    #region ===== 생선 후보 =====
+
+    /// <summary> KimYH : 습득 확률 가중치로 생선을 뽑는 후보 묶음 </summary>
+    private class FishPool
+    {
+        private readonly List<FishData> _fishList = new();
+        private readonly List<int> _cumulativeWeights = new();
+        private int _totalWeight;
+
+        public bool IsEmpty => _totalWeight <= 0;
+
+        /// <summary> KimYH : 가중치가 0보다 큰 생선만 넣는다 </summary>
+        public void Add(FishData fishData)
+        {
+            if (fishData.AcquireWeight <= 0)
+            {
+                return;
+            }
+
+            _totalWeight += fishData.AcquireWeight;
+            _fishList.Add(fishData);
+            _cumulativeWeights.Add(_totalWeight);
+        }
+
+        /// <summary> KimYH : 가중치 누적합 앞에서부터 랜덤 값이 들어가는 생선을 고른다 </summary>
+        public FishData Pick()
+        {
+            if (IsEmpty)
+            {
+                return null;
+            }
+
+            int randomWeight = UnityEngine.Random.Range(0, _totalWeight);
+
+            for (int i = 0; i < _cumulativeWeights.Count; i++)
+            {
+                if (randomWeight < _cumulativeWeights[i])
+                {
+                    return _fishList[i];
+                }
+            }
+
+            return _fishList[_fishList.Count - 1];
+        }
+    }
+
+    private readonly FishPool _allPool = new();
+    private readonly FishPool _epicPool = new();
+    private readonly FishPool _legendaryPool = new();
+
+    #endregion ===== 생선 후보 =====
 
     private void Awake()
     {
@@ -35,7 +92,7 @@ public class FishSpawnCtrl : MonoBehaviour
             _maxFishSpawnCount = _minFishSpawnCount;
         }
     }
-    
+
     #region ===== 프리팹 로드 =====
 
     /// <summary> KimYH : 생선 프리팹을 불러온다 (ResourceManager가 캐싱) </summary>
@@ -52,7 +109,7 @@ public class FishSpawnCtrl : MonoBehaviour
     }
 
     #endregion ===== 프리팹 로드 =====
-    
+
     #region ===== 생선 생성 =====
 
     /// <summary> KimYH : 생선 위치 중 랜덤하게 골라 랜덤 생선을 놓는다 </summary>
@@ -60,7 +117,7 @@ public class FishSpawnCtrl : MonoBehaviour
     {
         if (_fishPickupPrefab == null)
         {
-            CPrint.Warning("[SpawnManager] 생선 프리팹 없음");
+            CPrint.Warning("[FishSpawnCtrl] 생선 프리팹 없음");
 
             return;
         }
@@ -69,26 +126,27 @@ public class FishSpawnCtrl : MonoBehaviour
 
         if (candidatePoints.Count == 0)
         {
-            CPrint.Warning("[SpawnManager] 생선 위치 없음");
+            CPrint.Warning("[FishSpawnCtrl] 생선 위치 없음");
 
             return;
         }
 
-        if (!TryBuildFishWeights(out FishData[] fishList, out int[] cumulativeWeights))
+        if (!TryBuildFishPools())
         {
             return;
         }
 
         int spawnCount = Mathf.Min(UnityEngine.Random.Range(_minFishSpawnCount, _maxFishSpawnCount + 1), candidatePoints.Count);
-        int totalWeight = cumulativeWeights[cumulativeWeights.Length - 1];
 
         for (int i = 0; i < spawnCount; i++)
         {
             int j = UnityEngine.Random.Range(i, candidatePoints.Count);
             (candidatePoints[i], candidatePoints[j]) = (candidatePoints[j], candidatePoints[i]);
 
-            FishData fishData = fishList[SelectWeightedIndex(cumulativeWeights, UnityEngine.Random.Range(0, totalWeight))];
-            SpawnFishAt(candidatePoints[i], fishData);
+            FishSpawnPoint spawnPoint = candidatePoints[i];
+            FishData fishData = spawnPoint.IsLocked ? PickLockedFish() : _allPool.Pick();
+
+            SpawnFishAt(spawnPoint, fishData);
         }
     }
 
@@ -114,71 +172,54 @@ public class FishSpawnCtrl : MonoBehaviour
         return points;
     }
 
-    /// <summary> KimYH : 생선 목록과 습득 확률 가중치 누적합을 만든다. 가중치가 0 이하인 생선은 뺀다 </summary>
-    private static bool TryBuildFishWeights(out FishData[] fishList, out int[] cumulativeWeights)
+    /// <summary> KimYH : 생선 테이블을 한 번 돌며 전체, Epic, Legendary 후보를 만든다 </summary>
+    private bool TryBuildFishPools()
     {
-        fishList = null;
-        cumulativeWeights = null;
-
         FishTable fishTable = Managers.Table?.Fish;
 
         if (fishTable == null || fishTable.Map.Count == 0)
         {
-            CPrint.Warning("[SpawnManager] 생선 테이블 없음");
+            CPrint.Warning("[FishSpawnCtrl] 생선 테이블 없음");
 
             return false;
         }
-
-        List<FishData> validFish = new(fishTable.Map.Count);
-        List<int> weights = new(fishTable.Map.Count);
-        int totalWeight = 0;
 
         foreach (FishData fishData in fishTable.Map.Values)
         {
-            if (fishData.AcquireWeight <= 0)
-            {
-                continue;
-            }
+            _allPool.Add(fishData);
 
-            totalWeight += fishData.AcquireWeight;
-            validFish.Add(fishData);
-            weights.Add(totalWeight);
+            switch (fishData.GradeType)
+            {
+                case GradeType.Epic:
+                    _epicPool.Add(fishData);
+                    break;
+                case GradeType.Legendary:
+                    _legendaryPool.Add(fishData);
+                    break;
+            }
         }
 
-        if (totalWeight <= 0)
+        if (_allPool.IsEmpty)
         {
-            CPrint.Warning("[SpawnManager] 습득 확률 가중치 합이 0");
+            CPrint.Warning("[FishSpawnCtrl] 습득 확률 가중치 합이 0");
 
             return false;
         }
-
-        fishList = validFish.ToArray();
-        cumulativeWeights = weights.ToArray();
 
         return true;
     }
 
-    /// <summary> KimYH : 0 이상 총합 미만의 가중치 값이 누적합의 어느 사이로 들어갈지 고른다 </summary>
-    private static int SelectWeightedIndex(int[] cumulativeWeights, int randomWeight)
+    /// <summary> KimYH : 잠긴 가구용. 설정한 비율로 등급을 먼저 정하고, 그 등급 안에서 가중치로 고른다 </summary>
+    private FishData PickLockedFish()
     {
-        int low = 0;
-        int high = cumulativeWeights.Length - 1;
+        FishPool gradePool = UnityEngine.Random.value < _lockedLegendaryRatio ? _legendaryPool : _epicPool;
 
-        while (low < high)
+        if (gradePool.IsEmpty)
         {
-            int mid = (low + high) / 2;
-
-            if (randomWeight < cumulativeWeights[mid])
-            {
-                high = mid;
-            }
-            else
-            {
-                low = mid + 1;
-            }
+            gradePool = gradePool == _legendaryPool ? _epicPool : _legendaryPool;
         }
 
-        return low;
+        return gradePool.IsEmpty ? _allPool.Pick() : gradePool.Pick();
     }
 
     /// <summary> KimYH : 지정한 위치에 생선을 만들고 종류와 개수를 넣는다 </summary>

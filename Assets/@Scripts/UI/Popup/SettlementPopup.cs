@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ public class SettlementPopup : BasePopup
     public enum Texts
     {
         TitleText,
-        
+
         StartingMoneyValueText,
         FoodSalesValueText,
         ReputationBonusText,
@@ -54,6 +55,8 @@ public class SettlementPopup : BasePopup
     // 애니메이션
     private int _startingMoney;
     private Tween _totalMoneyTween;
+
+    private Action _onClosed;
 
     #endregion ===== 상태 =====
 
@@ -96,12 +99,14 @@ public class SettlementPopup : BasePopup
     }
 
     /// <summary> KDH : 정산 팝업 호출할 때 반드시 Set을 호출하여 데이터를 설정한다. </summary>
-    public void Set(DailyMenu dailyMenu, FishListScroll fishListScroll, bool isFinalDay, int targetGold)
+    public void Set(DailyMenu dailyMenu, FishListScroll fishListScroll, bool isFinalDay, int targetGold,
+        Action onClosed = null)
     {
         _dailyMenu = dailyMenu;
         _fishListScroll = fishListScroll;
         _isFinalDay = isFinalDay;
         _targetGold = targetGold;
+        _onClosed = onClosed;
 
         // 정산 전 소지금 저장
         _startingMoney = Managers.Data.GetCurrentGold();
@@ -233,14 +238,14 @@ public class SettlementPopup : BasePopup
         {
             return;
         }
-       
+
         int totalMoney = Managers.Data.GetCurrentGold();
-        
+
         if (_isFinalDay)
         {
             totalMoneyText.color = totalMoney < TycoonScene.TargetGold ? Color.red : ColorKey.DodgerBlue;
         }
-        
+
         _totalMoneyTween?.Kill();
 
         _totalMoneyTween = DOVirtual.Int(_startingMoney, totalMoney, _totalMoneyAnimationDuration,
@@ -259,6 +264,9 @@ public class SettlementPopup : BasePopup
     /// <summary> KDH : Exit 버튼을 선택했을 때 팝업을 닫고 지정된 동작을 실행한다. </summary>
     private void OnClickExit()
     {
+        Action onClosed = _onClosed;
+        _onClosed = null;
+
         Close(() =>
         {
             if (_isFinalDay)
@@ -268,7 +276,10 @@ public class SettlementPopup : BasePopup
                     Managers.UI.CloseLoadingUI();
                     Managers.UI.OpenScreen<EndScreen>().ShowResult(IsGameOver());
                 });
-                
+            }
+            else
+            {
+                onClosed?.Invoke();
             }
         });
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);
