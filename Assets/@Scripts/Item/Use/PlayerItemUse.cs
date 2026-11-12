@@ -6,6 +6,8 @@ public class PlayerItemUse : MonoBehaviour
 {
     // ItemTable의 병 ID
     private const int BottleItemID = 12;
+    // ItemTable의 타이머 장치 ID
+    private const int TimerItemID = 13;
 
     // 던지는 방향의 기준이 될 카메라 (비우면 Camera.main)
     [SerializeField] private Transform _cameraTransform;
@@ -48,8 +50,11 @@ public class PlayerItemUse : MonoBehaviour
     /// <summary> KYH : 아이템마다 효과를 만들어 등록한다 </summary>
     private void InitializeEffects()
     {
-        _effects.Add(BottleItemID, new BottleThrow(_cameraTransform, GetComponent<CharacterController>()));
-        // TODO : 타이머 장치, 빨간 버튼 효과 등록
+        CharacterController characterController = GetComponent<CharacterController>();
+
+        _effects.Add(BottleItemID, new BottleThrow(_cameraTransform, characterController));
+        _effects.Add(TimerItemID, new TimerInstall(characterController));
+        // TODO : 빨간 버튼 효과 등록
     }
 
     #endregion ===== 초기화 =====

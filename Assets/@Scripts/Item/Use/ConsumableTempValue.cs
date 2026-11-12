@@ -7,4 +7,6 @@ public static class ConsumableTempValue
     public const float FloorNormalMinY = 0.9f;
     // 바닥에 못 닿은 병이 사라지기까지 시간
     public const float BottleAutoDestroyTime = 10.0f;
+    // 타이머 장치가 울릴 때 소음 크기
+    public const float TimerNoiseLoudness = 4.0f;
 }
