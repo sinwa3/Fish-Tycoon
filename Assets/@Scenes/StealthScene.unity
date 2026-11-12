@@ -13088,6 +13088,8 @@ MonoBehaviour:
   _ceilingLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  _stepOffset: 0.2
+  _ignoreOpenableFurnitureCollision: 1
   _gravity: -20
   _groundedStickForce: -2
 --- !u!143 &389890489
@@ -13112,7 +13114,7 @@ CharacterController:
   m_Height: 1.5
   m_Radius: 0.25
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.2
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}

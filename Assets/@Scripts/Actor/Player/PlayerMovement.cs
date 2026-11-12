@@ -29,6 +29,14 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("일어설 때 머리 위 장애물을 검사할 레이어")]
     [SerializeField] private LayerMask _ceilingLayers = ~0;
 
+    [Header("턱 오르기")]
+    [Tooltip("자동으로 올라갈 수 있는 턱 높이(m). 크면 가구에 사선으로 비빌 때 위로 올라가 버린다. (계단 한 칸 ≈ 0.2m)")]
+    [SerializeField, Min(0f)] private float _stepOffset = 0.2f;
+
+    [Header("가구 충돌")]
+    [Tooltip("플레이어 몸이 Interaction 레이어(서랍, 수납장 문 등)와 Fish 레이어(생선)에 부딪히지 않게 한다. 열린 서랍이나 생선을 밟고 올라가는 문제 방지 (상호작용 레이는 그대로 맞는다)")]
+    [SerializeField] private bool _ignoreOpenableFurnitureCollision = true;
+
     [Header("중력")]
     [SerializeField] private float _gravity = -20f;
     [SerializeField] private float _groundedStickForce = -2f;
@@ -79,6 +87,8 @@ public class PlayerMovement : MonoBehaviour
     {
         InitializeComponents();
         InitializeStandShape();
+        InitializeStepOffset();
+        InitializeFurnitureCollision();
     }
 
     private void OnDisable()
@@ -109,6 +119,26 @@ public class PlayerMovement : MonoBehaviour
     private void InitializeStandShape()
     {
         _standHeight = _characterController.height;
+    }
+
+    /// <summary> YSW : 씬마다 따로 설정하지 않아도 되도록 자동으로 오를 턱 높이를 적용한다. </summary>
+    private void InitializeStepOffset()
+    {
+        _characterController.stepOffset = _stepOffset;
+    }
+
+    /// <summary>
+    /// YSW : 플레이어 몸이 Interaction 레이어(서랍, 수납장 문 등)와 Fish 레이어(서랍 안에 생성된 생선)에 부딪히지 않게 한다. (열린 서랍이나 생선을 밟고 올라가는 문제 방지)
+    /// 레이어 단위로 제외해서 숨기 등으로 CharacterController가 꺼졌다 켜져도 유지된다. 상호작용 레이는 그대로 맞는다.
+    /// </summary>
+    private void InitializeFurnitureCollision()
+    {
+        if (!_ignoreOpenableFurnitureCollision)
+        {
+            return;
+        }
+
+        _characterController.excludeLayers |= LayerKey.Mask.Interaction | LayerKey.Mask.Fish;
     }
 
     #endregion ===== 초기화 =====
