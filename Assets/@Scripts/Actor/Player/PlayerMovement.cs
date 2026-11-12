@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary> YSW : WASD 입력으로 플레이어를 바라보는 방향 기준으로 이동시키고 걷기/달리기/웅크리기 상태를 관리한다. </summary>
@@ -5,6 +6,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     #region ===== 설정 =====
+
+    private const string FurnitureBlockerName = "FurnitureBlocker";
+
+    // 가구 하나의 크기로 보기에 너무 큰 범위(m)는 블로커를 만들지 않는다 (가구가 아닌 묶음 오브젝트 방지)
+    private const float MaxFurnitureBlockerSize = 4f;
 
     [Header("이동 속도")]
     [SerializeField] private float _walkSpeed = 4f;
@@ -139,6 +145,97 @@ public class PlayerMovement : MonoBehaviour
         }
 
         _characterController.excludeLayers |= LayerKey.Mask.Interaction | LayerKey.Mask.Fish;
+
+        InitializeFurnitureBlockers();
+    }
+
+    /// <summary>
+    /// YSW : 서랍/문이 달린 가구마다 몸통(서랍, 문 제외) 크기의 박스 콜라이더를 만든다.
+    /// 서랍을 통과하게 하면 서랍이 빠진 몸통 구멍으로 몸이 파고들어 가구 안이 보이므로, 몸통을 통짜로 막는다.
+    /// Default 레이어라 상호작용 레이(Interaction, 장애물 Furniture)에는 걸리지 않는다.
+    /// </summary>
+    private void InitializeFurnitureBlockers()
+    {
+        HashSet<Transform> furnitureRoots = new HashSet<Transform>();
+
+        foreach (InteractionFurniture furniture in FindObjectsOfType<InteractionFurniture>(true))
+        {
+            Transform furnitureRoot = furniture.transform.parent;
+
+            if (furnitureRoot == null || !furnitureRoots.Add(furnitureRoot))
+            {
+                continue;
+            }
+
+            CreateFurnitureBlocker(furnitureRoot);
+        }
+    }
+
+    /// <summary> YSW : 가구 루트 아래 몸통 메쉬들의 범위를 구해 같은 크기의 박스 콜라이더를 자식으로 만든다. </summary>
+    private void CreateFurnitureBlocker(Transform furnitureRoot)
+    {
+        if (furnitureRoot.Find(FurnitureBlockerName) != null || !TryGetBodyBounds(furnitureRoot, out Bounds bodyBounds))
+        {
+            return;
+        }
+
+        Vector3 size = bodyBounds.size;
+
+        if (size.x > MaxFurnitureBlockerSize || size.y > MaxFurnitureBlockerSize || size.z > MaxFurnitureBlockerSize)
+        {
+            return;
+        }
+
+        GameObject blocker = new GameObject(FurnitureBlockerName)
+        {
+            layer = LayerKey.Idx.Default,
+        };
+
+        blocker.transform.SetParent(furnitureRoot, false);
+
+        BoxCollider blockerCollider = blocker.AddComponent<BoxCollider>();
+        blockerCollider.center = bodyBounds.center;
+        blockerCollider.size = size;
+    }
+
+    /// <summary> YSW : 가구 루트 기준 좌표로 몸통 메쉬(서랍/문/생선 제외)의 범위를 구한다. </summary>
+    private static bool TryGetBodyBounds(Transform furnitureRoot, out Bounds bodyBounds)
+    {
+        bodyBounds = default;
+        bool hasBounds = false;
+
+        foreach (MeshFilter meshFilter in furnitureRoot.GetComponentsInChildren<MeshFilter>(true))
+        {
+            if (meshFilter.sharedMesh == null || meshFilter.gameObject.layer == LayerKey.Idx.Fish)
+            {
+                continue;
+            }
+
+            if (meshFilter.GetComponentInParent<InteractionFurniture>(true) != null)
+            {
+                continue;
+            }
+
+            Bounds meshBounds = meshFilter.sharedMesh.bounds;
+
+            for (int i = 0; i < 8; i++)
+            {
+                Vector3 corner = meshBounds.center + Vector3.Scale(meshBounds.extents, new Vector3((i & 1) == 0 ? -1f : 1f, (i & 2) == 0 ? -1f : 1f, (i & 4) == 0 ? -1f : 1f));
+                Vector3 localCorner = furnitureRoot.InverseTransformPoint(meshFilter.transform.TransformPoint(corner));
+
+                if (!hasBounds)
+                {
+                    bodyBounds = new Bounds(localCorner, Vector3.zero);
+                    hasBounds = true;
+
+                    continue;
+                }
+
+                bodyBounds.Encapsulate(localCorner);
+            }
+        }
+
+        return hasBounds;
     }
 
     #endregion ===== 초기화 =====
