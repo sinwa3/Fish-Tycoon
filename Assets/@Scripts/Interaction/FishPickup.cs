@@ -132,7 +132,7 @@ public class FishPickup : MonoBehaviour, IInteractable
 
     #endregion ===== 디졸브 =====
 
-    /// <summary> YSW : 생선 테이블에서 이름을 가져온다. (없으면 기본 이름) </summary>
+    /// <summary> YSW : 생선 테이블에서 등급과 이름을 가져온다. (없으면 기본 이름) </summary>
     private string GetFishName()
     {
         FishTable fishTable = Managers.Table?.Fish;
@@ -142,6 +142,6 @@ public class FishPickup : MonoBehaviour, IInteractable
             return DefaultFishName;
         }
 
-        return fishTable.Map[FishID].Name;
+        return $"[{fishTable.Map[FishID].GradeType.ToString().ToUpper()}]\n{fishTable.Map[FishID].Name}";
     }
 }

@@ -22,6 +22,7 @@ public abstract class ResourceKey
         public const string ItemSprite = Sprite + "Item/";
         public const string FishSprite = Sprite + "Fish/";
         public const string FoodSprite = Sprite + "Food/";
+        public const string TutorialSprite = Sprite + "Tutorial/";
     }
 
     public static class Name

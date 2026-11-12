@@ -35,16 +35,25 @@ public class UIHighlightCanvas : MonoBehaviour
     /// <summary> KDH : 기존 Canvas 상태를 복원하고 하이라이트 컴포넌트를 제거한다. </summary>
     public void Restore()
     {
+        ResetSorting();
+
         if (_isCanvasAdded)
         {
             Destroy(_canvas);
         }
-        else
-        {
-            _canvas.overrideSorting = _originalOverrideSorting;
-            _canvas.sortingOrder = _originalSortingOrder;
-        }
 
         Destroy(this);
+    }
+
+    /// <summary> KDH : 컴포넌트를 유지한 채 원래 정렬 상태로 돌린다. </summary>
+    public void ResetSorting()
+    {
+        if (_canvas == null)
+        {
+            return;
+        }
+
+        _canvas.overrideSorting = _originalOverrideSorting;
+        _canvas.sortingOrder = _originalSortingOrder;
     }
 }

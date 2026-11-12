@@ -56,6 +56,9 @@ public class Managers : MonoBehaviour
     private readonly QuestManager _quest = new();
     public static QuestManager Quest => Instance?._quest;
     
+    private readonly TutorialManager _tutorial = new();
+    public static TutorialManager Tutorial => Instance?._tutorial;
+    
     #endregion ===== CORE =====
 
     #region ===== Mono =====

@@ -43,6 +43,9 @@ public class DataManager
     /// <summary> KDH : 로컬 파일에서 게임 데이터를 불러오거나 새로 만든다. </summary>
     public void LoadData()
     {
+        // 로드마다 튜토리얼 표시 기록을 리셋한다.
+        Managers.Tutorial?.Reset();
+        
         // 새로하기
         if (!IsSaved)
         {
