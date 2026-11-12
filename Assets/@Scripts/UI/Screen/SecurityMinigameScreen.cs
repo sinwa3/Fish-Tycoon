@@ -224,7 +224,7 @@ public class SecurityMinigameScreen : BaseScreen
     {
         return minigameType switch
         {
-            MinigameType.PinLock => "[핀 자물쇠]  A / D : 핀 선택    S : 핀 튕기기    좌클릭 : 핀 고정",
+            MinigameType.PinLock => "[핀 자물쇠]    S : 핀 튕기기    좌클릭 : 핀 고정",
             MinigameType.RotationLock => "[회전 자물쇠]  마우스 좌우 이동 : 락픽 조절    D : 자물쇠 회전",
             _ => string.Empty,
         };
@@ -405,7 +405,7 @@ public class SecurityMinigameScreen : BaseScreen
 
         UpdateLockpickCountText();
 
-        Managers.Quest?.ReportProgress(SceneType.StealthScene, QuestType.PinLock);
+        Managers.Quest?.ReportProgress(SceneType.StealthScene, questType);
 
         _unlockSuccessCallback?.Invoke();
 
