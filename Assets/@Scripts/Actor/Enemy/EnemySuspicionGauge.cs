@@ -105,6 +105,12 @@ public class EnemySuspicionGauge : MonoBehaviour
         Gauge = Mathf.Min(Gauge + amount, SoundGaugeCap);
     }
 
+    /// <summary> KYH : 게이지가 조사 시작 값보다 낮으면 그 값까지 올린다 </summary>
+    public void RaiseToAlertGauge()
+    {
+        Gauge = Mathf.Max(Gauge, _enemy.Detection.AlertEnterGauge);
+    }
+
     #endregion ===== 소리 =====
 
     #region ===== 단계 =====
