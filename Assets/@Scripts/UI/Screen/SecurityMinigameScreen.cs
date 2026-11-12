@@ -87,6 +87,12 @@ public class SecurityMinigameScreen : BaseScreen
         base.Close();
     }
 
+    /// <summary> SJY : 외부 이벤트로 미니게임을 중단한다. </summary>
+    public void AbortMiniGame()
+    {
+        Close();
+    }
+
     #region ===== 초기화 =====
 
     /// <summary> KDH, SJY : 선택한 미니게임을 생성하고 입력을 시작한다. 락픽이 없을시 종료</summary>

@@ -48,12 +48,6 @@ public class PinLockController : MonoBehaviour
             return;
         }
 
-        // 다른 시스템이 입력을 차단한 경우 미니게임 진행 중단
-        if (Managers.Input == null || !Managers.Input.CanReceiveExcept(this))
-        {
-            return;
-        }
-
         for (int i = 0; i < _pins.Length; i++)
         {
             _pins[i].UpdateMovement(Time.deltaTime);

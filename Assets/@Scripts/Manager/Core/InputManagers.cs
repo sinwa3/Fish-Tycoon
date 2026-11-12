@@ -158,21 +158,5 @@ public class InputManager
         Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
-    /// <summary> SJY : 지정된 요청자를 제외한 다른 객체가 입력을 차단 중인지 확인 </summary>
-    public bool CanReceiveExcept(object requester)
-    {
-        if (requester == null)
-        {
-            return CanReceivePlayer;
-        }
-
-        if (_inputBlockers.Count == 0)
-        {
-            return true;
-        }
-
-        return _inputBlockers.Count == 1 && _inputBlockers.Contains(requester);
-    }
-
     #endregion ===== 입력 제어 =====
 }

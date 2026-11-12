@@ -162,7 +162,12 @@ public class StealthScene : BaseScene
         {
             return;
         }
-        
+
+        if (Managers.UI.CurrentScreen is SecurityMinigameScreen screen)
+        {
+            screen.AbortMiniGame();
+        }
+
         ChangeCurrentPhase();
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(true);
     }

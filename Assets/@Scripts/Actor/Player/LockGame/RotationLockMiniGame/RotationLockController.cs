@@ -39,12 +39,6 @@ public class RotationLockController : MonoBehaviour
             return;
         }
 
-        // 다른 시스템이 플레이어 입력을 차단하면 미니게임 진행 중단
-        if (Managers.Input == null || !Managers.Input.CanReceiveExcept(this))
-        {
-            return;
-        }
-
         CheckUnlockAttempt();
 
         if (!_isPlaying || _isReplacing)
