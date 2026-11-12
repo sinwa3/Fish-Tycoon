@@ -67,6 +67,11 @@ public class TycoonScene : BaseScene
 
         SubscribeBusinessEvents();
         SubscribeBusinessClosed();
+        
+        if (_currentPhase == Phase.BeforeBusiness)
+        {
+            Managers.Tutorial.Show(TutorialTrigger.BeforeBusiness);
+        }
     }
 
     protected override void OnUpdate()
@@ -188,8 +193,8 @@ public class TycoonScene : BaseScene
 
     private void OpenSettlementPopup()
     {
-        Managers.UI.OpenPopup<SettlementPopup>()
-            .Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold);
+        Managers.UI.OpenPopup<SettlementPopup>().Set(_dailyMenu, _foodListScroll.FishListScroll, IsFinalDay(), TargetGold,
+            () => Managers.Tutorial.Show(TutorialTrigger.AfterBusiness));
     }
 
     /// <summary> KDH : 현재 페이즈에 맞춰 UI를 업데이트한다. </summary>
@@ -214,7 +219,13 @@ public class TycoonScene : BaseScene
                 _tycoonBgCtrl.ShowBeforeOpening();
                 break;
             case Phase.DuringBusiness:
-                _tycoonBgCtrl.ShowOpened();
+                _tycoonBgCtrl.ShowOpened(() =>
+                {
+                    if (_currentPhase == Phase.DuringBusiness)
+                    {
+                        Managers.Tutorial.Show(TutorialTrigger.DuringBusiness);
+                    }
+                });
 
                 _tycoonHUD.SetQuestVisible(Managers.Data != null &&
                                            Managers.Data.GetCurrentDay() > 1); // 1일차 영업전은 퀘스트 숨긴다.

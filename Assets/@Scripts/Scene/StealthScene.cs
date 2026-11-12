@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class StealthScene : BaseScene
 {
@@ -10,12 +9,6 @@ public class StealthScene : BaseScene
         Playing, // 잠입 중
         Settlement, // 정산
     }
-
-    #region ===== 이벤트 =====
-
-    public event Action<Vector3, float> OnNoiseMade;
-
-    #endregion ===== 이벤트 =====
 
     #region ===== 참조 =====
 
@@ -41,6 +34,12 @@ public class StealthScene : BaseScene
     private Phase _currentPhase;
     
     #endregion ===== 상태 =====
+    
+    #region ===== 이벤트 =====
+
+    public event Action<Vector3, float> OnNoiseMade;
+
+    #endregion ===== 이벤트 =====
     
     protected override void OnAwake()
     {
@@ -68,15 +67,27 @@ public class StealthScene : BaseScene
 
     protected override void OnStart()
     {
-        // 픽셀화 전환시 입력을 막고 전환 완료 후 입력 가능하도록 한다.
-        Managers.Input?.SetInputBlocked(this, true);
-        _pixelationTransition?.Play(() => Managers.Input?.SetInputBlocked(this, false));
-        
         // 플레이어와 HUD에 홀딩 시스템을 연결한다.
         _player?.GetComponent<PlayerInteractor>()?.SetHoldingSystem(_holdingSystem);
         _stealthHUD?.SetHoldingSystem(_holdingSystem);
         
         InitializePhase();
+
+        if (_pixelationTransition != null && _pixelationTransition.isActiveAndEnabled)
+        {
+            Managers.Input?.SetInputBlocked(this, true);
+            _pixelationTransition.Play(OnEntryTransitionFinished);
+        }
+        else
+        {
+            OnEntryTransitionFinished();
+        }
+    }
+
+    private void OnEntryTransitionFinished()
+    {
+        Managers.Input?.SetInputBlocked(this, false);
+        Managers.Tutorial.Show(TutorialTrigger.StealthEntry);
     }
     
     private void OnDestroy()
@@ -136,7 +147,7 @@ public class StealthScene : BaseScene
 
     #endregion ===== 업데이트 =====
 
-    #region ===== 이벤트 발행 =====
+    #region ===== 이벤트 =====
 
     /// <summary> KYH : 소음이 났음을 알린다. </summary>
     public void RaiseNoiseMade(Vector3 position, float loudness)
@@ -168,5 +179,5 @@ public class StealthScene : BaseScene
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(false);
     }
     
-    #endregion ===== 이벤트 발행 =====
+    #endregion ===== 이벤트 =====
 }

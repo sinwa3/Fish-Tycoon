@@ -14,6 +14,7 @@ public class TableManager
     public FoodTable Food { get; private set; }
     public QuestTable Quest { get; private set; }
     public EnemyDetectionTable EnemyDetection { get; private set; }
+    public TutorialTable Tutorial { get; private set; }
 
     #endregion ===== 테이블 =====
 
@@ -65,6 +66,11 @@ public class TableManager
             {
                 EnemyDetection = new EnemyDetectionTable();
                 EnemyDetection.Load();
+            }),
+            ("튜토리얼테이블", () =>
+            {
+                Tutorial = new TutorialTable();
+                Tutorial.Load();
             })
         };
     }
