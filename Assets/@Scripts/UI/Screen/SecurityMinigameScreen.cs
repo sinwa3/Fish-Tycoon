@@ -23,6 +23,7 @@ public class SecurityMinigameScreen : BaseScreen
     public enum Texts
     {
         InstructionText,
+        LockpickCountText,
     }
     
     #region ===== 참조 =====
@@ -66,10 +67,12 @@ public class SecurityMinigameScreen : BaseScreen
 
     protected override void Close()
     {
-        base.Close();
+        UnsubscribeEvents();
         
         _pinLockController?.StopMiniGame();
         _rotationLockController?.StopMiniGame();
+
+        _unlockSuccessCallback = null;
 
         Managers.UI?.CurrentHUD.SetVisible(true);
 
@@ -78,14 +81,25 @@ public class SecurityMinigameScreen : BaseScreen
         if (_minigameRoot != null)
         {
             Destroy(_minigameRoot);
+            _minigameRoot = null;
         }
+
+        base.Close();
     }
 
     #region ===== 초기화 =====
 
-    /// <summary> KDH : 선택한 미니게임을 생성하고 입력을 시작한다. </summary>
+    /// <summary> KDH, SJY : 선택한 미니게임을 생성하고 입력을 시작한다. 락픽이 없을시 종료</summary>
     public void Set(MinigameType minigameType, Camera blurCamera, Action unlockSuccessCallback = null)
     {
+        if (!LockpickInventory.HasLockpick())
+        {
+            Close();
+            Managers.UI?.OpenToastMessage("락픽이 부족합니다.");
+
+            return;
+        }
+
         _unlockSuccessCallback = unlockSuccessCallback;
 
         _blurCamera = blurCamera;
@@ -93,11 +107,21 @@ public class SecurityMinigameScreen : BaseScreen
         Managers.UI?.CurrentHUD.SetVisible(false);
 
         CreateMinigame(minigameType);
+
+        if (_minigame == null)
+        {
+            Close();
+            return;
+        }
+
         CreateMinigameCamera(minigameType);
         
         SetBackgroundBlur();
         
         Get<TMP_Text>(Texts.InstructionText)?.SetText(GetInstructionText(minigameType));
+
+        SubscribeEvents();
+        UpdateLockpickCountText();
 
         switch (minigameType)
         {
@@ -155,6 +179,39 @@ public class SecurityMinigameScreen : BaseScreen
         {
             _rotationLockController.OnUnlockCompleted += HandleRotationLockCompleted;
             _rotationLockController.OnLockpickBroken += HandleRotationLockBroken;
+        }
+    }
+
+    /// <summary> SJY : 퀵슬롯 수량 변경 이벤트 구독 </summary>
+    private void SubscribeEvents()
+    {
+        if (Managers.Data == null)
+        {
+            return;
+        }
+
+        Managers.Data.OnQuickSlotChanged -= UpdateLockpickCountText;
+        Managers.Data.OnQuickSlotChanged += UpdateLockpickCountText;
+    }
+
+    /// <summary> SJY : 미니게임 종료 시 등록한 이벤트 해제 </summary>
+    private void UnsubscribeEvents()
+    {
+        if (Managers.Data != null)
+        {
+            Managers.Data.OnQuickSlotChanged -= UpdateLockpickCountText;
+        }
+
+        if (_pinLockController != null)
+        {
+            _pinLockController.OnUnlockCompleted -= HandlePinLockCompleted;
+            _pinLockController.OnLockpickBroken -= HandlePinLockBroken;
+        }
+
+        if (_rotationLockController != null)
+        {
+            _rotationLockController.OnUnlockCompleted -= HandleRotationLockCompleted;
+            _rotationLockController.OnLockpickBroken -= HandleRotationLockBroken;
         }
     }
 
@@ -292,12 +349,62 @@ public class SecurityMinigameScreen : BaseScreen
     }
 
     #endregion ===== 카메라 =====
-    
-    #region ===== 이벤트 =====
-    
-    /// <summary> KDH : KDH : 핀 잠금 해제 완료 시 퀘스트 진행도를 갱신한다. </summary>
-    private void HandlePinLockCompleted()
+
+    #region ==== 락픽 ====
+
+    /// <summary> SJY : 보유한 락픽 수량을 UI에 표시한다. </summary>
+    private void UpdateLockpickCountText()
     {
+        Get<TMP_Text>(Texts.LockpickCountText)?.SetText($"락픽 : {LockpickInventory.GetCount()}개");
+    }
+
+    /// <summary> SJY : 락픽 파손 시 1개 소모하고 남은 락픽을 확인한다. </summary>
+    private void HandleLockpickBroken()
+    {
+
+        if (!LockpickInventory.TryConsume())
+        {
+            Close();
+            Managers.UI?.OpenToastMessage("락픽이 부족하여 해제를 중단합니다.");
+
+            return;
+        }
+
+        UpdateLockpickCountText();
+
+        if (!LockpickInventory.HasLockpick())
+        {
+            Close();
+            Managers.UI?.OpenToastMessage("락픽이 모두 파괴되어 해제를 중단합니다.");
+
+            return;
+        }
+
+        Managers.UI?.OpenToastMessage("락픽이 파괴되었습니다!");
+
+        if (_pinLockController != null && _pinLockController.IsReplacing)
+        {
+            _pinLockController.ReplaceLockpick();
+        }
+        else if (_rotationLockController != null && _rotationLockController.IsReplacing)
+        {
+            _rotationLockController.ReplaceLockpick();
+        }
+    }
+
+    /// <summary> SJY : 잠금 해제 성공 시 락픽 소비 및 퀘스트 진행 </summary>
+    private void HandleUnlockSuccess(QuestType questType)
+    {
+        if (!LockpickInventory.TryConsume())
+        {
+            CPrint.Warning("[SecurityMinigameScreen] 잠금 해제 성공 후 락픽 소비에 실패했습니다.");
+
+            Close();
+            return;
+        }
+
+        UpdateLockpickCountText();
+
         Managers.Quest?.ReportProgress(SceneType.StealthScene, QuestType.PinLock);
 
         _unlockSuccessCallback?.Invoke();
@@ -305,28 +412,36 @@ public class SecurityMinigameScreen : BaseScreen
         Close();
     }
 
+    #endregion ==== 락픽 ====
+
+    #region ===== 이벤트 =====
+
+    /// <summary> KDH : 핀 잠금 해제 완료 시 퀘스트 진행도를 갱신한다. </summary>
+    private void HandlePinLockCompleted()
+    {
+        HandleUnlockSuccess(QuestType.PinLock);
+    }
+
     /// <summary> KDH : 회전 잠금 해제 완료 시 퀘스트 진행도를 갱신한다. </summary>
     private void HandleRotationLockCompleted()
     {
-        Managers.Quest?.ReportProgress(SceneType.StealthScene, QuestType.RotationLock);
-
-        _unlockSuccessCallback?.Invoke();
-
-        Close();
+        HandleUnlockSuccess(QuestType.RotationLock);
     }
 
     /// <summary> KDH : 핀 잠금 도구가 파손되면 교체한다. </summary>
     private void HandlePinLockBroken()
     {
-        _pinLockController?.ReplaceLockpick();
-        CPrint.Log("핀 잠금 도구 파손");
+        HandleLockpickBroken();
+        //_pinLockController?.ReplaceLockpick();
+        //CPrint.Log("핀 잠금 도구 파손");
     }
 
     /// <summary> KDH : 회전 잠금 도구가 파손되면 교체한다. </summary>
     private void HandleRotationLockBroken()
     {
-        _rotationLockController?.ReplaceLockpick();
-        CPrint.Log("회전 잠금 도구 파손");
+        HandleLockpickBroken();
+        //_rotationLockController?.ReplaceLockpick();
+        //CPrint.Log("회전 잠금 도구 파손");
     }
     
     #endregion ===== 이벤트 =====
