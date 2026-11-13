@@ -46,4 +46,11 @@ public abstract class BaseScreen : BaseUI
     {
         Managers.UI.CloseAll();
     }
+    
+    protected virtual void OnDestroy()
+    {
+        DestroyOverride();
+    }
+
+    protected abstract void DestroyOverride();
 }

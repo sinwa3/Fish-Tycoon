@@ -156,6 +156,13 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable
     /// <summary> SJY : 핀 조절형과 회전형 중 하나를 무작위로 선택하여 미니게임 실행 </summary>
     private void StartLockMinigame()
     {
+        if (!LockpickInventory.HasLockpick())
+        {
+            Managers.UI.OpenToastMessage("락픽이 부족합니다.");
+
+            return;
+        }
+
         if (Managers.UI == null || Managers.UI.CurrentScreen != null)
         {
             return;

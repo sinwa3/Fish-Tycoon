@@ -4,16 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-/// <summary> KDH : BGM과 SFX의 재생 및 AudioSource 관리를 담당한다. </summary>
+/// <summary> KDH : Master, BGM과 SFX의 재생 및 AudioSource 관리를 담당한다. </summary>
 public class SoundManager : MonoBehaviour
 {
+    private const string MasterVolumeParameter = "MasterVolume";
     private const string BgmVolumeParameter = "BgmVolume";
     private const string SfxVolumeParameter = "SfxVolume";
 
+    private const string MasterVolumePrefsKey = "Sound_MasterVolume";
     private const string BgmVolumePrefsKey = "Sound_BgmVolume";
     private const string SfxVolumePrefsKey = "Sound_SfxVolume";
 
-    private const float DefaultVolume = 0.5f;
+    public const float DefaultMasterVolume = 1f;
+    public const float DefaultVolume = 0.5f;
     
     private AudioMixer _audioMixer;
     private AudioMixerGroup _bgmMixerGroup;
@@ -115,12 +118,14 @@ public class SoundManager : MonoBehaviour
         _bgmAudioSource.outputAudioMixerGroup = _bgmMixerGroup;
     }
 
-    /// <summary> KDH : PlayerPrefs에 저장된 BGM과 SFX 볼륨을 불러와 적용한다. </summary>
+    /// <summary> KDH : PlayerPrefs에 저장된 Master, BGM과 SFX 볼륨을 불러와 적용한다. </summary>
     private void LoadVolumeSettings()
     {
+        float masterVolume = PlayerPrefs.GetFloat(MasterVolumePrefsKey, DefaultMasterVolume);
         float bgmVolume = PlayerPrefs.GetFloat(BgmVolumePrefsKey, DefaultVolume);
         float sfxVolume = PlayerPrefs.GetFloat(SfxVolumePrefsKey, DefaultVolume);
 
+        SetMasterVolume(masterVolume);
         SetBgmVolume(bgmVolume);
         SetSfxVolume(sfxVolume);
     }
@@ -390,6 +395,16 @@ public class SoundManager : MonoBehaviour
 
     #region ===== Mixer =====
 
+    /// <summary> KDH : 전체 볼륨을 설정하고 저장한다. </summary>
+    public void SetMasterVolume(float volume)
+    {
+        volume = Mathf.Clamp01(volume);
+
+        PlayerPrefs.SetFloat(MasterVolumePrefsKey, volume);
+
+        SetMixerVolume(MasterVolumeParameter, volume);
+    }
+    
     /// <summary> KDH : BGM의 전체 볼륨을 설정하고 저장한다. </summary>
     public void SetBgmVolume(float volume)
     {
@@ -408,6 +423,12 @@ public class SoundManager : MonoBehaviour
         PlayerPrefs.SetFloat(SfxVolumePrefsKey, volume);
         
         SetMixerVolume(SfxVolumeParameter, volume);
+    }
+    
+    /// <summary> KDH : 저장된 전체 볼륨을 반환한다. </summary>
+    public float GetMasterVolume()
+    {
+        return PlayerPrefs.GetFloat(MasterVolumePrefsKey, DefaultMasterVolume);
     }
     
     /// <summary> KDH : 저장된 BGM 볼륨을 반환한다. </summary>

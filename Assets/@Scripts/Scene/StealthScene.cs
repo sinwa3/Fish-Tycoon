@@ -162,7 +162,7 @@ public class StealthScene : BaseScene
         {
             return;
         }
-        
+
         ChangeCurrentPhase();
         Managers.UI.OpenScreen<StealthEndScreen>().ShowResult(true);
     }

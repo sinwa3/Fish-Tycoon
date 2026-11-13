@@ -128,7 +128,7 @@ public abstract class BasePopup : BaseUI
     protected abstract void DestroyOverride();
 
     /// <summary> KDH : Popup을 닫고 닫기 완료 후 전달받은 콜백을 실행한다. </summary>
-    public virtual void Close(Action closeAction = null)
+    protected virtual void Close(Action closeAction = null)
     {
         if (_bgCanvasGroup == null)
         {

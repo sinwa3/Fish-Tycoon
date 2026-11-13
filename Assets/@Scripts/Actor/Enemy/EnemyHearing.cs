@@ -81,20 +81,46 @@ public class EnemyHearing : MonoBehaviour
     /// <summary> KYH : 들린 세기가 기준값 이상이면 기억에 적고 게이지를 올린다 </summary>
     public void HearNoise(Vector3 position, float loudness)
     {
-        if (IsIgnoringNoise())
+        if (!TryHear(position, loudness, out float heardLoudness))
         {
             return;
         }
 
-        float heardLoudness = GetHeardLoudness(position, loudness);
+        _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * _enemy.Detection.SoundGaugePerLoudness);
+    }
+
+    /// <summary> KYH : 유인 소음이 들리면 게이지를 조사 시작 값까지 올리고 그 자리를 조사 목표로 잡는다 </summary>
+    public void HearLure(Vector3 position, float loudness)
+    {
+        if (!TryHear(position, loudness, out _))
+        {
+            return;
+        }
+
+        _enemy.SuspicionGauge.RaiseToAlertGauge();
+        _enemy.Memory.SetInvestigateTarget(position);
+    }
+
+    /// <summary> KYH : 소음이 들렸으면 기억에 적고 true, 들린 세기는 heardLoudness로 돌려준다 </summary>
+    private bool TryHear(Vector3 position, float loudness, out float heardLoudness)
+    {
+        heardLoudness = 0.0f;
+
+        if (IsIgnoringNoise())
+        {
+            return false;
+        }
+
+        heardLoudness = GetHeardLoudness(position, loudness);
 
         if (heardLoudness < _enemy.Detection.SoundHearThreshold)
         {
-            return;
+            return false;
         }
 
         ReportToMemory(position, heardLoudness);
-        _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * _enemy.Detection.SoundGaugePerLoudness);
+
+        return true;
     }
 
     /// <summary> KYH : 소음을 무시하는지 돌려준다 (수면하는 날, 추격 중) </summary>

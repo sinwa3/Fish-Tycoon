@@ -10,22 +10,7 @@
     <configurations />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Prefab/UI/Misc/HoldingInteractionUI.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Prefab/UI/Misc/HoldingInteractionUI.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/PopupUI/StorePopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/PopupUI/StorePopup.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Controller/Tycoon/TycoonBgCtrl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Controller/Tycoon/TycoonBgCtrl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FishPickup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Interaction/FishPickup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/ResourceKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Core/TableManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Managers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/StealthScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/HoldingInteractionUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/HoldingInteractionUI.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/UIHighlightCanvas.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Misc/UIHighlightCanvas.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/SettlementPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/SettlementPopup.cs" afterDir="false" />
-    </list>
+    <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

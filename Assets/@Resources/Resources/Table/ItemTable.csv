@@ -10,7 +10,7 @@
 8,가죽 장갑,물고기 획득 시간이 {0}% 단축됩니다.,20,1,Equipment,Glove,1,Gloves_0
 9,목장갑,물고기 획득 시간이 {0}% 단축됩니다.,25,1,Equipment,Glove,2,Gloves_1
 10,끈끈이 장갑,물고기 획득 시간이 {0}% 단축됩니다.,33,1,Equipment,Glove,3,Gloves_2
-11,만능툴,잠긴 물건 해제를 위한 도구입니다.,0,9,Consumable,None,0,Lockpick
+11,락픽,잠긴 물건 해제를 위한 도구입니다.,0,12,Consumable,None,0,Lockpick
 12,병,투척하여 떨어진 곳에 소리를 발생시킵니다.,0,3,Consumable,None,0,Bottle
 13,타이머 장치,설치하여 {0}초 후 소리를 발생시킵니다.,10,3,Consumable,None,0,Clock
 14,스포츠 드링크,"{0}초 후, 스테미나를 최대 회복시킵니다.",2,3,Consumable,None,0,Drink

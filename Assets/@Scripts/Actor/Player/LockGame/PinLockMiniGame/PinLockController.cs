@@ -43,7 +43,7 @@ public class PinLockController : MonoBehaviour
 
     private void Update()
     {
-        if (!_isPlaying || _isUnlocked || _isReplacing || _pins == null || _pins.Length == 0)
+        if (!_isPlaying || _isUnlocked || _isReplacing || _pinLockInput == null || _pins == null || _pins.Length == 0)
         {
             return;
         }
@@ -53,7 +53,6 @@ public class PinLockController : MonoBehaviour
             _pins[i].UpdateMovement(Time.deltaTime);
         }
 
-        UpdatePinSelection();
         UpdateLockpickPosition();
 
         if (!IsLockpickArrived())
@@ -233,28 +232,6 @@ public class PinLockController : MonoBehaviour
     #endregion ==== 미니게임 제어 ====
 
     #region ==== 핀 제어 ====
-
-    /// <summary>SJY : A와 D키로 선택 가능한 핀 사이를 이동</summary>
-	private void UpdatePinSelection()
-    {
-        int nextIndex = _curentPinIndex;
-
-        if (_pinLockInput.IsPreviousPressed)
-        {
-            nextIndex = Mathf.Max(0, _curentPinIndex - 1);
-        }
-        else if (_pinLockInput.IsNextPressed)
-        {
-            nextIndex = Mathf.Min(Mathf.Min(_fixedPinCount, _pins.Length - 1), _curentPinIndex + 1);
-        }
-
-        if (nextIndex == _curentPinIndex)
-        {
-            return;
-        }
-
-        _curentPinIndex = nextIndex;
-    }
 
     /// <summary>SJY : 현재 핀의 고정 성공 여부를 판정</summary>
 	private void CheckFixAttempt(PinLockPin currentPin)

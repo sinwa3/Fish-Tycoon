@@ -74,7 +74,7 @@ public class TutorialPopup : BasePopup
         }
     }
 
-    public override void Close(Action closeAction = null)
+    protected override void Close(Action closeAction = null)
     {
         base.Close(closeAction);
         
