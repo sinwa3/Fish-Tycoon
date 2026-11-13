@@ -15,6 +15,9 @@ public class SceneCheat : BaseCheat
 
     public override bool IsAvailable => Managers.Scene?.CurrentScene != null;
 
+    // 마지막 날은 영업만 하고 끝나서 잠입이 없다
+    private static bool IsFinalDay => Managers.Data?.GetCurrentDay() >= TycoonScene.FinalDay;
+
     public override void DrawButtons()
     {
         GUILayout.BeginHorizontal();
@@ -25,11 +28,18 @@ public class SceneCheat : BaseCheat
         }
 
         GUILayout.EndHorizontal();
+
+        DrawLabel($"{TycoonScene.FinalDay}일 차에는 잠입으로 가지 않는다");
     }
 
     /// <summary> 멈춘 시간을 되돌린 뒤 씬을 바꾼다 </summary>
     private void LoadScene(SceneType type)
     {
+        if (type == SceneType.StealthScene && IsFinalDay)
+        {
+            return;
+        }
+
         Window.Close();
         Managers.Scene.LoadSceneWithLoading(type);
     }
