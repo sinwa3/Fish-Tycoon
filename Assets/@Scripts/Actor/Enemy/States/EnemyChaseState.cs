@@ -25,6 +25,7 @@ public class EnemyChaseState : BaseEnemyState
         _isArrested = false;
         _repathTimer = 0.0f;
         Enemy.Movement.SetSpeedMode(EnemySpeedMode.Run);
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.EnemyChaseStart);
     }
 
     /// <summary> KYH : 추격 상태를 갱신한다 </summary>

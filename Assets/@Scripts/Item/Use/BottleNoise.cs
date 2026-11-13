@@ -50,5 +50,6 @@ public class BottleNoise : MonoBehaviour
 
         scene.RaiseNoiseMade(position, ConsumableTempValue.BottleNoiseLoudness);
         _hasMadeNoise = true;
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ItemBottle);
     }
 }

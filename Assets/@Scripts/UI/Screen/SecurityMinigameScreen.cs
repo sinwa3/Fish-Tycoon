@@ -65,7 +65,7 @@ public class SecurityMinigameScreen : BaseScreen
     {
     }
 
-    protected override void Close()
+    protected override void DestroyOverride()
     {
         UnsubscribeEvents();
         
@@ -83,8 +83,6 @@ public class SecurityMinigameScreen : BaseScreen
             Destroy(_minigameRoot);
             _minigameRoot = null;
         }
-
-        base.Close();
     }
 
     #region ===== 초기화 =====

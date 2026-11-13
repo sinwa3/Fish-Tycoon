@@ -33,6 +33,13 @@ public class ReputationProgressPopup : BasePopup
     {
     }
 
+    protected override void OnOpened()
+    {
+        base.OnOpened();
+        
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.Reputation);
+    }
+
     protected override void OnUpdate()
     {
     }

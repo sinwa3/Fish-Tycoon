@@ -138,6 +138,8 @@ public class TycoonScene : BaseScene
         switch (_currentPhase)
         {
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StartBusiness);
+                
                 // 영업 진행도를 초기화 한다.
                 _tycoonHUD.InitializeBusinessProgress(_maxCustomerCount);
 

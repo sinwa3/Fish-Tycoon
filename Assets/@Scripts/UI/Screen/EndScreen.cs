@@ -37,6 +37,10 @@ public class EndScreen : BaseScreen
     {
     }
 
+    protected override void DestroyOverride()
+    {
+    }
+
     /// <summary> KDH : 게임 결과에 맞는 화면을 표시한다. </summary>
     public void ShowResult(bool isGameOver)
     {
@@ -52,6 +56,7 @@ public class EndScreen : BaseScreen
     {
         if (isGameOver)
         {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.GameOver, maxAudioSourceCount: 1);
             Get<Image>(Images.OverImage).gameObject.SetActive(true);
             return;
         }

@@ -42,7 +42,7 @@ public class TitleHUD : BaseHUD
             Get<Button>(Buttons.LoadBtn).interactable = false;
         }
         
-        Get<Button>(Buttons.OptionBtn).onClick.AddListener(() => Managers.UI.OpenToastMessage("준비 중"));
+        Get<Button>(Buttons.OptionBtn).onClick.AddListener(() => Managers.UI.OpenPopup<OptionPopup>());
         Get<Button>(Buttons.ExitBtn).onClick.AddListener(() => Utils.QuitApp());
     }
 }

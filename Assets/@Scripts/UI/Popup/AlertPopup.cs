@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary> KDH : 사용자에게 선택을 요청하고 결과에 따라 지정된 동작을 실행하는 알림 팝업이다. </summary>
@@ -18,6 +19,7 @@ public class AlertPopup : BasePopup
     }
 
     private Action _yesAction;
+    private bool _isPausing;
 
     protected override void OnAwake()
     {
@@ -55,12 +57,23 @@ public class AlertPopup : BasePopup
 
         Get<Button>(Buttons.YesBtn)?.onClick.RemoveAllListeners();
         Get<Button>(Buttons.NoBtn)?.onClick.RemoveAllListeners();
+
+        if (_isPausing)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     /// <summary> KDH : 팝업의 내용과 선택 시 실행할 동작을 설정한다. </summary>
-    public void Set(string title, string content, bool showCancelButton = false, Action yesAction = null)
+    public void Set(string title, string content, bool showCancelButton = false, Action yesAction = null, bool pauseGameplay = false)
     {
         _yesAction = yesAction;
+        _isPausing = pauseGameplay;
+
+        if (_isPausing)
+        {
+            Time.timeScale = 0f;
+        }
 
         Get<TMP_Text>(Texts.TitleText).text = title;
         Get<TMP_Text>(Texts.ContentsText).text = content;

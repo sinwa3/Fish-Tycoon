@@ -102,6 +102,7 @@ public class TycoonHUD : BaseHUD
     private Sprite[] _normalSprites = new Sprite[4];
     private Sprite[] _pressedSprites = new Sprite[4];
     private Sprite[] _failedSprites = new Sprite[4];
+    private Sprite[] _highlightSprites = new Sprite[4];
 
     private Image[] _commandImages;
 
@@ -183,21 +184,25 @@ public class TycoonHUD : BaseHUD
 
             if (Managers.Input.KeyDown_W)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_1);
                 _cookingController.ProcessCommand('W');
             }
 
             else if (Managers.Input.KeyDown_A)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_2);
                 _cookingController.ProcessCommand('A');
             }
 
             else if (Managers.Input.KeyDown_S)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_3);
                 _cookingController.ProcessCommand('S');
             }
 
             else if (Managers.Input.KeyDown_D)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_4);
                 _cookingController.ProcessCommand('D');
             }
         }
@@ -301,6 +306,7 @@ public class TycoonHUD : BaseHUD
         }
     }
 
+    /// <summary>SJY : 조리 커맨드 및 서빙 스프라이트 초기화</summary>
     private void InitializeCookingSprites()
     {
         string[] commands = { "W", "A", "S", "D" };
@@ -313,6 +319,7 @@ public class TycoonHUD : BaseHUD
             _normalSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_0");
             _pressedSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_1");
             _failedSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_2");
+            _highlightSprites[i] = Managers.Resource.LoadSprite(path, sheetName + "_3");
         }
 
         Image servingImage = Get<Image>(Images.ServingImage);
@@ -640,12 +647,16 @@ public class TycoonHUD : BaseHUD
 
             image.sprite = _normalSprites[spriteIndex];
         }
+
+        UpdateCommandHighlight(0);
     }
 
     /// <summary>SJY : 정답 커맨드 이미지 변경</summary>
     private void UpdateCommandPressed(int commandIndex)
     {
         UpdateCommandSprite(commandIndex, _pressedSprites);
+
+        UpdateCommandHighlight(commandIndex + 1);
 
         UpdateCookingImage(commandIndex);
     }
@@ -781,6 +792,7 @@ public class TycoonHUD : BaseHUD
         cookingImage.gameObject.SetActive(cookingImage.sprite != null);
     }
 
+    /// <summary>SJY : 현재 음식의 커맨드 이미지 표시 및 초기화</summary>
     private void ResetCookingImage()
     {
         Image cookingImage = Get<Image>(Images.CookingImage);
@@ -853,6 +865,17 @@ public class TycoonHUD : BaseHUD
         servingFoodImage.gameObject.SetActive(servingFoodImage.sprite != null);
     }
 
+    /// <summary>SJY : 현재 입력해야 하는 커맨드를 테두리 스프라이트로 변경</summary>
+    private void UpdateCommandHighlight(int commandIndex)
+    {
+        if (_cookingController == null || _commandImages == null || commandIndex < 0 || commandIndex >= _cookingController.TotalCommandCount)
+        {
+            return;
+        }
+
+        UpdateCommandSprite(commandIndex, _highlightSprites);
+    }
+
     #endregion ==== 조리 커맨드 UI ====
 
     #region ===== 퀘스트 =====
@@ -870,6 +893,8 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 서브 퀘스트 완료 연출을 재생한다. </summary>
     private IEnumerator Co_ShowSubQuestCompletion(QuestProgressEvent progressEvent)
     {
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.QuestClear);
+        
         // 완료 표시
         UpdateSubQuest(progressEvent.CompletedQuest, progressEvent.CompletedQuest.Goal, true);
         Managers.Quest.SetCompletionSequenceActive(true);

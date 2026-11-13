@@ -55,10 +55,6 @@ public class EnemySight : MonoBehaviour
     private void Awake()
     {
         InitializeComponents();
-    }
-
-    private void Start()
-    {
         InitializePlayer();
     }
 

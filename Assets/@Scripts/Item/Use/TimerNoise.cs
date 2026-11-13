@@ -43,6 +43,8 @@ public class TimerNoise : MonoBehaviour
     /// <summary> KYH : 타이머 장치 위치로 집주인을 부르는 유인 소음을 낸다 </summary>
     private void MakeNoise()
     {
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ItemTimer);
+
         EnemyHearing[] hearings = FindObjectsOfType<EnemyHearing>();
 
         foreach (EnemyHearing hearing in hearings)

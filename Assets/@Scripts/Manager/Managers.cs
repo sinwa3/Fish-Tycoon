@@ -139,8 +139,9 @@ public class Managers : MonoBehaviour
         }
         
         GameObject managerObject = new GameObject("@Managers");
-
+        
         _instance = managerObject.AddComponent<Managers>();
+        _instance._input.LoadSettings();
 
         DontDestroyOnLoad(managerObject);
 

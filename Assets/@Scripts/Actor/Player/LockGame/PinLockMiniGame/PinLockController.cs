@@ -43,7 +43,7 @@ public class PinLockController : MonoBehaviour
 
     private void Update()
     {
-        if (!_isPlaying || _isUnlocked || _isReplacing || _pins == null || _pins.Length == 0)
+        if (!_isPlaying || _isUnlocked || _isReplacing || _pinLockInput == null || _pins == null || _pins.Length == 0)
         {
             return;
         }

@@ -132,7 +132,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aac63daf2338439479526f01a3e13492
+      spriteID: f984a8a83c21af14499b85b206d9d1e6
       internalID: -477431647
       vertices: []
       indices: 
@@ -153,8 +153,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4807ed0e5ef980c4e9747a2baea2dfe8
+      spriteID: 84e3115ba74d6da47b32fb11125c33cb
       internalID: 272646477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Command_A-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 0
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da202b0c31d81e84fae4626d409fc4ae
+      internalID: -1506788451
       vertices: []
       indices: 
       edges: []
@@ -173,6 +194,7 @@ TextureImporter:
       Command_A-Sheet_0: 1226588150
       Command_A-Sheet_1: -477431647
       Command_A-Sheet_2: 272646477
+      Command_A-Sheet_3: -1506788451
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

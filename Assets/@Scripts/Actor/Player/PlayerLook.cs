@@ -29,20 +29,36 @@ public class PlayerLook : MonoBehaviour
     [SerializeField] private float _maxPitch = 80f;
 
     [Header("숨었을 때")]
-    [Tooltip("숨어 있을 때 숨는 위치의 정면 기준으로 좌우를 둘러볼 수 있는 최대 각도")]
-    [SerializeField] private float _hiddenYawLimit = 75f;
+    [Tooltip("숨었을 때 마우스 감도 배율 (좁은 틈으로 조심스럽게 엿보는 느낌)")]
+    [SerializeField, Range(0.1f, 1f)] private float _hiddenSensitivityScale = 0.6f;
+
+    [Tooltip("숨었을 때 숨 쉬듯 시점이 위아래로 흔들리는 크기(m). 0이면 흔들리지 않는다.")]
+    [SerializeField, Min(0f)] private float _hiddenBreathAmplitude = 0.004f;
+
+    [Tooltip("숨 쉬는 흔들림의 빠르기 (초당 횟수)")]
+    [SerializeField, Min(0f)] private float _hiddenBreathFrequency = 0.25f;
 
     #endregion ===== 설정 =====
 
     #region ===== 상태 =====
 
     private PlayerMovement _playerMovement;
+    private Camera _camera;
 
     private float _pitch;
 
     // 숨어 있는 동안 카메라가 붙어 있는 지점 (없으면 몸에 붙어 있음)
     private Transform _viewAnchor;
     private float _hiddenYaw;
+
+    // 숨어 있는 동안 둘러볼 수 있는 범위 (숨는 위치마다 다르다)
+    private float _hiddenYawLimit;
+    private float _hiddenMinPitch;
+    private float _hiddenMaxPitch;
+
+    // 숨기 전 시야각 (나올 때 되돌린다)
+    private float _defaultFieldOfView;
+    private bool _isFieldOfViewChanged;
 
     /// <summary> YSW : 카메라가 몸이 아닌 다른 지점(숨는 위치 등)에 붙어 있는지 여부 </summary>
     public bool IsViewAttached => _viewAnchor != null;
@@ -71,6 +87,7 @@ public class PlayerLook : MonoBehaviour
     {
         UpdateLook();
         UpdateEyeHeight();
+        UpdateHiddenBreath();
     }
 
     #region ===== 초기화 =====
@@ -103,14 +120,14 @@ public class PlayerLook : MonoBehaviour
             return;
         }
 
-        Camera playerCamera = _cameraPivot.GetComponent<Camera>();
+        _camera = _cameraPivot.GetComponent<Camera>();
 
-        if (playerCamera == null)
+        if (_camera == null)
         {
             return;
         }
 
-        playerCamera.nearClipPlane = _nearClipPlane;
+        _camera.nearClipPlane = _nearClipPlane;
     }
 
     /// <summary> YSW : 카메라를 플레이어의 자식으로 옮기고 눈 위치에 맞춘다. </summary>
@@ -142,19 +159,22 @@ public class PlayerLook : MonoBehaviour
             return;
         }
 
-        float yaw = input.MouseAxisX * _mouseSensitivity;
-
-        _pitch -= input.MouseAxisY * _mouseSensitivity;
-        _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
-
         if (IsViewAttached)
         {
-            // 숨어 있을 때는 몸 대신 카메라만 숨는 위치 기준으로 둘러본다.
-            _hiddenYaw = Mathf.Clamp(_hiddenYaw + yaw, -_hiddenYawLimit, _hiddenYawLimit);
+            // 숨어 있을 때는 몸 대신 카메라만 숨는 위치 기준으로, 좁은 범위 안에서 천천히 둘러본다.
+            float hiddenSensitivity = _mouseSensitivity * _hiddenSensitivityScale;
+
+            _hiddenYaw = Mathf.Clamp(_hiddenYaw + input.MouseAxisX * hiddenSensitivity, -_hiddenYawLimit, _hiddenYawLimit);
+            _pitch = Mathf.Clamp(_pitch - input.MouseAxisY * hiddenSensitivity, _hiddenMinPitch, _hiddenMaxPitch);
             _cameraPivot.localRotation = Quaternion.Euler(_pitch, _hiddenYaw, 0f);
 
             return;
         }
+
+        float yaw = input.MouseAxisX * _mouseSensitivity;
+
+        _pitch -= input.MouseAxisY * _mouseSensitivity;
+        _pitch = Mathf.Clamp(_pitch, _minPitch, _maxPitch);
 
         transform.Rotate(0f, yaw, 0f);
         _cameraPivot.localRotation = Quaternion.Euler(_pitch, 0f, 0f);
@@ -177,6 +197,19 @@ public class PlayerLook : MonoBehaviour
         _cameraPivot.localPosition = new Vector3(_eyeOffset.x, eyeHeight, _eyeOffset.z);
     }
 
+    /// <summary> YSW : 숨어 있는 동안 숨 쉬듯 시점을 아주 조금 위아래로 흔든다. </summary>
+    private void UpdateHiddenBreath()
+    {
+        if (_cameraPivot == null || !IsViewAttached)
+        {
+            return;
+        }
+
+        float breath = Mathf.Sin(Time.time * _hiddenBreathFrequency * Mathf.PI * 2f) * _hiddenBreathAmplitude;
+
+        _cameraPivot.localPosition = new Vector3(0f, breath, 0f);
+    }
+
     /// <summary> YSW : 마우스 커서의 잠금 상태를 변경한다. </summary>
     private void SetCursorLock(bool isLock)
     {
@@ -194,8 +227,11 @@ public class PlayerLook : MonoBehaviour
 
     #region ===== 시점 고정 =====
 
-    /// <summary> YSW : 카메라를 몸에서 떼어 지정한 지점(숨는 위치 등)에 붙인다. 지점의 정면을 바라보며 시작한다. </summary>
-    public void AttachView(Transform anchor)
+    /// <summary>
+    /// YSW : 카메라를 몸에서 떼어 지정한 지점(숨는 위치 등)에 붙인다. 지점의 정면을 바라보며 시작한다.
+    /// 좌우(yawLimit), 위(lookUpLimit), 아래(lookDownLimit)로 둘러볼 수 있는 각도와 시야각 배율을 함께 정한다.
+    /// </summary>
+    public void AttachView(Transform anchor, float yawLimit, float lookUpLimit, float lookDownLimit, float fieldOfViewScale = 1f)
     {
         if (_cameraPivot == null || anchor == null)
         {
@@ -206,9 +242,15 @@ public class PlayerLook : MonoBehaviour
         _hiddenYaw = 0f;
         _pitch = 0f;
 
+        _hiddenYawLimit = Mathf.Max(0f, yawLimit);
+        _hiddenMinPitch = -Mathf.Max(0f, lookUpLimit);
+        _hiddenMaxPitch = Mathf.Max(0f, lookDownLimit);
+
         _cameraPivot.SetParent(anchor, false);
         _cameraPivot.localPosition = Vector3.zero;
         _cameraPivot.localRotation = Quaternion.identity;
+
+        SetFieldOfViewScale(fieldOfViewScale);
     }
 
     /// <summary> YSW : 카메라를 다시 몸의 눈 위치로 되돌린다. </summary>
@@ -222,8 +264,38 @@ public class PlayerLook : MonoBehaviour
         _viewAnchor = null;
         _hiddenYaw = 0f;
 
+        RestoreFieldOfView();
         InitializeCameraPosition();
         UpdateEyeHeight();
+    }
+
+    /// <summary> YSW : 숨기 전 시야각을 기억해 두고, 배율만큼 시야각을 바꾼다. </summary>
+    private void SetFieldOfViewScale(float fieldOfViewScale)
+    {
+        if (_camera == null || Mathf.Approximately(fieldOfViewScale, 1f))
+        {
+            return;
+        }
+
+        if (!_isFieldOfViewChanged)
+        {
+            _defaultFieldOfView = _camera.fieldOfView;
+            _isFieldOfViewChanged = true;
+        }
+
+        _camera.fieldOfView = _defaultFieldOfView * fieldOfViewScale;
+    }
+
+    /// <summary> YSW : 숨기 전 시야각으로 되돌린다. </summary>
+    private void RestoreFieldOfView()
+    {
+        if (_camera == null || !_isFieldOfViewChanged)
+        {
+            return;
+        }
+
+        _camera.fieldOfView = _defaultFieldOfView;
+        _isFieldOfViewChanged = false;
     }
 
     #endregion ===== 시점 고정 =====

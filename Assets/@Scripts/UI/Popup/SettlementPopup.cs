@@ -82,6 +82,13 @@ public class SettlementPopup : BasePopup
         }
     }
 
+    protected override void OnOpened()
+    {
+        base.OnOpened();
+        
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CustomerExit);
+    }
+
     protected override void OnUpdate()
     {
     }

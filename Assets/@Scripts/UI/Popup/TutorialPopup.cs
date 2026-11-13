@@ -58,6 +58,13 @@ public class TutorialPopup : BasePopup
         Get<Button>(Buttons.PrevBtn).onClick.AddListener(PreviousPage);
     }
 
+    protected override void OnOpened()
+    {
+        base.OnOpened();
+        
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.TutorialOpen);
+    }
+
     protected override void OnUpdate()
     {
     }
@@ -74,7 +81,7 @@ public class TutorialPopup : BasePopup
         }
     }
 
-    public override void Close(Action closeAction = null)
+    protected override void Close(Action closeAction = null)
     {
         base.Close(closeAction);
         
@@ -122,6 +129,7 @@ public class TutorialPopup : BasePopup
         }
 
         _pageIndex++;
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_1);
         RefreshPage();
     }
 
@@ -134,6 +142,7 @@ public class TutorialPopup : BasePopup
         }
 
         _pageIndex--;
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_2);
         RefreshPage();
     }
 

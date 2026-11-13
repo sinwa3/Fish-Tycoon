@@ -34,7 +34,7 @@ public class StealthEndScreen : BaseScreen
     protected override void OnStart()
     {
         Get<Button>(Buttons.NextBtn).onClick.AddListener(ReturnToTycoon);
-        
+
         Managers.Sound.StopBgm();
         Managers.Input.SetCursorLock(false);
     }
@@ -46,16 +46,20 @@ public class StealthEndScreen : BaseScreen
     public override void OnInputKey()
     {
     }
-    
+
+    protected override void DestroyOverride()
+    {
+    }
+
     /// <summary> KDH : 게임 결과에 맞는 화면을 표시한다. </summary>
     public void ShowResult(bool isArrested)
     {
-        _isArrested =  isArrested;
-        
+        _isArrested = isArrested;
+
         Get<Image>(Images.Bg).gameObject.SetActive(true);
         Get<Image>(Images.ClearImage).gameObject.SetActive(false);
         Get<Image>(Images.OverImage).gameObject.SetActive(false);
-        
+
         UpdateResultImage(isArrested);
 
         Settle();
@@ -69,7 +73,7 @@ public class StealthEndScreen : BaseScreen
             Get<Image>(Images.OverImage).gameObject.SetActive(true);
             return;
         }
-        
+
         Get<Image>(Images.ClearImage).gameObject.SetActive(true);
     }
 
@@ -80,27 +84,60 @@ public class StealthEndScreen : BaseScreen
         {
             return;
         }
-        
+
         Managers.Data.SetNextDay();
         Managers.Data.ChangeSavedGameMode(GameMode.Stealth);
 
-        Managers.Data.ClearConsumables();
+        int clearedConsumablesCount = Managers.Data.ClearConsumables();
 
         if (!_isArrested) // 체포 되지 않았다면 생선을 보관한다.
         {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StealthEscape);
+
             int settledCount = Managers.Data.SettleQuickSlotFish();
-            
-            string clearDescStr = $"사용하지 않은 도구는 버리고 훔친 생선 {settledCount}마리를 가게에 옮겼습니다.";
+
+            string clearDescStr = string.Empty;
+            if (clearedConsumablesCount > 0)
+            {
+                clearDescStr += $"사용하지 않은 도구 {clearedConsumablesCount}개를 버리고\n";
+            }
+
+            clearDescStr += $"훔친 생선 {settledCount}마리를 가게로 옮겼습니다.";
+
             Get<TMP_Text>(Texts.ClearDescText).SetText(clearDescStr);
         }
         else // 체포되면 훔친 생선을 전부 초기화하고 만족도를 감소시킨다.
         {
-            int clearedCount = Managers.Data.ClearFishes();
-            int satisfactionPenalty = 100 * clearedCount;
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StealthArrest);
+
+            int clearedFishCount = Managers.Data.ClearFishes();
+            int satisfactionPenalty = 100 * clearedFishCount;
+
+            // 만족도 감소 전 평판 레벨
+            int previousReputationLevel = Managers.Data.GetReputationInfo().reputationGrade;
 
             Managers.Data.SubtractSatisfaction(satisfactionPenalty);
 
-            string overDescStr = $"훔친 생선 {clearedCount}마리를 몰수당하고 가게 만족도가 {satisfactionPenalty} 감소했습니다.";
+            // 만족도 감소 후 평판 레벨
+            int currentReputationLevel = Managers.Data.GetReputationInfo().reputationGrade;
+
+            string overDescStr = $"훔친 생선 {clearedFishCount}마리를 몰수당했습니다.";
+
+            if (clearedConsumablesCount > 0)
+            {
+                overDescStr += $"\n사용하지 않은 도구 {clearedConsumablesCount}개를 버렸습니다.";
+            }
+
+            if (satisfactionPenalty > 0)
+            {
+                overDescStr += $"\n가게 만족도가 {satisfactionPenalty} 감소했습니다.";
+            }
+
+            if (currentReputationLevel < previousReputationLevel)
+            {
+                overDescStr += $"\n평판 레벨이 하락하여 {currentReputationLevel}레벨이 되었습니다.";
+            }
+
             Get<TMP_Text>(Texts.OverDescText).SetText(overDescStr);
         }
 
@@ -112,9 +149,6 @@ public class StealthEndScreen : BaseScreen
     /// <summary> KDH : 타이쿤 씬으로 돌아간다. </summary>
     private void ReturnToTycoon()
     {
-        Managers.UI.OpenLoadingUI(0.5f, () =>
-        {
-            Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene);
-        });
+        Managers.UI.OpenLoadingUI(0.5f, () => { Managers.Scene.LoadSceneWithLoading(SceneType.TycoonScene); });
     }
 }
