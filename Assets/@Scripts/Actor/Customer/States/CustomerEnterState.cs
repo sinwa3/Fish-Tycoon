@@ -9,6 +9,7 @@ public class CustomerEnterState : BaseCustomerState
     public override void Enter()
     {
         Customer.PlayIdle();
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CustomerEnter);
     }
 
     /// <summary> KYH : 입장 상태를 갱신한다 </summary>
