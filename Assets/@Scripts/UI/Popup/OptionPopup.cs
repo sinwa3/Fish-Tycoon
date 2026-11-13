@@ -12,7 +12,7 @@ public class OptionPopup : BasePopup
         VideoBtn,
         AudioBtn,
         ResetBtn,
-        
+
         CloseBtn
     }
 
@@ -31,7 +31,7 @@ public class OptionPopup : BasePopup
     private enum Sliders
     {
         MouseSlider,
-        
+
         MasterSlider,
         BgmSlider,
         SfxSlider
@@ -40,7 +40,7 @@ public class OptionPopup : BasePopup
     private enum Texts
     {
         MouseSensitivityValue,
-        
+
         MasterValue,
         BgmValue,
         SfxValue
@@ -53,9 +53,9 @@ public class OptionPopup : BasePopup
     }
 
     #region ===== 상태 =====
-    
+
     private TabType _currentTab = TabType.Video;
-    
+
     private static readonly FullScreenMode[] ScreenModes =
     {
         FullScreenMode.FullScreenWindow,
@@ -63,12 +63,14 @@ public class OptionPopup : BasePopup
     };
 
     private readonly List<Vector2Int> _resolutions = new();
-    
+
     private Vector2Int _displaySize;
     private FullScreenMode _displayMode;
 
-    #endregion ===== 상태 =====
+    private int _customResolutionIndex = -1;
     
+    #endregion ===== 상태 =====
+
     protected override void OnAwake()
     {
         Bind<Button>(typeof(Buttons));
@@ -81,21 +83,21 @@ public class OptionPopup : BasePopup
     protected override void OnStart()
     {
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimePopup);
-        
+
         Get<Button>(Buttons.VideoBtn).onClick.AddListener(() => SelectTab(TabType.Video));
         Get<Button>(Buttons.AudioBtn).onClick.AddListener(() => SelectTab(TabType.Audio));
         Get<Button>(Buttons.ResetBtn).onClick.AddListener(ResetCurrentTab);
         Get<Button>(Buttons.CloseBtn).onClick.AddListener(() => Close());
 
         InitializeDisplay();
-        
+
         SetSliderListener(Sliders.MouseSlider, Texts.MouseSensitivityValue, Managers.Input.SaveMouseSpeed);
         SetSliderListener(Sliders.MasterSlider, Texts.MasterValue, Managers.Sound.SetMasterVolume);
         SetSliderListener(Sliders.BgmSlider, Texts.BgmValue, Managers.Sound.SetBgmVolume);
         SetSliderListener(Sliders.SfxSlider, Texts.SfxValue, Managers.Sound.SetSfxVolume);
-        
+
         RefreshSliders();
-        
+
         SelectTab(TabType.Video);
     }
 
@@ -115,7 +117,7 @@ public class OptionPopup : BasePopup
     protected override void Close(Action closeAction = null)
     {
         base.Close(closeAction);
-        
+
         Managers.Sound.PlaySfx(SoundKey.Name.SfxType.ChimeConfirm);
     }
 
@@ -127,6 +129,9 @@ public class OptionPopup : BasePopup
     /// <summary> KDH : 지원하는 해상도와 화면 모드를 드롭다운에 설정하고 변경 이벤트를 등록한다. </summary>
     private void InitializeDisplay()
     {
+        _resolutions.Clear();
+        _customResolutionIndex = -1;
+        
         foreach (Resolution resolution in Screen.resolutions)
         {
             AddResolution(resolution.width, resolution.height);
@@ -139,20 +144,21 @@ public class OptionPopup : BasePopup
 
         // 해상도 목록을 가로 해상도 기준으로 내림차순 정렬하고, 가로 해상도가 같으면 세로 해상도 기준으로 내림차순 정렬
         _resolutions.Sort((left, right) => left.x != right.x
-            ? right.x.CompareTo(left.x) : right.y.CompareTo(left.y));
+            ? right.x.CompareTo(left.x)
+            : right.y.CompareTo(left.y));
 
         // 해상도 드롭다운
         TMP_Dropdown resolutionDropdown = Get<TMP_Dropdown>(Dropdowns.ResolutionDropdown);
         resolutionDropdown.ClearOptions();
         resolutionDropdown.AddOptions(_resolutions.ConvertAll(size => $"{size.x} × {size.y}"));
         resolutionDropdown.onValueChanged.AddListener(_ => ApplyDisplay());
-        
+
         // 화면모드 (전체, 창)
         TMP_Dropdown modeDropdown = Get<TMP_Dropdown>(Dropdowns.ScreenModeDropdown);
         modeDropdown.ClearOptions();
         modeDropdown.AddOptions(new List<string> { "전체 화면", "창 모드" });
         modeDropdown.onValueChanged.AddListener(_ => ApplyDisplay());
-        
+
         UpdateDisplaySelection();
     }
 
@@ -161,7 +167,7 @@ public class OptionPopup : BasePopup
     {
         Vector2Int size = new(Screen.width, Screen.height);
         FullScreenMode mode = Screen.fullScreenMode;
-        
+
         if (size.x <= 0 || size.y <= 0 || (size == _displaySize && mode == _displayMode))
         {
             return;
@@ -172,9 +178,21 @@ public class OptionPopup : BasePopup
         int index = _resolutions.IndexOf(size);
         if (index < 0)
         {
-            index = _resolutions.Count;
-            _resolutions.Add(size);
-            resolutionDropdown.AddOptions(new List<string> { $"{size.x} × {size.y}" });
+            // 임시 커스텀 해상도 추가
+            if (_customResolutionIndex < 0)
+            {
+                _customResolutionIndex = _resolutions.Count;
+                _resolutions.Add(size);
+                resolutionDropdown.AddOptions(new List<string> { $"{size.x} × {size.y}" });
+            }
+            else
+            {
+                _resolutions[_customResolutionIndex] = size;
+                resolutionDropdown.options[_customResolutionIndex].text = $"{size.x} × {size.y}";
+                resolutionDropdown.RefreshShownValue();
+            }
+
+            index = _customResolutionIndex;
         }
 
         // 화면 모드나 해상도가 바뀌었을 때 펼쳐진 드롭다운 목록을 접는다.
@@ -182,6 +200,7 @@ public class OptionPopup : BasePopup
         {
             resolutionDropdown.Hide();
         }
+
         if (modeDropdown.IsExpanded)
         {
             modeDropdown.Hide();
@@ -189,7 +208,7 @@ public class OptionPopup : BasePopup
 
         resolutionDropdown.SetValueWithoutNotify(index);
         modeDropdown.SetValueWithoutNotify(mode == FullScreenMode.Windowed ? 1 : 0);
-        
+
         _displaySize = size;
         _displayMode = mode;
     }
@@ -209,7 +228,7 @@ public class OptionPopup : BasePopup
     {
         Vector2Int size = _resolutions[Get<TMP_Dropdown>(Dropdowns.ResolutionDropdown).value];
         FullScreenMode mode = ScreenModes[Get<TMP_Dropdown>(Dropdowns.ScreenModeDropdown).value];
-        
+
         Screen.SetResolution(size.x, size.y, mode);
     }
 
@@ -276,7 +295,8 @@ public class OptionPopup : BasePopup
         {
             case TabType.Video:
                 Managers.Input.SaveMouseSpeed(InputManager.DefaultMouseSpeed);
-                int index = _resolutions.IndexOf(new Vector2Int(Screen.currentResolution.width, Screen.currentResolution.height));
+                int index = _resolutions.IndexOf(new Vector2Int(Screen.currentResolution.width,
+                    Screen.currentResolution.height));
                 Get<TMP_Dropdown>(Dropdowns.ResolutionDropdown).SetValueWithoutNotify(Mathf.Max(0, index));
                 Get<TMP_Dropdown>(Dropdowns.ScreenModeDropdown).SetValueWithoutNotify(0);
                 ApplyDisplay();
