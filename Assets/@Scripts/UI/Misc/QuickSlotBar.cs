@@ -125,7 +125,7 @@ public class QuickSlotBar : MonoBehaviour
     /// <summary> KYH : 사용 확인 팝업을 띄우고 Yes를 누르면 아이템을 사용한다 </summary>
     private void OpenUseConfirmPopup(int slotIndex, string itemName)
     {
-        Managers.UI.OpenPopup<AlertPopup>().Set(itemName, "정말로 사용하시겠습니까?", true,
+        Managers.UI.OpenPopup<AlertPopup>().Set(itemName, "즉시 이 집으로부터 나가시겠습니까?", true,
             () => UseConsumable(slotIndex, itemName), true);
     }
 
