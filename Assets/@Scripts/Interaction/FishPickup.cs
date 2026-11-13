@@ -81,6 +81,7 @@ public class FishPickup : MonoBehaviour, IInteractable
         }
 
         Managers.UI?.OpenToastMessage(string.Format(_acquireMessageFormat, GetFishName(), Count));
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.FishPickup);
 
         StartCoroutine(DissolveAndDestroy());
     }

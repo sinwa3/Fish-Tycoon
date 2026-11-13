@@ -33,9 +33,14 @@ public abstract class SoundKey
             
             EnemyChaseStart,
             
+            FishPickup,
+            
             ItemBottle,
             ItemTimer,
             
+            Reputation,
+            
+            StartBusiness,
             StealthArrest,
             StealthEscape,
             
