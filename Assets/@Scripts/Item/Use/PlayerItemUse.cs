@@ -8,6 +8,8 @@ public class PlayerItemUse : MonoBehaviour
     private const int BottleItemID = 12;
     // ItemTable의 타이머 장치 ID
     private const int TimerItemID = 13;
+    // ItemTable의 빨간 버튼 ID
+    private const int RedButtonItemID = 15;
 
     // 던지는 방향의 기준이 될 카메라 (비우면 Camera.main)
     [SerializeField] private Transform _cameraTransform;
@@ -54,7 +56,7 @@ public class PlayerItemUse : MonoBehaviour
 
         _effects.Add(BottleItemID, new BottleThrow(_cameraTransform, characterController));
         _effects.Add(TimerItemID, new TimerInstall(characterController));
-        // TODO : 빨간 버튼 효과 등록
+        _effects.Add(RedButtonItemID, new RedButtonEscape());
     }
 
     #endregion ===== 초기화 =====
