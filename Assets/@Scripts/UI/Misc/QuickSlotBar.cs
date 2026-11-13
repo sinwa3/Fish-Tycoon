@@ -5,6 +5,7 @@ using UnityEngine.UI;
 /// <summary> KDH : 소비 아이템 퀵슬롯을 생성하고 보유 정보에 따라 UI를 갱신한다. </summary>
 public class QuickSlotBar : MonoBehaviour
 {
+    private const int LockpickItemID = 11;
     private const int RedButtonItemID = 15;
 
     private readonly List<QuickSlot> _slots = new();
@@ -113,10 +114,15 @@ public class QuickSlotBar : MonoBehaviour
 
         string itemName = Managers.Table?.Item?.GetItem(slot.ItemID)?.Name ?? "소비 아이템";
 
-        if (slot.ItemID == RedButtonItemID)
+        switch (slot.ItemID)
         {
-            OpenUseConfirmPopup(_selectedSlotIndex, itemName);
-            return;
+            case RedButtonItemID:
+                OpenUseConfirmPopup(_selectedSlotIndex, itemName);
+                return;
+            case LockpickItemID:
+                // 락픽은 잠금 오브젝트를 통한 미니게임으로 소모된다.
+                Managers.UI.OpenToastMessage("락을 해제할 때 사용되는 아이템입니다.");
+                return;
         }
 
         UseConsumable(_selectedSlotIndex, itemName);
