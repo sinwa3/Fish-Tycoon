@@ -11,6 +11,7 @@ public class PlayerHide : MonoBehaviour
     private PlayerMovement _playerMovement;
     private PlayerLook _playerLook;
     private PlayerScreenFade _screenFade;
+    private PlayerHidingOverlay _hidingOverlay;
 
     private readonly List<Renderer> _hiddenRenderers = new List<Renderer>();
 
@@ -46,6 +47,7 @@ public class PlayerHide : MonoBehaviour
         _playerMovement = GetComponent<PlayerMovement>();
         _playerLook = GetComponent<PlayerLook>();
         _screenFade = gameObject.GetOrAddComponent<PlayerScreenFade>();
+        _hidingOverlay = gameObject.GetOrAddComponent<PlayerHidingOverlay>();
     }
 
     #endregion ===== 초기화 =====
@@ -78,7 +80,7 @@ public class PlayerHide : MonoBehaviour
         _screenFade.Play(ApplyExitHiding, EndTransition);
     }
 
-    /// <summary> YSW : 몸을 그 자리에서 사라지게 하고 시점을 숨는 위치로 옮긴다. </summary>
+    /// <summary> YSW : 몸을 그 자리에서 사라지게 하고 시점을 숨는 위치로 옮긴다. 둘러볼 수 있는 범위를 좁히고 문틈 가림막을 씌운다. </summary>
     private void ApplyEnterHiding(HidingSpot hidingSpot)
     {
         CurrentSpot = hidingSpot;
@@ -87,7 +89,12 @@ public class PlayerHide : MonoBehaviour
 
         if (_playerLook != null)
         {
-            _playerLook.AttachView(hidingSpot.HidePoint);
+            _playerLook.AttachView(hidingSpot.HidePoint, hidingSpot.ViewYawLimit, hidingSpot.ViewLookUpLimit, hidingSpot.ViewLookDownLimit, hidingSpot.ViewFieldOfViewScale);
+        }
+
+        if (hidingSpot.UseViewOverlay)
+        {
+            _hidingOverlay.Show(Camera.main);
         }
     }
 
@@ -105,6 +112,8 @@ public class PlayerHide : MonoBehaviour
         {
             _playerLook.DetachView();
         }
+
+        _hidingOverlay.Hide();
 
         CurrentSpot = null;
 

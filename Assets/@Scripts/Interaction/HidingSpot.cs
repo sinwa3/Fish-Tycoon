@@ -17,6 +17,22 @@ public class HidingSpot : MonoBehaviour, IInteractable
     [Tooltip("나올 때 플레이어 몸이 나타날 곳. 비워두면 숨기 전 자리에 다시 나타난다.")]
     [SerializeField] private Transform _exitPoint;
 
+    [Header("숨었을 때 시야")]
+    [Tooltip("정면 기준으로 좌우를 둘러볼 수 있는 최대 각도")]
+    [SerializeField, Range(0f, 90f)] private float _viewYawLimit = 30f;
+
+    [Tooltip("정면 기준으로 위를 올려다볼 수 있는 최대 각도")]
+    [SerializeField, Range(0f, 80f)] private float _viewLookUpLimit = 15f;
+
+    [Tooltip("정면 기준으로 아래를 내려다볼 수 있는 최대 각도")]
+    [SerializeField, Range(0f, 80f)] private float _viewLookDownLimit = 25f;
+
+    [Tooltip("숨었을 때 시야각 배율 (1보다 작으면 좁아져 틈으로 엿보는 느낌이 난다)")]
+    [SerializeField, Range(0.5f, 1f)] private float _viewFieldOfViewScale = 0.85f;
+
+    [Tooltip("숨었을 때 화면에 문틈 가림막을 씌울지 여부")]
+    [SerializeField] private bool _useViewOverlay = true;
+
     [Header("안내")]
     [SerializeField] private string _interactionText = "숨기";
 
@@ -29,6 +45,21 @@ public class HidingSpot : MonoBehaviour, IInteractable
 
     /// <summary> YSW : 나올 때 플레이어가 위치할 지점 (없으면 null) </summary>
     public Transform ExitPoint => _exitPoint;
+
+    /// <summary> YSW : 숨었을 때 좌우로 둘러볼 수 있는 최대 각도 </summary>
+    public float ViewYawLimit => _viewYawLimit;
+
+    /// <summary> YSW : 숨었을 때 위로 올려다볼 수 있는 최대 각도 </summary>
+    public float ViewLookUpLimit => _viewLookUpLimit;
+
+    /// <summary> YSW : 숨었을 때 아래로 내려다볼 수 있는 최대 각도 </summary>
+    public float ViewLookDownLimit => _viewLookDownLimit;
+
+    /// <summary> YSW : 숨었을 때 시야각 배율 </summary>
+    public float ViewFieldOfViewScale => _viewFieldOfViewScale;
+
+    /// <summary> YSW : 숨었을 때 문틈 가림막을 씌울지 여부 </summary>
+    public bool UseViewOverlay => _useViewOverlay;
 
     public string InteractionText => _interactionText;
 
