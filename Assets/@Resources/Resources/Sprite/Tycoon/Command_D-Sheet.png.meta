@@ -159,6 +159,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Command_D-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 0
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e61b25a313357664aa0b4f0e1bc94ccd
+      internalID: 2018199340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -173,6 +194,7 @@ TextureImporter:
       Command_D-Sheet_0: 1345924706
       Command_D-Sheet_1: -1036052711
       Command_D-Sheet_2: 1236557753
+      Command_D-Sheet_3: 2018199340
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
