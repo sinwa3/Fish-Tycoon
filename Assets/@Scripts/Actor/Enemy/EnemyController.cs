@@ -71,6 +71,18 @@ public class EnemyController : MonoBehaviour
 
     #endregion ===== 감지 수치 =====
 
+    #region ===== 시작 대기 =====
+
+    // 플레이어가 움직였다고 보는 시작 위치와의 거리(m, 높이 뺌)
+    private const float StartMoveDistance = 1.0f;
+
+    // 플레이어가 움직이기를 기다리는 중인지
+    private bool _isWaitingForPlayer = true;
+    // 플레이어 시작 위치
+    private Vector3 _playerStartPosition;
+
+    #endregion ===== 시작 대기 =====
+
     private void Awake()
     {
         InitializeComponents();
@@ -81,10 +93,18 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         InitializeDay();
+        InitializeStartWait();
     }
 
     private void Update()
     {
+        UpdateStartWait();
+
+        if (_isWaitingForPlayer)
+        {
+            return;
+        }
+
         UpdateStateSelection();
         _stateMachine.UpdateCurrentState(Time.deltaTime);
     }
@@ -155,6 +175,12 @@ public class EnemyController : MonoBehaviour
         IsSleepDay = day == SleepDay;
     }
 
+    /// <summary> KYH : 플레이어 시작 위치를 적어 둔다 </summary>
+    private void InitializeStartWait()
+    {
+        _playerStartPosition = Sight.PlayerPosition;
+    }
+
     #endregion ===== 초기화 =====
 
     #region ===== 순찰 경로 설정 =====
@@ -173,6 +199,26 @@ public class EnemyController : MonoBehaviour
     }
 
     #endregion ===== 순찰 경로 설정 =====
+
+    #region ===== 시작 대기 확인 =====
+
+    /// <summary> KYH : 플레이어가 시작 위치에서 일정 거리 벗어나면 대기를 끝낸다 </summary>
+    private void UpdateStartWait()
+    {
+        if (!_isWaitingForPlayer)
+        {
+            return;
+        }
+
+        Vector3 playerOffset = Vector3.ProjectOnPlane(Sight.PlayerPosition - _playerStartPosition, Vector3.up);
+
+        if (playerOffset.magnitude >= StartMoveDistance)
+        {
+            _isWaitingForPlayer = false;
+        }
+    }
+
+    #endregion ===== 시작 대기 확인 =====
 
     #region ===== 상태 선택 =====
 
