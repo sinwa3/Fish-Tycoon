@@ -92,6 +92,8 @@ public class StealthEndScreen : BaseScreen
 
         if (!_isArrested) // 체포 되지 않았다면 생선을 보관한다.
         {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StealthEscape);
+            
             int settledCount = Managers.Data.SettleQuickSlotFish();
             
             string clearDescStr = $"사용하지 않은 도구는 버리고 훔친 생선 {settledCount}마리를 가게에 옮겼습니다.";
@@ -99,6 +101,8 @@ public class StealthEndScreen : BaseScreen
         }
         else // 체포되면 훔친 생선을 전부 초기화하고 만족도를 감소시킨다.
         {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StealthArrest);
+            
             int clearedCount = Managers.Data.ClearFishes();
             int satisfactionPenalty = 100 * clearedCount;
 

@@ -240,6 +240,7 @@ GameObject:
   - component: {fileID: 4988496215462773362}
   - component: {fileID: 7843370412740105802}
   - component: {fileID: 4161374021342015202}
+  - component: {fileID: 6408983442549416650}
   m_Layer: 5
   m_Name: FoodCountDownBtn
   m_TagString: Untagged
@@ -348,6 +349,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6408983442549416650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4486867509526989646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0737d211bcca465fa454fc6c97c763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxType: 1
 --- !u!1 &5093358531342477120
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +450,7 @@ GameObject:
   - component: {fileID: 474885374566607054}
   - component: {fileID: 4215361313913952552}
   - component: {fileID: 881535934256531535}
+  - component: {fileID: 2667462006331920995}
   m_Layer: 5
   m_Name: FoodCountUpBtn
   m_TagString: Untagged
@@ -544,6 +559,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2667462006331920995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5687762381121912529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0737d211bcca465fa454fc6c97c763f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxType: 0
 --- !u!1 &6480598943349433984
 GameObject:
   m_ObjectHideFlags: 0

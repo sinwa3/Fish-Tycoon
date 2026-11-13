@@ -56,6 +56,7 @@ public class EndScreen : BaseScreen
     {
         if (isGameOver)
         {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.GameOver, maxAudioSourceCount: 1);
             Get<Image>(Images.OverImage).gameObject.SetActive(true);
             return;
         }

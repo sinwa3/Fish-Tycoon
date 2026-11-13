@@ -184,21 +184,25 @@ public class TycoonHUD : BaseHUD
 
             if (Managers.Input.KeyDown_W)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_1);
                 _cookingController.ProcessCommand('W');
             }
 
             else if (Managers.Input.KeyDown_A)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_2);
                 _cookingController.ProcessCommand('A');
             }
 
             else if (Managers.Input.KeyDown_S)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_3);
                 _cookingController.ProcessCommand('S');
             }
 
             else if (Managers.Input.KeyDown_D)
             {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.ButtonSound_4);
                 _cookingController.ProcessCommand('D');
             }
         }
@@ -889,6 +893,8 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 서브 퀘스트 완료 연출을 재생한다. </summary>
     private IEnumerator Co_ShowSubQuestCompletion(QuestProgressEvent progressEvent)
     {
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.QuestClear);
+        
         // 완료 표시
         UpdateSubQuest(progressEvent.CompletedQuest, progressEvent.CompletedQuest.Goal, true);
         Managers.Quest.SetCompletionSequenceActive(true);
