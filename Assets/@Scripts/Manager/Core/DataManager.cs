@@ -690,23 +690,27 @@ public class DataManager
     }
 
     /// <summary> KDH : 퀵슬롯에서 소비 아이템만 초기화한다. </summary>
-    public void ClearConsumables()
+    public int ClearConsumables()
     {
+        int count = 0;
+        
         if (_saveData?.QuickSlots == null)
         {
-            return;
+            return count;
         }
-
+        
         foreach (QuickSlotData slot in _saveData.QuickSlots)
         {
             if (slot.Type == QuickSlotItemType.Consumable)
             {
+                count = slot.Count;
                 ClearQuickSlot(slot);
             }
         }
 
         OnQuickSlotChanged?.Invoke();
         OnStoreChanged?.Invoke();
+        return count;
     }
     
     /// <summary> KDH : 퀵슬롯에서 생선만 초기화한다. </summary>
