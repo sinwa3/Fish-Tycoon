@@ -65,7 +65,7 @@ public class SecurityMinigameScreen : BaseScreen
     {
     }
 
-    protected override void Close()
+    protected override void DestroyOverride()
     {
         UnsubscribeEvents();
         
@@ -83,14 +83,6 @@ public class SecurityMinigameScreen : BaseScreen
             Destroy(_minigameRoot);
             _minigameRoot = null;
         }
-
-        base.Close();
-    }
-
-    /// <summary> SJY : 외부 이벤트로 미니게임을 중단한다. </summary>
-    public void AbortMiniGame()
-    {
-        Close();
     }
 
     #region ===== 초기화 =====

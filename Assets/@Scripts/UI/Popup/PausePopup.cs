@@ -25,7 +25,7 @@ public class PausePopup : BasePopup
         Get<Button>(Buttons.CloseBtn).onClick.AddListener(OnClickExit);
         Get<Button>(Buttons.ResumeBtn).onClick.AddListener(OnClickExit);
         Get<Button>(Buttons.ToTitleBtn).onClick.AddListener(OnClickToTitle);
-        Get<Button>(Buttons.OptionBtn).onClick.AddListener(() => Managers.UI.OpenToastMessage("준비 중 입니다."));
+        Get<Button>(Buttons.OptionBtn).onClick.AddListener(() => Managers.UI.OpenPopup<OptionPopup>());
         Get<Button>(Buttons.ExitBtn).onClick.AddListener(Utils.QuitApp);
     }
 

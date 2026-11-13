@@ -6,6 +6,11 @@ public class InputManager
 {
     #region ===== 마우스 =====
 
+    private const string MouseSpeedKey = "Input_MouseSpeed";
+    
+    public const float DefaultMouseSpeed = 0.5f;
+    public float MouseSpeed { get; private set; } = DefaultMouseSpeed;
+    
     public float MouseAxisX { get; private set; }
     public float MouseAxisY { get; private set; }
     public float MouseWheel { get; private set; }
@@ -80,9 +85,8 @@ public class InputManager
     /// <summary> KDH : 마우스 입력 값을 업데이트한다. </summary>
     private void UpdateMouseInput()
     {
-        // TODO: 마우스 민감도 설정
-        MouseAxisX = Input.GetAxis("Mouse X") * 0.5f;
-        MouseAxisY = Input.GetAxis("Mouse Y") * 0.5f;
+        MouseAxisX = Input.GetAxis("Mouse X") * MouseSpeed;
+        MouseAxisY = Input.GetAxis("Mouse Y") * MouseSpeed;
         MouseWheel = Input.GetAxis("Mouse ScrollWheel");
     }
 
@@ -159,4 +163,21 @@ public class InputManager
     }
 
     #endregion ===== 입력 제어 =====
+    
+    #region ===== 입력 설정 =====
+    
+    /// <summary> KDH : 처음 실행 시 입력설정을 로드한다. </summary>
+    public void LoadSettings()
+    {
+        MouseSpeed = Mathf.Clamp(PlayerPrefs.GetFloat(MouseSpeedKey, DefaultMouseSpeed), 0.1f, 1f);
+    }
+    
+    /// <summary> KDH : 마우스 설정 값을 저장한다. </summary>
+    public void SaveMouseSpeed(float value)
+    {
+        MouseSpeed = Mathf.Clamp(value, 0.1f, 1f);
+        PlayerPrefs.SetFloat(MouseSpeedKey, MouseSpeed);
+    }
+    
+    #endregion ===== 입력 설정 =====
 }

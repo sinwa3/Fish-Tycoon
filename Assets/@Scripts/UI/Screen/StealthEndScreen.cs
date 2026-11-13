@@ -46,7 +46,11 @@ public class StealthEndScreen : BaseScreen
     public override void OnInputKey()
     {
     }
-    
+
+    protected override void DestroyOverride()
+    {
+    }
+
     /// <summary> KDH : 게임 결과에 맞는 화면을 표시한다. </summary>
     public void ShowResult(bool isArrested)
     {
