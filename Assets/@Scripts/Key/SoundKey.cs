@@ -31,6 +31,11 @@ public abstract class SoundKey
             CustomerEnter,
             CustomerExit,
             
+            EnemyChaseStart,
+            
+            ItemBottle,
+            ItemTimer,
+            
             StealthArrest,
             StealthEscape,
             
