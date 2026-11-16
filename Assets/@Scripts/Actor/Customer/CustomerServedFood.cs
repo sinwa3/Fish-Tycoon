@@ -13,16 +13,20 @@ public class CustomerServedFood : MonoBehaviour
         InitializeComponents();
     }
 
-    /// <summary> KYH : 같은 오브젝트의 요리 렌더러와 자식 접시 렌더러를 찾아 둔다 </summary>
+    /// <summary> KYH : 렌더러를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _foodRenderer = GetComponent<SpriteRenderer>();
-        // 접시 그림이 없어서 경고안함
         _plateRenderer = transform.Find("Plate")?.GetComponent<SpriteRenderer>();
 
         if (_foodRenderer == null)
         {
             CPrint.Warning("[CustomerServedFood] 요리 렌더러 없음");
+        }
+
+        if (_plateRenderer == null)
+        {
+            CPrint.Warning("[CustomerServedFood] 접시 렌더러 없음");
         }
     }
 
@@ -33,12 +37,11 @@ public class CustomerServedFood : MonoBehaviour
         {
             return;
         }
-        /*
+
         if (_plateRenderer == null)
         {
             return;
         }
-        */
 
         if (!Managers.Table.IsLoaded)
         {
@@ -59,7 +62,7 @@ public class CustomerServedFood : MonoBehaviour
         _foodRenderer.sprite = icon;
         _foodRenderer.enabled = true;
 
-        //_plateRenderer.enabled = true;
+        _plateRenderer.enabled = true;
     }
 
     /// <summary> KYH : 요리를 끈다 </summary>
@@ -70,14 +73,12 @@ public class CustomerServedFood : MonoBehaviour
             return;
         }
 
-        /*
         if (_plateRenderer == null)
         {
             return;
         }
-        */
 
         _foodRenderer.enabled = false;
-        //_plateRenderer.enabled = false;
+        _plateRenderer.enabled = false;
     }
 }
