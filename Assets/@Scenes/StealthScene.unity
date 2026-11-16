@@ -10729,7 +10729,7 @@ GameObject:
   - component: {fileID: 334754109}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13048,7 +13048,9 @@ MonoBehaviour:
   _mouseSensitivity: 5
   _minPitch: -80
   _maxPitch: 80
-  _hiddenYawLimit: 75
+  _hiddenSensitivityScale: 0.6
+  _hiddenBreathAmplitude: 0.004
+  _hiddenBreathFrequency: 0.25
 --- !u!114 &389890487
 MonoBehaviour:
   m_ObjectHideFlags: 0

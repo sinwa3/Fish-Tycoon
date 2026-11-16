@@ -40,7 +40,9 @@ public class PixelationRendererFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (!PixelationTransition.IsRendering || _material == null || _pass == null)
+        if (Managers.UI?.IsSceneUICamera(renderingData.cameraData.camera) == true
+            || !PixelationTransition.IsRendering
+            || _material == null || _pass == null)
         {
             return;
         }
@@ -58,7 +60,9 @@ public class PixelationRendererFeature : ScriptableRendererFeature
 
     public override void SetupRenderPasses(ScriptableRenderer renderer, in RenderingData renderingData)
     {
-        if (!PixelationTransition.IsRendering || _material == null || _pass == null)
+        if (Managers.UI?.IsSceneUICamera(renderingData.cameraData.camera) == true ||
+            !PixelationTransition.IsRendering ||
+            _material == null || _pass == null)
         {
             return;
         }
@@ -127,7 +131,7 @@ public class PixelationRendererFeature : ScriptableRendererFeature
             descriptor.depthBufferBits = 0;
             descriptor.msaaSamples = 1;
 
-            RenderingUtils.ReAllocateIfNeeded(ref _temporaryColorTexture, descriptor, FilterMode.Point, 
+            RenderingUtils.ReAllocateIfNeeded(ref _temporaryColorTexture, descriptor, FilterMode.Point,
                 TextureWrapMode.Clamp, name: "_PixelationTransitionColor");
         }
 

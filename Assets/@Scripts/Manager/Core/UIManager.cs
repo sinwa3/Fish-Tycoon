@@ -1,17 +1,28 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 /// <summary> KDH : 게임의 HUD, Screen, Popup, Overlay, Loading UI를 생성하고 관리한다. </summary>
 public class UIManager
 {
-    #region ===== 현재 UI =====
+    #region ===== 참조 =====
+    
+    private Camera _worldCamera;
+    private Camera _uiCamera;
+    
+    #endregion ===== 참조 =====
+    
+    #region ===== 상태 =====
 
     public BaseHUD CurrentHUD { get; private set; }
     public BaseScreen CurrentScreen { get; private set; }
     public BasePopup CurrentPopup => _popupStack.Count > 0 ? _popupStack.Peek() : null;
 
-    #endregion ===== 현재 UI =====
+    public bool IsSceneUICamera(Camera camera) => _uiCamera != null && camera == _uiCamera;
+    
+    #endregion ===== 상태 =====
 
     #region ===== Popup =====
 
@@ -111,7 +122,7 @@ public class UIManager
 
         Canvas canvas = baseUI.gameObject.GetOrAddComponent<Canvas>();
 
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        BindCanvasCamera(canvas, baseUI is BaseHUD or BasePopup or BaseScreen);
         canvas.overrideSorting = true;
 
         if (baseUI is BaseHUD baseHUD)
@@ -128,7 +139,103 @@ public class UIManager
 
         canvas.sortingOrder = baseUI.SortingOrder;
     }
+    
+    /// <summary> KDH : 월드와 UI의 화면 영역을 같은 정규화 좌표로 맞춘다. </summary>
+    public void SyncSceneUIViewport(Camera worldCamera)
+    {
+        if (_uiCamera != null && _worldCamera == worldCamera)
+        {
+            _uiCamera.rect = worldCamera.rect;
+        }
+    }
+    
+    /// <summary> KDH : 씬의 HUD와 카메라의 초기화가 끝난 후 연결을 확인한다. </summary>
+    public void RefreshHUDCamera()
+    {
+        if (CurrentHUD != null)
+        {
+            BindCanvasCamera(CurrentHUD.GetComponent<Canvas>(), true);
+        }
+    }
+    
+    /// <summary> KDH : Canvas에 UI 카메라를 바인딩하고, 카메라 유무에 따라 렌더링 모드를 설정한다. </summary>
+    private void BindCanvasCamera(Canvas canvas, bool useSceneCamera)
+    {
+        Camera camera = useSceneCamera ? GetSceneUICamera() : null;
+        canvas.renderMode = camera != null ? RenderMode.ScreenSpaceCamera : RenderMode.ScreenSpaceOverlay;
+        canvas.worldCamera = camera;
+        if (camera != null)
+        {
+            // 카메라의 Near Clip Plane보다 약간 앞에 Canvas 배치
+            canvas.planeDistance = camera.nearClipPlane + 0.02f;
+        }
+    }
 
+    /// <summary> KDH : 월드 렌더링 이후 화면 UI를 렌더링할 전용 카메라를 생성하고 씬과 함께 관리한다. </summary>
+    private Camera GetSceneUICamera()
+    {
+        // 메인 카메라가 속한 씬을 기준으로 UI 카메라를 관리
+        Camera worldCamera = Camera.main;
+        Scene scene = worldCamera != null ? worldCamera.gameObject.scene : SceneManager.GetActiveScene();
+
+        // 기존 UI 카메라가 현재 씬과 메인 카메라에 연결되어 있다면 재사용
+        if (_uiCamera != null && _uiCamera.gameObject.scene == scene && _worldCamera == worldCamera)
+        {
+            return _uiCamera;
+        }
+
+        // 메인 카메라의 URP 카메라 스택 가져오기
+        List<Camera> stack = worldCamera != null ? worldCamera.GetUniversalAdditionalCameraData().cameraStack : null;
+        if (worldCamera != null && stack == null) // 메인 카메라가 있지만 카메라 스택을 사용할 수 없다면 생성 중단
+        {
+            return null;
+        }
+
+        // UI 전용 카메라를 생성하고 메인 카메라와 동일한 씬에 배치
+        GameObject cameraObj = new GameObject("UI Camera", typeof(Camera), typeof(UniversalAdditionalCameraData));
+        SceneManager.MoveGameObjectToScene(cameraObj, scene);
+        
+        // 월드 오브젝트와 겹치지 않도록 UI 카메라를 월드에서 멀리 배치
+        cameraObj.transform.position = Vector3.back * 10000f;
+        
+        // UI 렌더링에 사용할 직교 투영 카메라 설정
+        Camera camera = cameraObj.GetComponent<Camera>();
+        camera.orthographic = true;
+        camera.orthographicSize = 1f;
+        camera.nearClipPlane = 0.1f;
+        camera.farClipPlane = 2f;
+        // 기존 UI 프리팹에 혼용된 Default와 UI 레이어만 렌더링한다.
+        camera.cullingMask = LayerMask.GetMask("Default", "UI");
+        // 카메라의 기본 화면 초기화 설정
+        camera.clearFlags = CameraClearFlags.SolidColor;
+        camera.backgroundColor = Color.black;
+        if (worldCamera != null)
+        {
+            // 메인 카메라와 동일한 디스플레이 및 화면 영역 사용
+            camera.targetDisplay = worldCamera.targetDisplay;
+            camera.rect = worldCamera.rect;
+        }
+
+        // URP 카메라 스택 사용 여부에 따라 Overlay 또는 Base 카메라로 설정
+        UniversalAdditionalCameraData uiData = camera.GetUniversalAdditionalCameraData();
+        uiData.renderType = stack != null ? CameraRenderType.Overlay : CameraRenderType.Base;
+        
+        // UI 전용 카메라에서 불필요한 후처리 및 추가 텍스처 사용 비활성화
+        uiData.renderPostProcessing = false;
+        uiData.volumeLayerMask = 0;
+        uiData.requiresColorTexture = false;
+        uiData.requiresDepthTexture = false;
+        
+        // 메인 카메라의 스택에 UI 카메라를 추가하여 월드 렌더링 이후 UI 렌더링
+        stack?.Add(camera);
+
+        // 생성한 UI 카메라와 연결된 메인 카메라 참조 저장
+        _worldCamera = worldCamera;
+        _uiCamera = camera;
+        
+        return camera;
+    }
+    
     #endregion ===== Canvas =====
 
     #region ===== Screen =====

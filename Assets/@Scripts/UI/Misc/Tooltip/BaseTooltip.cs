@@ -14,7 +14,7 @@ public abstract class BaseTooltip : BaseUI
 
     [Header("위치 설정")]
     [SerializeField] private TooltipDirection _direction = TooltipDirection.Right;
-    [SerializeField] private Vector2 _offset = new Vector2(20f, 0f);
+    [SerializeField] private Vector2 _offset = new (20f, 0f);
 
     [Header("애니메이션")]
     [SerializeField] private float _showDuration = 0.2f;
@@ -30,6 +30,9 @@ public abstract class BaseTooltip : BaseUI
 
     private RectTransform _rect;
     private CanvasGroup _canvasGroup;
+    
+    private RectTransform _trigger;
+    private readonly Vector3[] _corners = new Vector3[4];
 
     #endregion ===== 참조 =====
 
@@ -57,6 +60,14 @@ public abstract class BaseTooltip : BaseUI
 
     protected abstract void OnAwake();
 
+    private void LateUpdate()
+    {
+        if (_trigger != null && _trigger.gameObject.activeInHierarchy)
+        {
+            SetPosition(_trigger);
+        }
+    }
+    
     protected virtual void OnDestroy()
     {
         _tween?.Kill();
@@ -75,10 +86,9 @@ public abstract class BaseTooltip : BaseUI
         // 파생 클래스에서 툴팁 내용을 갱신한다.
         UpdateContent();
 
-        // 슬롯을 기준으로 위치를 계산한다.
-        SetPosition(trigger);
-
+        _trigger = trigger;
         gameObject.SetActive(true);
+        SetPosition(trigger);
 
         _rect.localScale = new Vector3(_defaultScale.x * _startScaleX, _defaultScale.y, _defaultScale.z);
 
@@ -94,41 +104,46 @@ public abstract class BaseTooltip : BaseUI
     /// <summary> KDH : 슬롯 위치를 기준으로 툴팁의 위치를 설정한다. </summary>
     private void SetPosition(RectTransform trigger)
     {
-        Vector3[] corners = new Vector3[4];
-        trigger.GetWorldCorners(corners);
+        RectTransform parent = _rect.parent as RectTransform;
+        if (parent == null)
+        {
+            return;
+        }
 
-        Vector3 bottomLeft = corners[0];
-        Vector3 topLeft = corners[1];
-        Vector3 topRight = corners[2];
-        Vector3 bottomRight = corners[3];
+        trigger.GetWorldCorners(_corners);
+
+        Vector3 bottomLeft = _corners[0];
+        Vector3 topLeft = _corners[1];
+        Vector3 topRight = _corners[2];
+        Vector3 bottomRight = _corners[3];
 
         Vector3 targetPosition;
 
         switch (_direction)
         {
             case TooltipDirection.Left:
-                targetPosition = new Vector3(bottomLeft.x, (bottomLeft.y + topLeft.y) * 0.5f, bottomLeft.z);
+                targetPosition = (bottomLeft + topLeft) * 0.5f;
                 break;
 
             case TooltipDirection.Right:
-                targetPosition = new Vector3(bottomRight.x, (bottomRight.y + topRight.y) * 0.5f, bottomRight.z);
+                targetPosition = (bottomRight + topRight) * 0.5f;
                 break;
 
             case TooltipDirection.Top:
-                targetPosition = new Vector3((topLeft.x + topRight.x) * 0.5f, topLeft.y, topLeft.z);
+                targetPosition = (topLeft + topRight) * 0.5f;
                 break;
 
             case TooltipDirection.Bottom:
-                targetPosition = new Vector3((bottomLeft.x + bottomRight.x) * 0.5f, bottomLeft.y, bottomLeft.z);
+                targetPosition = (bottomLeft + bottomRight) * 0.5f;
                 break;
 
             default:
                 return;
         }
 
-        targetPosition += new Vector3(_offset.x, _offset.y, 0f);
-
-        _rect.position = targetPosition;
+        // targetPosition이라는 월드 좌표를 parent의 로컬 좌표계로 변환한다.
+        Vector3 localPosition = parent.InverseTransformPoint(targetPosition);
+        _rect.localPosition = new Vector3(localPosition.x + _offset.x, localPosition.y + _offset.y, _rect.localPosition.z);
     }
 
     /// <summary> KDH : 툴팁을 애니메이션과 함께 숨긴다. </summary>
@@ -148,6 +163,7 @@ public abstract class BaseTooltip : BaseUI
             .OnComplete(() =>
             {
                 gameObject.SetActive(false);
+                _trigger = null;
                 _rect.localScale = _defaultScale;
             });
     }
