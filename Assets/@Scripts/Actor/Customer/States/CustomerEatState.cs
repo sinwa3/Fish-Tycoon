@@ -15,6 +15,7 @@ public class CustomerEatState : BaseCustomerState
     public override void Enter()
     {
         Customer.PlayEating();
+        Customer.ShowServedFood();
     }
 
     /// <summary> KYH : 식사 상태를 갱신한다 </summary>
@@ -29,5 +30,6 @@ public class CustomerEatState : BaseCustomerState
     /// <summary> KYH : 식사 상태를 끝낼 때 호출한다 </summary>
     public override void Exit()
     {
+        Customer.HideServedFood();
     }
 }
