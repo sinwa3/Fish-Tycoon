@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TycoonScene : BaseScene
 {
@@ -28,7 +29,11 @@ public class TycoonScene : BaseScene
     #region ===== 참조 =====
 
     private TycoonHUD _tycoonHUD;
-
+    private Camera _playCamera;
+    private RectTransform _firstBar;
+    private RectTransform _secondBar;
+    private Vector2Int _viewportSize;
+    
     [SerializeField]
     private TycoonBgCtrl _tycoonBgCtrl;
 
@@ -55,6 +60,7 @@ public class TycoonScene : BaseScene
 
     protected override void OnStart()
     {
+        InitializeLetterbox();
         InitializePhase();
 
         if (_currentPhase == Phase.BeforeBusiness) // 영업 전이면
@@ -76,6 +82,7 @@ public class TycoonScene : BaseScene
 
     protected override void OnUpdate()
     {
+        UpdateViewport();
     }
 
     private void OnDestroy()
@@ -86,6 +93,48 @@ public class TycoonScene : BaseScene
 
     #region ===== 초기화 =====
 
+    /// <summary> KDH : 레터박스와 관련된 값들을 생성하거나 초기화한다. </summary>
+    private void InitializeLetterbox()
+    {
+        _playCamera = Camera.main;
+        
+        if (_playCamera != null)
+        {
+            // 레터박스 전용 Canvas를 생성하고 현재 씬 오브젝트의 자식으로 설정
+            GameObject letterboxObj = new GameObject("Tycoon Letterbox", typeof(Canvas));
+            letterboxObj.transform.SetParent(transform, false);
+            
+            Canvas canvas = letterboxObj.GetComponent<Canvas>();
+            
+            // 카메라와 관계없이 화면에 직접 렌더링하고, 다른 UI보다 낮은 정렬 순서 지정
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = -1;
+            
+            // 화면의 남는 영역을 가릴 검은색 바 2개 생성
+            _firstBar = CreateBar(letterboxObj.transform, "First Bar");
+            _secondBar = CreateBar(letterboxObj.transform, "Second Bar");
+            
+            // 현재 화면 비율에 맞게 카메라 영역과 레터박스 갱신
+            UpdateViewport();
+        }
+    }
+    
+    /// <summary> KDH : 레터박스에 사용할 검은색 Image를 생성한다. </summary>
+    private static RectTransform CreateBar(Transform parent, string objectName)
+    {
+        // RectTransform과 Image 컴포넌트를 가진 UI 오브젝트 생성
+        Image image = new GameObject(objectName, typeof(RectTransform), typeof(Image)).GetComponent<Image>();
+        
+        // 부모 Canvas에 연결하고 로컬 Transform 유지
+        image.transform.SetParent(parent, false);
+        
+        // 검은색 여백으로 표시하고 UI 입력을 가로채지 않도록 설정
+        image.color = Color.black;
+        image.raycastTarget = false;
+        
+        return image.rectTransform;
+    }
+    
     /// <summary> KDH : 저장되어 있는 게임모드를 기준으로 현재 페이즈를 초기화한다. </summary>
     private void InitializePhase()
     {
@@ -126,6 +175,63 @@ public class TycoonScene : BaseScene
 
     #region ===== 업데이트 =====
 
+    /// <summary> KDH : 창 중앙에 16:9 플레이 영역을 만들고 남는 공간을 검정으로 가린다. </summary>
+    private void UpdateViewport()
+    {
+        // 현재 게임 창의 해상도 가져오기
+        Vector2Int size = new(Screen.width, Screen.height);
+        
+        // 필요한 오브젝트가 없거나 해상도가 변경되지 않았다면 갱신하지 않음
+        if (_playCamera == null || _firstBar == null || size.x <= 0 || size.y <= 0 || size == _viewportSize)
+        {
+            return;
+        }
+
+        _viewportSize = size;
+        
+        // 목표 화면 비율(16:9)과 현재 게임 창의 비율 계산
+        const float referenceAspect = 16f / 9f;
+        float aspect = (float)size.x / size.y;
+        
+        // 16:9 비율을 유지하면서 화면에 표시할 가로/세로 영역 계산 (0~1)
+        float width = Mathf.Min(1f, referenceAspect / aspect);
+        float height = Mathf.Min(1f, aspect / referenceAspect);
+        // 남는 공간을 양쪽에 균등하게 배분하여 플레이 영역을 화면 중앙에 배치
+        Rect viewport = new((1f - width) * 0.5f, (1f - height) * 0.5f, width, height);
+
+        // 월드 카메라의 렌더링 영역과 화면 비율 설정
+        _playCamera.rect = viewport;
+        _playCamera.aspect = referenceAspect;
+        
+        // UI 카메라도 월드 카메라와 동일한 렌더링 영역을 사용하도록 동기화
+        Managers.UI.SyncSceneUIViewport(_playCamera);
+
+        if (width < 1f)
+        {
+            // 창이 16:9보다 넓으면 좌우에 검은색 바 배치 (필러박스)
+            SetBar(_firstBar, Vector2.zero, new Vector2(viewport.xMin, 1f));
+            SetBar(_secondBar, new Vector2(viewport.xMax, 0f), Vector2.one);
+        }
+        else
+        {
+            // 창이 16:9보다 좁으면 상하에 검은색 바 배치 (레터박스)
+            SetBar(_firstBar, Vector2.zero, new Vector2(1f, viewport.yMin));
+            SetBar(_secondBar, new Vector2(0f, viewport.yMax), Vector2.one);
+        }
+    }
+
+    /// <summary> KDH : 지정한 Anchor 영역에 맞춰 레터박스 바의 크기와 위치를 설정한다. </summary>
+    private static void SetBar(RectTransform bar, Vector2 min, Vector2 max)
+    {
+        // 부모 RectTransform 기준으로 검은색 바가 차지할 영역 지정
+        bar.anchorMin = min;
+        bar.anchorMax = max;
+        
+        // Anchor 경계에 맞춰 여백 없이 영역을 채우도록 설정
+        bar.offsetMin = Vector2.zero;
+        bar.offsetMax = Vector2.zero;
+    }
+    
     /// <summary> KDH : 페이즈를 다음 단계로 진행시킨다. </summary>
     public void ChangeCurrentPhase()
     {

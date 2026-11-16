@@ -15,7 +15,6 @@ public class EnemySleepState : BaseEnemyState
     /// <summary> KYH : 수면 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
-        // TODO : 게이지가 오르면 뒤척임 반응
     }
 
     /// <summary> KYH : 수면 상태를 끝낼 때 호출한다 </summary>

@@ -21,7 +21,9 @@ public class TimerInstall : IConsumableEffect
         Vector3 position = _characterController.transform.position;
         position.y += _characterController.center.y - _characterController.height * 0.5f;
 
-        GameObject timerObject = Managers.Resource.Spawn(ResourceKey.Path.Item + item.ResourceName, position, Quaternion.identity);
+        Quaternion rotation = Quaternion.LookRotation(-_characterController.transform.forward);
+
+        GameObject timerObject = Managers.Resource.Spawn(ResourceKey.Path.Item + item.ResourceName, position, rotation);
 
         if (timerObject == null)
         {

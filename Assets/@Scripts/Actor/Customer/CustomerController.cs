@@ -44,6 +44,9 @@ public class CustomerController : MonoBehaviour
     // 자식 오브젝트의 대기 게이지
     private CustomerWaitGauge _waitGauge;
 
+    // 자식 오브젝트의 받은 요리
+    private CustomerServedFood _servedFood;
+
     #endregion ===== 음식과 대기 =====
 
     #region ===== 주문 =====
@@ -95,11 +98,12 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 만족도 수치 UI, 애니메이터를 찾아 둔다 </summary>
+    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 받은 요리, 만족도 수치 UI, 애니메이터를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _orderBubble = GetComponentInChildren<CustomerOrderBubble>(true);
         _waitGauge = GetComponentInChildren<CustomerWaitGauge>(true);
+        _servedFood = GetComponentInChildren<CustomerServedFood>(true);
         _satisfactionUI = GetComponentInChildren<CustomerSatisfactionUI>(true);
         _animator = GetComponentInChildren<Animator>(true);
 
@@ -111,6 +115,11 @@ public class CustomerController : MonoBehaviour
         if (_waitGauge == null)
         {
             CPrint.Warning("[CustomerController] 게이지 없음");
+        }
+
+        if (_servedFood == null)
+        {
+            CPrint.Warning("[CustomerController] 받은 요리 없음");
         }
 
         if (_satisfactionUI == null)
@@ -164,6 +173,7 @@ public class CustomerController : MonoBehaviour
 
         HideOrderBubble();
         HideWaitGauge();
+        HideServedFood();
 
         Transform seatTransform = _customerSeats.GetSeat(_seatIndex);
 
@@ -257,6 +267,28 @@ public class CustomerController : MonoBehaviour
     public void RecordWaitTime(float waitTime)
     {
         _waitTime = waitTime;
+    }
+
+    /// <summary> KYH : 주문한 메뉴를 손님 앞에 놓는다 (식사 상태에 들어올 때 호출) </summary>
+    public void ShowServedFood()
+    {
+        if (_servedFood == null)
+        {
+            return;
+        }
+
+        _servedFood.Show(_orderedMenuId);
+    }
+
+    /// <summary> KYH : 손님 앞 요리를 치운다 (식사 상태가 끝날 때 호출) </summary>
+    public void HideServedFood()
+    {
+        if (_servedFood == null)
+        {
+            return;
+        }
+
+        _servedFood.Hide();
     }
 
     #endregion ===== 음식 =====

@@ -26,7 +26,6 @@ public abstract class BaseScene : MonoBehaviour
         InitializeSceneType();
 
         Managers.Scene.SetCurrentScene(this);
-        
         Managers.UI.CloseLoadingUI();
 
         OnAwake();
@@ -40,6 +39,7 @@ public abstract class BaseScene : MonoBehaviour
         DynamicGI.UpdateEnvironment();
         
         Managers.Input.SetCursorLock(IsCursorLock);
+        Managers.UI.RefreshHUDCamera();
         
         OnStart();
     }

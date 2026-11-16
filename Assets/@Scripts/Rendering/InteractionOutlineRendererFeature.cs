@@ -68,7 +68,7 @@ public class InteractionOutlineRendererFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (_pass == null || !TryGetActiveRenderers())
+        if (Managers.UI?.IsSceneUICamera(renderingData.cameraData.camera) == true || _pass == null || !TryGetActiveRenderers())
         {
             return;
         }
@@ -88,7 +88,7 @@ public class InteractionOutlineRendererFeature : ScriptableRendererFeature
 
     public override void SetupRenderPasses(ScriptableRenderer renderer, in RenderingData renderingData)
     {
-        if (_pass == null || _renderers.Count == 0)
+        if (Managers.UI?.IsSceneUICamera(renderingData.cameraData.camera) == true || _pass == null || !TryGetActiveRenderers())
         {
             return;
         }
