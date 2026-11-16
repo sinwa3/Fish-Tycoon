@@ -40,6 +40,12 @@ public abstract class AnimatorKey
         public const string Exiting = "Exiting";
 
         #endregion ===== 손님 =====
+
+        #region ===== 타이머 장치 =====
+
+        public const string Alarm = "Alarm";
+
+        #endregion ===== 타이머 장치 =====
         //public const string Idle = "Idle";
     }
 
@@ -81,6 +87,7 @@ public abstract class AnimatorKey
         public static readonly int Idle = Animator.StringToHash(Name.Idle);
         public static readonly int Eating = Animator.StringToHash(Name.Eating);
         public static readonly int Exiting = Animator.StringToHash(Name.Exiting);
+        public static readonly int Alarm = Animator.StringToHash(Name.Alarm);
         //public static readonly int Idle = Animator.StringToHash(Name.Idle);
 
         #endregion ===== State =====
