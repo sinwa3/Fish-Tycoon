@@ -9,7 +9,6 @@ public class CustomerExitState : BaseCustomerState
     public override void Enter()
     {
         Customer.PlayExiting();
-        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CustomerExit);
     }
 
     /// <summary> KYH : 퇴장 상태를 갱신한다 </summary>
