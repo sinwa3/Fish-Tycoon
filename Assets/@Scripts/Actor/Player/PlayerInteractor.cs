@@ -249,6 +249,11 @@ public class PlayerInteractor : MonoBehaviour
 
         if (IsHoldPressedDown())
         {
+            if (blockedMessage.Contains("락픽"))
+            {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockerClose);
+            }
+            
             Managers.UI?.OpenToastMessage(blockedMessage);
         }
 
