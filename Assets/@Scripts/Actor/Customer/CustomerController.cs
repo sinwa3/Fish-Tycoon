@@ -333,8 +333,8 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 결제 =====
 
-    /// <summary> KYH : 손님이 계산할 때 만족도와 함께 발행 </summary>
-    public event Action<int> OnPaid;
+    /// <summary> KYH : 손님이 계산할 때 만족도, 손님 위치, 음식 가격과 함께 발행 </summary>
+    public event Action<int, Vector3, int> OnPaid;
 
     /// <summary> KYH : 주문한 음식과 기다린 시간으로 만족도를 계산해 띄우고 알린다 </summary>
     public void Pay()
@@ -349,7 +349,7 @@ public class CustomerController : MonoBehaviour
         int satisfaction = CalculateSatisfaction(foodData, grade);
 
         ShowSatisfaction(satisfaction, grade);
-        OnPaid?.Invoke(satisfaction);
+        OnPaid?.Invoke(satisfaction, transform.position, foodData.Price);
     }
 
     /// <summary> KYH : 기다린 시간으로 남은 대기시간 비율(0 ~ 1)을 구한다 </summary>
