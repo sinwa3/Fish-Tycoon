@@ -92,13 +92,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 6.15
+  m_fontSize: 6.65
   m_fontSizeBase: 6
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 0
   m_fontSizeMax: 7
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -257,11 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d75546191d54470194eb3cdf87aefd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _perfectColor: {r: 1, g: 0.69682956, b: 0, a: 1}
-  _goodColor: {r: 0, g: 0.7822671, b: 1, a: 1}
-  _badColor: {r: 1, g: 0, b: 0, a: 1}
   _countDuration: 1
-  _emojiDisplayDuration: 0.3
+  _emojiDisplayDuration: 1
 --- !u!222 &2075532350094181954
 CanvasRenderer:
   m_ObjectHideFlags: 0

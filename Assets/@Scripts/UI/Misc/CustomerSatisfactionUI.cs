@@ -6,11 +6,6 @@ using UnityEngine.UI;
 /// <summary> KDH : 손님의 만족도 수치와 상태에 따른 UI 애니메이션을 관리한다. </summary>
 public class CustomerSatisfactionUI : MonoBehaviour
 {
-    [Header("만족도 색상")]
-    [SerializeField] private Color _perfectColor = Color.yellow;
-    [SerializeField] private Color _goodColor = Color.black;
-    [SerializeField] private Color _badColor = Color.red;
-
     [Header("애니메이션 설정")]
     [SerializeField] private float _countDuration = 0.6f;
     [SerializeField] private float _emojiDisplayDuration = 0.5f;
@@ -129,13 +124,13 @@ public class CustomerSatisfactionUI : MonoBehaviour
         switch (state)
         {
             case SatisfactionGrade.Happy:
-                return _perfectColor;
+                return ColorKey.LegendaryColor;
 
             case SatisfactionGrade.Normal:
-                return _goodColor;
+                return ColorKey.RareColor;
 
             case SatisfactionGrade.Unhappy:
-                return _badColor;
+                return ColorKey.CommonColor;
 
             default:
                 return Color.white;
