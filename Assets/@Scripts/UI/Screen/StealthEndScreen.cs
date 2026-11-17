@@ -1,4 +1,5 @@
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary> KDH : 잠입 씬에서 분기에 따라 표시하는 종료화면 (정산) </summary>
@@ -29,6 +30,8 @@ public class StealthEndScreen : BaseScreen
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
+
+        Time.timeScale = 0;
     }
 
     protected override void OnStart()
@@ -49,6 +52,7 @@ public class StealthEndScreen : BaseScreen
 
     protected override void DestroyOverride()
     {
+        Time.timeScale = 1;
     }
 
     /// <summary> KDH : 게임 결과에 맞는 화면을 표시한다. </summary>
