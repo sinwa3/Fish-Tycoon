@@ -33,5 +33,7 @@ public abstract class ResourceKey
 
         public const string Enemy = "Enemy";
         public const string Fish = "Fish";
+        
+        public const string Gold = "Gold";
     }
 }

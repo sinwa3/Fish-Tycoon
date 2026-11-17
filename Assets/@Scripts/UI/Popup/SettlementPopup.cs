@@ -26,6 +26,8 @@ public class SettlementPopup : BasePopup
 
     #region ===== 참조 =====
 
+    private BaseHUD _currentHUD;
+    
     private DailyMenu _dailyMenu;
     private FishListScroll _fishListScroll;
 
@@ -70,10 +72,10 @@ public class SettlementPopup : BasePopup
     {
         Get<Button>(Buttons.ExitBtn).onClick.AddListener(OnClickExit);
 
-        // 마지막 날에는 HUD를 표시하지 않는다.
+        _currentHUD = Managers.UI?.CurrentHUD;
+
         if (_isFinalDay)
         {
-            Managers.UI?.CurrentHUD.SetVisible(false);
             Get<TMP_Text>(Texts.TitleText)?.SetText($"마지막 정산");
         }
         else
@@ -103,6 +105,7 @@ public class SettlementPopup : BasePopup
 
     protected override void DestroyOverride()
     {
+        RestoreHUD();
     }
 
     /// <summary> KDH : 정산 팝업 호출할 때 반드시 Set을 호출하여 데이터를 설정한다. </summary>
@@ -264,6 +267,17 @@ public class SettlementPopup : BasePopup
             });
     }
 
+    /// <summary> KDH : HUD를 다시 표시한다. </summary>
+    private void RestoreHUD()
+    {
+        if (!_isFinalDay && _currentHUD != null && Managers.UI?.CurrentHUD == _currentHUD)
+        {
+            _currentHUD.SetVisible(true);
+        }
+
+        _currentHUD = null;
+    }
+    
     #endregion ===== UI =====
 
     #region ===== 이벤트 =====
@@ -286,6 +300,7 @@ public class SettlementPopup : BasePopup
             }
             else
             {
+                RestoreHUD();
                 onClosed?.Invoke();
             }
         });
