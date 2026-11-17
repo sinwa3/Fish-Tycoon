@@ -14,6 +14,7 @@ public class FishTooltip : BaseTooltip
     public enum Images
     {
         FoodImage,
+        Result,
     }
 
     #region ===== 상태 =====
@@ -49,6 +50,7 @@ public class FishTooltip : BaseTooltip
             return;
         }
 
+        Get<Image>(Images.Result).color = ColorKey.GetRarityColor(_fishData.GradeType);
         Get<Image>(Images.FoodImage).sprite = Managers.Table.Food.GetSpriteByFishID(_fishData.ID);
 
         Get<TMP_Text>(Texts.FishNameText).text = _fishData.Name;

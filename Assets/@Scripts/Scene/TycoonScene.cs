@@ -318,6 +318,7 @@ public class TycoonScene : BaseScene
             case Phase.BeforeBusiness:
                 _tycoonHUD.SetStoreInfoVisible(false); // 만족도, 소지금 UI를 숨긴다.
                 _tycoonHUD.SetQuestVisible(false);
+                _tycoonHUD.SetFoodSaleLimit(_foodListScroll != null ? _foodListScroll.MaxSelectableFoodCount : 0);
                 _tycoonHUD.OpenFoodDiary();
                 _tycoonHUD.SetNextBtnVisible(false);
                 _tycoonHUD.SetStoreBtnVisible(false);

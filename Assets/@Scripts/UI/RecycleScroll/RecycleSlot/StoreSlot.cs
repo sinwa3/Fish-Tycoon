@@ -56,6 +56,10 @@ public class StoreSlot : BaseRecycleSlot<ShopData>
 
         Get<TMP_Text>(Texts.ItemNameText)?.SetText(_item.Name);
         Get<TMP_Text>(Texts.ItemDescText)?.SetText(_item.Description);
+        if (_item.Type == ItemType.Consumable)
+        {
+            Get<TMP_Text>(Texts.ItemDescText).text += $"\n[최대 소지 가능: {_item.LimitCount}개]";
+        }
         Get<TMP_Text>(Texts.PriceText)?.SetText($"{shopData.SellPrice:N0} G");
 
         Image itemImage = Get<Image>(Images.ItemImage);

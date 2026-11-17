@@ -50,6 +50,7 @@ public class FishListSlot : BaseRecycleSlot<FishData>
     public override void UpdateData(FishData data)
     {
         base.UpdateData(data);
+        GetComponent<Image>().color = ColorKey.GetRarityColor(data.GradeType);
 
         // 생선 이미지를 표시한다.
         Get<Image>(Images.FishImage).sprite = Managers.Table.Fish.GetSprite(data.ID);
