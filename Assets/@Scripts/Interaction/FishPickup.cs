@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary> KimYH : 맵에 배치된 생선의 정보를 관리하고 상호작용 시 획득 처리한다. </summary>
-public class FishPickup : MonoBehaviour, IInteractable
+public class FishPickup : MonoBehaviour, IInteractable, IInteractBlockable
 {
     #region ===== 설정 =====
 
@@ -14,6 +14,9 @@ public class FishPickup : MonoBehaviour, IInteractable
 
     [Tooltip("획득 안내 문구. {0}에 생선 이름, {1}에 개수가 들어간다.")]
     [SerializeField] private string _acquireMessageFormat = "{0} {1}마리를 획득했습니다.";
+
+    [Tooltip("인벤토리(퀵슬롯)에 넣을 자리가 없을 때 안내 문구")]
+    [SerializeField] private string _inventoryFullText = "인벤토리가 가득 찼습니다.";
 
     [Header("디졸브")]
     [Tooltip("획득 후 완전히 사라지기까지 걸리는 시간(초)")]
@@ -76,7 +79,7 @@ public class FishPickup : MonoBehaviour, IInteractable
         if (!Managers.Data.TryAddFishToQuickSlot(FishID, Count))
         {
             CPrint.Warning($"[FishPickup] 생선 획득 실패. FishID: {FishID}");
-            Managers.UI?.OpenToastMessage("인벤토리가 가득 찼습니다.");
+            Managers.UI?.OpenToastMessage(_inventoryFullText);
             return;
         }
 
@@ -84,6 +87,16 @@ public class FishPickup : MonoBehaviour, IInteractable
         Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.FishPickup);
 
         StartCoroutine(DissolveAndDestroy());
+    }
+
+    /// <summary> YSW : 인벤토리(퀵슬롯)에 이 생선을 넣을 자리가 없으면 줍기(홀드)를 막는다. </summary>
+    public bool IsInteractBlocked(GameObject interactor, out string message)
+    {
+        message = _inventoryFullText;
+
+        DataManager data = Managers.Data;
+
+        return CanInteract(interactor) && data != null && !data.CanAddFishToQuickSlot(FishID, Count);
     }
 
     #region ===== 디졸브 =====

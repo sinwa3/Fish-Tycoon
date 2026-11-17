@@ -25,8 +25,11 @@ public class PlayerInteractor : MonoBehaviour
     [Tooltip("일반 홀드 상호작용(문, 가구, 장롱, 현관문)에 필요한 누르는 시간(초)")]
     [SerializeField, Range(1f, 1.5f)] private float _holdDuration = 1.2f;
 
-    [Tooltip("생선 획득에 필요한 누르는 시간(초)")]
+    [Tooltip("생선 획득에 필요한 누르는 시간(초). 장갑을 끼고 있으면 장갑의 단축 비율만큼 줄어든다.")]
     [SerializeField, Min(0.1f)] private float _fishHoldDuration = 2.5f;
+
+    [Tooltip("장갑으로 생선 획득 시간을 줄일 수 있는 최대 비율(%)")]
+    [SerializeField, Range(0f, 90f)] private float _maxGloveReductionPercent = 90f;
 
     [Tooltip("장롱에서 나오기에 필요한 누르는 시간(초)")]
     [SerializeField, Min(0.1f)] private float _exitHidingHoldDuration = 0.5f;
@@ -213,6 +216,13 @@ public class PlayerInteractor : MonoBehaviour
             return;
         }
 
+        if (IsTargetBlocked(out string blockedMessage))
+        {
+            UpdateBlockedInput(blockedMessage);
+
+            return;
+        }
+
         if (!RequiresHold(CurrentTarget.Type))
         {
             if (input.KeyDown_E)
@@ -227,6 +237,30 @@ public class PlayerInteractor : MonoBehaviour
         {
             CurrentTarget.Interact(gameObject);
         }
+    }
+
+    /// <summary>
+    /// YSW : 막힌 대상(인벤토리 가득 참, 락픽 없음 등)은 홀드 게이지를 채우지 않고, 키를 누른 순간 막힌 이유를 알려준다.
+    /// 누른 채로 막힘이 풀려도 바로 시작하지 않도록 키를 한 번 뗄 때까지 기다리게 한다.
+    /// </summary>
+    private void UpdateBlockedInput(string blockedMessage)
+    {
+        ResetHold();
+
+        if (IsHoldPressedDown())
+        {
+            Managers.UI?.OpenToastMessage(blockedMessage);
+        }
+
+        _isWaitingRelease = IsHoldPressed();
+    }
+
+    /// <summary> YSW : 현재 대상이 상호작용을 막고 있으면 true와 막힌 이유를 반환한다. </summary>
+    private bool IsTargetBlocked(out string message)
+    {
+        message = null;
+
+        return CurrentTarget is IInteractBlockable blockable && blockable.IsInteractBlocked(gameObject, out message);
     }
 
     /// <summary> YSW : 홀드 키를 누르고 있는 동안 시간을 채우고, 지정한 시간이 다 찬 프레임에 true를 반환한다. </summary>
@@ -273,6 +307,21 @@ public class PlayerInteractor : MonoBehaviour
         return input.Key_E || isMousePressed;
     }
 
+    /// <summary> YSW : 이번 프레임에 홀드 키(E, 또는 물건을 들고 있지 않을 때 마우스 왼쪽)를 막 눌렀는지 반환한다. </summary>
+    private bool IsHoldPressedDown()
+    {
+        InputManager input = Managers.Input;
+
+        if (input == null)
+        {
+            return false;
+        }
+
+        bool isMousePressedDown = _allowMouseHold && !IsCarryingItem && input.MouseDown_Left;
+
+        return input.KeyDown_E || isMousePressedDown;
+    }
+
     /// <summary> YSW : 홀드 진행 시간을 초기화한다. </summary>
     private void ResetHold()
     {
@@ -304,7 +353,31 @@ public class PlayerInteractor : MonoBehaviour
     /// <summary> YSW : 상호작용 종류에 맞는 홀드 시간을 반환한다. (생선 획득만 길게) </summary>
     private float GetHoldDuration(InteractionType type)
     {
-        return type == InteractionType.Fish ? _fishHoldDuration : _holdDuration;
+        return type == InteractionType.Fish ? GetFishHoldDuration() : _holdDuration;
+    }
+
+    /// <summary> YSW : 끼고 있는 장갑의 단축 비율(아이템 테이블 적용 값, %)만큼 줄인 생선 획득 시간을 반환한다. </summary>
+    private float GetFishHoldDuration()
+    {
+        float reductionPercent = Mathf.Clamp(GetGloveReductionPercent(), 0f, _maxGloveReductionPercent);
+
+        return _fishHoldDuration * (1f - reductionPercent / 100f);
+    }
+
+    /// <summary> YSW : 현재 끼고 있는 장갑의 생선 획득 시간 단축 비율(%)을 반환한다. (장갑이 없으면 0) </summary>
+    private static float GetGloveReductionPercent()
+    {
+        DataManager data = Managers.Data;
+        ItemTable itemTable = Managers.Table?.Item;
+
+        if (data == null || itemTable == null)
+        {
+            return 0f;
+        }
+
+        Item glove = itemTable.GetItem(data.GetEquippedItemID(EquipmentType.Glove));
+
+        return glove != null ? glove.BuffValue : 0f;
     }
 
     #endregion ===== 홀드 규칙 =====
@@ -343,16 +416,20 @@ public class PlayerInteractor : MonoBehaviour
 
         InteractionType type = CurrentTarget.Type;
 
+        // 막힌 대상은 안내 문구 대신 막힌 이유를 미리 보여주고 게이지는 비워 둔다.
+        bool isBlocked = IsTargetBlocked(out string blockedMessage);
+        string promptText = isBlocked ? blockedMessage : CurrentTarget.InteractionText;
+
         if (CurrentTarget is FishPickup fish)
         {
-            _holdingSystem.SetTarget(type, fish.InteractionText, Managers.Table?.Fish.GetSprite(fish.FishID));
+            _holdingSystem.SetTarget(type, promptText, Managers.Table?.Fish.GetSprite(fish.FishID));
         }
         else
         {
-            _holdingSystem.SetTarget(type, CurrentTarget.InteractionText);
+            _holdingSystem.SetTarget(type, promptText);
         }
 
-        float progress = RequiresHold(type) ? _holdTimer / GetHoldDuration(type) : 0f;
+        float progress = !isBlocked && RequiresHold(type) ? _holdTimer / GetHoldDuration(type) : 0f;
         _holdingSystem.SetProgress(progress);
     }
 
