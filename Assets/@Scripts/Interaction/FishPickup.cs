@@ -27,7 +27,7 @@ public class FishPickup : MonoBehaviour, IInteractable
     #region ===== 상태 =====
 
     /// <summary> YSW : 바라봤을 때 표시할 안내 문구 (생선 이름 포함) </summary>
-    public string InteractionText => string.Format(_interactionFormat, GetFishName());
+    public string InteractionText => string.Format(_interactionFormat, GetFishName(colorGrade: true));
 
     public InteractionType Type => InteractionType.Fish;
 
@@ -134,15 +134,22 @@ public class FishPickup : MonoBehaviour, IInteractable
     #endregion ===== 디졸브 =====
 
     /// <summary> YSW : 생선 테이블에서 등급과 이름을 가져온다. (없으면 기본 이름) </summary>
-    private string GetFishName()
+    private string GetFishName(bool colorGrade = false)
     {
         FishTable fishTable = Managers.Table?.Fish;
 
-        if (fishTable == null || !fishTable.Map.ContainsKey(FishID))
+        if (fishTable == null || !fishTable.Map.TryGetValue(FishID, out FishData fish))
         {
             return DefaultFishName;
         }
 
-        return $"[{fishTable.Map[FishID].GradeType.ToString().ToUpper()}]\n{fishTable.Map[FishID].Name}";
+        string gradeLabel = $"[{fish.GradeType.ToString().ToUpperInvariant()}]";
+        if (colorGrade)
+        {
+            string color = ColorUtility.ToHtmlStringRGB(ColorKey.GetRarityColor(fish.GradeType));
+            gradeLabel = $"<color=#{color}>{gradeLabel}</color>";
+        }
+
+        return $"{gradeLabel}\n{fish.Name}";
     }
 }
