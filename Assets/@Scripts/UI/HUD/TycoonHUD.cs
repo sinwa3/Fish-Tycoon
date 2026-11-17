@@ -15,6 +15,7 @@ public class TycoonHUD : BaseHUD
 
         MainQuestValueText,
         SubQuestDescText,
+        FoodSaleLimitText,
     }
 
     public enum Sliders
@@ -466,6 +467,12 @@ public class TycoonHUD : BaseHUD
     public void SetQuestVisible(bool isVisible)
     {
         Get<Image>(Images.Quest)?.gameObject.SetActive(isVisible);
+    }
+
+    /// <summary> KDH : 음식 다이어리에 판매 가능 개수를 표시한다. </summary>
+    public void SetFoodSaleLimit(int count)
+    {
+        Get<TMP_Text>(Texts.FoodSaleLimitText)?.SetText("판매 가능 개수 : {0}", count);
     }
 
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
