@@ -46,6 +46,11 @@ public class SecurityMinigameScreen : BaseScreen
 
     #region ===== 상태 =====
 
+    private const float UnlockCloseDelay = 0.65f;
+    private bool _unlockSucceeded;
+    private bool _waitForRotationKeyRelease;
+    private float _unlockCloseTime;
+
     private const int RenderTextureWidth = 1920;
     private const int RenderTextureHeight = 1080;
 
@@ -59,10 +64,30 @@ public class SecurityMinigameScreen : BaseScreen
 
     protected override void OnStart()
     {
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockerClose);
     }
 
     protected override void OnUpdate()
     {
+        if (!_unlockSucceeded || Time.unscaledTime < _unlockCloseTime)
+        {
+            return;
+        }
+
+        if (_waitForRotationKeyRelease && Managers.Input?.Key_D == true)
+        {
+            return;
+        }
+
+        Close();
+    }
+
+    public override void OnInputKey()
+    {
+        if (!_unlockSucceeded)
+        {
+            base.OnInputKey();
+        }
     }
 
     protected override void DestroyOverride()
@@ -393,6 +418,11 @@ public class SecurityMinigameScreen : BaseScreen
     /// <summary> SJY : 잠금 해제 성공 시 락픽 소비 및 퀘스트 진행 </summary>
     private void HandleUnlockSuccess(QuestType questType)
     {
+        if (_unlockSucceeded)
+        {
+            return;
+        }
+
         if (!LockpickInventory.TryConsume())
         {
             CPrint.Warning("[SecurityMinigameScreen] 잠금 해제 성공 후 락픽 소비에 실패했습니다.");
@@ -403,11 +433,18 @@ public class SecurityMinigameScreen : BaseScreen
 
         UpdateLockpickCountText();
 
+        _unlockSucceeded = true;
+        _waitForRotationKeyRelease = questType == QuestType.RotationLock;
+        _unlockCloseTime = Time.unscaledTime + UnlockCloseDelay;
+
+        _pinLockController?.StopMiniGame();
+        _rotationLockController?.StopMiniGame();
+
+        Managers.UI?.OpenToastMessage("잠금이 해제되었습니다!");
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockerOpen);
         Managers.Quest?.ReportProgress(SceneType.StealthScene, questType);
 
         _unlockSuccessCallback?.Invoke();
-
-        Close();
     }
 
     #endregion ==== 락픽 ====

@@ -58,7 +58,10 @@ public class FoodTooltip : BaseTooltip
         }
         else
         {
-            Get<Image>(Images.Required).gameObject.SetActive(true);
+            FishData fish = Managers.Table.Fish.GetFish(_foodData.FishID);
+            Image required = Get<Image>(Images.Required);
+            required.color = fish != null ? ColorKey.GetRarityColor(fish.GradeType) : Color.white;
+            required.gameObject.SetActive(true);
             Get<Image>(Images.FishImage).sprite = Managers.Table.Fish.GetSprite(_foodData.FishID);
         }
         

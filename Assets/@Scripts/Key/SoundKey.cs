@@ -38,6 +38,9 @@ public abstract class SoundKey
             ItemBottle,
             ItemTimer,
             
+            LockerClose,
+            LockerOpen,
+            
             Reputation,
             
             StartBusiness,

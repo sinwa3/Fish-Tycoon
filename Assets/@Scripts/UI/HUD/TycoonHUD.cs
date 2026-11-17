@@ -15,10 +15,12 @@ public class TycoonHUD : BaseHUD
 
         MainQuestValueText,
         SubQuestDescText,
+        FoodSaleLimitText,
     }
 
     public enum Sliders
     {
+        MainQuestSlider,
         SatisfactionSlider,
         BusinessProgressSlider,
     }
@@ -55,7 +57,7 @@ public class TycoonHUD : BaseHUD
 
         QuickSlotBar,
 
-        Quest,
+        MainQuest,
         SubQuest
     }
 
@@ -76,6 +78,25 @@ public class TycoonHUD : BaseHUD
 
     #endregion ===== 참조 =====
 
+    #region ===== 상태 =====
+
+    // 영업 진행 여부 (영업 중에는 판매 금액을 메인 퀘스트 게이지에 반영)
+    private bool _salesInProgress;
+    
+    // 골드 아이콘이 도착하여 메인 퀘스트 게이지에 반영된 누적 판매 금액
+    private int _salesProgressGold;
+    // 아직 골드 아이콘이 도착하지 않아 메인 퀘스트 게이지에 반영하지 않은 퀘스트 보상 금액
+    private int _pendingQuestGold;
+    // 서브 퀘스트 완료 연출 후 골드 아이콘으로 이동시킬 예정인 보상 금액
+    private int _questGoldWaitingToFly;
+    
+    // 현재 메인 퀘스트 게이지로 이동 중인 골드 아이콘 개수
+    private int _flyingGoldIcons;
+    // 이동 중인 골드 아이콘이 있는지 확인
+    public bool HasFlyingGold => _flyingGoldIcons > 0;
+
+    #endregion ===== 상태 =====
+
     #region ===== 애니메이션 =====
 
     // 다이어리
@@ -87,8 +108,9 @@ public class TycoonHUD : BaseHUD
     private Tween _storeBtnTween;
 
     // 퀘스트
-    private Coroutine _subQuestCoroutine;
+    private Tween _mainQuestTween;
     private Tween _subQuestTween;
+    private Coroutine _subQuestCoroutine;
     private UIHighlightCanvas _subQuestHighlight;
 
     // 골드
@@ -140,6 +162,7 @@ public class TycoonHUD : BaseHUD
     protected override void OnStart()
     {
         InitializeBtnEvent();
+        InitializeMainQuest();
 
         SetCurrentDayText();
         SetMainQuestValueText();
@@ -210,6 +233,8 @@ public class TycoonHUD : BaseHUD
 
     private void OnDestroy()
     {
+        _mainQuestTween?.Kill();
+        _subQuestTween?.Kill();
         _diaryTween?.Kill();
         _storeBtnTween?.Kill();
 
@@ -242,9 +267,11 @@ public class TycoonHUD : BaseHUD
     }
 
     /// <summary> KDH : 타이쿤 씬 첫 진입시 목표 금액을 설정한다. </summary>
-    private void SetMainQuestValueText()
+    private void SetMainQuestValueText(int? currentGold = null)
     {
-        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText($"{TycoonScene.TargetGold:N0} G");
+        int gold = currentGold ?? Managers.Data.GetCurrentGold();
+        Get<TMP_Text>(Texts.MainQuestValueText)?.SetText(
+            gold >= TycoonScene.TargetGold ? $"{gold:N0} G" : $"({gold:N0}/{TycoonScene.TargetGold:N0})");
     }
 
     /// <summary> KDH : 평판 아이콘에 호버시 평판 정보를 보여주도록 한다. </summary>
@@ -276,6 +303,28 @@ public class TycoonHUD : BaseHUD
             businessProgressSlider.maxValue = Mathf.Max(1, maxCustomerCount);
             businessProgressSlider.SetValueWithoutNotify(0);
         }
+    }
+
+    /// <summary> KDH : 메인퀘스트에서 영업 중에는 누적 판매액이 반영되는 목표 게이지를 표시한다. </summary>
+    public void InitializeMainQuest()
+    {
+        Slider mainQuestSlider = Get<Slider>(Sliders.MainQuestSlider);
+
+        int startingGold = Managers.Data?.GetCurrentDay() ?? 0;
+        _salesProgressGold = 0;
+
+        if (mainQuestSlider != null)
+        {
+            mainQuestSlider.maxValue = TycoonScene.TargetGold;
+            mainQuestSlider.SetValueWithoutNotify(startingGold);
+        }
+    }
+
+    /// <summary> KDH : 메인퀘스트의 진행도를 설정한다. </summary>
+    public void SetMainQuestInProgress(bool inProgress)
+    {
+        _salesInProgress = inProgress;
+        RefreshMainQuestProgress();
     }
 
     /// <summary> KDH : 평판 툴팁을 초기화한다. </summary>
@@ -402,7 +451,6 @@ public class TycoonHUD : BaseHUD
             return;
         }
 
-        Get<Image>(Images.SubQuest)?.gameObject.SetActive(true);
         Get<TMP_Text>(Texts.SubQuestDescText)
             ?.SetText($"{quest.Description}\n({Mathf.Clamp(progress, 0, quest.Goal)} / {quest.Goal})\n");
         Get<Toggle>(Toggles.SubQuestToggle)?.SetIsOnWithoutNotify(isCompleted);
@@ -463,9 +511,16 @@ public class TycoonHUD : BaseHUD
     }
 
     /// <summary> KDH : 퀘스트를 표시/비표시한다. </summary>
-    public void SetQuestVisible(bool isVisible)
+    public void SetQuestVisible(bool isMainVisible, bool isSubVisible)
     {
-        Get<Image>(Images.Quest)?.gameObject.SetActive(isVisible);
+        Get<Image>(Images.MainQuest)?.gameObject.SetActive(isMainVisible);
+        Get<Image>(Images.SubQuest)?.gameObject.SetActive(isSubVisible);
+    }
+
+    /// <summary> KDH : 음식 다이어리에 판매 가능 개수를 표시한다. </summary>
+    public void SetFoodSaleLimit(int count)
+    {
+        Get<TMP_Text>(Texts.FoodSaleLimitText)?.SetText("판매 가능 개수 : {0}", count);
     }
 
     /// <summary> KDH : 음식 다이어리를 오픈한다. </summary>
@@ -548,7 +603,8 @@ public class TycoonHUD : BaseHUD
         }
 
         int targetGold = Managers.Data.GetCurrentGold();
-
+        RefreshMainQuestProgress();
+        
         _goldTween?.Kill();
         _goldTween = null;
 
@@ -599,7 +655,7 @@ public class TycoonHUD : BaseHUD
         _subQuestHighlight.Restore();
         _subQuestHighlight = null;
     }
-    
+
     #endregion ===== 애니메이션 =====
 
     #region ==== 조리 커맨드 UI ====
@@ -868,7 +924,8 @@ public class TycoonHUD : BaseHUD
     /// <summary>SJY : 현재 입력해야 하는 커맨드를 테두리 스프라이트로 변경</summary>
     private void UpdateCommandHighlight(int commandIndex)
     {
-        if (_cookingController == null || _commandImages == null || commandIndex < 0 || commandIndex >= _cookingController.TotalCommandCount)
+        if (_cookingController == null || _commandImages == null || commandIndex < 0 ||
+            commandIndex >= _cookingController.TotalCommandCount)
         {
             return;
         }
@@ -880,11 +937,137 @@ public class TycoonHUD : BaseHUD
 
     #region ===== 퀘스트 =====
 
+    /// <summary> KDH : 메인 퀘스트 관련 정보를 업데이트 한다. </summary>
+    private void RefreshMainQuestProgress()
+    {
+        int gold = Managers.Data.GetCurrentGold() - _pendingQuestGold;
+        if (_salesInProgress)
+        {
+            gold += _salesProgressGold;
+        }
+
+        Get<Slider>(Sliders.MainQuestSlider)?.SetValueWithoutNotify(gold);
+        SetMainQuestValueText(gold);
+    }
+
+    /// <summary> 손님의 음식값을 화폐 아이콘으로 표시하고 도착할 때 목표 게이지에 반영한다. </summary>
+    public void PlayCustomerPayAnimation(Vector2 screenPosition, int price)
+    {
+        Slider mainQuestSlider = Get<Slider>(Sliders.MainQuestSlider);
+
+        if (mainQuestSlider == null || price <= 0)
+        {
+            return;
+        }
+
+        Canvas canvas = GetComponent<Canvas>();
+        RectTransform rect = transform as RectTransform;
+
+        if (canvas != null)
+        {
+            // 손님의 화면 좌표를 UI 좌표로 변환
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(rect, screenPosition,
+                canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera, out Vector2 start);
+
+            PlayMovingGoldAnimation(start, price, false);
+        }
+    }
+
+    /// <summary> KDH : 골드 아이콘이 메인퀘스트 창으로 이동하는 애니메이션을 재생한다. </summary>
+    private void PlayMovingGoldAnimation(Vector2 start, int price, bool isQuestReward)
+    {
+        // 고가 메뉴에서도 화면을 가리지 않도록 한 건당 최대 10장으로 표시한다.
+        int count = Mathf.Clamp(price / 100, 1, 10);
+        for (int i = 0; i < count; i++)
+        {
+            int amount = price / count + (i < price % count ? 1 : 0);
+
+            // 골드 아이콘 생성
+            Image icon = new GameObject("GoldIcon").GetOrAddComponent<Image>();
+            icon.gameObject.layer = transform.gameObject.layer;
+            icon.transform.SetParent(transform, false);
+            icon.color = Color.white;
+            icon.raycastTarget = false;
+            icon.sprite = Managers.Resource.LoadSprite(ResourceKey.Path.ItemSprite, ResourceKey.Name.Gold);
+            icon.preserveAspect = true;
+            icon.rectTransform.sizeDelta = new Vector2(120f, 84f);
+
+            // 골드 아이콘을 기준 위치 주변에 겹치도록 배치
+            float x = (i % 5 - 2) * 22f; // 가로: -44, -22, 0, 22, 44 반복
+            float y = 36f + (i % 3) * 20f; // 세로: 36, 56, 76 반복
+
+            // 기준 위치에서 계산한 만큼 이동
+            Vector2 origin = start + new Vector2(x, y);
+            icon.rectTransform.localPosition = origin;
+
+            // 목적지 설정
+            RectTransform destination = Get<Slider>(Sliders.MainQuestSlider).GetComponent<RectTransform>();
+            _flyingGoldIcons++;
+            // 0.45초 동안 진행률을 0에서 1까지 증가시킨다.
+            DOVirtual.Float(0f, 1f, 0.45f, progress =>
+                {
+                    // 메인 퀘스트 UI의 월드 위치를 TycoonHUD 기준 로컬 위치로 변환
+                    Vector2 target = transform.InverseTransformPoint(destination.position);
+                    // 출발점에서 도착점까지 진행률에 따라 위치 계산
+                    Vector2 point = Vector2.Lerp(origin, target, progress);
+                    // 이동 경로 중간에서 최대 48만큼 위로 솟아오르는 효과
+                    point.y += Mathf.Sin(progress * Mathf.PI) * 48f;
+                    // 계산된 위치를 골드 아이콘에 적용
+                    icon.rectTransform.localPosition = point;
+                })
+                .SetDelay(0.18f * i / count) // // 골드 아이콘마다 이동 시작 시간을 조금씩 다르게 설정
+                .SetLink(icon.gameObject) // // 골드 아이콘이 파괴되면 Tween도 자동 종료
+                .OnComplete(() => // // 골드 아이콘이 목적지에 도착했을 때 실행
+                {
+                    _flyingGoldIcons--;
+                    if (isQuestReward)
+                    {
+                        _pendingQuestGold -= amount;
+                    }
+                    else
+                    {
+                        _salesProgressGold += amount;
+                    }
+
+                    RefreshMainQuestProgress();
+                    PlayMainQuestBounce();
+                    Destroy(icon.gameObject);
+                });
+        }
+    }
+
+    /// <summary> KDH : 메인퀘스트 스케일 바운스 애니메이션을 재생한다. </summary>
+    private void PlayMainQuestBounce()
+    {
+        Image image = Get<Image>(Images.MainQuest);
+
+        if (image == null)
+        {
+            return;
+        }
+
+        if (_mainQuestTween != null && _mainQuestTween.IsActive())
+        {
+            return;
+        }
+
+        Transform mainQuest = image.transform;
+        Vector3 restingScale = mainQuest.localScale;
+        _mainQuestTween = mainQuest.DOScale(restingScale * 1.1f, 0.17f)
+            .SetEase(Ease.OutBack)
+            .SetLoops(2, LoopType.Yoyo)
+            .OnComplete(() => mainQuest.localScale = restingScale);
+    }
+
+    /// <summary> KDH : 서브퀘스트 완료됐을 때 연출을 재생한다. </summary>
     private void StartSubQuestCompletion(QuestProgressEvent progressEvent)
     {
         if (_subQuestCoroutine != null)
         {
             StopCoroutine(_subQuestCoroutine);
+            _pendingQuestGold -= _questGoldWaitingToFly;
+            _questGoldWaitingToFly = 0;
+            RefreshMainQuestProgress();
         }
 
         _subQuestCoroutine = StartCoroutine(Co_ShowSubQuestCompletion(progressEvent));
@@ -894,6 +1077,15 @@ public class TycoonHUD : BaseHUD
     private IEnumerator Co_ShowSubQuestCompletion(QuestProgressEvent progressEvent)
     {
         Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.QuestClear);
+
+        // 골드 보상시 메인퀘스트로 골드아이콘을 이동시킬 준비를 한다.
+        int reward = progressEvent.CompletedQuest.GoldReward;
+        if (reward > 0)
+        {
+            _pendingQuestGold += reward;
+            _questGoldWaitingToFly = reward;
+            RefreshMainQuestProgress();
+        }
         
         // 완료 표시
         UpdateSubQuest(progressEvent.CompletedQuest, progressEvent.CompletedQuest.Goal, true);
@@ -913,11 +1105,22 @@ public class TycoonHUD : BaseHUD
         // 보상 표시
         Get<TMP_Text>(Texts.SubQuestDescText)?.SetText($"{progressEvent.CompletedQuest.GoldReward:N0} G 획득!");
 
+        if (reward > 0)
+        {
+            _questGoldWaitingToFly = 0;
+            
+            Image SubQuestImage = Get<Image>(Images.SubQuest);
+            if (SubQuestImage != null)
+            {
+                PlayMovingGoldAnimation(transform.InverseTransformPoint(SubQuestImage.rectTransform.position), reward, true);
+            }
+        }
+        
         yield return new WaitForSeconds(1f);
 
         // 바운스 종료 후 하이라이트 복원
         RestoreSubQuestHighlight();
-        
+
         // 다음 퀘스트 표시
         UpdateSubQuest(progressEvent.NextQuest, 0);
         Managers.Quest.SetCompletionSequenceActive(false);

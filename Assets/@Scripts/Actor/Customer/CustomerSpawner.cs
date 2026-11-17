@@ -45,6 +45,9 @@ public class CustomerSpawner : MonoBehaviour
     /// <summary> KYH : 하루 손님을 다 받고 마지막 손님이 나가면 발행 </summary>
     public event Action OnBusinessClosed;
 
+    /// <summary> KYH : 손님이 계산하면 손님 위치와 음식 가격을 발행 </summary>
+    public event Action<Vector3, int> OnSaleCompleted;
+
     #endregion ===== 영업 =====
 
     #region ===== 하루 합계 =====
@@ -310,10 +313,11 @@ public class CustomerSpawner : MonoBehaviour
         OnOrderCountChanged?.Invoke(orderCount);
     }
     
-    /// <summary> KYH : 만족도를 하루 합계에 더한다 </summary>
-    private void HandleCustomerPaid(int satisfaction)
+    /// <summary> KYH : 만족도를 하루 합계에 더하고 손님 위치와 음식 가격을 알린다 </summary>
+    private void HandleCustomerPaid(int satisfaction, Vector3 position, int price)
     {
         _dailySatisfaction += satisfaction;
+        OnSaleCompleted?.Invoke(position, price);
     }
 
     #endregion ===== 이벤트 처리 =====

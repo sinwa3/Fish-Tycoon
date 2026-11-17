@@ -62,6 +62,9 @@ public class FoodListSlot : BaseRecycleSlot<FoodData>
     {
         base.UpdateData(data);
 
+        FishData fish = Managers.Table.Fish.GetFish(data.FishID);
+        GetComponent<Image>().color = fish != null ? ColorKey.GetRarityColor(fish.GradeType) : Color.white;
+
         // 요리 이미지를 표시한다.
         Get<Image>(Images.FoodImage).sprite = Managers.Table.Food.GetSpriteByFishID(data.FishID);
 

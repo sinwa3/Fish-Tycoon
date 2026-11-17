@@ -16,6 +16,13 @@ public class EnemyPatrolRoute : MonoBehaviour
 
     #endregion ===== 웨이포인트 =====
 
+    #region ===== 층 =====
+
+    // 같은 층으로 보는 웨이포인트 높이 차이
+    private const float FloorHeightRange = 1.0f;
+
+    #endregion ===== 층 =====
+
     private void Awake()
     {
         InitializeWaypoints();
@@ -54,6 +61,35 @@ public class EnemyPatrolRoute : MonoBehaviour
         }
 
         return _waypoints[waypointIndex];
+    }
+
+    /// <summary> KYH : 가까운 층의 웨이포인트 번호 담기 </summary>
+    public void GetFloorWaypointIndices(float height, List<int> waypointIndices)
+    {
+        waypointIndices.Clear();
+
+        // 높이가 가장 가까운 웨이포인트의 높이를 층 높이로 본다
+        float floorHeight = height;
+        float minHeightGap = float.MaxValue;
+
+        foreach (Transform waypoint in _waypoints)
+        {
+            float heightGap = Mathf.Abs(waypoint.position.y - height);
+
+            if (heightGap < minHeightGap)
+            {
+                minHeightGap = heightGap;
+                floorHeight = waypoint.position.y;
+            }
+        }
+
+        for (int i = 0; i < _waypoints.Count; i++)
+        {
+            if (Mathf.Abs(_waypoints[i].position.y - floorHeight) <= FloorHeightRange)
+            {
+                waypointIndices.Add(i);
+            }
+        }
     }
 
     #endregion ===== 웨이포인트 가져오기 =====

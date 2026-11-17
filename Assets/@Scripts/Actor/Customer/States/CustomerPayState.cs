@@ -16,6 +16,7 @@ public class CustomerPayState : BaseCustomerState
     {
         Customer.PlayIdle();
         Customer.Pay();
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CustomerExit);
     }
 
     /// <summary> KYH : 결제 상태를 갱신한다 </summary>

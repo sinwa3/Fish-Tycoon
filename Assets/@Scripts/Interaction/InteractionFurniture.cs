@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary> KYH : 열고 닫는 가구 파츠(서랍, 수납장 문) </summary>
-public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable
+public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IInteractBlockable
 {
     #region ===== 설정 =====
 
@@ -9,6 +9,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable
     [SerializeField] private string _openText = "열기";
     [SerializeField] private string _closeText = "닫기";
     [SerializeField] private string _lockText = "잠금 해제";
+    [SerializeField] private string _noLockpickText = "락픽이 필요합니다.";
 
     private const string LockObjectName = "RotationLock_Interactable";
 
@@ -107,6 +108,14 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable
         PlayOpen(interactor);
     }
 
+    /// <summary> YSW : 잠겨 있는데 락픽이 없으면 잠금 해제(홀드)를 막는다. </summary>
+    public bool IsInteractBlocked(GameObject interactor, out string message)
+    {
+        message = _noLockpickText;
+
+        return IsLocked && !LockpickInventory.HasLockpick();
+    }
+
     #endregion ===== 상호작용 =====
 
     #region ===== 열기, 닫기 =====
@@ -158,7 +167,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable
     {
         if (!LockpickInventory.HasLockpick())
         {
-            Managers.UI.OpenToastMessage("락픽이 부족합니다.");
+            Managers.UI?.OpenToastMessage(_noLockpickText);
 
             return;
         }
