@@ -12,10 +12,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/ScreenUI/EndScreen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Resources/Resources/Prefab/UI/ScreenUI/EndScreen.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Actor/Player/LockGame/PinLockMiniGame/PinLockController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Actor/Player/LockGame/PinLockMiniGame/PinLockController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Key/SoundKey.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Key/SoundKey.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Scene/TycoonScene.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/HUD/TycoonHUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/ReputationProgressPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Popup/ReputationProgressPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SoundManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Manager/Mono/SoundManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/SecurityMinigameScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/SecurityMinigameScreen.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -384,7 +384,6 @@ public class SecurityMinigameScreen : BaseScreen
     /// <summary> SJY : 락픽 파손 시 1개 소모하고 남은 락픽을 확인한다. </summary>
     private void HandleLockpickBroken()
     {
-
         if (!LockpickInventory.TryConsume())
         {
             Close();
@@ -404,6 +403,7 @@ public class SecurityMinigameScreen : BaseScreen
         }
 
         Managers.UI?.OpenToastMessage("락픽이 파괴되었습니다!");
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockPinBroken);
 
         if (_pinLockController != null && _pinLockController.IsReplacing)
         {

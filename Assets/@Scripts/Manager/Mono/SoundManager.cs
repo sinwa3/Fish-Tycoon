@@ -198,8 +198,6 @@ public class SoundManager : MonoBehaviour
 
             float heightDifference = Mathf.Abs(_audioListener.transform.position.y - position.y);
 
-            CPrint.Log(heightDifference);
-            
             if (heightDifference > MaxSfxHeightDifference)
             {
                 return;

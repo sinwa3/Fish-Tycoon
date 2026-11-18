@@ -56,12 +56,14 @@ public abstract class SoundKey
             
             LockerClose,
             LockerOpen,
+            LockPinBroken,
             
             OpenDoor,
             OpenDrawer,
             OpenRefrige,
             OpenOven,
             
+            PinLockCorrect,
             PlayerFoot,
             
             Reputation,
