@@ -286,7 +286,7 @@ public class SecurityMinigameScreen : BaseScreen
 
     #region ===== 카메라 =====
 
-    /// <summary> 미니게임 전용 직교 카메라와 조명을 생성한다. </summary>
+    /// <summary> KDH : 미니게임 전용 직교 카메라와 조명을 생성한다. </summary>
     private void CreateMinigameCamera(MinigameType minigameType)
     {
         if (_minigameRoot == null)
@@ -397,8 +397,10 @@ public class SecurityMinigameScreen : BaseScreen
         if (!LockpickInventory.HasLockpick())
         {
             Close();
+            
             Managers.UI?.OpenToastMessage("락픽이 모두 파괴되어 해제를 중단합니다.");
-
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockPinBroken);
+            
             return;
         }
 
