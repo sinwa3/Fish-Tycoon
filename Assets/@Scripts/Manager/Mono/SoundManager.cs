@@ -22,8 +22,9 @@ public class SoundManager : MonoBehaviour
     private AudioMixerGroup _bgmMixerGroup;
     private AudioMixerGroup _sfxMixerGroup;
 
-    private float _minDistance = 1f;
-    private float _maxDistance = 15f;
+    private const float MinSfxDistance = 1f;
+    private const float MaxSfxDistance = 15f;
+    private const float MaxSfxHeightDifference = 2.5f;
 
     private readonly Dictionary<string, Sfx> _sfxMap = new();
 
@@ -186,8 +187,25 @@ public class SoundManager : MonoBehaviour
 
     /// <summary> KDH : 지정한 이름의 SFX를 설정한 지연 시간 이후 재생한다. </summary>
     public void PlaySfx(SoundKey.Name.SfxType sfxType, float volume = 1f, bool is3D = false,
-        Vector3 position = default, int maxAudioSourceCount = 0, float delay = 0f)
+        Vector3 position = default, int maxAudioSourceCount = 0, float delay = 0f, bool checkHeight = false)
     {
+        if (is3D && checkHeight)
+        {
+            if (_audioListener == null)
+            {
+                return;
+            }
+
+            float heightDifference = Mathf.Abs(_audioListener.transform.position.y - position.y);
+
+            CPrint.Log(heightDifference);
+            
+            if (heightDifference > MaxSfxHeightDifference)
+            {
+                return;
+            }
+        }
+
         string sfxName = sfxType.ToString();
 
         if (string.IsNullOrWhiteSpace(sfxName))
@@ -206,7 +224,7 @@ public class SoundManager : MonoBehaviour
                 return;
             }
 
-            sfx = new Sfx(clip, _minDistance, _maxDistance, _sfxMixerGroup, maxAudioSourceCount);
+            sfx = new Sfx(clip, MinSfxDistance, MaxSfxDistance, _sfxMixerGroup, maxAudioSourceCount);
 
             _sfxMap.Add(sfxName, sfx);
         }
@@ -474,12 +492,12 @@ public class Sfx
     private readonly Transform _root;
 
     private readonly List<AudioSource> _audioSourceList;
-    
+
     private readonly AudioClip _clip;
     private readonly AudioMixerGroup _mixerGroup;
 
     private readonly Dictionary<AudioSource, double> _reservedUntilTimes = new();
-    
+
     private readonly float _minDistance;
     private readonly float _maxDistance;
     private readonly int _maxAudioSourceCount;

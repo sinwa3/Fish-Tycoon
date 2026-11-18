@@ -130,7 +130,7 @@ public class Door : MonoBehaviour, IInteractable, IOpenable
         _animator.ResetTrigger(CloseHash);
         _animator.SetTrigger(GetOpenTrigger(awayFromPosition));
         
-        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.OpenDoor);
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.OpenDoor, is3D: true, position: transform.position, checkHeight: true);
 
         IsOpen = true;
     }
