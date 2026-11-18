@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 public enum QuestType
 {
+    None,
     Serving,
     LockCursor,
     UnLockCursor,
