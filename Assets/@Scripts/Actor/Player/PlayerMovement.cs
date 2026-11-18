@@ -119,6 +119,9 @@ public class PlayerMovement : MonoBehaviour
     {
         _characterController = GetComponent<CharacterController>();
         _playerStamina = GetComponent<PlayerStamina>();
+
+        // 발소리 소음(적이 듣는 소리)은 플레이어 프리팹을 수정하지 않아도 동작하도록 자동으로 붙인다.
+        gameObject.GetOrAddComponent<PlayerFootstepNoise>();
     }
 
     /// <summary> YSW : 서 있을 때의 충돌 높이를 저장한다. </summary>
