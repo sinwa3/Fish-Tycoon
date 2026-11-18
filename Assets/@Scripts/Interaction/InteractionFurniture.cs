@@ -233,11 +233,11 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
 
         if (objName.Contains("InteractiveFurniture8")) // 냉장고
         {
-            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseRefrige);
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseRefrige, delay: 0.75f);
         }
         else if (objName.Contains("Oven")) // 오븐
         {
-            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseOven);
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseOven, delay: 0.7f);
         }
         else
         {

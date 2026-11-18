@@ -38,7 +38,9 @@ public class StealthEndScreen : BaseScreen
     {
         Get<Button>(Buttons.NextBtn).onClick.AddListener(ReturnToTycoon);
 
-        Managers.Sound.StopBgm();
+        Managers.Sound?.StopBgm();
+        Managers.Sound?.StopAllSfx();
+        
         Managers.Input.SetCursorLock(false);
     }
 

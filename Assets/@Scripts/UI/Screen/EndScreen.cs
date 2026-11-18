@@ -25,7 +25,9 @@ public class EndScreen : BaseScreen
     {
         Get<Button>(Buttons.TitleBtn).onClick.AddListener(ReturnToTitle);
         
-        Managers.Sound.StopBgm();
+        Managers.Sound?.StopBgm();
+        Managers.Sound?.StopAllSfx();
+        
         Managers.Input.SetCursorLock(false);
     }
 
