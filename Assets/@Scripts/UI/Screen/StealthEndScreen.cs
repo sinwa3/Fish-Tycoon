@@ -32,14 +32,14 @@ public class StealthEndScreen : BaseScreen
         Bind<TMP_Text>(typeof(Texts));
 
         Time.timeScale = 0;
+        
+        Managers.Sound?.StopBgm();
+        Managers.Sound?.StopAllSfx();
     }
 
     protected override void OnStart()
     {
         Get<Button>(Buttons.NextBtn).onClick.AddListener(ReturnToTycoon);
-
-        Managers.Sound?.StopBgm();
-        Managers.Sound?.StopAllSfx();
         
         Managers.Input.SetCursorLock(false);
     }
