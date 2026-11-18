@@ -60,7 +60,7 @@ public class LoadingScene : BaseScene
             // 1. 테이블 로딩
             if (!Managers.Table.IsLoaded)
             {
-                await Managers.Table.LoadAsync((message) => _hud?.SetLoadingText(message));
+                await Managers.Table.LoadAsync();
             }
 
             cancelToken.ThrowIfCancellationRequested();
