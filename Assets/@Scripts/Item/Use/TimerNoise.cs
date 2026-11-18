@@ -3,6 +3,9 @@ using UnityEngine;
 /// <summary> KYH : 설치한 타이머 장치가 시간이 지나면 집주인을 부르는 소음을 낸다 </summary>
 public class TimerNoise : MonoBehaviour
 {
+    // 울릴 때 소음 크기
+    private const float NoiseLoudness = 4.0f;
+
     // Alarm 클립 길이
     [SerializeField] private float _alarmDuration = 2.0f;
 
@@ -79,7 +82,7 @@ public class TimerNoise : MonoBehaviour
 
         foreach (EnemyHearing hearing in hearings)
         {
-            hearing.HearLure(transform.position, ConsumableTempValue.TimerNoiseLoudness);
+            hearing.HearLure(transform.position, NoiseLoudness);
         }
     }
 }
