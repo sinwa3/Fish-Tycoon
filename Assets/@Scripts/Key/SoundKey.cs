@@ -16,6 +16,7 @@ public abstract class SoundKey
         
         public enum BgmType
         {
+            Title,
         }
 
         public enum SfxType
@@ -32,6 +33,7 @@ public abstract class SoundKey
             CustomerExit,
             
             EnemyChaseStart,
+            EnemyFoot,
             
             FishPickup,
             
@@ -40,6 +42,8 @@ public abstract class SoundKey
             
             LockerClose,
             LockerOpen,
+            
+            PlayerFoot,
             
             Reputation,
             
