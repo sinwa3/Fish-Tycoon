@@ -25,7 +25,7 @@ public class SecurityMinigameScreen : BaseScreen
         InstructionText,
         LockpickCountText,
     }
-    
+
     #region ===== 참조 =====
 
     private GameObject _minigameRoot;
@@ -46,13 +46,16 @@ public class SecurityMinigameScreen : BaseScreen
 
     #region ===== 상태 =====
 
-    private const float UnlockCloseDelay = 0.65f;
-    private bool _unlockSucceeded;
-    private bool _waitForRotationKeyRelease;
-    private float _unlockCloseTime;
+    private const float CloseDelay = 0.65f;
 
     private const int RenderTextureWidth = 1920;
     private const int RenderTextureHeight = 1080;
+
+    private bool _unlockSucceeded;
+    private bool _isClosing;
+    private bool _isPressedKeyD;
+
+    private float _closeTime;
 
     #endregion ===== 상태 =====
 
@@ -69,12 +72,12 @@ public class SecurityMinigameScreen : BaseScreen
 
     protected override void OnUpdate()
     {
-        if (!_unlockSucceeded || Time.unscaledTime < _unlockCloseTime)
+        if (!_isClosing || Time.unscaledTime < _closeTime)
         {
             return;
         }
 
-        if (_waitForRotationKeyRelease && Managers.Input?.Key_D == true)
+        if (_isPressedKeyD && Managers.Input?.Key_D == true)
         {
             return;
         }
@@ -84,16 +87,18 @@ public class SecurityMinigameScreen : BaseScreen
 
     public override void OnInputKey()
     {
-        if (!_unlockSucceeded)
+        if (_isClosing)
         {
-            base.OnInputKey();
+            return;
         }
+
+        base.OnInputKey();
     }
 
     protected override void DestroyOverride()
     {
         UnsubscribeEvents();
-        
+
         _pinLockController?.StopMiniGame();
         _rotationLockController?.StopMiniGame();
 
@@ -102,7 +107,7 @@ public class SecurityMinigameScreen : BaseScreen
         Managers.UI?.CurrentHUD.SetVisible(true);
 
         ReleaseRenderTexture();
-        
+
         if (_minigameRoot != null)
         {
             Destroy(_minigameRoot);
@@ -126,7 +131,7 @@ public class SecurityMinigameScreen : BaseScreen
         _unlockSuccessCallback = unlockSuccessCallback;
 
         _blurCamera = blurCamera;
-        
+
         Managers.UI?.CurrentHUD.SetVisible(false);
 
         CreateMinigame(minigameType);
@@ -138,9 +143,9 @@ public class SecurityMinigameScreen : BaseScreen
         }
 
         CreateMinigameCamera(minigameType);
-        
+
         SetBackgroundBlur();
-        
+
         Get<TMP_Text>(Texts.InstructionText)?.SetText(GetInstructionText(minigameType));
 
         SubscribeEvents();
@@ -188,7 +193,7 @@ public class SecurityMinigameScreen : BaseScreen
             blurCameraData.renderPostProcessing = true;
         }
     }
-    
+
     /// <summary> KDH : 컴포넌트를 참조한다. </summary>
     private void ResolveComponents()
     {
@@ -198,7 +203,8 @@ public class SecurityMinigameScreen : BaseScreen
             _pinLockController.OnLockpickBroken += HandlePinLockBroken;
         }
 
-        if (_rotationLockController == null && _minigameRoot != null && _minigame.TryGetComponent(out _rotationLockController))
+        if (_rotationLockController == null && _minigameRoot != null &&
+            _minigame.TryGetComponent(out _rotationLockController))
         {
             _rotationLockController.OnUnlockCompleted += HandleRotationLockCompleted;
             _rotationLockController.OnLockpickBroken += HandleRotationLockBroken;
@@ -242,6 +248,22 @@ public class SecurityMinigameScreen : BaseScreen
 
     #region ===== 미니게임 =====
 
+    /// <summary> KDH : 미니게임 입력을 중단하고 일정 시간 후 종료를 예약한다. </summary>
+    private void ScheduleClose(bool isPressedKeyD = false)
+    {
+        if (_isClosing)
+        {
+            return;
+        }
+
+        _isClosing = true;
+        _isPressedKeyD = isPressedKeyD;
+        _closeTime = Time.unscaledTime + CloseDelay;
+
+        _pinLockController?.StopMiniGame();
+        _rotationLockController?.StopMiniGame();
+    }
+
     /// <summary> KDH : 미니게임에 따라 사용설명서를 가져온다. </summary>
     private static string GetInstructionText(MinigameType minigameType)
     {
@@ -252,7 +274,7 @@ public class SecurityMinigameScreen : BaseScreen
             _ => string.Empty,
         };
     }
-    
+
     /// <summary> KDH : 루트와 선택한 미니게임의 오브젝트를 생성한다. </summary>
     private void CreateMinigame(MinigameType minigameType)
     {
@@ -286,14 +308,14 @@ public class SecurityMinigameScreen : BaseScreen
 
     #region ===== 카메라 =====
 
-    /// <summary> 미니게임 전용 직교 카메라와 조명을 생성한다. </summary>
+    /// <summary> KDH : 미니게임 전용 직교 카메라와 조명을 생성한다. </summary>
     private void CreateMinigameCamera(MinigameType minigameType)
     {
         if (_minigameRoot == null)
         {
             return;
         }
-        
+
         GameObject cameraObject = new GameObject("SecurityMinigameCamera");
         cameraObject.transform.SetParent(_minigameRoot.transform, false);
 
@@ -305,7 +327,7 @@ public class SecurityMinigameScreen : BaseScreen
         _minigameCamera.targetTexture = CreateRenderTexture();
 
         _minigameCamera.orthographic = true;
-        
+
         switch (minigameType)
         {
             case MinigameType.PinLock:
@@ -334,7 +356,7 @@ public class SecurityMinigameScreen : BaseScreen
         minigameLight.innerSpotAngle = 179f;
         minigameLight.shadows = LightShadows.None;
     }
-    
+
     /// <summary> KDH : 미니게임 전용 렌더 텍스처를 만들고 RawImage에 연결한다. </summary>
     private RenderTexture CreateRenderTexture()
     {
@@ -344,7 +366,7 @@ public class SecurityMinigameScreen : BaseScreen
         {
             return null;
         }
-        
+
         _renderTexture = new RenderTexture(RenderTextureWidth, RenderTextureHeight, 24, RenderTextureFormat.ARGB32)
         {
             name = "SecurityMinigameRT",
@@ -357,7 +379,7 @@ public class SecurityMinigameScreen : BaseScreen
 
         return _renderTexture;
     }
-    
+
     /// <summary> KDH : 렌더 텍스처를 해제한다. </summary>
     private void ReleaseRenderTexture()
     {
@@ -384,10 +406,15 @@ public class SecurityMinigameScreen : BaseScreen
     /// <summary> SJY : 락픽 파손 시 1개 소모하고 남은 락픽을 확인한다. </summary>
     private void HandleLockpickBroken()
     {
+        if (_isClosing)
+        {
+            return;
+        }
 
         if (!LockpickInventory.TryConsume())
         {
-            Close();
+            ScheduleClose(_rotationLockController != null);
+
             Managers.UI?.OpenToastMessage("락픽이 부족하여 해제를 중단합니다.");
 
             return;
@@ -395,9 +422,12 @@ public class SecurityMinigameScreen : BaseScreen
 
         UpdateLockpickCountText();
 
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockPinBroken);
+
         if (!LockpickInventory.HasLockpick())
         {
-            Close();
+            ScheduleClose(_rotationLockController != null);
+
             Managers.UI?.OpenToastMessage("락픽이 모두 파괴되어 해제를 중단합니다.");
 
             return;
@@ -416,9 +446,9 @@ public class SecurityMinigameScreen : BaseScreen
     }
 
     /// <summary> SJY : 잠금 해제 성공 시 락픽 소비 및 퀘스트 진행 </summary>
-    private void HandleUnlockSuccess(QuestType questType)
+    private void HandleUnlockSuccess(MinigameType minigameType)
     {
-        if (_unlockSucceeded)
+        if (_unlockSucceeded || _isClosing)
         {
             return;
         }
@@ -427,22 +457,30 @@ public class SecurityMinigameScreen : BaseScreen
         {
             CPrint.Warning("[SecurityMinigameScreen] 잠금 해제 성공 후 락픽 소비에 실패했습니다.");
 
-            Close();
+            ScheduleClose(minigameType == MinigameType.RotationLock);
             return;
         }
 
         UpdateLockpickCountText();
 
         _unlockSucceeded = true;
-        _waitForRotationKeyRelease = questType == QuestType.RotationLock;
-        _unlockCloseTime = Time.unscaledTime + UnlockCloseDelay;
 
-        _pinLockController?.StopMiniGame();
-        _rotationLockController?.StopMiniGame();
+        ScheduleClose(minigameType == MinigameType.RotationLock);
 
         Managers.UI?.OpenToastMessage("잠금이 해제되었습니다!");
         Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockerOpen);
-        Managers.Quest?.ReportProgress(SceneType.StealthScene, questType);
+
+        QuestType questType = minigameType switch
+        {
+            MinigameType.RotationLock => QuestType.RotationLock,
+            MinigameType.PinLock => QuestType.PinLock,
+            _ => QuestType.None
+        };
+
+        if (questType != QuestType.None)
+        {
+            Managers.Quest?.ReportProgress(SceneType.StealthScene, QuestType.PinLock);
+        }
 
         _unlockSuccessCallback?.Invoke();
     }
@@ -451,33 +489,29 @@ public class SecurityMinigameScreen : BaseScreen
 
     #region ===== 이벤트 =====
 
-    /// <summary> KDH : 핀 잠금 해제 완료 시 퀘스트 진행도를 갱신한다. </summary>
+    /// <summary> KDH : 핀 잠금 해제 완료 시 호출한다. </summary>
     private void HandlePinLockCompleted()
     {
-        HandleUnlockSuccess(QuestType.PinLock);
+        HandleUnlockSuccess(MinigameType.PinLock);
     }
 
-    /// <summary> KDH : 회전 잠금 해제 완료 시 퀘스트 진행도를 갱신한다. </summary>
+    /// <summary> KDH : 회전 잠금 해제 완료 시 호출한다. </summary>
     private void HandleRotationLockCompleted()
     {
-        HandleUnlockSuccess(QuestType.RotationLock);
+        HandleUnlockSuccess(MinigameType.RotationLock);
     }
 
     /// <summary> KDH : 핀 잠금 도구가 파손되면 교체한다. </summary>
     private void HandlePinLockBroken()
     {
         HandleLockpickBroken();
-        //_pinLockController?.ReplaceLockpick();
-        //CPrint.Log("핀 잠금 도구 파손");
     }
 
     /// <summary> KDH : 회전 잠금 도구가 파손되면 교체한다. </summary>
     private void HandleRotationLockBroken()
     {
         HandleLockpickBroken();
-        //_rotationLockController?.ReplaceLockpick();
-        //CPrint.Log("회전 잠금 도구 파손");
     }
-    
+
     #endregion ===== 이벤트 =====
 }

@@ -256,6 +256,7 @@ public class PinLockController : MonoBehaviour
         _fixedPinCount++;
 
         CPrint.Log($"[PinLockController] {fixedIndex + 1}번 핀 고정 성고");
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.PinLockCorrect);
 
         OnPinFixed?.Invoke(fixedIndex);
 

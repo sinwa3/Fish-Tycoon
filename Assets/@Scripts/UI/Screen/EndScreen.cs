@@ -19,13 +19,15 @@ public class EndScreen : BaseScreen
     {
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
+        
+        Managers.Sound?.StopBgm();
+        Managers.Sound?.StopAllSfx();
     }
 
     protected override void OnStart()
     {
         Get<Button>(Buttons.TitleBtn).onClick.AddListener(ReturnToTitle);
         
-        Managers.Sound.StopBgm();
         Managers.Input.SetCursorLock(false);
     }
 

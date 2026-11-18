@@ -17,13 +17,14 @@ public class SoundManager : MonoBehaviour
 
     public const float DefaultMasterVolume = 1f;
     public const float DefaultVolume = 0.5f;
-    
+
     private AudioMixer _audioMixer;
     private AudioMixerGroup _bgmMixerGroup;
     private AudioMixerGroup _sfxMixerGroup;
 
-    private float _minDistance = 1f;
-    private float _maxDistance = 15f;
+    private const float MinSfxDistance = 1f;
+    private const float MaxSfxDistance = 15f;
+    private const float MaxSfxHeightDifference = 2.5f;
 
     private readonly Dictionary<string, Sfx> _sfxMap = new();
 
@@ -42,7 +43,7 @@ public class SoundManager : MonoBehaviour
     private void Start()
     {
         Managers.Scene.OnSceneLoaded += HandleSceneLoaded;
-        
+
         RemoveOtherAudioListeners();
         LoadVolumeSettings();
     }
@@ -129,7 +130,7 @@ public class SoundManager : MonoBehaviour
         SetBgmVolume(bgmVolume);
         SetSfxVolume(sfxVolume);
     }
-    
+
     /// <summary> KDH : 씬에서 사용한 SFX를 정리한다. </summary>
     public void Clear()
     {
@@ -184,11 +185,27 @@ public class SoundManager : MonoBehaviour
 
     #region ===== SFX =====
 
-    /// <summary> KDH : 지정한 이름의 SFX를 재생한다. </summary>
-    public void PlaySfx(SoundKey.Name.SfxType sfxType, float volume = 1f, bool is3D = false, Vector3 position = default, int maxAudioSourceCount = 0)
+    /// <summary> KDH : 지정한 이름의 SFX를 설정한 지연 시간 이후 재생한다. </summary>
+    public void PlaySfx(SoundKey.Name.SfxType sfxType, float volume = 1f, bool is3D = false,
+        Vector3 position = default, int maxAudioSourceCount = 0, float delay = 0f, bool checkHeight = false)
     {
+        if (is3D && checkHeight)
+        {
+            if (_audioListener == null)
+            {
+                return;
+            }
+
+            float heightDifference = Mathf.Abs(_audioListener.transform.position.y - position.y);
+
+            if (heightDifference > MaxSfxHeightDifference)
+            {
+                return;
+            }
+        }
+
         string sfxName = sfxType.ToString();
-        
+
         if (string.IsNullOrWhiteSpace(sfxName))
         {
             CPrint.Warning("[SoundManager] SFX 이름이 비어 있습니다.");
@@ -205,19 +222,19 @@ public class SoundManager : MonoBehaviour
                 return;
             }
 
-            sfx = new Sfx(clip, _minDistance, _maxDistance, _sfxMixerGroup, maxAudioSourceCount);
+            sfx = new Sfx(clip, MinSfxDistance, MaxSfxDistance, _sfxMixerGroup, maxAudioSourceCount);
 
             _sfxMap.Add(sfxName, sfx);
         }
 
-        sfx.Play(volume, is3D, position);
+        sfx.Play(volume, is3D, position, delay);
     }
 
     /// <summary> KDH : 해당하는 SFX의 플레이를 정지한다. </summary>
     public void StopSfx(SoundKey.Name.SfxType sfxType)
     {
         string sfxName = sfxType.ToString();
-        
+
         foreach (Sfx sfx in _sfxMap.Values)
         {
             if (sfx.ClipName.Equals(sfxName))
@@ -266,7 +283,7 @@ public class SoundManager : MonoBehaviour
     public void PlayBgm(SoundKey.Name.BgmType bgmType, float volume = 1f, float fadeTime = 0f)
     {
         string bgmName = bgmType.ToString();
-        
+
         if (string.IsNullOrWhiteSpace(bgmName))
         {
             CPrint.Warning("[SoundManager] BGM 이름이 비어 있습니다.");
@@ -404,14 +421,14 @@ public class SoundManager : MonoBehaviour
 
         SetMixerVolume(MasterVolumeParameter, volume);
     }
-    
+
     /// <summary> KDH : BGM의 전체 볼륨을 설정하고 저장한다. </summary>
     public void SetBgmVolume(float volume)
     {
         volume = Mathf.Clamp01(volume);
 
         PlayerPrefs.SetFloat(BgmVolumePrefsKey, volume);
-        
+
         SetMixerVolume(BgmVolumeParameter, volume);
     }
 
@@ -421,16 +438,16 @@ public class SoundManager : MonoBehaviour
         volume = Mathf.Clamp01(volume);
 
         PlayerPrefs.SetFloat(SfxVolumePrefsKey, volume);
-        
+
         SetMixerVolume(SfxVolumeParameter, volume);
     }
-    
+
     /// <summary> KDH : 저장된 전체 볼륨을 반환한다. </summary>
     public float GetMasterVolume()
     {
         return PlayerPrefs.GetFloat(MasterVolumePrefsKey, DefaultMasterVolume);
     }
-    
+
     /// <summary> KDH : 저장된 BGM 볼륨을 반환한다. </summary>
     public float GetBgmVolume()
     {
@@ -477,6 +494,8 @@ public class Sfx
     private readonly AudioClip _clip;
     private readonly AudioMixerGroup _mixerGroup;
 
+    private readonly Dictionary<AudioSource, double> _reservedUntilTimes = new();
+
     private readonly float _minDistance;
     private readonly float _maxDistance;
     private readonly int _maxAudioSourceCount;
@@ -484,7 +503,8 @@ public class Sfx
     public string ClipName => _clip?.name;
 
     /// <summary> KDH : SFX 재생에 필요한 AudioSource를 초기화한다. </summary>
-    public Sfx(AudioClip clip, float minDistance, float maxDistance, AudioMixerGroup mixerGroup, int maxAudioSourceCount)
+    public Sfx(AudioClip clip, float minDistance, float maxDistance, AudioMixerGroup mixerGroup,
+        int maxAudioSourceCount)
     {
         _clip = clip;
         _minDistance = minDistance;
@@ -493,15 +513,15 @@ public class Sfx
 
         _audioSourceList = maxAudioSourceCount == 0 ? new() : new List<AudioSource>(maxAudioSourceCount);
         _maxAudioSourceCount = maxAudioSourceCount;
-        
+
         GameObject rootObject = new GameObject(clip.name);
         rootObject.transform.SetParent(Managers.Sound.transform);
 
         _root = rootObject.transform;
     }
 
-    /// <summary> KDH : SFX를 재생한다. </summary>
-    public void Play(float volume, bool is3D, Vector3 position)
+    /// <summary> KDH : SFX를 설정한 지연 시간 이후 재생한다. </summary>
+    public void Play(float volume, bool is3D, Vector3 position, float delay = 0f)
     {
         AudioSource audioSource = GetAvailableAudioSource();
 
@@ -515,14 +535,38 @@ public class Sfx
         audioSource.spatialBlend = is3D ? 1f : 0f;
 
         audioSource.Stop();
+
+        if (delay > 0f)
+        {
+            double playTime = AudioSettings.dspTime + delay;
+
+            // 예약 시작부터 클립 재생이 끝날 때까지 AudioSource 재사용 방지
+            _reservedUntilTimes[audioSource] = playTime + _clip.length;
+
+            audioSource.PlayScheduled(playTime);
+            return;
+        }
+
         audioSource.Play();
     }
 
     /// <summary> KDH : 재생 가능한 AudioSource를 찾거나 새로 생성한다. </summary>
     private AudioSource GetAvailableAudioSource()
     {
+        double currentTime = AudioSettings.dspTime;
+
         foreach (AudioSource audioSource in _audioSourceList)
         {
+            if (_reservedUntilTimes.TryGetValue(audioSource, out double reservedUntil))
+            {
+                if (currentTime < reservedUntil)
+                {
+                    continue;
+                }
+
+                _reservedUntilTimes.Remove(audioSource);
+            }
+
             if (!audioSource.isPlaying)
             {
                 return audioSource;
@@ -562,21 +606,22 @@ public class Sfx
         return audioSource;
     }
 
-    /// <summary> KDH : 현재 재생 중인 모든 AudioSource를 정지한다. </summary>
+    /// <summary> KDH : 현재 재생 중이거나 예약된 모든 AudioSource를 정지한다. </summary>
     public void Stop()
     {
         foreach (AudioSource audioSource in _audioSourceList)
         {
-            if (audioSource.isPlaying)
-            {
-                audioSource.Stop();
-            }
+            audioSource.Stop();
         }
+
+        _reservedUntilTimes.Clear();
     }
 
     /// <summary> KDH : SFX에 생성된 AudioSource를 정리한다. </summary>
     public void Clear()
     {
+        Stop();
+
         if (_root != null)
         {
             UnityEngine.Object.Destroy(_root.gameObject);

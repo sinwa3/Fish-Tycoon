@@ -16,6 +16,13 @@ public abstract class SoundKey
         
         public enum BgmType
         {
+            Title,
+            
+            BeforeBusiness,
+            DuringBusiness,
+            AfterBusiness,
+            
+            Stealth
         }
 
         public enum SfxType
@@ -25,6 +32,11 @@ public abstract class SoundKey
             ButtonSound_3, // ButtonsSound 고정
             ButtonSound_4, // ButtonsSound 고정
 
+            CloseDoor,
+            CloseDrawer,
+            CloseRefrige,
+            CloseOven,
+            
             ChimeConfirm,
             ChimeCancel,
             ChimePopup,
@@ -32,20 +44,35 @@ public abstract class SoundKey
             CustomerExit,
             
             EnemyChaseStart,
+            EnemyFoot,
             
             FishPickup,
             
+            GoldGet,
+            
+            InventoryFull,
             ItemBottle,
             ItemTimer,
             
             LockerClose,
             LockerOpen,
+            LockPinBroken,
+            
+            OpenDoor,
+            OpenDrawer,
+            OpenRefrige,
+            OpenOven,
+            
+            PinLockCorrect,
+            PlayerFoot,
             
             Reputation,
             
-            StartBusiness,
+            SettlementBusiness,
             StealthArrest,
             StealthEscape,
+            
+            Timer_10s,
             
             GameOver,
             

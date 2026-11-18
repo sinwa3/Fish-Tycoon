@@ -6,6 +6,7 @@ public class TitleScene : BaseScene
 
     protected override void OnStart()
     {
+        Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.Title);
     }
 
     protected override void OnUpdate()

@@ -82,6 +82,12 @@ public class StealthScene : BaseScene
         {
             OnEntryTransitionFinished();
         }
+
+        if (_player != null)
+        {
+            Managers.Sound?.SetListener(_player.transform);
+        }
+        Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.Stealth, fadeTime: 2f);
     }
 
     private void OnEntryTransitionFinished()

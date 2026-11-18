@@ -88,7 +88,7 @@ public class SettlementPopup : BasePopup
     {
         base.OnOpened();
         
-        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CustomerExit);
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.SettlementBusiness);
     }
 
     protected override void OnUpdate()

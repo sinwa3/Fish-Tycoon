@@ -13,6 +13,11 @@ public class LoadingHUD : BaseHUD
         LoadingSlider,
     }
 
+    private enum Images
+    {
+        Bg,
+    }
+
     private enum Texts
     {
         AlertText,
@@ -21,6 +26,13 @@ public class LoadingHUD : BaseHUD
 
     #region ===== 참조 =====
 
+    [SerializeField] private Sprite[] _dayFrames;
+    [SerializeField] private Sprite[] _nightFrames;
+    [SerializeField, Min(0.01f)] private float _frameDuration = 0.22f;
+
+    private Sprite[] _frames;
+    private float _frameTime;
+    private int _frameIndex;
     private LoadingScene _loadingScene;
     private Tween _continueMessageTween;
 
@@ -30,6 +42,9 @@ public class LoadingHUD : BaseHUD
     {
         Bind<Slider>(typeof(Sliders));
         Bind<TMP_Text>(typeof(Texts));
+        Bind<Image>(typeof(Images));
+
+        SetTheme(Managers.Scene.PrevScene, Managers.Scene.NextScene);
         
         _loadingScene = gameObject.FindParent<LoadingScene>();
     }
@@ -41,6 +56,7 @@ public class LoadingHUD : BaseHUD
 
     protected override void OnUpdate()
     {
+        PlayBackgroundAnimation();
     }
 
     public override void OnInputKey()
@@ -145,4 +161,49 @@ public class LoadingHUD : BaseHUD
                 .Append(alertText.DOFade(1f, 0.9f).SetEase(Ease.InOutSine)).SetLoops(-1, LoopType.Restart);
         });
     }
+    
+    #region ===== 배경 애니메이션 =====
+    
+    /// <summary> KDH : BG의 스프라이트 애니메이션을 재생한다. </summary>
+    private void PlayBackgroundAnimation()
+    {
+        Image background = Get<Image>(Images.Bg);
+
+        if (background == null || _frames == null || _frames.Length < 2)
+        {
+            return;
+        }
+
+        _frameTime += Time.unscaledDeltaTime;
+        
+        int steps = Mathf.FloorToInt(_frameTime / _frameDuration);
+        if (steps == 0)
+        {
+            return;
+        }
+
+        _frameTime -= steps * _frameDuration;
+        _frameIndex = (_frameIndex + steps) % _frames.Length;
+        background.sprite = _frames[_frameIndex];
+    }
+
+    /// <summary> KDH : 출발 씬과 목적지에 맞는 배경 프레임을 설정한다. </summary>
+    private void SetTheme(SceneType previous, SceneType next)
+    {
+        bool isDay = previous == SceneType.TycoonScene && next == SceneType.StealthScene;
+        bool isNight = previous == SceneType.StealthScene && next == SceneType.TycoonScene;
+        _frames = isDay ? _dayFrames : isNight ? _nightFrames : null;
+        
+        Image background = Get<Image>(Images.Bg);
+        if (background != null)
+        {
+            Sprite firstFrame = _frames is { Length: > 0 } ? _frames[0] : null;
+            background.type = Image.Type.Simple;
+            background.preserveAspect = firstFrame != null;
+            background.color = firstFrame != null ? Color.white : Color.black;
+            background.sprite = firstFrame;
+        }
+    }
+    
+    #endregion ===== 배경 애니메이션 =====
 }

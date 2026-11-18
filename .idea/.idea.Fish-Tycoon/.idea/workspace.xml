@@ -11,7 +11,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d49e4a23-d0cc-46b7-96a8-fea4e45706d2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/indexLayout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Fish-Tycoon/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/SecurityMinigameScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/UI/Screen/SecurityMinigameScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdParty/Font/Puradak Gentle Gothic SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,6 +66,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/RecycleScroll/FishListScroll.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Screen/BaseScreen.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Slot/SlotUI.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Sound/ButtonHoverSound.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/UI/Tween/UIScaleTween.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Util/Extension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/@Scripts/Util/Utils.cs" root0="FORCE_HIGHLIGHTING" />

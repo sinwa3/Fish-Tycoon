@@ -7,6 +7,11 @@ public static class Utils
     /// <summary> KDH : GameObject에서 지정한 컴포넌트를 가져오고 없으면 추가한다. </summary>
     public static T GetOrAddComponent<T>(GameObject go) where T : Component
     {
+        if (go == null)
+        {
+            return null;
+        }
+
         T component = go.GetComponent<T>();
 
         if (component != null)
@@ -177,7 +182,7 @@ public static class Utils
         Application.Quit();
 #endif
     }
-    
+
     /// <summary> KDH : 대상과 모든 자식 오브젝트의 레이어를 설정한다. </summary>
     public static void SetLayerRecursively(GameObject target, int layerIndex)
     {
