@@ -75,9 +75,15 @@ public class TycoonScene : BaseScene
         SubscribeBusinessEvents();
         SubscribeBusinessClosed();
         
+        // 영업 상태에 따른 튜토리얼 및 사운드 처리
         if (_currentPhase == Phase.BeforeBusiness)
         {
             Managers.Tutorial.Show(TutorialTrigger.BeforeBusiness);
+            Managers.Sound.PlayBgm(SoundKey.Name.BgmType.BeforeBusiness);
+        }
+        else if (_currentPhase == Phase.AfterBusiness)
+        {
+            Managers.Sound.PlayBgm(SoundKey.Name.BgmType.AfterBusiness);
         }
     }
 
@@ -251,7 +257,11 @@ public class TycoonScene : BaseScene
         switch (_currentPhase)
         {
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
-                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StartBusiness);
+                Managers.Sound?.StopBgm(2f, () =>
+                {
+                    Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.DuringBusiness);
+                    Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StartBusiness);
+                });
                 
                 // 영업 진행도를 초기화 한다.
                 _tycoonHUD.InitializeBusinessProgress(_maxCustomerCount);
@@ -272,6 +282,11 @@ public class TycoonScene : BaseScene
 
                 break;
             case Phase.DuringBusiness: // 영업 중 => 영업 후
+                Managers.Sound?.StopBgm(2f, () =>
+                {
+                    Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.AfterBusiness);
+                });
+                
                 // 영업 중 받은 만족도를 적용시킨다.
                 int satisfactionBefore = Managers.Data.GetSatisfaction();
                 Managers.Data.AddSatisfaction(_customerSpawner.DailySatisfaction);

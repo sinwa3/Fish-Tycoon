@@ -37,6 +37,8 @@ public class LoadingScene : BaseScene
             return;
         }
 
+        Managers.Sound?.StopBgm();
+        
         LoadSceneAsync(this.GetCancellationTokenOnDestroy()).Forget();
     }
 

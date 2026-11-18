@@ -17,6 +17,12 @@ public abstract class SoundKey
         public enum BgmType
         {
             Title,
+            
+            BeforeBusiness,
+            DuringBusiness,
+            AfterBusiness,
+            
+            Stealth
         }
 
         public enum SfxType
