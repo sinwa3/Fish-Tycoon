@@ -33,13 +33,6 @@ public class ReputationProgressPopup : BasePopup
     {
     }
 
-    protected override void OnOpened()
-    {
-        base.OnOpened();
-        
-        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.Reputation);
-    }
-
     protected override void OnUpdate()
     {
     }
@@ -90,6 +83,7 @@ public class ReputationProgressPopup : BasePopup
                 Get<TMP_Text>(Texts.RankText).SetText($"{promotedGrade}");
                 ShowProgress(table, promotedGrade, threshold);
                 Get<TMP_Text>(Texts.PromotionText).SetText("평판 상승!");
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.Reputation);
             });
             
             // 승급 시 별 아이콘 강조

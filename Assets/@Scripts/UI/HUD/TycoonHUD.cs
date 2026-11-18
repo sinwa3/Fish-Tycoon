@@ -1031,6 +1031,7 @@ public class TycoonHUD : BaseHUD
 
                     RefreshMainQuestProgress();
                     PlayMainQuestBounce();
+                    Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.GoldGet, 0.9f, maxAudioSourceCount : 10);
                     Destroy(icon.gameObject);
                 });
         }

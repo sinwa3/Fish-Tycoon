@@ -43,6 +43,8 @@ public abstract class SoundKey
             
             FishPickup,
             
+            GoldGet,
+            
             ItemBottle,
             ItemTimer,
             

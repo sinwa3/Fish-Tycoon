@@ -257,7 +257,7 @@ public class TycoonScene : BaseScene
         switch (_currentPhase)
         {
             case Phase.BeforeBusiness: // 영업 전 => 영업 중
-                Managers.Sound?.StopBgm(2f, () =>
+                Managers.Sound?.StopBgm(1f, () =>
                 {
                     Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.DuringBusiness);
                     Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StartBusiness);
