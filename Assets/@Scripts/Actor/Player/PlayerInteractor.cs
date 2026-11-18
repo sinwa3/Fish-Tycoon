@@ -253,6 +253,10 @@ public class PlayerInteractor : MonoBehaviour
             {
                 Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.LockerClose);
             }
+            else if (blockedMessage.Contains("인벤토리"))
+            {
+                Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.InventoryFull);
+            }
             
             Managers.UI?.OpenToastMessage(blockedMessage);
         }

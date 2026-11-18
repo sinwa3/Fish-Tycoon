@@ -136,6 +136,8 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
         _animator.ResetTrigger(AnimatorKey.Hash.DoClose);
         _animator.SetTrigger(AnimatorKey.Hash.DoOpen);
 
+        PlayOpenSound();
+        
         IsOpen = true;
     }
 
@@ -155,6 +157,8 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
         _animator.ResetTrigger(AnimatorKey.Hash.DoOpen);
         _animator.SetTrigger(AnimatorKey.Hash.DoClose);
 
+        PlayCloseSound();
+        
         IsOpen = false;
     }
 
@@ -200,4 +204,46 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
     }
 
     #endregion ==== 미니 게임 ====
+    
+    #region ===== 사운드 =====
+
+    /// <summary> KDH : 사물에 따라 열리는 소리를 달리한다. </summary>
+    private void PlayOpenSound()
+    {
+        string objName = gameObject.name;
+
+        if (objName.Contains("InteractiveFurniture8")) // 냉장고
+        {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.OpenRefrige);
+        }
+        else if (objName.Contains("Oven")) // 오븐
+        {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.OpenOven);
+        }
+        else
+        {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.OpenDrawer);
+        }
+    }
+    
+    /// <summary> KDH : 사물에 따라 닫히는 소리를 달리한다. </summary>
+    private void PlayCloseSound()
+    {
+        string objName = gameObject.name;
+
+        if (objName.Contains("InteractiveFurniture8")) // 냉장고
+        {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseRefrige);
+        }
+        else if (objName.Contains("Oven")) // 오븐
+        {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseOven);
+        }
+        else
+        {
+            Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseDrawer);
+        }
+    }
+    
+    #endregion ===== 사운드 =====
 }

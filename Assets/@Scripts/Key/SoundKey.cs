@@ -32,6 +32,11 @@ public abstract class SoundKey
             ButtonSound_3, // ButtonsSound 고정
             ButtonSound_4, // ButtonsSound 고정
 
+            CloseDoor,
+            CloseDrawer,
+            CloseRefrige,
+            CloseOven,
+            
             ChimeConfirm,
             ChimeCancel,
             ChimePopup,
@@ -45,19 +50,27 @@ public abstract class SoundKey
             
             GoldGet,
             
+            InventoryFull,
             ItemBottle,
             ItemTimer,
             
             LockerClose,
             LockerOpen,
             
+            OpenDoor,
+            OpenDrawer,
+            OpenRefrige,
+            OpenOven,
+            
             PlayerFoot,
             
             Reputation,
             
-            StartBusiness,
+            SettlementBusiness,
             StealthArrest,
             StealthEscape,
+            
+            Timer_10s,
             
             GameOver,
             

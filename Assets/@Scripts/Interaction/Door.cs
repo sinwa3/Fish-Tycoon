@@ -129,6 +129,8 @@ public class Door : MonoBehaviour, IInteractable, IOpenable
 
         _animator.ResetTrigger(CloseHash);
         _animator.SetTrigger(GetOpenTrigger(awayFromPosition));
+        
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.OpenDoor);
 
         IsOpen = true;
     }
@@ -145,6 +147,8 @@ public class Door : MonoBehaviour, IInteractable, IOpenable
         _animator.ResetTrigger(OpenBackHash);
         _animator.SetTrigger(CloseHash);
 
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CloseDoor);
+        
         IsOpen = false;
     }
 

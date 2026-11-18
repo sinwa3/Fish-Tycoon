@@ -260,7 +260,6 @@ public class TycoonScene : BaseScene
                 Managers.Sound?.StopBgm(1f, () =>
                 {
                     Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.DuringBusiness);
-                    Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.StartBusiness);
                 });
                 
                 // 영업 진행도를 초기화 한다.
