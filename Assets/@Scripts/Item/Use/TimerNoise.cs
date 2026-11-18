@@ -27,6 +27,8 @@ public class TimerNoise : MonoBehaviour
     {
         _remainTime = delay;
         _isRunning = true;
+
+        Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.Timer_10s, is3D: true, position: transform.position);
     }
 
     /// <summary> KYH : 자식 시계 모델의 애니메이터를 찾아 둔다 </summary>
