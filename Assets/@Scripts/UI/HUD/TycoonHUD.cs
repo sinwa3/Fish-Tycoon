@@ -513,8 +513,12 @@ public class TycoonHUD : BaseHUD
     /// <summary> KDH : 퀘스트를 표시/비표시한다. </summary>
     public void SetQuestVisible(bool isMainVisible, bool isSubVisible)
     {
+        // 메인 퀘스트
         Get<Image>(Images.MainQuest)?.gameObject.SetActive(isMainVisible);
-        Get<Image>(Images.SubQuest)?.gameObject.SetActive(isSubVisible);
+        
+        // 서브 퀘스트
+        QuestData quest = Managers.Quest?.GetCurrentQuest(SceneType.TycoonScene, out _);
+        Get<Image>(Images.SubQuest)?.gameObject.SetActive(isSubVisible && quest != null);
     }
 
     /// <summary> KDH : 음식 다이어리에 판매 가능 개수를 표시한다. </summary>
