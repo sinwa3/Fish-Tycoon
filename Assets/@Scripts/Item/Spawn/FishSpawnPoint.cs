@@ -10,6 +10,8 @@ public class FishSpawnPoint : MonoBehaviour
     /// <summary> KimYH : 이 위치를 막고 있는 가구 파츠 (서랍, 수납장 문). 없으면 null /// </summary>
     private InteractionFurniture _furniture;
 
+    public InteractionFurniture Furniture => _furniture;
+
     /// <summary> KimYH : 해당 가구 파츠에 자물쇠가 걸려 있는지 </summary>
     public bool IsLocked => _furniture != null && _furniture.IsLocked;
 

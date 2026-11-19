@@ -136,33 +136,65 @@ public class FishSpawnCtrl : MonoBehaviour
             return;
         }
 
-        // 잠긴 위치(보안 미니게임)와 일반 위치를 나눈다
-        List<FishSpawnPoint> lockedPoints = new();
-        List<FishSpawnPoint> normalPoints = new();
+        // 잠긴 가구(보안 미니게임)마다 위치 하나씩만 보장하고, 나머지 위치는 전체 랜덤
+        List<FishSpawnPoint> guaranteedPoints = new();
+        List<FishSpawnPoint> otherPoints = new();
+
+        SplitGuaranteedPoints(candidatePoints, guaranteedPoints, otherPoints);
+
+        int randomCount = UnityEngine.Random.Range(_minFishSpawnCount, _maxFishSpawnCount + 1);
+        int spawnCount = Mathf.Min(Mathf.Max(randomCount, guaranteedPoints.Count), _maxFishSpawnCount, candidatePoints.Count);
+
+        int guaranteedSpawnCount = Mathf.Min(guaranteedPoints.Count, spawnCount);
+
+        SpawnFishAtRandomPoints(guaranteedPoints, guaranteedSpawnCount);
+        SpawnFishAtRandomPoints(otherPoints, spawnCount - guaranteedSpawnCount);
+
+        CPrint.Log($"[FishSpawnCtrl] 스폰된 생선 개수 : {spawnCount}");
+    }
+
+    /// <summary> KimYH : 잠긴 위치를 가구별로 묶어 가구마다 랜덤으로 하나씩 보장 위치로 고른다 </summary>
+    private void SplitGuaranteedPoints(List<FishSpawnPoint> candidatePoints, List<FishSpawnPoint> guaranteedPoints, List<FishSpawnPoint> otherPoints)
+    {
+        Dictionary<InteractionFurniture, List<FishSpawnPoint>> lockedPointsByFurniture = new();
 
         foreach (FishSpawnPoint point in candidatePoints)
         {
-            (point.IsLocked ? lockedPoints : normalPoints).Add(point);
+            if (!point.IsLocked)
+            {
+                otherPoints.Add(point);
+                continue;
+            }
+
+            if (!lockedPointsByFurniture.TryGetValue(point.Furniture, out List<FishSpawnPoint> furniturePoints))
+            {
+                furniturePoints = new List<FishSpawnPoint>();
+                lockedPointsByFurniture.Add(point.Furniture, furniturePoints);
+            }
+
+            furniturePoints.Add(point);
         }
 
-        int randomCount = UnityEngine.Random.Range(_minFishSpawnCount, _maxFishSpawnCount + 1);
-        int spawnCount = Mathf.Min(Mathf.Max(randomCount, lockedPoints.Count), _maxFishSpawnCount, candidatePoints.Count);
+        foreach (List<FishSpawnPoint> furniturePoints in lockedPointsByFurniture.Values)
+        {
+            int guaranteedIndex = UnityEngine.Random.Range(0, furniturePoints.Count);
 
-        int lockedSpawnCount = Mathf.Min(lockedPoints.Count, spawnCount);
-
-        SpawnFishAtRandomPoints(lockedPoints, lockedSpawnCount, true);
-        SpawnFishAtRandomPoints(normalPoints, spawnCount - lockedSpawnCount, false);
+            for (int i = 0; i < furniturePoints.Count; i++)
+            {
+                (i == guaranteedIndex ? guaranteedPoints : otherPoints).Add(furniturePoints[i]);
+            }
+        }
     }
 
-    /// <summary> KimYH : 위치 목록에서 겹치지 않게 count개를 랜덤으로 골라 생선을 놓는다 </summary>
-    private void SpawnFishAtRandomPoints(List<FishSpawnPoint> points, int count, bool isLocked)
+    /// <summary> KimYH : 위치 목록에서 겹치지 않게 count개를 랜덤으로 골라 생선을 놓는다. 잠긴 위치에는 Epic, Legendary만 놓는다 </summary>
+    private void SpawnFishAtRandomPoints(List<FishSpawnPoint> points, int count)
     {
         for (int i = 0; i < count; i++)
         {
             int j = UnityEngine.Random.Range(i, points.Count);
             (points[i], points[j]) = (points[j], points[i]);
 
-            FishData fishData = isLocked ? PickLockedFish() : _allPool.Pick();
+            FishData fishData = points[i].IsLocked ? PickLockedFish() : _allPool.Pick();
 
             SpawnFishAt(points[i], fishData);
         }
