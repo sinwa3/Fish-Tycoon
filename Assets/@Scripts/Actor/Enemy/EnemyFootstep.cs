@@ -10,7 +10,7 @@ public class EnemyFootstep : MonoBehaviour
     // 발소리 사이 거리
     private const float StepLength = 0.8f;
     // 층높이 차이
-    private const float FloorHeightRange = 1.25f;
+    private const float FloorHeightRange = 2.0f;
     // 발소리 크기
     private const float FootstepVolume = 1.0f;
     // 발소리 겹칠 수 있는 개수
@@ -99,7 +99,7 @@ public class EnemyFootstep : MonoBehaviour
             return false;
         }
 
-        float distance = Mathf.Abs(_enemy.Sight.PlayerPosition.y - transform.position.y);
+        float distance = Mathf.Abs(_enemy.Sight.PlayerFootHeight - transform.position.y);
 
         return distance <= FloorHeightRange;
     }

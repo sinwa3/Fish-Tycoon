@@ -41,6 +41,9 @@ public class EnemySight : MonoBehaviour
     /// <summary> KYH : 플레이어 위치 </summary>
     public Vector3 PlayerPosition => _player != null ? _player.position : transform.position;
 
+    /// <summary> KYH : 플레이어 발바닥 높이 </summary>
+    public float PlayerFootHeight => GetPlayerFootHeight();
+
     #endregion ===== 추격 =====
 
     #region ===== 플레이어 =====
@@ -240,6 +243,20 @@ public class EnemySight : MonoBehaviour
         Bounds bounds = _playerController.bounds;
 
         return new Vector3(bounds.center.x, bounds.max.y - SightTargetTopOffset, bounds.center.z);
+    }
+
+    /// <summary> KYH : 플레이어 캡슐 바닥 높이를 돌려준다 </summary>
+    private float GetPlayerFootHeight()
+    {
+        if (_playerController == null)
+        {
+            return PlayerPosition.y;
+        }
+
+        // 피벗에서 발바닥까지 거리
+        float pivotToFoot = _playerController.height * 0.5f - _playerController.center.y;
+
+        return _player.position.y - pivotToFoot;
     }
 
     #endregion ===== 시야 검사 =====
