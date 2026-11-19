@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -22,10 +23,12 @@ public class LoadingHUD : BaseHUD
     {
         AlertText,
         StatusText,
+        TipText,
     }
 
     #region ===== 참조 =====
 
+    [SerializeField] private Sprite[] _titleFrames;
     [SerializeField] private Sprite[] _dayFrames;
     [SerializeField] private Sprite[] _nightFrames;
     [SerializeField, Min(0.01f)] private float _frameDuration = 0.22f;
@@ -52,6 +55,12 @@ public class LoadingHUD : BaseHUD
     protected override void OnStart()
     {
         Get<TMP_Text>(Texts.AlertText).gameObject.SetActive(false);
+        Get<TMP_Text>(Texts.TipText).gameObject.SetActive(false);
+        
+        if (Managers.Scene.PrevScene == SceneType.TitleScene && Managers.Scene.NextScene == SceneType.TycoonScene)
+        {
+            SetLoadingTipAsync(this.GetCancellationTokenOnDestroy()).Forget();
+        }
     }
 
     protected override void OnUpdate()
@@ -190,19 +199,49 @@ public class LoadingHUD : BaseHUD
     /// <summary> KDH : 출발 씬과 목적지에 맞는 배경 프레임을 설정한다. </summary>
     private void SetTheme(SceneType previous, SceneType next)
     {
-        bool isDay = previous == SceneType.TycoonScene && next == SceneType.StealthScene;
-        bool isNight = previous == SceneType.StealthScene && next == SceneType.TycoonScene;
-        _frames = isDay ? _dayFrames : isNight ? _nightFrames : null;
-        
-        Image background = Get<Image>(Images.Bg);
-        if (background != null)
+        _frames = (previous, next) switch
         {
-            Sprite firstFrame = _frames is { Length: > 0 } ? _frames[0] : null;
-            background.type = Image.Type.Simple;
-            background.preserveAspect = firstFrame != null;
-            background.color = firstFrame != null ? Color.white : Color.black;
-            background.sprite = firstFrame;
+            (SceneType.TitleScene, SceneType.TycoonScene) => _titleFrames,
+            (SceneType.TycoonScene, SceneType.StealthScene) => _dayFrames,
+            (SceneType.StealthScene, SceneType.TycoonScene) => _nightFrames,
+            _ => null,
+        };
+
+        Image background = Get<Image>(Images.Bg);
+
+        if (background == null)
+        {
+            return;
         }
+
+        Sprite firstFrame = _frames is { Length: > 0 } ? _frames[0] : null;
+
+        background.type = Image.Type.Simple;
+        background.preserveAspect = firstFrame != null;
+        background.color = firstFrame != null ? Color.white : Color.black;
+        background.sprite = firstFrame;
+    }
+
+    /// <summary> KDH : 로딩 팁 테이블이 준비되면 무작위 팁을 표시한다. </summary>
+    private async UniTask SetLoadingTipAsync(CancellationToken cancelToken)
+    {
+        TMP_Text tipText = Get<TMP_Text>(Texts.TipText);
+
+        if (tipText == null)
+        {
+            return;
+        }
+        
+        string defaultText = tipText.text;
+        tipText.gameObject.SetActive(true);
+        tipText.text = string.Empty;
+
+        await UniTask.WaitUntil(() => Managers.Table.LoadingTip?.Map?.Count > 0, cancellationToken: cancelToken);
+        
+        int randomIndex = Random.Range(0, Managers.Table.LoadingTip.Map.Count);
+        tipText.SetText(Managers.Table.LoadingTip?.Map.TryGetValue(randomIndex, out LoadingTipData value) == true
+            ? $"TIP. {value.Desc}"
+            : defaultText);
     }
     
     #endregion ===== 배경 애니메이션 =====

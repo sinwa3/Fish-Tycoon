@@ -181,20 +181,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 307564995}
     m_Modifications:
-    - target: {fileID: 266121041633179975, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
+    - target: {fileID: 3739179061077238359, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
         type: 3}
-      propertyPath: m_text
-      value: "\uD074\uB9AD\uD558\uC5EC \uACC4\uC18D \u25B6"
+      propertyPath: m_fontColor.b
+      value: 0.8490566
       objectReference: {fileID: 0}
-    - target: {fileID: 2266701075213114196, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
+    - target: {fileID: 3739179061077238359, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
         type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
+      propertyPath: m_fontColor.g
+      value: 0.8490566
       objectReference: {fileID: 0}
-    - target: {fileID: 4528289002764825655, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
+    - target: {fileID: 3739179061077238359, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
         type: 3}
-      propertyPath: m_Name
-      value: AlertText
+      propertyPath: m_fontColor.r
+      value: 0.8490566
+      objectReference: {fileID: 0}
+    - target: {fileID: 3739179061077238359, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4292467161
       objectReference: {fileID: 0}
     - target: {fileID: 5248427544845127051, guid: 2cc4942c0d7e14bc5a0d4c8fc8b3768d,
         type: 3}
