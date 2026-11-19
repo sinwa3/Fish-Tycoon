@@ -83,9 +83,9 @@ public class StealthScene : BaseScene
             OnEntryTransitionFinished();
         }
 
-        if (_player != null)
+        if (_camera != null)
         {
-            Managers.Sound?.SetListener(_player.transform);
+            Managers.Sound?.SetListener(_camera.transform);
         }
         Managers.Sound?.PlayBgm(SoundKey.Name.BgmType.Stealth, fadeTime: 2f);
     }
