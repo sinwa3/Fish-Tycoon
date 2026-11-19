@@ -148,8 +148,6 @@ public class EnemyMovement : MonoBehaviour
                 _agent.speed = _enemy.Detection.RunSpeed;
                 break;
         }
-
-        // TODO : 애니메이터 Speed 값 넣기
     }
 
     #endregion ===== 이동 =====
