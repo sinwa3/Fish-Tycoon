@@ -75,10 +75,6 @@ public class TutorialPopup : BasePopup
         {
             NextPage();
         }
-        else if (Managers.Input.KeyDown_Esc)
-        {
-            Close();
-        }
     }
 
     protected override void Close(Action closeAction = null)

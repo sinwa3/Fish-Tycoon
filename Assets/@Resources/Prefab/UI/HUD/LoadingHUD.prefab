@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4292467161
+  m_fontColor: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -169,7 +169,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 49.999756}
+  m_AnchoredPosition: {x: 0, y: 69}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &8759514929017840674
@@ -490,7 +490,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 31}
   m_SizeDelta: {x: 0.00006866455, y: 100}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &4179604368303106287
@@ -791,17 +791,19 @@ MonoBehaviour:
   - {fileID: -1913390390, guid: 598c93d56cec15844a226987bdf48223, type: 3}
   - {fileID: -398065789, guid: 598c93d56cec15844a226987bdf48223, type: 3}
   - {fileID: -2025889646, guid: 598c93d56cec15844a226987bdf48223, type: 3}
+  _titleFrameDuration: 0.1
   _dayFrames:
   - {fileID: 70558442, guid: 8f5c9b3775b0c854789001c6d78d103a, type: 3}
   - {fileID: 186668487, guid: 8f5c9b3775b0c854789001c6d78d103a, type: 3}
   - {fileID: 65235992, guid: 8f5c9b3775b0c854789001c6d78d103a, type: 3}
   - {fileID: 692784510, guid: 8f5c9b3775b0c854789001c6d78d103a, type: 3}
+  _dayFrameDuration: 0.2
   _nightFrames:
   - {fileID: -251639131, guid: 8668a402dd1af4e4a8829e4c8910d3db, type: 3}
   - {fileID: -1443199746, guid: 8668a402dd1af4e4a8829e4c8910d3db, type: 3}
   - {fileID: 354502905, guid: 8668a402dd1af4e4a8829e4c8910d3db, type: 3}
   - {fileID: 28276456, guid: 8668a402dd1af4e4a8829e4c8910d3db, type: 3}
-  _frameDuration: 0.22
+  _nightFrameDuration: 0.2
 --- !u!1 &9046348871566126796
 GameObject:
   m_ObjectHideFlags: 0
