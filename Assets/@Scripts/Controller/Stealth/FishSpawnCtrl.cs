@@ -136,17 +136,35 @@ public class FishSpawnCtrl : MonoBehaviour
             return;
         }
 
-        int spawnCount = Mathf.Min(UnityEngine.Random.Range(_minFishSpawnCount, _maxFishSpawnCount + 1), candidatePoints.Count);
+        // 잠긴 위치(보안 미니게임)와 일반 위치를 나눈다
+        List<FishSpawnPoint> lockedPoints = new();
+        List<FishSpawnPoint> normalPoints = new();
 
-        for (int i = 0; i < spawnCount; i++)
+        foreach (FishSpawnPoint point in candidatePoints)
         {
-            int j = UnityEngine.Random.Range(i, candidatePoints.Count);
-            (candidatePoints[i], candidatePoints[j]) = (candidatePoints[j], candidatePoints[i]);
+            (point.IsLocked ? lockedPoints : normalPoints).Add(point);
+        }
 
-            FishSpawnPoint spawnPoint = candidatePoints[i];
-            FishData fishData = spawnPoint.IsLocked ? PickLockedFish() : _allPool.Pick();
+        int randomCount = UnityEngine.Random.Range(_minFishSpawnCount, _maxFishSpawnCount + 1);
+        int spawnCount = Mathf.Min(Mathf.Max(randomCount, lockedPoints.Count), _maxFishSpawnCount, candidatePoints.Count);
 
-            SpawnFishAt(spawnPoint, fishData);
+        int lockedSpawnCount = Mathf.Min(lockedPoints.Count, spawnCount);
+
+        SpawnFishAtRandomPoints(lockedPoints, lockedSpawnCount, true);
+        SpawnFishAtRandomPoints(normalPoints, spawnCount - lockedSpawnCount, false);
+    }
+
+    /// <summary> KimYH : 위치 목록에서 겹치지 않게 count개를 랜덤으로 골라 생선을 놓는다 </summary>
+    private void SpawnFishAtRandomPoints(List<FishSpawnPoint> points, int count, bool isLocked)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            int j = UnityEngine.Random.Range(i, points.Count);
+            (points[i], points[j]) = (points[j], points[i]);
+
+            FishData fishData = isLocked ? PickLockedFish() : _allPool.Pick();
+
+            SpawnFishAt(points[i], fishData);
         }
     }
 
