@@ -8,17 +8,13 @@ public class MinimapCheat : BaseCheat
 {
     #region ===== 수치 =====
 
-    // 대상 발에서 카메라까지 높이. 이 위는 카메라 뒤라 안 그려진다 (층 간격 2.5보다 조금 낮게)
     private const float CutHeight = 2.2f;
-    // 기준 대상 발과 높이 차이가 이보다 작으면 같은 층으로 본다 (층 간격 2.5의 반)
     private const float SameFloorHeight = 1.25f;
     private const float FarClip = 30.0f;
     private const float CameraDepth = 100.0f;
-    // 집 둘레에 남길 여백
     private const float ViewMargin = 1.0f;
     private const float BigDotSize = 14.0f;
     private const float SmallDotSize = 8.0f;
-    // 바라보는 방향 점을 찍을 거리
     private const float FacingDotDistance = 0.8f;
     private const int StateFontSize = 18;
 
@@ -134,7 +130,6 @@ public class MinimapCheat : BaseCheat
 
         bool isFoundNow = false;
 
-        // 집주인은 씬이 시작되고 조금 뒤에 생긴다
         if (_enemy == null)
         {
             _enemy = Object.FindObjectOfType<EnemyController>();

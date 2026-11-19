@@ -8,12 +8,9 @@ public class InventoryFishCheat : BaseFishCheat
 {
     #region ===== 리플렉션 =====
 
-    // 보유 생선을 더하는 공개 메서드가 없다
     private static readonly MethodInfo AddFishMethod = GetPrivateMethod(typeof(DataManager), "TryAddFish");
-    // 생선 목록은 씬이 시작될 때 보유한 종류로 한 번만 만들어져서 다시 만들게 한다
     private static readonly MethodInfo SetFishDataListMethod = GetPrivateMethod(typeof(FishListScroll), "SetDataList");
     private static readonly MethodInfo InitializeFishScrollMethod = GetPrivateMethod(typeof(BaseVerticalScroll<FishData>), "InitializeScroll");
-    // 요리 슬롯은 생선이 있는지에 따라 어둡게 표시해서 다시 그리게 한다
     private static readonly MethodInfo RefreshFoodSlotsMethod = GetPrivateMethod(typeof(BaseVerticalScroll<FoodData>), "RefreshSlots");
 
     #endregion ===== 리플렉션 =====
@@ -72,7 +69,6 @@ public class InventoryFishCheat : BaseFishCheat
     {
         FishListScroll fishListScroll = FindFishListScroll();
 
-        // DataList는 목록의 Awake에서 처음 만들어진다
         if (fishListScroll != null && fishListScroll.DataList != null)
         {
             SetFishDataListMethod?.Invoke(fishListScroll, null);

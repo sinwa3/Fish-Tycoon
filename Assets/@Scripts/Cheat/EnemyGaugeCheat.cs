@@ -8,7 +8,6 @@ public class EnemyGaugeCheat : BaseCheat
 
     private const float MaxGauge = 100.0f;
 
-    // 크기는 화면 높이 1080 기준이고 화면 높이에 맞춰 늘린다
     private const float ReferenceHeight = 1080.0f;
     private const float TopMargin = 10.0f;
     private const float PanelWidth = 420.0f;
@@ -70,7 +69,6 @@ public class EnemyGaugeCheat : BaseCheat
             return;
         }
 
-        // 집주인은 씬이 시작되고 조금 뒤에 생긴다
         _enemy = Object.FindObjectOfType<EnemyController>();
     }
 

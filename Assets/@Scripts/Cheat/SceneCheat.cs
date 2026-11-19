@@ -15,7 +15,6 @@ public class SceneCheat : BaseCheat
 
     public override bool IsAvailable => Managers.Scene?.CurrentScene != null;
 
-    // 마지막 날은 영업만 하고 끝나서 잠입이 없다
     private static bool IsFinalDay => Managers.Data?.GetCurrentDay() >= TycoonScene.FinalDay;
 
     public override void DrawButtons()

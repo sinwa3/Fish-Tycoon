@@ -7,14 +7,12 @@ public class DayCheat : BaseCheat
 {
     private const int FirstDay = 1;
 
-    // 날짜를 줄이는 공개 메서드가 없어 저장 데이터를 리플렉션으로 꺼낸다
     private static readonly FieldInfo SaveDataField = typeof(DataManager).GetField("_saveData", BindingFlags.Instance | BindingFlags.NonPublic);
 
     public override string Title => $"날짜 ({Managers.Data?.GetCurrentDay() ?? 0}일 차)";
 
     public override bool IsAvailable => Managers.Data != null;
 
-    // 잠입 중이거나 오늘 영업 정산을 끝냈으면 다음은 잠입이다 (영업 정산 때 저장 모드가 Tycoon으로 바뀐다)
     private static bool IsStealthNext => IsCurrentScene<StealthScene>() || Managers.Data.GetSavedGameMode() == GameMode.Tycoon;
 
     protected override void OnInitialize()

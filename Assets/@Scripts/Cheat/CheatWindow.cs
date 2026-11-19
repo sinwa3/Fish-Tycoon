@@ -11,7 +11,6 @@ public class CheatWindow : MonoBehaviour
     private const int WindowID = 8008;
     private const string WindowTitle = "치트 (F8 닫기)";
 
-    // 창 크기는 화면 높이 1080 기준이고 화면 높이에 맞춰 늘린다
     private const float ReferenceHeight = 1080.0f;
     private const float WindowMargin = 10.0f;
     private const float WindowWidth = 360.0f;
@@ -30,6 +29,9 @@ public class CheatWindow : MonoBehaviour
     private GUIStyle _windowStyle;
     private GUIStyle _titleStyle;
     private bool _wasCursorLocked;
+    private bool _wasUIOpen;
+
+    private float _gameTimeScale = 1.0f;
 
     public bool IsOpen { get; private set; }
 
@@ -38,6 +40,8 @@ public class CheatWindow : MonoBehaviour
 
     public GUIStyle ButtonStyle { get; private set; }
     public GUIStyle LabelStyle { get; private set; }
+
+    private static bool IsUIOpen => Managers.UI != null && (Managers.UI.CurrentPopup != null || Managers.UI.CurrentScreen != null);
 
     #endregion ===== 상태 =====
 
@@ -63,6 +67,7 @@ public class CheatWindow : MonoBehaviour
 
     private void LateUpdate()
     {
+        LateUpdateTimeScale();
         LateUpdateCursor();
         LateUpdateCheats();
     }
@@ -145,7 +150,13 @@ public class CheatWindow : MonoBehaviour
 
         IsOpen = true;
 
-        ResumeTimeScale = Time.timeScale;
+        _wasUIOpen = IsUIOpen;
+        if (!_wasUIOpen)
+        {
+            ResumeTimeScale = Time.timeScale;
+        }
+
+        _gameTimeScale = Time.timeScale;
         Time.timeScale = 0.0f;
 
         _wasCursorLocked = Cursor.lockState == CursorLockMode.Locked;
@@ -153,7 +164,7 @@ public class CheatWindow : MonoBehaviour
         Managers.Input?.SetCursorLock(false);
     }
 
-    /// <summary> 멈추기 전 시간 배율과 커서 잠금을 되돌린다 </summary>
+    /// <summary> 창을 닫을 때 남아 있는 팝업에 맞춰 시간 배율과 커서 잠금을 되돌린다 </summary>
     public void Close()
     {
         if (!IsOpen)
@@ -161,12 +172,29 @@ public class CheatWindow : MonoBehaviour
             return;
         }
 
+        LateUpdateTimeScale();
+
         IsOpen = false;
+
+        Managers.Input?.SetInputBlocked(this, false);
+
+        if (IsUIOpen)
+        {
+            Time.timeScale = Managers.UI.CurrentPopup is PausePopup ? 0.0f : _gameTimeScale;
+            Managers.Input?.SetCursorLock(false);
+
+            return;
+        }
 
         Time.timeScale = ResumeTimeScale;
 
-        Managers.Input?.SetInputBlocked(this, false);
-        Managers.Input?.SetCursorLock(_wasCursorLocked);
+        bool isCursorLock = _wasCursorLocked;
+        if (_wasUIOpen && Managers.Scene?.CurrentScene != null)
+        {
+            isCursorLock = Managers.Scene.CurrentScene.DefaultCursorLock;
+        }
+
+        Managers.Input?.SetCursorLock(isCursorLock);
     }
 
     /// <summary> 시간 배율을 바꾼다. 창이 열려 있으면 닫을 때 적용한다 </summary>
@@ -178,6 +206,18 @@ public class CheatWindow : MonoBehaviour
         {
             Time.timeScale = timeScale;
         }
+    }
+
+    /// <summary> 창이 열린 동안 팝업이 닫히며 시간을 되돌려도 다시 멈춘다 </summary>
+    private void LateUpdateTimeScale()
+    {
+        if (!IsOpen || Mathf.Approximately(Time.timeScale, 0.0f))
+        {
+            return;
+        }
+
+        _gameTimeScale = Time.timeScale;
+        Time.timeScale = 0.0f;
     }
 
     /// <summary> 창이 열린 동안 HUD가 클릭으로 커서를 다시 잠가도 풀어 둔다 </summary>

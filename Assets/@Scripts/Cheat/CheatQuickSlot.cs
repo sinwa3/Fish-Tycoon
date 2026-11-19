@@ -5,7 +5,6 @@ using System.Reflection;
 /// <summary> 치트에서 퀵슬롯을 찾고 비우는 기능 (DataManager에 빼는 공개 메서드가 없다) </summary>
 public static class CheatQuickSlot
 {
-    // 퀵슬롯 UI는 이 이벤트로 갱신되는데 DataManager 밖에서 부를 수 없어 리플렉션으로 부른다
     private static readonly FieldInfo QuickSlotChangedField = typeof(DataManager).GetField(nameof(DataManager.OnQuickSlotChanged), BindingFlags.Instance | BindingFlags.NonPublic);
     private static readonly FieldInfo StoreChangedField = typeof(DataManager).GetField(nameof(DataManager.OnStoreChanged), BindingFlags.Instance | BindingFlags.NonPublic);
 
