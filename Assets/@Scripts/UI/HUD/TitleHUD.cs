@@ -39,7 +39,7 @@ public class TitleHUD : BaseHUD
         }
         else
         {
-            Get<Button>(Buttons.LoadBtn).interactable = false;
+            Get<Button>(Buttons.LoadBtn).gameObject.SetActive(false);
         }
         
         Get<Button>(Buttons.OptionBtn).onClick.AddListener(() => Managers.UI.OpenPopup<OptionPopup>());

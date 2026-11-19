@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 던진 병이 부딪힌 자리에 소음을 낸다 </summary>
+/// <summary> GYH : 던진 병이 부딪힌 자리에 소음을 낸다 </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class BottleNoise : MonoBehaviour
 {
@@ -34,13 +34,13 @@ public class BottleNoise : MonoBehaviour
         Destroy(gameObject);
     }
 
-    /// <summary> KYH : 일정 시간 뒤 병이 사라지게 한다</summary>
+    /// <summary> GYH : 일정 시간 뒤 병이 사라지게 한다</summary>
     private void AutoDestroy()
     {
         Destroy(gameObject, AutoDestroyTime);
     }
 
-    /// <summary> KYH : 지정한 위치에 병 소음을 한 번만 낸다 </summary>
+    /// <summary> GYH : 지정한 위치에 병 소음을 한 번만 낸다 </summary>
     private void MakeNoise(Vector3 position)
     {
         if (_hasMadeNoise)

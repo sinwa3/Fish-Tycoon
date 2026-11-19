@@ -4,7 +4,6 @@ using UnityEngine;
 /// <summary> 집주인이 플레이어를 보거나 소리를 듣지 못하게 한다 </summary>
 public class DetectionOffCheat : BaseCheat
 {
-    // 집주인이 읽는 오늘 감지 수치를 바꿨다가 끄면 되돌린다
     private EnemyController _enemy;
     private EnemyDetectionData _changedDetection;
     private float _originalSightDistance;
@@ -51,7 +50,6 @@ public class DetectionOffCheat : BaseCheat
             return;
         }
 
-        // 집주인은 씬이 시작되고 조금 뒤에 생긴다
         if (_enemy == null)
         {
             _enemy = Object.FindObjectOfType<EnemyController>();

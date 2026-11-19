@@ -56,6 +56,7 @@ public class SoundManager : MonoBehaviour
         }
 
         _audioListener.transform.position = _followTarget.position;
+        _audioListener.transform.rotation = _followTarget.rotation;
     }
 
     private void OnDestroy()

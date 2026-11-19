@@ -105,10 +105,12 @@ public class StealthEndScreen : BaseScreen
             string clearDescStr = string.Empty;
             if (clearedConsumablesCount > 0)
             {
-                clearDescStr += $"사용하지 않은 도구 {clearedConsumablesCount}개를 버리고\n";
+                clearDescStr += $"사용하지 않은 도구 {clearedConsumablesCount}개를 버렸습니다.\n";
             }
-
-            clearDescStr += $"훔친 생선 {settledCount}마리를 가게로 옮겼습니다.";
+            if (settledCount > 0)
+            {
+                clearDescStr += $"훔친 생선 {settledCount}마리를 가게로 옮겼습니다.";
+            }
 
             Get<TMP_Text>(Texts.ClearDescText).SetText(clearDescStr);
         }
@@ -127,18 +129,20 @@ public class StealthEndScreen : BaseScreen
             // 만족도 감소 후 평판 레벨
             int currentReputationLevel = Managers.Data.GetReputationInfo().reputationGrade;
 
-            string overDescStr = $"훔친 생선 {clearedFishCount}마리를 몰수당했습니다.";
+            string overDescStr = string.Empty;
 
+            if (clearedFishCount > 0)
+            {
+                overDescStr += $"훔친 생선 {clearedFishCount}마리를 몰수당했습니다.";
+            }
             if (clearedConsumablesCount > 0)
             {
                 overDescStr += $"\n사용하지 않은 도구 {clearedConsumablesCount}개를 버렸습니다.";
             }
-
             if (satisfactionPenalty > 0)
             {
                 overDescStr += $"\n가게 만족도가 {satisfactionPenalty} 감소했습니다.";
             }
-
             if (currentReputationLevel < previousReputationLevel)
             {
                 overDescStr += $"\n평판 레벨이 하락하여 {currentReputationLevel}레벨이 되었습니다.";

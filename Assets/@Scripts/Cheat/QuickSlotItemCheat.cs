@@ -7,11 +7,8 @@ using UnityEngine;
 /// <summary> 잠입 중 퀵슬롯의 소비 아이템을 넣고 뺀다. 구현된 아이템만 넣는다 </summary>
 public class QuickSlotItemCheat : BaseCountCheat
 {
-    // 소비 아이템을 더하는 공개 메서드가 없다
     private static readonly MethodInfo AddConsumableMethod = typeof(DataManager).GetMethod("TryAddConsumable", BindingFlags.Instance | BindingFlags.NonPublic);
-    // 효과가 등록된 아이템이 구현된 아이템이다
     private static readonly FieldInfo EffectsField = typeof(PlayerItemUse).GetField("_effects", BindingFlags.Instance | BindingFlags.NonPublic);
-    // 효과 없이 소지만 하는 아이템. 락픽은 자물쇠 미니게임이 퀵슬롯에서 세고 소모한다
     private static readonly HashSet<int> HoldOnlyIDs = new() { 11 };
 
     private PlayerItemUse _playerItemUse;

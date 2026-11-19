@@ -64,7 +64,6 @@ public class Managers : MonoBehaviour
     #region ===== Mono =====
 
     private static ScenesManager _scene;
-
     public static ScenesManager Scene
     {
         get
@@ -85,7 +84,6 @@ public class Managers : MonoBehaviour
     }
 
     private static SoundManager _sound;
-
     public static SoundManager Sound
     {
         get
@@ -102,6 +100,26 @@ public class Managers : MonoBehaviour
 
             InitializeSoundManager();
             return _sound;
+        }
+    }
+
+    private static CursorManager _cursor;
+    public static CursorManager Cursor
+    {
+        get
+        {
+            if (_cursor != null)
+            {
+                return _cursor;
+            }
+
+            if (IsQuit || Instance == null)
+            {
+                return null;
+            }
+
+            InitializeCursorManager();
+            return _cursor;
         }
     }
     
@@ -139,11 +157,11 @@ public class Managers : MonoBehaviour
         }
         
         GameObject managerObject = new GameObject("@Managers");
+        DontDestroyOnLoad(managerObject);
         
         _instance = managerObject.AddComponent<Managers>();
         _instance._input.LoadSettings();
-
-        DontDestroyOnLoad(managerObject);
+        InitializeCursorManager();
 
         return true;
     }
@@ -174,6 +192,20 @@ public class Managers : MonoBehaviour
         soundManagerObject.transform.SetParent(Instance.transform);
 
         _sound = soundManagerObject.GetOrAddComponent<SoundManager>();
+    }
+    
+    /// <summary> KDH : CursorManager 오브젝트를 생성하고 Managers 하위에 등록한다. </summary>
+    private static void InitializeCursorManager()
+    {
+        if (Instance == null || _cursor != null)
+        {
+            return;
+        }
+
+        GameObject cursorManagerObject = new GameObject(nameof(CursorManager), typeof(RectTransform));
+        cursorManagerObject.transform.SetParent(Instance.transform);
+
+        _cursor = cursorManagerObject.GetOrAddComponent<CursorManager>();
     }
     
     #endregion ===== 초기화 =====

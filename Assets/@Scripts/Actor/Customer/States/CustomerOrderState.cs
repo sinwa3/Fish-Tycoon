@@ -1,4 +1,4 @@
-/// <summary> KYH : 손님이 메뉴를 주문하는 상태 </summary>
+/// <summary> GYH : 손님이 메뉴를 주문하는 상태 </summary>
 public class CustomerOrderState : BaseCustomerState
 {
     #region ===== 수치 =====
@@ -11,12 +11,12 @@ public class CustomerOrderState : BaseCustomerState
     {
     }
 
-    /// <summary> KYH : 주문 상태에 들어올 때 호출한다 </summary>
+    /// <summary> GYH : 주문 상태에 들어올 때 호출한다 </summary>
     public override void Enter()
     {
     }
 
-    /// <summary> KYH : 주문 상태를 갱신한다 </summary>
+    /// <summary> GYH : 주문 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
         if (StateMachine.StateElapsedTime >= OrderDuration)
@@ -26,7 +26,7 @@ public class CustomerOrderState : BaseCustomerState
         }
     }
 
-    /// <summary> KYH : 주문 상태를 끝낼 때 호출한다 </summary>
+    /// <summary> GYH : 주문 상태를 끝낼 때 호출한다 </summary>
     public override void Exit()
     {
     }

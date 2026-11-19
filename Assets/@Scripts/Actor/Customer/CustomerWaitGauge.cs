@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 남은 대기시간을 보여주는 손님 머리 위 게이지 </summary>
+/// <summary> GYH : 남은 대기시간을 보여주는 손님 머리 위 게이지 </summary>
 public class CustomerWaitGauge : MonoBehaviour
 {
     // 자식 오브젝트 이름 (프리팹 자식 이름과 같아야함)
@@ -19,7 +19,7 @@ public class CustomerWaitGauge : MonoBehaviour
         InitializeComponents();
     }
 
-    /// <summary> KYH : 자식의 배경, 게이지 렌더러를 찾고 게이지 막대의 처음 크기를 기억한다 </summary>
+    /// <summary> GYH : 자식의 배경, 게이지 렌더러를 찾고 게이지 막대의 처음 크기를 기억한다 </summary>
     private void InitializeComponents()
     {
         _backgroundRenderer = gameObject.FindChild<SpriteRenderer>(BackgroundName);
@@ -40,7 +40,7 @@ public class CustomerWaitGauge : MonoBehaviour
         _fillFullScale = _fillRenderer.transform.localScale;
     }
 
-    /// <summary> KYH : 게이지를 가득 찬 상태로 켠다 </summary>
+    /// <summary> GYH : 게이지를 가득 찬 상태로 켠다 </summary>
     public void Show()
     {
         if (_fillRenderer == null || _backgroundRenderer == null)
@@ -54,7 +54,7 @@ public class CustomerWaitGauge : MonoBehaviour
         SetRatio(1.0f);
     }
 
-    /// <summary> KYH : 게이지를 끈다 </summary>
+    /// <summary> GYH : 게이지를 끈다 </summary>
     public void Hide()
     {
         if (_fillRenderer == null || _backgroundRenderer == null)
@@ -66,7 +66,7 @@ public class CustomerWaitGauge : MonoBehaviour
         _backgroundRenderer.enabled = false;
     }
 
-    /// <summary> KYH : 남은 대기시간 비율만큼 게이지 가로 길이를 줄인다 </summary>
+    /// <summary> GYH : 남은 대기시간 비율만큼 게이지 가로 길이를 줄인다 </summary>
     public void SetRatio(float ratio)
     {
         if (_fillRenderer == null)

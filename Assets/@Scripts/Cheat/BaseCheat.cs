@@ -6,7 +6,6 @@ using UnityEngine;
 /// <summary> 치트 창에 들어가는 치트 하나의 기본 클래스 </summary>
 public abstract class BaseCheat
 {
-    // 씬 페이즈는 공개되어 있지 않아 리플렉션으로 읽는다
     private const string PhaseFieldName = "_currentPhase";
 
     private static readonly FieldInfo TycoonPhaseField = typeof(TycoonScene).GetField(PhaseFieldName, BindingFlags.Instance | BindingFlags.NonPublic);
@@ -15,7 +14,6 @@ public abstract class BaseCheat
     /// <summary> 페이즈를 읽을 수 있는지 (팀 코드에서 필드 이름이 바뀌면 false) </summary>
     protected static bool CanReadPhase => TycoonPhaseField != null && StealthPhaseField != null;
 
-    // 버튼을 누른 GUI 이벤트 안에서 바로 실행하면 같은 프레임의 다음 GUI 이벤트와 버튼 수가 달라져 오류가 나서 다음 Update에 실행한다
     private Action _pendingAction;
 
     protected CheatWindow Window { get; private set; }

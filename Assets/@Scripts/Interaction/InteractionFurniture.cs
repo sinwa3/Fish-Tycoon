@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 열고 닫는 가구 파츠(서랍, 수납장 문) </summary>
+/// <summary> GYH : 열고 닫는 가구 파츠(서랍, 수납장 문) </summary>
 public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IInteractBlockable
 {
     #region ===== 설정 =====
@@ -20,7 +20,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
     private Animator _animator;
     private Transform _lock;
 
-    /// <summary> KYH : 열린 상태(또는 열리는 중)인지 여부 </summary>
+    /// <summary> GYH : 열린 상태(또는 열리는 중)인지 여부 </summary>
     public bool IsOpen { get; private set; }
 
     /// <summary>SJY : 자물쇠 활성화 여부</summary>
@@ -42,7 +42,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 같은 오브젝트의 Animator를 가져온다. </summary>
+    /// <summary> GYH : 같은 오브젝트의 Animator를 가져온다. </summary>
     private void InitializeComponents()
     {
         _animator = GetComponent<Animator>();
@@ -72,7 +72,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
         }
     }
 
-    /// <summary> KYH : 플레이어 레이에 맞도록 상호작용 레이어로 바꾼다. </summary>
+    /// <summary> GYH : 플레이어 레이에 맞도록 상호작용 레이어로 바꾼다. </summary>
     private void InitializeLayer()
     {
         gameObject.layer = LayerKey.Idx.Interaction;
@@ -120,7 +120,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
 
     #region ===== 열기, 닫기 =====
 
-    /// <summary> KYH : 열기 애니메이션을 재생한다. </summary>
+    /// <summary> GYH : 열기 애니메이션을 재생한다. </summary>
     public void PlayOpen(GameObject opener)
     {
         if (IsOpen || IsLocked)
@@ -141,7 +141,7 @@ public class InteractionFurniture : MonoBehaviour, IInteractable, IOpenable, IIn
         IsOpen = true;
     }
 
-    /// <summary> KYH : 닫기 애니메이션을 재생한다. </summary>
+    /// <summary> GYH : 닫기 애니메이션을 재생한다. </summary>
     public void PlayClose()
     {
         if (!IsOpen)

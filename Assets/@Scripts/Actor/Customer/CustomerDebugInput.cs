@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : (테스트용) Space를 누르면 대기 중인 손님에게 요리를 준다. 에디터에서만 동작한다 </summary>
+/// <summary> GYH : (테스트용) Space를 누르면 대기 중인 손님에게 요리를 준다. 에디터에서만 동작한다 </summary>
 public class CustomerDebugInput : MonoBehaviour
 {
     // 같은 오브젝트의 스포너
@@ -16,7 +16,7 @@ public class CustomerDebugInput : MonoBehaviour
         UpdateServeInput();
     }
 
-    /// <summary> KYH : 같은 오브젝트의 CustomerSpawner를 찾아 둔다 </summary>
+    /// <summary> GYH : 같은 오브젝트의 CustomerSpawner를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _customerSpawner = GetComponent<CustomerSpawner>();
@@ -27,7 +27,7 @@ public class CustomerDebugInput : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : Space를 누르면 대기 중인 손님에게 요리를 준다 (에디터에서만) </summary>
+    /// <summary> GYH : Space를 누르면 대기 중인 손님에게 요리를 준다 (에디터에서만) </summary>
     private void UpdateServeInput()
     {
 #if UNITY_EDITOR
@@ -45,7 +45,7 @@ public class CustomerDebugInput : MonoBehaviour
 #endif
     }
 
-    /// <summary> KYH : 주문한 순서대로 대기 중인 손님에게 요리를 준다 </summary>
+    /// <summary> GYH : 주문한 순서대로 대기 중인 손님에게 요리를 준다 </summary>
     private void ServeWaitingCustomers()
     {
         // 주문했는데 아직 요리를 못 받은 손님이 있을 때만 준다

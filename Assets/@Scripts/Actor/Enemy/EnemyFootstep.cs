@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary> KYH : 집주인이 걸은 거리만큼 발소리를 낸다 </summary>
+/// <summary> GYH : 집주인이 걸은 거리만큼 발소리를 낸다 </summary>
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyFootstep : MonoBehaviour
 {
@@ -10,7 +10,7 @@ public class EnemyFootstep : MonoBehaviour
     // 발소리 사이 거리
     private const float StepLength = 0.8f;
     // 층높이 차이
-    private const float FloorHeightRange = 1.25f;
+    private const float FloorHeightRange = 2.0f;
     // 발소리 크기
     private const float FootstepVolume = 1.0f;
     // 발소리 겹칠 수 있는 개수
@@ -40,7 +40,7 @@ public class EnemyFootstep : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 컨트롤러와 NavMeshAgent를 찾는다 </summary>
+    /// <summary> GYH : 컨트롤러와 NavMeshAgent를 찾는다 </summary>
     private void InitializeComponents()
     {
         _enemy = GetComponent<EnemyController>();
@@ -61,7 +61,7 @@ public class EnemyFootstep : MonoBehaviour
 
     #region ===== 발소리 =====
 
-    /// <summary> KYH : 이번 프레임에 걸은 거리를 더하고 한 걸음이 차면 발소리를 낸다 </summary>
+    /// <summary> GYH : 이번 프레임에 걸은 거리를 더하고 한 걸음이 차면 발소리를 낸다 </summary>
     private void UpdateFootstep(float deltaTime)
     {
         if (_agent == null)
@@ -80,7 +80,7 @@ public class EnemyFootstep : MonoBehaviour
         PlayFootstep();
     }
 
-    /// <summary> KYH : 플레이어와 같은 층이면 집주인 발밑에서 발소리를 낸다 </summary>
+    /// <summary> GYH : 플레이어와 같은 층이면 집주인 발밑에서 발소리를 낸다 </summary>
     private void PlayFootstep()
     {
         if (!IsPlayerOnSameFloor())
@@ -91,7 +91,7 @@ public class EnemyFootstep : MonoBehaviour
         Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.EnemyFoot, FootstepVolume, is3D: true, position: transform.position, maxAudioSourceCount: MaxFootstepSourceCount);
     }
 
-    /// <summary> KYH : 플레이어가 집주인과 같은 층에 있는지 </summary>
+    /// <summary> GYH : 플레이어가 집주인과 같은 층에 있는지 </summary>
     private bool IsPlayerOnSameFloor()
     {
         if (_enemy == null)
@@ -99,7 +99,7 @@ public class EnemyFootstep : MonoBehaviour
             return false;
         }
 
-        float distance = Mathf.Abs(_enemy.Sight.PlayerPosition.y - transform.position.y);
+        float distance = Mathf.Abs(_enemy.Sight.PlayerFootHeight - transform.position.y);
 
         return distance <= FloorHeightRange;
     }

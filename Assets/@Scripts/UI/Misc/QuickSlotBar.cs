@@ -128,14 +128,14 @@ public class QuickSlotBar : MonoBehaviour
         UseConsumable(_selectedSlotIndex, itemName);
     }
 
-    /// <summary> KYH : 사용 확인 팝업을 띄우고 Yes를 누르면 아이템을 사용한다 </summary>
+    /// <summary> GYH : 사용 확인 팝업을 띄우고 Yes를 누르면 아이템을 사용한다 </summary>
     private void OpenUseConfirmPopup(int slotIndex, string itemName)
     {
         Managers.UI.OpenPopup<AlertPopup>().Set(itemName, "즉시 이 집으로부터 나가시겠습니까?", true,
             () => UseConsumable(slotIndex, itemName), true);
     }
 
-    /// <summary> KYH : 지정한 칸의 소비 아이템을 한 개 차감하고 사용 안내를 표시한다 </summary>
+    /// <summary> GYH : 지정한 칸의 소비 아이템을 한 개 차감하고 사용 안내를 표시한다 </summary>
     private void UseConsumable(int slotIndex, string itemName)
     {
         if (Managers.Data.TryUseConsumable(slotIndex))

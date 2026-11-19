@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 소음을 받아 기억에 적고 의심 게이지를 올린다 </summary>
+/// <summary> GYH : 소음을 받아 기억에 적고 의심 게이지를 올린다 </summary>
 public class EnemyHearing : MonoBehaviour
 {
     #region ===== 수치 =====
@@ -34,7 +34,7 @@ public class EnemyHearing : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 같은 오브젝트의 컨트롤러를 캐싱한다 </summary>
+    /// <summary> GYH : 같은 오브젝트의 컨트롤러를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         _enemy = GetComponent<EnemyController>();
@@ -49,7 +49,7 @@ public class EnemyHearing : MonoBehaviour
 
     #region ===== 이벤트 =====
 
-    /// <summary> KYH : 잠입 씬의 소음 이벤트를 구독한다 </summary>
+    /// <summary> GYH : 잠입 씬의 소음 이벤트를 구독한다 </summary>
     private void SubscribeEvents()
     {
         _stealthScene = Managers.Scene.CurrentScene as StealthScene;
@@ -62,7 +62,7 @@ public class EnemyHearing : MonoBehaviour
         _stealthScene.OnNoiseMade += HearNoise;
     }
 
-    /// <summary> KYH : 소음 이벤트 구독을 해제한다 </summary>
+    /// <summary> GYH : 소음 이벤트 구독을 해제한다 </summary>
     private void UnsubscribeEvents()
     {
         if (_stealthScene == null)
@@ -78,7 +78,7 @@ public class EnemyHearing : MonoBehaviour
 
     #region ===== 소음 받기 =====
 
-    /// <summary> KYH : 들린 세기가 기준값 이상이면 기억에 적고 게이지를 올린다 </summary>
+    /// <summary> GYH : 들린 세기가 기준값 이상이면 기억에 적고 게이지를 올린다 </summary>
     public void HearNoise(Vector3 position, float loudness)
     {
         if (!TryHear(position, loudness, out float heardLoudness))
@@ -89,7 +89,7 @@ public class EnemyHearing : MonoBehaviour
         _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * _enemy.Detection.SoundGaugePerLoudness);
     }
 
-    /// <summary> KYH : 유인 소음이 들리면 게이지를 조사 시작 값까지 올리고 그 자리를 조사 목표로 잡는다 </summary>
+    /// <summary> GYH : 유인 소음이 들리면 게이지를 조사 시작 값까지 올리고 그 자리를 조사 목표로 잡는다 </summary>
     public void HearLure(Vector3 position, float loudness)
     {
         if (!TryHear(position, loudness, out _))
@@ -101,7 +101,7 @@ public class EnemyHearing : MonoBehaviour
         _enemy.Memory.SetInvestigateTarget(position);
     }
 
-    /// <summary> KYH : 소음이 들렸으면 기억에 적고 true, 들린 세기는 heardLoudness로 돌려준다 </summary>
+    /// <summary> GYH : 소음이 들렸으면 기억에 적고 true, 들린 세기는 heardLoudness로 돌려준다 </summary>
     private bool TryHear(Vector3 position, float loudness, out float heardLoudness)
     {
         heardLoudness = 0.0f;
@@ -123,7 +123,7 @@ public class EnemyHearing : MonoBehaviour
         return true;
     }
 
-    /// <summary> KYH : 소음을 무시하는지 돌려준다 (수면하는 날, 추격 중) </summary>
+    /// <summary> GYH : 소음을 무시하는지 돌려준다 (수면하는 날, 추격 중) </summary>
     private bool IsIgnoringNoise()
     {
         if (_enemy == null)
@@ -148,7 +148,7 @@ public class EnemyHearing : MonoBehaviour
 
     #region ===== 들린 세기 =====
 
-    /// <summary> KYH : 거리, 벽, 문 감쇠를 곱한 들린 세기를 돌려준다 </summary>
+    /// <summary> GYH : 거리, 벽, 문 감쇠를 곱한 들린 세기를 돌려준다 </summary>
     private float GetHeardLoudness(Vector3 position, float loudness)
     {
         Vector3 soundPosition = GetSoundSourcePoint(position);
@@ -166,7 +166,7 @@ public class EnemyHearing : MonoBehaviour
         return loudness * distanceRatio * wallRatio * doorRatio;
     }
 
-    /// <summary> KYH : 거리에 따른 감쇠를 돌려준다 (0 ~ 1) </summary>
+    /// <summary> GYH : 거리에 따른 감쇠를 돌려준다 (0 ~ 1) </summary>
     private float GetDistanceFalloff(float distance, float loudness)
     {
         if (loudness <= 0.0f)
@@ -179,7 +179,7 @@ public class EnemyHearing : MonoBehaviour
         return Mathf.Clamp01(1.0f - distance / radius);
     }
 
-    /// <summary> KYH : 두 점 사이에서 이 레이어 콜라이더를 몇 개 지나는지 돌려준다 </summary>
+    /// <summary> GYH : 두 점 사이에서 이 레이어 콜라이더를 몇 개 지나는지 돌려준다 </summary>
     private int CountBlockers(Vector3 from, Vector3 to, int layers)
     {
         Vector3 direction = to - from;
@@ -188,13 +188,13 @@ public class EnemyHearing : MonoBehaviour
         return hits.Length;
     }
 
-    /// <summary> KYH : 소리가 나는 점을 돌려준다 </summary>
+    /// <summary> GYH : 소리가 나는 점을 돌려준다 </summary>
     private Vector3 GetSoundSourcePoint(Vector3 position)
     {
         return position + Vector3.up * SoundSourceHeight;
     }
 
-    /// <summary> KYH : 집주인 귀 위치를 돌려준다 </summary>
+    /// <summary> GYH : 집주인 귀 위치를 돌려준다 </summary>
     private Vector3 GetEarPosition()
     {
         return transform.position + Vector3.up * EnemySight.EyeHeight;
@@ -204,7 +204,7 @@ public class EnemyHearing : MonoBehaviour
 
     #region ===== 기억 =====
 
-    /// <summary> KYH : 들은 위치와 세기를 기억에 적는다 </summary>
+    /// <summary> GYH : 들은 위치와 세기를 기억에 적는다 </summary>
     private void ReportToMemory(Vector3 position, float heardLoudness)
     {
         _enemy.Memory.ReportStimulus(position, heardLoudness, StimulusType.Sound);

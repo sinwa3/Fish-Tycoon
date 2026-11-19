@@ -1,4 +1,4 @@
-/// <summary> KYH : 테이블 1행의 칼럼명과 일치확인, 일차별 집주인 감지, 행동 수치 </summary>
+/// <summary> GYH : 테이블 1행의 칼럼명과 일치확인, 일차별 집주인 감지, 행동 수치 </summary>
 public class EnemyDetectionData : TableData
 {
     [CsvField("일차")]
@@ -71,12 +71,12 @@ public class EnemyDetectionData : TableData
     public float DetectedExitGauge;
 }
 
-/// <summary> KYH : 집주인 감지 수치 테이블을 관리한다 </summary>
+/// <summary> GYH : 집주인 감지 수치 테이블을 관리한다 </summary>
 public class EnemyDetectionTable : TableLoader<EnemyDetectionData>
 {
     protected override string TableName => "EnemyDetectionTable";
 
-    /// <summary> KYH : 일차에 해당하는 감지 수치를 돌려준다 </summary>
+    /// <summary> GYH : 일차에 해당하는 감지 수치를 돌려준다 </summary>
     public EnemyDetectionData GetDetectionByDay(int day)
     {
         foreach (EnemyDetectionData data in Map.Values)

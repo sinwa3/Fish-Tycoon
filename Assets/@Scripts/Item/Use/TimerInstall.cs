@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 타이머 장치를 플레이어 발밑에 설치한다 </summary>
+/// <summary> GYH : 타이머 장치를 플레이어 발밑에 설치한다 </summary>
 public class TimerInstall : IConsumableEffect
 {
     private readonly CharacterController _characterController;
@@ -10,7 +10,7 @@ public class TimerInstall : IConsumableEffect
         _characterController = characterController;
     }
 
-    /// <summary> KYH : 타이머 장치를 설치하고 성공하면 true </summary>
+    /// <summary> GYH : 타이머 장치를 설치하고 성공하면 true </summary>
     public bool Use(Item item)
     {
         if (_characterController == null)

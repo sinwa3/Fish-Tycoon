@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 플레이어가 보이는지 검사하고 기억에 적는다 </summary>
+/// <summary> GYH : 플레이어가 보이는지 검사하고 기억에 적는다 </summary>
 public class EnemySight : MonoBehaviour
 {
     #region ===== 수치 =====
@@ -28,18 +28,21 @@ public class EnemySight : MonoBehaviour
     // 다음 검사까지 남은 시간
     private float _checkTimer;
 
-    /// <summary> KYH : 마지막 검사에서 플레이어가 보였는지 </summary>
+    /// <summary> GYH : 마지막 검사에서 플레이어가 보였는지 </summary>
     public bool IsPlayerVisible { get; private set; }
 
-    /// <summary> KYH : 플레이어가 숨는 순간을 봤는지 (숨어 있는 동안 유지) </summary>
+    /// <summary> GYH : 플레이어가 숨는 순간을 봤는지 (숨어 있는 동안 유지) </summary>
     public bool IsHideWitnessed { get; private set; }
 
     #endregion ===== 상태 =====
 
     #region ===== 추격 =====
 
-    /// <summary> KYH : 플레이어 위치 </summary>
+    /// <summary> GYH : 플레이어 위치 </summary>
     public Vector3 PlayerPosition => _player != null ? _player.position : transform.position;
+
+    /// <summary> GYH : 플레이어 발바닥 높이 </summary>
+    public float PlayerFootHeight => GetPlayerFootHeight();
 
     #endregion ===== 추격 =====
 
@@ -70,7 +73,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 같은 오브젝트의 컨트롤러를 캐싱한다 </summary>
+    /// <summary> GYH : 같은 오브젝트의 컨트롤러를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         _enemy = GetComponent<EnemyController>();
@@ -81,7 +84,7 @@ public class EnemySight : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 플레이어와 그 컴포넌트를 찾아 캐싱한다 </summary>
+    /// <summary> GYH : 플레이어와 그 컴포넌트를 찾아 캐싱한다 </summary>
     private void InitializePlayer()
     {
         PlayerHide playerHide = FindObjectOfType<PlayerHide>();
@@ -103,7 +106,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 검사 주기 =====
 
-    /// <summary> KYH : 검사 간격마다 시야를 검사한다 </summary>
+    /// <summary> GYH : 검사 간격마다 시야를 검사한다 </summary>
     private void UpdateSightCheck()
     {
         _checkTimer -= Time.deltaTime;
@@ -128,7 +131,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 숨는 순간 =====
 
-    /// <summary> KYH : 숨는 순간을 봤는지 정하고 본 동안 위치를 기억에 적는다 </summary>
+    /// <summary> GYH : 숨는 순간을 봤는지 정하고 본 동안 위치를 기억에 적는다 </summary>
     private void UpdateHideWitness()
     {
         if (_playerHide == null)
@@ -165,7 +168,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 시야 검사 =====
 
-    /// <summary> KYH : 플레이어가 보이는지 돌려준다 </summary>
+    /// <summary> GYH : 플레이어가 보이는지 돌려준다 </summary>
     private bool CheckPlayerVisible()
     {
         if (_player == null)
@@ -187,7 +190,7 @@ public class EnemySight : MonoBehaviour
             IsLineOfSightClear(eyePosition, playerTargetPoint);
     }
 
-    /// <summary> KYH : 시야 거리 안인지 돌려준다 </summary>
+    /// <summary> GYH : 시야 거리 안인지 돌려준다 </summary>
     private bool IsInSightDistance(Vector3 eyePosition, Vector3 targetPosition)
     {
         float allowDistance = _enemy.Detection.SightDistance * GetCrouchSightMultiplier();
@@ -196,7 +199,7 @@ public class EnemySight : MonoBehaviour
         return targetDirection.sqrMagnitude <= allowDistance * allowDistance;
     }
 
-    /// <summary> KYH : 시야각 안인지 돌려준다 </summary>
+    /// <summary> GYH : 시야각 안인지 돌려준다 </summary>
     private bool IsInSightAngle(Vector3 targetPosition)
     {
         Vector3 targetDirection = Vector3.ProjectOnPlane(targetPosition - transform.position, Vector3.up);
@@ -204,7 +207,7 @@ public class EnemySight : MonoBehaviour
         return Vector3.Angle(transform.forward, targetDirection) <= _enemy.Detection.SightAngle * 0.5f;
     }
 
-    /// <summary> KYH : 가리는 것이 없는지 돌려준다 </summary>
+    /// <summary> GYH : 가리는 것이 없는지 돌려준다 </summary>
     private bool IsLineOfSightClear(Vector3 eyePosition, Vector3 targetPosition)
     {
         Vector3 targetDirection = targetPosition - eyePosition;
@@ -222,19 +225,19 @@ public class EnemySight : MonoBehaviour
         return !isHit || hit.collider.transform.IsChildOf(_player);
     }
 
-    /// <summary> KYH : 웅크림에 따른 시야 거리 배율을 돌려준다 </summary>
+    /// <summary> GYH : 웅크림에 따른 시야 거리 배율을 돌려준다 </summary>
     private float GetCrouchSightMultiplier()
     {
         return _playerMovement.IsCrouching ? _enemy.Detection.CrouchSightMultiplier : 1.0f;
     }
 
-    /// <summary> KYH : 집주인 눈 위치를 돌려준다 </summary>
+    /// <summary> GYH : 집주인 눈 위치를 돌려준다 </summary>
     private Vector3 GetEyePosition()
     {
         return transform.position + Vector3.up * EyeHeight;
     }
 
-    /// <summary> KYH : 가림을 검사할 플레이어 쪽 점을 돌려준다 </summary>
+    /// <summary> GYH : 가림을 검사할 플레이어 쪽 점을 돌려준다 </summary>
     private Vector3 GetPlayerTargetPoint()
     {
         Bounds bounds = _playerController.bounds;
@@ -242,11 +245,25 @@ public class EnemySight : MonoBehaviour
         return new Vector3(bounds.center.x, bounds.max.y - SightTargetTopOffset, bounds.center.z);
     }
 
+    /// <summary> GYH : 플레이어 캡슐 바닥 높이를 돌려준다 </summary>
+    private float GetPlayerFootHeight()
+    {
+        if (_playerController == null)
+        {
+            return PlayerPosition.y;
+        }
+
+        // 피벗에서 발바닥까지 거리
+        float pivotToFoot = _playerController.height * 0.5f - _playerController.center.y;
+
+        return _player.position.y - pivotToFoot;
+    }
+
     #endregion ===== 시야 검사 =====
 
     #region ===== 거리 비율 =====
 
-    /// <summary> KYH : 시야 거리에 대한 플레이어 거리 비율을 돌려준다 (0 ~ 1) </summary>
+    /// <summary> GYH : 시야 거리에 대한 플레이어 거리 비율을 돌려준다 (0 ~ 1) </summary>
     public float GetSightDistanceRatio()
     {
         if (_player == null)
@@ -264,7 +281,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 잡기 검사 =====
 
-    /// <summary> KYH : 플레이어를 잡을 수 있는지 돌려준다 </summary>
+    /// <summary> GYH : 플레이어를 잡을 수 있는지 돌려준다 </summary>
     public bool CanCatchPlayer()
     {
         if (IsHideWitnessed)
@@ -286,7 +303,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 기억 =====
 
-    /// <summary> KYH : 본 위치를 기억에 적는다 </summary>
+    /// <summary> GYH : 본 위치를 기억에 적는다 </summary>
     private void ReportToMemory(Vector3 playerPosition)
     {
         if (_enemy == null)
@@ -302,7 +319,7 @@ public class EnemySight : MonoBehaviour
 
     #region ===== 디버그 =====
 
-    /// <summary> KYH : 시야 범위를 그린다 </summary>
+    /// <summary> GYH : 시야 범위를 그린다 </summary>
     private void DrawSightGizmos()
     {
         // Play 전에는 오늘 수치가 없다

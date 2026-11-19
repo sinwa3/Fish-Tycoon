@@ -15,6 +15,7 @@ public class TableManager
     public QuestTable Quest { get; private set; }
     public EnemyDetectionTable EnemyDetection { get; private set; }
     public TutorialTable Tutorial { get; private set; }
+    public LoadingTipTable LoadingTip { get; private set; }
 
     #endregion ===== 테이블 =====
 
@@ -32,6 +33,11 @@ public class TableManager
     {
         return new List<(string, Action)>
         {
+            ("로딩팁테이블", () =>
+            {
+                LoadingTip = new LoadingTipTable();
+                LoadingTip.Load();
+            }),
             ("아이템테이블", () =>
             {
                 Item = new ItemTable();

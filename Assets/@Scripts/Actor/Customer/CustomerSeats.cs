@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 손님 좌석 배정, 반납, 만석 알림 </summary>
+/// <summary> GYH : 손님 좌석 배정, 반납, 만석 알림 </summary>
 public class CustomerSeats : MonoBehaviour
 {
     // 이 컴포넌트는 Seats 오브젝트에 붙이고, 자식은 Seat_0 ~ Seat_3 이름으로 둔다
@@ -25,7 +25,7 @@ public class CustomerSeats : MonoBehaviour
 
     public bool IsFull => _isFull;
 
-    /// <summary> KYH : 만석 여부가 바뀔 때 발행 (true = 만석) </summary>
+    /// <summary> GYH : 만석 여부가 바뀔 때 발행 (true = 만석) </summary>
     public event Action<bool> OnFullChanged;
 
     #endregion ===== 만석 =====
@@ -37,7 +37,7 @@ public class CustomerSeats : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 자식에서 Seat_0 ~ Seat_3를 찾아 좌석 목록을 만든다 </summary>
+    /// <summary> GYH : 자식에서 Seat_0 ~ Seat_3를 찾아 좌석 목록을 만든다 </summary>
     private void InitializeSeats()
     {
         for (int i = 0; i < SeatCount; i++)
@@ -53,7 +53,7 @@ public class CustomerSeats : MonoBehaviour
 
     #region ===== 배정과 반납 =====
 
-    /// <summary> KYH : 빈 좌석 하나를 무작위로 골라 손님에게 배정한다. 만석이면 false </summary>
+    /// <summary> GYH : 빈 좌석 하나를 무작위로 골라 손님에게 배정한다. 만석이면 false </summary>
     public bool TryAssignSeat(CustomerController customer, out int seatIndex)
     {
         _emptySeatIndices.Clear();
@@ -82,7 +82,7 @@ public class CustomerSeats : MonoBehaviour
         return true;
     }
 
-    /// <summary> KYH : 손님이 쓰던 좌석을 비운다 </summary>
+    /// <summary> GYH : 손님이 쓰던 좌석을 비운다 </summary>
     public void ReleaseSeat(int seatIndex)
     {
         if (seatIndex < 0 || seatIndex >= _seats.Count)
@@ -96,7 +96,7 @@ public class CustomerSeats : MonoBehaviour
         RefreshFull();
     }
 
-    /// <summary> KYH : 좌석 위치를 가져온다 </summary>
+    /// <summary> GYH : 좌석 위치를 가져온다 </summary>
     public Transform GetSeat(int seatIndex)
     {
         if (seatIndex < 0 || seatIndex >= _seats.Count)
@@ -113,7 +113,7 @@ public class CustomerSeats : MonoBehaviour
 
     #region ===== 만석 갱신 =====
 
-    /// <summary> KYH : 빈 좌석이 있는지 다시 확인하고 만석 여부가 바뀌면 알린다 </summary>
+    /// <summary> GYH : 빈 좌석이 있는지 다시 확인하고 만석 여부가 바뀌면 알린다 </summary>
     private void RefreshFull()
     {
         bool isFull = true;

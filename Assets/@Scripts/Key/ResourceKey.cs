@@ -23,6 +23,7 @@ public abstract class ResourceKey
         public const string FishSprite = Sprite + "Fish/";
         public const string FoodSprite = Sprite + "Food/";
         public const string TutorialSprite = Sprite + "Tutorial/";
+        public const string CursorSprite = Sprite + "Cursor/";
     }
 
     public static class Name
@@ -35,5 +36,7 @@ public abstract class ResourceKey
         public const string Fish = "Fish";
         
         public const string Gold = "Gold";
+
+        public const string Cursor = "CursorNormal";
     }
 }

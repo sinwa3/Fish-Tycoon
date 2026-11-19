@@ -1,4 +1,4 @@
-/// <summary> KYH : 식사를 마치고 값을 치르는 상태 </summary>
+/// <summary> GYH : 식사를 마치고 값을 치르는 상태 </summary>
 public class CustomerPayState : BaseCustomerState
 {
     #region ===== 수치 =====
@@ -11,7 +11,7 @@ public class CustomerPayState : BaseCustomerState
     {
     }
 
-    /// <summary> KYH : 결제 상태에 들어올 때 호출한다 </summary>
+    /// <summary> GYH : 결제 상태에 들어올 때 호출한다 </summary>
     public override void Enter()
     {
         Customer.PlayIdle();
@@ -19,7 +19,7 @@ public class CustomerPayState : BaseCustomerState
         Managers.Sound?.PlaySfx(SoundKey.Name.SfxType.CustomerExit);
     }
 
-    /// <summary> KYH : 결제 상태를 갱신한다 </summary>
+    /// <summary> GYH : 결제 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
         if (StateMachine.StateElapsedTime >= PayDuration)
@@ -28,7 +28,7 @@ public class CustomerPayState : BaseCustomerState
         }
     }
 
-    /// <summary> KYH : 결제 상태를 끝낼 때 호출한다 </summary>
+    /// <summary> GYH : 결제 상태를 끝낼 때 호출한다 </summary>
     public override void Exit()
     {
     }

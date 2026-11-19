@@ -158,8 +158,9 @@ public class InputManager
     /// <summary> KDH : 마우스 커서의 잠금 상태를 설정한다. </summary>
     public void SetCursorLock(bool isLock)
     {
-        Cursor.visible = !isLock;
         Cursor.lockState = isLock ? CursorLockMode.Locked : CursorLockMode.None;
+
+        Managers.Cursor?.SetCursorVisible(!isLock);
     }
 
     #endregion ===== 입력 제어 =====

@@ -7,7 +7,6 @@ public abstract class BaseCountCheat : BaseCheat
 {
     private static readonly int[] ChangeCounts = { 1, 5 };
 
-    // 테이블은 로딩 씬에서 불러와서 처음 그릴 때 ID를 모은다
     private readonly List<int> _ids = new();
     private int _selectedIndex;
 
