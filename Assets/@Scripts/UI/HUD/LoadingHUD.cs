@@ -28,14 +28,23 @@ public class LoadingHUD : BaseHUD
 
     #region ===== 참조 =====
 
+    [Header("타이틀")]
     [SerializeField] private Sprite[] _titleFrames;
+    [SerializeField, Min(0.01f)] private float _titleFrameDuration = 0.1f;
+
+    [Header("낮")]
     [SerializeField] private Sprite[] _dayFrames;
+    [SerializeField, Min(0.01f)] private float _dayFrameDuration = 0.2f;
+
+    [Header("밤")]
     [SerializeField] private Sprite[] _nightFrames;
-    [SerializeField, Min(0.01f)] private float _frameDuration = 0.22f;
+    [SerializeField, Min(0.01f)] private float _nightFrameDuration = 0.2f;
 
     private Sprite[] _frames;
+    private float _frameDuration;
     private float _frameTime;
     private int _frameIndex;
+
     private LoadingScene _loadingScene;
     private Tween _continueMessageTween;
 
@@ -48,7 +57,7 @@ public class LoadingHUD : BaseHUD
         Bind<Image>(typeof(Images));
 
         SetTheme(Managers.Scene.PrevScene, Managers.Scene.NextScene);
-        
+
         _loadingScene = gameObject.FindParent<LoadingScene>();
     }
 
@@ -56,7 +65,7 @@ public class LoadingHUD : BaseHUD
     {
         Get<TMP_Text>(Texts.AlertText).gameObject.SetActive(false);
         Get<TMP_Text>(Texts.TipText).gameObject.SetActive(false);
-        
+
         if (Managers.Scene.PrevScene == SceneType.TitleScene && Managers.Scene.NextScene == SceneType.TycoonScene)
         {
             SetLoadingTipAsync(this.GetCancellationTokenOnDestroy()).Forget();
@@ -161,7 +170,7 @@ public class LoadingHUD : BaseHUD
 
         Sequence showSequence = DOTween.Sequence();
         _continueMessageTween = showSequence;
-        
+
         showSequence.Append(alertText.DOFade(1f, 0.8f).SetEase(Ease.OutSine));
         showSequence.Join(alertText.transform.DOScale(Vector3.one, 0.8f).SetEase(Ease.OutBack));
         showSequence.OnComplete(() =>
@@ -170,22 +179,23 @@ public class LoadingHUD : BaseHUD
                 .Append(alertText.DOFade(1f, 0.9f).SetEase(Ease.InOutSine)).SetLoops(-1, LoopType.Restart);
         });
     }
-    
+
     #region ===== 배경 애니메이션 =====
-    
+
     /// <summary> KDH : BG의 스프라이트 애니메이션을 재생한다. </summary>
     private void PlayBackgroundAnimation()
     {
         Image background = Get<Image>(Images.Bg);
 
-        if (background == null || _frames == null || _frames.Length < 2)
+        if (background == null || _frames == null || _frames.Length < 2 || _frameDuration <= 0f)
         {
             return;
         }
 
         _frameTime += Time.unscaledDeltaTime;
-        
+
         int steps = Mathf.FloorToInt(_frameTime / _frameDuration);
+
         if (steps == 0)
         {
             return;
@@ -193,19 +203,23 @@ public class LoadingHUD : BaseHUD
 
         _frameTime -= steps * _frameDuration;
         _frameIndex = (_frameIndex + steps) % _frames.Length;
+
         background.sprite = _frames[_frameIndex];
     }
 
-    /// <summary> KDH : 출발 씬과 목적지에 맞는 배경 프레임을 설정한다. </summary>
+    /// <summary> KDH : 출발 씬과 목적지에 맞는 배경 프레임과 재생 속도를 설정한다. </summary>
     private void SetTheme(SceneType previous, SceneType next)
     {
-        _frames = (previous, next) switch
+        (_frames, _frameDuration) = (previous, next) switch
         {
-            (SceneType.TitleScene, SceneType.TycoonScene) => _titleFrames,
-            (SceneType.TycoonScene, SceneType.StealthScene) => _dayFrames,
-            (SceneType.StealthScene, SceneType.TycoonScene) => _nightFrames,
-            _ => null,
+            (SceneType.TitleScene, SceneType.TycoonScene) => (_titleFrames, _titleFrameDuration),
+            (SceneType.TycoonScene, SceneType.StealthScene) => (_dayFrames, _dayFrameDuration),
+            (SceneType.StealthScene, SceneType.TycoonScene) => (_nightFrames, _nightFrameDuration),
+            _ => (null, 0f),
         };
+
+        _frameIndex = 0;
+        _frameTime = 0f;
 
         Image background = Get<Image>(Images.Bg);
 
@@ -231,18 +245,18 @@ public class LoadingHUD : BaseHUD
         {
             return;
         }
-        
+
         string defaultText = tipText.text;
         tipText.gameObject.SetActive(true);
         tipText.text = string.Empty;
 
         await UniTask.WaitUntil(() => Managers.Table.LoadingTip?.Map?.Count > 0, cancellationToken: cancelToken);
-        
+
         int randomIndex = Random.Range(0, Managers.Table.LoadingTip.Map.Count);
         tipText.SetText(Managers.Table.LoadingTip?.Map.TryGetValue(randomIndex, out LoadingTipData value) == true
             ? $"TIP. {value.Desc}"
             : defaultText);
     }
-    
+
     #endregion ===== 배경 애니메이션 =====
 }
