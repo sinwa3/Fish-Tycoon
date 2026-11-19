@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-/// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
+/// <summary> GYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
 [RequireComponent(typeof(EnemyMovement), typeof(EnemyLook), typeof(EnemySight))]
 [RequireComponent(typeof(EnemySuspicionGauge), typeof(EnemyHearing), typeof(EnemyFootstep))]
 [RequireComponent(typeof(EnemyAnimation))]
@@ -11,44 +11,44 @@ public class EnemyController : MonoBehaviour
 
     private readonly EnemyStateMachine _stateMachine = new();
 
-    /// <summary> KYH : 현재 상태의 이름 (테스트 화면 표시용) </summary>
+    /// <summary> GYH : 현재 상태의 이름 (테스트 화면 표시용) </summary>
     public string CurrentStateName => _stateMachine.CurrentStateName;
 
     #endregion ===== 상태 =====
 
     #region ===== 기억 =====
 
-    /// <summary> KYH : 감지 결과를 담는 기억 </summary>
+    /// <summary> GYH : 감지 결과를 담는 기억 </summary>
     public EnemyMemory Memory { get; } = new();
 
     #endregion ===== 기억 =====
 
     #region ===== 행동 =====
 
-    /// <summary> KYH : 이동 </summary>
+    /// <summary> GYH : 이동 </summary>
     public EnemyMovement Movement { get; private set; }
 
-    /// <summary> KYH : 바라보기, 두리번 </summary>
+    /// <summary> GYH : 바라보기, 두리번 </summary>
     public EnemyLook Look { get; private set; }
 
     #endregion ===== 행동 =====
 
     #region ===== 감지 =====
 
-    /// <summary> KYH : 시야 </summary>
+    /// <summary> GYH : 시야 </summary>
     public EnemySight Sight { get; private set; }
 
-    /// <summary> KYH : 의심 게이지 </summary>
+    /// <summary> GYH : 의심 게이지 </summary>
     public EnemySuspicionGauge SuspicionGauge { get; private set; }
 
-    /// <summary> KYH : 소음 듣기 </summary>
+    /// <summary> GYH : 소음 듣기 </summary>
     public EnemyHearing Hearing { get; private set; }
 
     #endregion ===== 감지 =====
 
     #region ===== 순찰 경로 =====
 
-    /// <summary> KYH : 순찰 상태가 도는 경로 </summary>
+    /// <summary> GYH : 순찰 상태가 도는 경로 </summary>
     public EnemyPatrolRoute PatrolRoute { get; private set; }
 
     #endregion ===== 순찰 경로 =====
@@ -60,14 +60,14 @@ public class EnemyController : MonoBehaviour
     // 날짜가 시작하는 첫날
     private const int FirstDay = 1;
 
-    /// <summary> KYH : 수면하는 날인지 </summary>
+    /// <summary> GYH : 수면하는 날인지 </summary>
     public bool IsSleepDay { get; private set; }
 
     #endregion ===== 날짜 =====
 
     #region ===== 감지 수치 =====
 
-    /// <summary> KYH : 오늘의 감지, 행동 수치 </summary>
+    /// <summary> GYH : 오늘의 감지, 행동 수치 </summary>
     public EnemyDetectionData Detection { get; private set; }
 
     #endregion ===== 감지 수치 =====
@@ -112,7 +112,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 이동, 바라보기, 시야, 의심 게이지, 듣기 컴포넌트를 캐싱한다 </summary>
+    /// <summary> GYH : 이동, 바라보기, 시야, 의심 게이지, 듣기 컴포넌트를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         Movement = GetComponent<EnemyMovement>();
@@ -147,13 +147,13 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 오늘의 감지 수치를 읽어 둔다 </summary>
+    /// <summary> GYH : 오늘의 감지 수치를 읽어 둔다 </summary>
     private void InitializeDetection()
     {
         Detection = Managers.Table.EnemyDetection.GetDetectionByDay(Managers.Data.GetCurrentDay());
     }
 
-    /// <summary> KYH : 집주인 상태 5개를 상태 머신에 등록한다 </summary>
+    /// <summary> GYH : 집주인 상태 5개를 상태 머신에 등록한다 </summary>
     private void InitializeStateMachine()
     {
         _stateMachine.RegisterState(new EnemySleepState(_stateMachine, this));
@@ -163,7 +163,7 @@ public class EnemyController : MonoBehaviour
         _stateMachine.RegisterState(new EnemyChaseState(_stateMachine, this));
     }
 
-    /// <summary> KYH : 오늘이 수면하는 날인지 읽어 둔다 </summary>
+    /// <summary> GYH : 오늘이 수면하는 날인지 읽어 둔다 </summary>
     private void InitializeDay()
     {
         int day = Managers.Data.GetCurrentDay();
@@ -176,7 +176,7 @@ public class EnemyController : MonoBehaviour
         IsSleepDay = day == SleepDay;
     }
 
-    /// <summary> KYH : 플레이어 시작 위치를 적어 둔다 </summary>
+    /// <summary> GYH : 플레이어 시작 위치를 적어 둔다 </summary>
     private void InitializeStartWait()
     {
         _playerStartPosition = Sight.PlayerPosition;
@@ -186,7 +186,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 순찰 경로 설정 =====
 
-    /// <summary> KYH : 순찰 경로를 바꾼다 </summary>
+    /// <summary> GYH : 순찰 경로를 바꾼다 </summary>
     public void SetPatrolRoute(EnemyPatrolRoute patrolRoute)
     {
         if (patrolRoute == null)
@@ -203,7 +203,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 시작 대기 확인 =====
 
-    /// <summary> KYH : 플레이어가 시작 위치에서 일정 거리 벗어나면 대기를 끝낸다 </summary>
+    /// <summary> GYH : 플레이어가 시작 위치에서 일정 거리 벗어나면 대기를 끝낸다 </summary>
     private void UpdateStartWait()
     {
         if (!_isWaitingForPlayer)
@@ -223,7 +223,7 @@ public class EnemyController : MonoBehaviour
 
     #region ===== 상태 선택 =====
 
-    /// <summary> KYH : 우선순위 함수가 고른 상태로 바꾸고, 끝난 상태가 다시 골라지면 처음부터 시작한다 </summary>
+    /// <summary> GYH : 우선순위 함수가 고른 상태로 바꾸고, 끝난 상태가 다시 골라지면 처음부터 시작한다 </summary>
     private void UpdateStateSelection()
     {
         Type nextState = SelectState();
@@ -238,7 +238,7 @@ public class EnemyController : MonoBehaviour
         _stateMachine.ChangeState(nextState);
     }
 
-    /// <summary> KYH : 기억을 보고 맞는 상태의 타입을 돌려준다 </summary>
+    /// <summary> GYH : 기억을 보고 맞는 상태의 타입을 돌려준다 </summary>
     private Type SelectState()
     {
         if (IsSleepDay)

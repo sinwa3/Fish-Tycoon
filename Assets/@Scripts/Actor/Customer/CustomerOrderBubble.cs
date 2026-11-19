@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 주문한 메뉴를 보여주는 손님 머리 위 말풍선 </summary>
+/// <summary> GYH : 주문한 메뉴를 보여주는 손님 머리 위 말풍선 </summary>
 public class CustomerOrderBubble : MonoBehaviour
 {
     // 렌더러만 켜고 끄고
@@ -13,7 +13,7 @@ public class CustomerOrderBubble : MonoBehaviour
         InitializeComponents();
     }
 
-    /// <summary> KYH : 같은 오브젝트의 SpriteRenderer를 찾아 둔다 </summary>
+    /// <summary> GYH : 같은 오브젝트의 SpriteRenderer를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _iconRenderer = GetComponent<SpriteRenderer>();
@@ -31,7 +31,7 @@ public class CustomerOrderBubble : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 메뉴 아이콘을 넣고 말풍선을 켠다 </summary>
+    /// <summary> GYH : 메뉴 아이콘을 넣고 말풍선을 켠다 </summary>
     public void Show(int menuId)
     {
         if (_iconRenderer == null)
@@ -65,7 +65,7 @@ public class CustomerOrderBubble : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 말풍선을 끈다 </summary>
+    /// <summary> GYH : 말풍선을 끈다 </summary>
     public void Hide()
     {
         if (_iconRenderer == null)

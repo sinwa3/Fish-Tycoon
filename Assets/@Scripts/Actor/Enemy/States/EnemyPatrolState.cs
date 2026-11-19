@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 지금 있는 층의 웨이포인트를 순서대로 도는 상태 </summary>
+/// <summary> GYH : 지금 있는 층의 웨이포인트를 순서대로 도는 상태 </summary>
 public class EnemyPatrolState : BaseEnemyState
 {
     // 지금 층의 웨이포인트 번호
@@ -15,7 +15,7 @@ public class EnemyPatrolState : BaseEnemyState
     {
     }
 
-    /// <summary> KYH : 순찰 상태에 들어올 때 호출한다 </summary>
+    /// <summary> GYH : 순찰 상태에 들어올 때 호출한다 </summary>
     protected override void Enter()
     {
         Enemy.Movement.SetSpeedMode(EnemySpeedMode.Walk);
@@ -23,7 +23,7 @@ public class EnemyPatrolState : BaseEnemyState
         _isPatrolling = MoveToCurrentWaypoint();
     }
 
-    /// <summary> KYH : 순찰 상태를 갱신한다 </summary>
+    /// <summary> GYH : 순찰 상태를 갱신한다 </summary>
     public override void Update(float deltaTime)
     {
         if (!_isPatrolling)
@@ -47,13 +47,13 @@ public class EnemyPatrolState : BaseEnemyState
         _isPatrolling = MoveToCurrentWaypoint();
     }
 
-    /// <summary> KYH : 순찰 상태를 끝낼 때 호출한다 </summary>
+    /// <summary> GYH : 순찰 상태를 끝낼 때 호출한다 </summary>
     public override void Exit()
     {
         Enemy.Movement.Stop();
     }
 
-    /// <summary> KYH : 층의 웨이포인트를 고르고 가장 가까운 곳부터 돌게 한다 </summary>
+    /// <summary> GYH : 층의 웨이포인트를 고르고 가장 가까운 곳부터 돌게 한다 </summary>
     private void SelectFloorWaypoints()
     {
         EnemyPatrolRoute patrolRoute = Enemy.PatrolRoute;
@@ -72,7 +72,7 @@ public class EnemyPatrolState : BaseEnemyState
         _floorOrder = GetNearestFloorOrder(patrolRoute, enemyPosition);
     }
 
-    /// <summary> KYH : 웨이포인트에서 가장 가까운 순서 반환 </summary>
+    /// <summary> GYH : 웨이포인트에서 가장 가까운 순서 반환 </summary>
     private int GetNearestFloorOrder(EnemyPatrolRoute patrolRoute, Vector3 enemyPosition)
     {
         int nearestOrder = 0;
@@ -99,7 +99,7 @@ public class EnemyPatrolState : BaseEnemyState
         return nearestOrder;
     }
 
-    /// <summary> KYH : 지금 웨이포인트로 출발하고 갈 수 있는지 돌려준다 </summary>
+    /// <summary> GYH : 지금 웨이포인트로 출발하고 갈 수 있는지 돌려준다 </summary>
     private bool MoveToCurrentWaypoint()
     {
         EnemyPatrolRoute patrolRoute = Enemy.PatrolRoute;
@@ -139,7 +139,7 @@ public class EnemyPatrolState : BaseEnemyState
         return false;
     }
 
-    /// <summary> KYH : 층 웨이포인트 목록에서 다음 순서로 넘긴다 </summary>
+    /// <summary> GYH : 층 웨이포인트 목록에서 다음 순서로 넘긴다 </summary>
     private void AdvanceFloorOrder()
     {
         int floorWaypointCount = _floorWaypointIndices.Count;

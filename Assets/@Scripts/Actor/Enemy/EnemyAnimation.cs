@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary> KYH : 집주인의 애니메이션 </summary>
+/// <summary> GYH : 집주인의 애니메이션 </summary>
 [RequireComponent(typeof(Animator), typeof(NavMeshAgent))]
 public class EnemyAnimation : MonoBehaviour
 {
@@ -33,7 +33,7 @@ public class EnemyAnimation : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 컨트롤러, NavMeshAgent, 애니메이터를 찾는다 </summary>
+    /// <summary> GYH : 컨트롤러, NavMeshAgent, 애니메이터를 찾는다 </summary>
     private void InitializeComponents()
     {
         _enemy = GetComponent<EnemyController>();
@@ -60,7 +60,7 @@ public class EnemyAnimation : MonoBehaviour
 
     #region ===== 애니메이터 값 =====
 
-    /// <summary> KYH : 이동 속도를 걷기 1, 달리기 2로 바꿔 파라미터 넣기</summary>
+    /// <summary> GYH : 이동 속도를 걷기 1, 달리기 2로 바꿔 파라미터 넣기</summary>
     private void UpdateSpeed(float deltaTime)
     {
         float speed = _agent.velocity.magnitude;
@@ -74,7 +74,7 @@ public class EnemyAnimation : MonoBehaviour
         _animator.SetFloat(AnimatorKey.Hash.Speed, speedValue, SpeedDampTime, deltaTime);
     }
 
-    /// <summary> KYH : 두리번 중인지 파라미터 넣기 </summary>
+    /// <summary> GYH : 두리번 중인지 파라미터 넣기 </summary>
     private void UpdateLookAround()
     {
         _animator.SetBool(AnimatorKey.Hash.IsLookingAround, _enemy.Look.IsLookAround);

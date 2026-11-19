@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 손님이 받은 요리를 손님 앞에 보여준다 </summary>
+/// <summary> GYH : 손님이 받은 요리를 손님 앞에 보여준다 </summary>
 public class CustomerServedFood : MonoBehaviour
 {
     // 요리 렌더러
@@ -13,7 +13,7 @@ public class CustomerServedFood : MonoBehaviour
         InitializeComponents();
     }
 
-    /// <summary> KYH : 렌더러를 찾아 둔다 </summary>
+    /// <summary> GYH : 렌더러를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _foodRenderer = GetComponent<SpriteRenderer>();
@@ -30,7 +30,7 @@ public class CustomerServedFood : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 메뉴 그림을 넣고 요리를 켠다 </summary>
+    /// <summary> GYH : 메뉴 그림을 넣고 요리를 켠다 </summary>
     public void Show(int menuId)
     {
         if (_foodRenderer == null)
@@ -65,7 +65,7 @@ public class CustomerServedFood : MonoBehaviour
         _plateRenderer.enabled = true;
     }
 
-    /// <summary> KYH : 요리를 끈다 </summary>
+    /// <summary> GYH : 요리를 끈다 </summary>
     public void Hide()
     {
         if (_foodRenderer == null)

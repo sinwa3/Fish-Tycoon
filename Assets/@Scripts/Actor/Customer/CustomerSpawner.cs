@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 손님을 들여보내고 모두 나가면 영업 종료를 알린다 </summary>
+/// <summary> GYH : 손님을 들여보내고 모두 나가면 영업 종료를 알린다 </summary>
 public class CustomerSpawner : MonoBehaviour
 {
     #region ===== 연결 =====
@@ -42,10 +42,10 @@ public class CustomerSpawner : MonoBehaviour
     /// <summary> KDH : 손님이 주문했을 때 해당 이벤트를 호출 </summary>
     public event Action<int> OnOrderCountChanged;
     
-    /// <summary> KYH : 하루 손님을 다 받고 마지막 손님이 나가면 발행 </summary>
+    /// <summary> GYH : 하루 손님을 다 받고 마지막 손님이 나가면 발행 </summary>
     public event Action OnBusinessClosed;
 
-    /// <summary> KYH : 손님이 계산하면 손님 위치와 음식 가격을 발행 </summary>
+    /// <summary> GYH : 손님이 계산하면 손님 위치와 음식 가격을 발행 </summary>
     public event Action<Vector3, int> OnSaleCompleted;
 
     #endregion ===== 영업 =====
@@ -99,7 +99,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 자식의 좌석을 찾아 둔다 </summary>
+    /// <summary> GYH : 자식의 좌석을 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _customerSeats = GetComponentInChildren<CustomerSeats>(true);
@@ -109,7 +109,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 이벤트 등록 =====
 
-    /// <summary> KYH : 좌석의 만석 알림을 받도록 등록한다 </summary>
+    /// <summary> GYH : 좌석의 만석 알림을 받도록 등록한다 </summary>
     private void SubscribeEvents()
     {
         if (_customerSeats == null)
@@ -122,7 +122,7 @@ public class CustomerSpawner : MonoBehaviour
         _customerSeats.OnFullChanged += HandleFullChanged;
     }
 
-    /// <summary> KYH : 좌석의 만석 알림 등록을 해제한다 </summary>
+    /// <summary> GYH : 좌석의 만석 알림 등록을 해제한다 </summary>
     private void UnsubscribeEvents()
     {
         if (_customerSeats == null)
@@ -137,7 +137,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 영업 시작 =====
 
-    /// <summary> KYH : 영업을 시작한다. 하루 손님 수와 입장 간격, 그날 메뉴를 받는다 </summary>
+    /// <summary> GYH : 영업을 시작한다. 하루 손님 수와 입장 간격, 그날 메뉴를 받는다 </summary>
     public void StartBusiness(int dailyCustomerCount, float spawnInterval, DailyMenu dailyMenu)
     {
         if (_isOpen)
@@ -187,7 +187,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 입장 =====
 
-    /// <summary> KYH : 입장 타이머를 진행하고 간격이 차면 손님을 들여보낸다 </summary>
+    /// <summary> GYH : 입장 타이머를 진행하고 간격이 차면 손님을 들여보낸다 </summary>
     private void UpdateSpawnTimer(float deltaTime)
     {
         if (!_isOpen || _isTimerPaused || _spawnedCount >= _dailyCustomerCount)
@@ -206,7 +206,7 @@ public class CustomerSpawner : MonoBehaviour
         SpawnCustomer();
     }
 
-    /// <summary> KYH : 손님 한 명을 만들어 빈 좌석에 앉힌다 </summary>
+    /// <summary> GYH : 손님 한 명을 만들어 빈 좌석에 앉힌다 </summary>
     private void SpawnCustomer()
     {
         if (_customerSeats == null)
@@ -246,7 +246,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 요리 전달 처리 =====
 
-    /// <summary> KYH : 완성된 요리를 먼저 주문한 손님에게 준다. 받으면 true </summary>
+    /// <summary> GYH : 완성된 요리를 먼저 주문한 손님에게 준다. 받으면 true </summary>
     public bool DeliverFood()
     {
         if (!TryFindCustomerByOrderIndex(_servedCount, out CustomerController customer))
@@ -268,7 +268,7 @@ public class CustomerSpawner : MonoBehaviour
         return true;
     }
 
-    /// <summary> KYH : 가게 안 손님 중 주문 번호가 같은 손님을 찾는다. 없으면 false </summary>
+    /// <summary> GYH : 가게 안 손님 중 주문 번호가 같은 손님을 찾는다. 없으면 false </summary>
     private bool TryFindCustomerByOrderIndex(int orderIndex, out CustomerController customer)
     {
         customer = null;
@@ -290,13 +290,13 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 이벤트 처리 =====
 
-    /// <summary> KYH : 만석이면 입장 타이머를 멈추고, 자리가 비면 다시 돌린다 </summary>
+    /// <summary> GYH : 만석이면 입장 타이머를 멈추고, 자리가 비면 다시 돌린다 </summary>
     private void HandleFullChanged(bool isFull)
     {
         _isTimerPaused = isFull;
     }
 
-    /// <summary> KYH : 나간 손님을 목록에서 빼고 영업 종료인지 확인한다 </summary>
+    /// <summary> GYH : 나간 손님을 목록에서 빼고 영업 종료인지 확인한다 </summary>
     private void HandleCustomerDespawned(CustomerController customer)
     {
         customer.OnOrdered -= HandleCustomerOrdered;
@@ -313,7 +313,7 @@ public class CustomerSpawner : MonoBehaviour
         OnOrderCountChanged?.Invoke(orderCount);
     }
     
-    /// <summary> KYH : 만족도를 하루 합계에 더하고 손님 위치와 음식 가격을 알린다 </summary>
+    /// <summary> GYH : 만족도를 하루 합계에 더하고 손님 위치와 음식 가격을 알린다 </summary>
     private void HandleCustomerPaid(int satisfaction, Vector3 position, int price)
     {
         _dailySatisfaction += satisfaction;
@@ -324,7 +324,7 @@ public class CustomerSpawner : MonoBehaviour
 
     #region ===== 영업 종료 =====
 
-    /// <summary> KYH : 하루 손님을 다 받았고 가게에 아무도 없으면 영업 종료를 알린다 </summary>
+    /// <summary> GYH : 하루 손님을 다 받았고 가게에 아무도 없으면 영업 종료를 알린다 </summary>
     private void CheckBusinessClosed()
     {
         if (!_isOpen)
@@ -346,7 +346,7 @@ public class CustomerSpawner : MonoBehaviour
         OnBusinessClosed?.Invoke();
     }
 
-    /// <summary> KYH : 영업을 중간에 끝낸다. 입장을 멈추고 손님을 모두 내보낸다 </summary>
+    /// <summary> GYH : 영업을 중간에 끝낸다. 입장을 멈추고 손님을 모두 내보낸다 </summary>
     public void StopBusiness()
     {
         if (!_isOpen)

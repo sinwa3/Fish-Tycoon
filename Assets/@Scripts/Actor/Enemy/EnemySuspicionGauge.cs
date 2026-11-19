@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 시야, 소리로 의심 게이지를 올리고 내려 단계를 기억에 적는다 </summary>
+/// <summary> GYH : 시야, 소리로 의심 게이지를 올리고 내려 단계를 기억에 적는다 </summary>
 public class EnemySuspicionGauge : MonoBehaviour
 {
     #region ===== 수치 =====
@@ -18,7 +18,7 @@ public class EnemySuspicionGauge : MonoBehaviour
 
     private EnemyController _enemy;
 
-    /// <summary> KYH : 지금 게이지 값 </summary>
+    /// <summary> GYH : 지금 게이지 값 </summary>
     public float Gauge { get; private set; }
 
     #endregion ===== 상태 =====
@@ -35,7 +35,7 @@ public class EnemySuspicionGauge : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 같은 오브젝트의 컨트롤러를 캐싱한다 </summary>
+    /// <summary> GYH : 같은 오브젝트의 컨트롤러를 캐싱한다 </summary>
     private void InitializeComponents()
     {
         _enemy = GetComponent<EnemyController>();
@@ -50,7 +50,7 @@ public class EnemySuspicionGauge : MonoBehaviour
 
     #region ===== 게이지 갱신 =====
 
-    /// <summary> KYH : 게이지 값, 단계, 감소 막기를 차례로 갱신한다 </summary>
+    /// <summary> GYH : 게이지 값, 단계, 감소 막기를 차례로 갱신한다 </summary>
     private void UpdateSuspicionGauge(float deltaTime)
     {
         if (_enemy == null || _enemy.Sight == null)
@@ -63,7 +63,7 @@ public class EnemySuspicionGauge : MonoBehaviour
         UpdateDecayBlock();
     }
 
-    /// <summary> KYH : 보이면 게이지를 올리고 안 보이면 내린다 </summary>
+    /// <summary> GYH : 보이면 게이지를 올리고 안 보이면 내린다 </summary>
     private void UpdateGaugeValue(float deltaTime)
     {
         if (IsSightRaisingGauge())
@@ -78,13 +78,13 @@ public class EnemySuspicionGauge : MonoBehaviour
         Gauge = Mathf.Clamp(Gauge, 0.0f, MaxGauge);
     }
 
-    /// <summary> KYH : 시야로 게이지가 오르는지 돌려준다 </summary>
+    /// <summary> GYH : 시야로 게이지가 오르는지 돌려준다 </summary>
     private bool IsSightRaisingGauge()
     {
         return _enemy.Sight.IsPlayerVisible && !_enemy.IsSleepDay;
     }
 
-    /// <summary> KYH : 거리에 따른 초당 상승량을 돌려준다 </summary>
+    /// <summary> GYH : 거리에 따른 초당 상승량을 돌려준다 </summary>
     private float GetSightRiseRate()
     {
         return Mathf.Lerp(_enemy.Detection.SightGaugeRiseNear, _enemy.Detection.SightGaugeRiseFar, _enemy.Sight.GetSightDistanceRatio());
@@ -94,7 +94,7 @@ public class EnemySuspicionGauge : MonoBehaviour
 
     #region ===== 소리 =====
 
-    /// <summary> KYH : 들린 세기만큼 게이지를 올린다 (발각 바로 아래까지) </summary>
+    /// <summary> GYH : 들린 세기만큼 게이지를 올린다 (발각 바로 아래까지) </summary>
     public void AddSoundGauge(float amount)
     {
         if (Gauge >= SoundGaugeCap)
@@ -105,7 +105,7 @@ public class EnemySuspicionGauge : MonoBehaviour
         Gauge = Mathf.Min(Gauge + amount, SoundGaugeCap);
     }
 
-    /// <summary> KYH : 게이지가 조사 시작 값보다 낮으면 그 값까지 올린다 </summary>
+    /// <summary> GYH : 게이지가 조사 시작 값보다 낮으면 그 값까지 올린다 </summary>
     public void RaiseToAlertGauge()
     {
         Gauge = Mathf.Max(Gauge, _enemy.Detection.AlertEnterGauge);
@@ -115,7 +115,7 @@ public class EnemySuspicionGauge : MonoBehaviour
 
     #region ===== 단계 =====
 
-    /// <summary> KYH : 단계를 기억에 적고 조사 단계로 오르면 조사 목표를 적는다 </summary>
+    /// <summary> GYH : 단계를 기억에 적고 조사 단계로 오르면 조사 목표를 적는다 </summary>
     private void UpdateAlertLevel()
     {
         AlertLevel currentLevel = _enemy.Memory.AlertLevel;
@@ -129,7 +129,7 @@ public class EnemySuspicionGauge : MonoBehaviour
         _enemy.Memory.SetAlertLevel(nextLevel);
     }
 
-    /// <summary> KYH : 게이지에 맞는 단계를 돌려준다 </summary>
+    /// <summary> GYH : 게이지에 맞는 단계를 돌려준다 </summary>
     private AlertLevel GetNextAlertLevel(AlertLevel currentLevel)
     {
         AlertLevel nextLevel = currentLevel;
@@ -147,7 +147,7 @@ public class EnemySuspicionGauge : MonoBehaviour
         return nextLevel;
     }
 
-    /// <summary> KYH : 이 단계로 올라가는 게이지 값을 돌려준다 </summary>
+    /// <summary> GYH : 이 단계로 올라가는 게이지 값을 돌려준다 </summary>
     private float GetEnterGauge(AlertLevel level)
     {
         switch (level)
@@ -163,7 +163,7 @@ public class EnemySuspicionGauge : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 이 단계에서 내려가는 게이지 값을 돌려준다 </summary>
+    /// <summary> GYH : 이 단계에서 내려가는 게이지 값을 돌려준다 </summary>
     private float GetExitGauge(AlertLevel level)
     {
         switch (level)
@@ -183,7 +183,7 @@ public class EnemySuspicionGauge : MonoBehaviour
 
     #region ===== 감소 막기 =====
 
-    /// <summary> KYH : 발각 단계에서 보이면 게이지 감소를 막는다 </summary>
+    /// <summary> GYH : 발각 단계에서 보이면 게이지 감소를 막는다 </summary>
     private void UpdateDecayBlock()
     {
         if (_enemy.Memory.AlertLevel == AlertLevel.Detected && _enemy.Sight.IsPlayerVisible)

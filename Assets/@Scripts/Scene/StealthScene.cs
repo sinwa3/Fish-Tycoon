@@ -155,7 +155,7 @@ public class StealthScene : BaseScene
 
     #region ===== 이벤트 =====
 
-    /// <summary> KYH : 소음이 났음을 알린다. </summary>
+    /// <summary> GYH : 소음이 났음을 알린다. </summary>
     public void RaiseNoiseMade(Vector3 position, float loudness)
     {
         OnNoiseMade?.Invoke(position, loudness);

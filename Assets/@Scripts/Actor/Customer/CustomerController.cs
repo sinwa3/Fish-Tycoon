@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-/// <summary> KYH : 손님 본체. 상태 머신을 돌리고 상태들이 쓰는 기능과 정보를 제공한다 </summary>
+/// <summary> GYH : 손님 본체. 상태 머신을 돌리고 상태들이 쓰는 기능과 정보를 제공한다 </summary>
 public class CustomerController : MonoBehaviour
 {
     #region ===== 수치 =====
@@ -98,7 +98,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 초기화 =====
 
-    /// <summary> KYH : 자식의 주문 말풍선, 대기 게이지, 받은 요리, 만족도 수치 UI, 애니메이터를 찾아 둔다 </summary>
+    /// <summary> GYH : 자식의 주문 말풍선, 대기 게이지, 받은 요리, 만족도 수치 UI, 애니메이터를 찾아 둔다 </summary>
     private void InitializeComponents()
     {
         _orderBubble = GetComponentInChildren<CustomerOrderBubble>(true);
@@ -133,7 +133,7 @@ public class CustomerController : MonoBehaviour
         }
     }
 
-    /// <summary> KYH : 손님 상태 7개를 상태 머신에 등록한다 </summary>
+    /// <summary> GYH : 손님 상태 7개를 상태 머신에 등록한다 </summary>
     private void InitializeStateMachine()
     {
         _stateMachine.RegisterState(new CustomerEnterState(_stateMachine, this));
@@ -149,10 +149,10 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 등장과 퇴장 =====
 
-    /// <summary> KYH : 손님이 사라지기 직전에 발행 </summary>
+    /// <summary> GYH : 손님이 사라지기 직전에 발행 </summary>
     public event Action<CustomerController> OnDespawned;
 
-    /// <summary> KYH : 배정받은 좌석에 손님을 세우고 입장 상태부터 시작한다 </summary>
+    /// <summary> GYH : 배정받은 좌석에 손님을 세우고 입장 상태부터 시작한다 </summary>
     public void Spawn(CustomerSeats customerSeats, int seatIndex, DailyMenu dailyMenu)
     {
         if (customerSeats == null)
@@ -188,7 +188,7 @@ public class CustomerController : MonoBehaviour
         _stateMachine.ChangeState<CustomerEnterState>();
     }
 
-    /// <summary> KYH : 좌석을 반납한다 (퇴장 상태에서 호출) </summary>
+    /// <summary> GYH : 좌석을 반납한다 (퇴장 상태에서 호출) </summary>
     public void LeaveSeat()
     {
         if (_customerSeats == null)
@@ -200,7 +200,7 @@ public class CustomerController : MonoBehaviour
         _seatIndex = -1;
     }
 
-    /// <summary> KYH : 손님을 없앤다 (지금은 Destroy) </summary>
+    /// <summary> GYH : 손님을 없앤다 (지금은 Destroy) </summary>
     public void Despawn()
     {
         _stateMachine.Clear();
@@ -212,7 +212,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 주문 처리 =====
 
-    /// <summary> KYH : 그날 메뉴에서 하나를 주문하고 말풍선에 띄운다 (주문 상태에서 호출) </summary>
+    /// <summary> GYH : 그날 메뉴에서 하나를 주문하고 말풍선에 띄운다 (주문 상태에서 호출) </summary>
     public void Order()
     {
         if (_dailyMenu == null)
@@ -235,7 +235,7 @@ public class CustomerController : MonoBehaviour
         _orderBubble.Show(_orderedMenuId);
     }
 
-    /// <summary> KYH : 주문 말풍선을 끈다 (대기 상태가 끝날 때 호출) </summary>
+    /// <summary> GYH : 주문 말풍선을 끈다 (대기 상태가 끝날 때 호출) </summary>
     public void HideOrderBubble()
     {
         if (_orderBubble == null)
@@ -250,7 +250,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 음식 =====
 
-    /// <summary> KYH : 대기 상태일 때만 요리를 받는다. 받으면 true </summary>
+    /// <summary> GYH : 대기 상태일 때만 요리를 받는다. 받으면 true </summary>
     public bool ReceiveFood()
     {
         if (!_stateMachine.IsCurrentState<CustomerWaitState>())
@@ -263,13 +263,13 @@ public class CustomerController : MonoBehaviour
         return true;
     }
 
-    /// <summary> KYH : 대기 상태가 끝날 때 잰 대기 시간을 기록한다 </summary>
+    /// <summary> GYH : 대기 상태가 끝날 때 잰 대기 시간을 기록한다 </summary>
     public void RecordWaitTime(float waitTime)
     {
         _waitTime = waitTime;
     }
 
-    /// <summary> KYH : 주문한 메뉴를 손님 앞에 놓는다 (식사 상태에 들어올 때 호출) </summary>
+    /// <summary> GYH : 주문한 메뉴를 손님 앞에 놓는다 (식사 상태에 들어올 때 호출) </summary>
     public void ShowServedFood()
     {
         if (_servedFood == null)
@@ -280,7 +280,7 @@ public class CustomerController : MonoBehaviour
         _servedFood.Show(_orderedMenuId);
     }
 
-    /// <summary> KYH : 손님 앞 요리를 치운다 (식사 상태가 끝날 때 호출) </summary>
+    /// <summary> GYH : 손님 앞 요리를 치운다 (식사 상태가 끝날 때 호출) </summary>
     public void HideServedFood()
     {
         if (_servedFood == null)
@@ -295,7 +295,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 대기 게이지 =====
 
-    /// <summary> KYH : 대기 게이지를 가득 찬 상태로 켠다 (대기 상태가 시작될 때 호출) </summary>
+    /// <summary> GYH : 대기 게이지를 가득 찬 상태로 켠다 (대기 상태가 시작될 때 호출) </summary>
     public void ShowWaitGauge()
     {
         if (_waitGauge == null)
@@ -306,7 +306,7 @@ public class CustomerController : MonoBehaviour
         _waitGauge.Show();
     }
 
-    /// <summary> KYH : 지금까지 기다린 시간으로 게이지를 줄인다 (대기 상태 Update에서 호출) </summary>
+    /// <summary> GYH : 지금까지 기다린 시간으로 게이지를 줄인다 (대기 상태 Update에서 호출) </summary>
     public void UpdateWaitGauge(float waitTime)
     {
         if (_waitGauge == null)
@@ -318,7 +318,7 @@ public class CustomerController : MonoBehaviour
         _waitGauge.SetRatio(ratio);
     }
 
-    /// <summary> KYH : 대기 게이지를 끈다 (대기 상태가 끝날 때 호출) </summary>
+    /// <summary> GYH : 대기 게이지를 끈다 (대기 상태가 끝날 때 호출) </summary>
     public void HideWaitGauge()
     {
         if (_waitGauge == null)
@@ -333,10 +333,10 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 결제 =====
 
-    /// <summary> KYH : 손님이 계산할 때 만족도, 손님 위치, 음식 가격과 함께 발행 </summary>
+    /// <summary> GYH : 손님이 계산할 때 만족도, 손님 위치, 음식 가격과 함께 발행 </summary>
     public event Action<int, Vector3, int> OnPaid;
 
-    /// <summary> KYH : 주문한 음식과 기다린 시간으로 만족도를 계산해 띄우고 알린다 </summary>
+    /// <summary> GYH : 주문한 음식과 기다린 시간으로 만족도를 계산해 띄우고 알린다 </summary>
     public void Pay()
     {
         if (!TryGetOrderedFood(out FoodData foodData))
@@ -352,13 +352,13 @@ public class CustomerController : MonoBehaviour
         OnPaid?.Invoke(satisfaction, transform.position, foodData.Price);
     }
 
-    /// <summary> KYH : 기다린 시간으로 남은 대기시간 비율(0 ~ 1)을 구한다 </summary>
+    /// <summary> GYH : 기다린 시간으로 남은 대기시간 비율(0 ~ 1)을 구한다 </summary>
     private float GetRemainingWaitRatio(float waitTime)
     {
         return Mathf.Clamp01(1.0f - (waitTime / MaxWaitDuration));
     }
 
-    /// <summary> KYH : 남은 대기시간 비율로 만족 단계를 정한다 </summary>
+    /// <summary> GYH : 남은 대기시간 비율로 만족 단계를 정한다 </summary>
     private SatisfactionGrade GetSatisfactionGrade(float remainingRatio)
     {
         SatisfactionGrade grade = remainingRatio switch
@@ -371,7 +371,7 @@ public class CustomerController : MonoBehaviour
         return grade;
     }
 
-    /// <summary> KYH : 만족 단계에 맞는 배율을 가져온다 </summary>
+    /// <summary> GYH : 만족 단계에 맞는 배율을 가져온다 </summary>
     private float GetWaitMultiplier(SatisfactionGrade grade)
     {
         float multiplier = grade switch
@@ -385,7 +385,7 @@ public class CustomerController : MonoBehaviour
         return multiplier;
     }
 
-    /// <summary> KYH : 기본 만족도에 대기시간 배율을 곱한 만족도를 구한다 (최소 0) </summary>
+    /// <summary> GYH : 기본 만족도에 대기시간 배율을 곱한 만족도를 구한다 (최소 0) </summary>
     private int CalculateSatisfaction(FoodData food, SatisfactionGrade grade)
     {
         float waitMultiplier = GetWaitMultiplier(grade);
@@ -394,7 +394,7 @@ public class CustomerController : MonoBehaviour
         return Mathf.Max(0, satisfaction);
     }
 
-    /// <summary> KYH : 주문한 메뉴 ID로 음식 테이블에서 데이터를 찾는다. 못 찾으면 false </summary>
+    /// <summary> GYH : 주문한 메뉴 ID로 음식 테이블에서 데이터를 찾는다. 못 찾으면 false </summary>
     private bool TryGetOrderedFood(out FoodData food)
     {
         food = null;
@@ -420,7 +420,7 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 만족도 표시 처리 =====
 
-    /// <summary> KYH : 얻은 만족도와 만족 단계를 손님 위에 띄운다 (결제할 때) </summary>
+    /// <summary> GYH : 얻은 만족도와 만족 단계를 손님 위에 띄운다 (결제할 때) </summary>
     private void ShowSatisfaction(int satisfaction, SatisfactionGrade grade)
     {
         if (_satisfactionUI == null)
@@ -435,25 +435,25 @@ public class CustomerController : MonoBehaviour
 
     #region ===== 애니메이션 처리 =====
 
-    /// <summary> KYH : 대기 애니메이션을 재생한다 (입장, 결제 상태가 시작될 때 호출) </summary>
+    /// <summary> GYH : 대기 애니메이션을 재생한다 (입장, 결제 상태가 시작될 때 호출) </summary>
     public void PlayIdle()
     {
         PlayAnimation(AnimatorKey.Hash.Idle);
     }
 
-    /// <summary> KYH : 식사 애니메이션을 재생한다 (식사 상태가 시작될 때 호출) </summary>
+    /// <summary> GYH : 식사 애니메이션을 재생한다 (식사 상태가 시작될 때 호출) </summary>
     public void PlayEating()
     {
         PlayAnimation(AnimatorKey.Hash.Eating);
     }
 
-    /// <summary> KYH : 퇴장 애니메이션을 재생한다 (퇴장 상태가 시작될 때 호출) </summary>
+    /// <summary> GYH : 퇴장 애니메이션을 재생한다 (퇴장 상태가 시작될 때 호출) </summary>
     public void PlayExiting()
     {
         PlayAnimation(AnimatorKey.Hash.Exiting);
     }
 
-    /// <summary> KYH : 퇴장 애니메이션이 끝까지 재생됐는지 확인한다 </summary>
+    /// <summary> GYH : 퇴장 애니메이션이 끝까지 재생됐는지 확인한다 </summary>
     public bool IsExitAnimationFinished()
     {
         if (_animator == null)
@@ -466,7 +466,7 @@ public class CustomerController : MonoBehaviour
         return info.shortNameHash == AnimatorKey.Hash.Exiting && info.normalizedTime >= 1.0f;
     }
 
-    /// <summary> KYH : 애니메이터 상태를 처음부터 재생한다 </summary>
+    /// <summary> GYH : 애니메이터 상태를 처음부터 재생한다 </summary>
     private void PlayAnimation(int stateHash)
     {
         if (_animator == null)

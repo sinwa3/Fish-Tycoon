@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary> KYH : 그날 메뉴를 섞어 두고 주문 순서대로 내준다 </summary>
+/// <summary> GYH : 그날 메뉴를 섞어 두고 주문 순서대로 내준다 </summary>
 public class DailyMenu
 {
     #region ===== 수치 =====
@@ -23,7 +23,7 @@ public class DailyMenu
     public IReadOnlyList<int> ShuffledCandidates => _shuffledCandidates;
     public int OrderedCount => _orderedCount;
 
-    /// <summary> KYH : 그날 팔 메뉴와 준비한 수량을 넣는다. 같은 메뉴면 수량을 더한다 </summary>
+    /// <summary> GYH : 그날 팔 메뉴와 준비한 수량을 넣는다. 같은 메뉴면 수량을 더한다 </summary>
     public void AddMenu(int menuId, int count)
     {
         if (count == 0)
@@ -42,7 +42,7 @@ public class DailyMenu
         _menuCounts[menuId] = menuCount + count;
     }
 
-    /// <summary> KYH : 메뉴를 손님 수만큼 채우고 섞는다 </summary>
+    /// <summary> GYH : 메뉴를 손님 수만큼 채우고 섞는다 </summary>
     public void ShuffleCandidates(int customerCount)
     {
         _shuffledCandidates.Clear();
@@ -76,7 +76,7 @@ public class DailyMenu
         }
     }
 
-    /// <summary> KYH : 섞은 리스트에서 다음 메뉴를 꺼낸다. 다 꺼냈으면 김초밥 </summary>
+    /// <summary> GYH : 섞은 리스트에서 다음 메뉴를 꺼낸다. 다 꺼냈으면 김초밥 </summary>
     public int TakeNextMenu()
     {
         if (_orderedCount >= _shuffledCandidates.Count)
@@ -92,7 +92,7 @@ public class DailyMenu
         return menuId;
     }
 
-    /// <summary> KYH : 리스트를 고르게 섞는다 </summary>
+    /// <summary> GYH : 리스트를 고르게 섞는다 </summary>
     private void ShuffleList(List<int> list)
     {
         for (int i = list.Count - 1; i > 0; i--)

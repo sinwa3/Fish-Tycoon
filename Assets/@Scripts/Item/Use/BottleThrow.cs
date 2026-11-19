@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary> KYH : 병을 카메라 위치에 만들어 바라보는 방향으로 던진다 </summary>
+/// <summary> GYH : 병을 카메라 위치에 만들어 바라보는 방향으로 던진다 </summary>
 public class BottleThrow : IConsumableEffect
 {
     #region ===== 수치 =====
@@ -19,7 +19,7 @@ public class BottleThrow : IConsumableEffect
         _characterController = characterController;
     }
 
-    /// <summary> KYH : 병을 던지고 성공하면 true </summary>
+    /// <summary> GYH : 병을 던지고 성공하면 true </summary>
     public bool Use(Item item)
     {
         if (_cameraTransform == null)
