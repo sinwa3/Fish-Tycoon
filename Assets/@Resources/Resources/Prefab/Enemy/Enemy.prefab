@@ -2818,6 +2818,7 @@ GameObject:
   - component: {fileID: 6106583035372517276}
   - component: {fileID: 7928342619419640018}
   - component: {fileID: 8261112614608867871}
+  - component: {fileID: 1241158129752487120}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -2856,7 +2857,7 @@ Animator:
   m_GameObject: {fileID: 9208544490719316847}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b28b101e00dd64e90b7a537a233bedd8, type: 3}
-  m_Controller: {fileID: 9100000, guid: 4585227c2f2c642009cc90bdb4880d3f, type: 2}
+  m_Controller: {fileID: 9100000, guid: 85bd41ae1344e72439e8c027e13cf6e9, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2985,6 +2986,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5bc75eccfb6c84748afbbac7f943cca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1241158129752487120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9208544490719316847}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f481ce4181e8c4e8b75097e03fab2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &503686718610944122

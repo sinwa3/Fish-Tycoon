@@ -13,12 +13,14 @@ public abstract class AnimatorKey
         #region ===== Float =====
 
         //public const string Speed = "Speed";
+        public const string Speed = "Speed";
 
         #endregion ===== Float =====
 
         #region ===== Bool =====
 
         //public const string IsDash = "IsDash";
+        public const string IsLookingAround = "IsLookingAround";
 
         #endregion ===== Bool =====
 
@@ -65,12 +67,14 @@ public abstract class AnimatorKey
         #region ===== Float =====
 
         //public static readonly int Speed = Animator.StringToHash(Parameter.Speed);
+        public static readonly int Speed = Animator.StringToHash(Parameter.Speed);
 
         #endregion ===== Float =====
 
         #region ===== Bool =====
 
         //public static readonly int IsDash = Animator.StringToHash(Parameter.IsDash);
+        public static readonly int IsLookingAround = Animator.StringToHash(Parameter.IsLookingAround);
 
         #endregion ===== Bool =====
 

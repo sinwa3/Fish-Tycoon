@@ -4,6 +4,7 @@ using UnityEngine;
 /// <summary> KYH : 집주인의 상태를 등록하고 우선순위 함수로 지금 할 상태를 고른다 </summary>
 [RequireComponent(typeof(EnemyMovement), typeof(EnemyLook), typeof(EnemySight))]
 [RequireComponent(typeof(EnemySuspicionGauge), typeof(EnemyHearing), typeof(EnemyFootstep))]
+[RequireComponent(typeof(EnemyAnimation))]
 public class EnemyController : MonoBehaviour
 {
     #region ===== 상태 =====
