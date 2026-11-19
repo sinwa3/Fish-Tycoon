@@ -81,6 +81,7 @@ public class CheatWindow : MonoBehaviour
         AddCheat(new SettlementCheat());
         AddCheat(new DetectionOffCheat());
         AddCheat(new MinimapCheat());
+        AddCheat(new EnemyGaugeCheat());
         AddCheat(new GoldCheat());
         AddCheat(new SatisfactionCheat());
         AddCheat(new QuickSlotItemCheat());
