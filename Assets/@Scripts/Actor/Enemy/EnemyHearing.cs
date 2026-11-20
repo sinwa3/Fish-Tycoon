@@ -89,14 +89,15 @@ public class EnemyHearing : MonoBehaviour
         _enemy.SuspicionGauge.AddSoundGauge(heardLoudness * _enemy.Detection.SoundGaugePerLoudness);
     }
 
-    /// <summary> GYH : 유인 소음이 들리면 게이지를 조사 시작 값까지 올리고 그 자리를 조사 목표로 잡는다 </summary>
+    /// <summary> GYH : 유인 소음이 난 자리를 조사 목표로 잡는다 </summary>
     public void HearLure(Vector3 position, float loudness)
     {
-        if (!TryHear(position, loudness, out _))
+        if (IsIgnoringNoise())
         {
             return;
         }
 
+        ReportToMemory(position, loudness);
         _enemy.SuspicionGauge.RaiseToAlertGauge();
         _enemy.Memory.SetInvestigateTarget(position);
     }
