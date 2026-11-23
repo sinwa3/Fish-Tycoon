@@ -14,6 +14,8 @@ public class CursorManager : MonoBehaviour
     private RectTransform _cursorRect;
 
     private Sprite _normalCursor;
+    // SJY : 클릭시의 스프라이트
+    private Sprite _pressedCursor;
 
     #endregion ===== 참조 =====
 
@@ -45,11 +47,13 @@ public class CursorManager : MonoBehaviour
         scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
         scaler.matchWidthOrHeight = 0f;
 
-        _normalCursor ??= Managers.Resource.Load<Sprite>(ResourceKey.Path.CursorSprite + ResourceKey.Name.Cursor);
+        _normalCursor ??= Managers.Resource.LoadSprite(ResourceKey.Path.CursorSprite + ResourceKey.Name.Cursor, "CursorNormal");
+        _pressedCursor ??= Managers.Resource.LoadSprite(ResourceKey.Path.CursorSprite + ResourceKey.Name.Cursor, "CursorPressed");
 
         CreateCursorUI();
 
         UpdateCursorPosition();
+        UpdateCursorSprite();
 
         // 기존 커서 표시 상태 복원
         SetCursorVisible(_isVisible);
@@ -74,6 +78,7 @@ public class CursorManager : MonoBehaviour
         }
 
         UpdateCursorPosition();
+        UpdateCursorSprite();
     }
 
     /// <summary> KDH : 인게임 커서의 표시 상태를 설정한다. </summary>
@@ -84,6 +89,11 @@ public class CursorManager : MonoBehaviour
         if (_cursorImage != null)
         {
             _cursorImage.enabled = visible;
+
+            if (visible)
+            {
+                UpdateCursorSprite();
+            }
         }
 
         // 기본 OS 커서는 항상 숨긴다.
@@ -120,5 +130,22 @@ public class CursorManager : MonoBehaviour
         }
 
         _cursorRect.anchoredPosition = localPosition;
+    }
+
+    /// <summary> SJY : 마우스 왼쪽 버튼 입력 상태에 따라 커서 스프라이트를 변경한다. </summary>
+    private void UpdateCursorSprite()
+    {
+        if (_cursorImage == null || Managers.Input == null)
+        {
+            return;
+        }
+
+        bool isPressed = Managers.Input.Mouse_Left;
+        Sprite targetSprite = isPressed && _pressedCursor != null ? _pressedCursor : _normalCursor;
+
+        if (_cursorImage.sprite != targetSprite)
+        {
+            _cursorImage.sprite = targetSprite;
+        }
     }
 }
