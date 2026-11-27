@@ -14,8 +14,8 @@ public class FishSpawnCtrl : MonoBehaviour
     [Header("생선 스폰")]
     [SerializeField] private List<FishSpawnPoint> _fishSpawnPoints = new();
 
-    [SerializeField, Min(0)] private int _minFishSpawnCount = 3;
-    [SerializeField, Min(0)] private int _maxFishSpawnCount = 6;
+    [SerializeField, Min(0)] private int _minFishSpawnCount = 8;
+    [SerializeField, Min(0)] private int _maxFishSpawnCount = 14;
 
     /// <summary> KimYH : 잠긴 가구에서 Legendary가 나올 확률 (나머지는 Epic) </summary>
     [Header("잠긴 가구 레전더리 비율")]
@@ -136,21 +136,21 @@ public class FishSpawnCtrl : MonoBehaviour
             return;
         }
 
-        // 잠긴 가구(보안 미니게임)마다 위치 하나씩만 보장하고, 나머지 위치는 전체 랜덤
+        // 잠긴 가구(보안 미니게임)마다 위치 하나씩 보장하고, 나머지 위치는 전체 랜덤
         List<FishSpawnPoint> guaranteedPoints = new();
         List<FishSpawnPoint> otherPoints = new();
 
         SplitGuaranteedPoints(candidatePoints, guaranteedPoints, otherPoints);
 
+        // 잠긴 가구 생선은 min/max 개수와 별개로 추가 스폰
+        SpawnFishAtRandomPoints(guaranteedPoints, guaranteedPoints.Count);
+
         int randomCount = UnityEngine.Random.Range(_minFishSpawnCount, _maxFishSpawnCount + 1);
-        int spawnCount = Mathf.Min(Mathf.Max(randomCount, guaranteedPoints.Count), _maxFishSpawnCount, candidatePoints.Count);
+        int otherSpawnCount = Mathf.Min(randomCount, otherPoints.Count);
 
-        int guaranteedSpawnCount = Mathf.Min(guaranteedPoints.Count, spawnCount);
+        SpawnFishAtRandomPoints(otherPoints, otherSpawnCount);
 
-        SpawnFishAtRandomPoints(guaranteedPoints, guaranteedSpawnCount);
-        SpawnFishAtRandomPoints(otherPoints, spawnCount - guaranteedSpawnCount);
-
-        CPrint.Log($"[FishSpawnCtrl] 스폰된 생선 개수 : {spawnCount}");
+        CPrint.Log($"[FishSpawnCtrl] 스폰된 생선 개수 : {guaranteedPoints.Count + otherSpawnCount} (잠긴 가구 {guaranteedPoints.Count} + 일반 {otherSpawnCount})");
     }
 
     /// <summary> KimYH : 잠긴 위치를 가구별로 묶어 가구마다 랜덤으로 하나씩 보장 위치로 고른다 </summary>
